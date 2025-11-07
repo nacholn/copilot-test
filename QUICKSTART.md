@@ -2,6 +2,42 @@
 
 Get the project up and running in less than 5 minutes!
 
+## Choose Your Project
+
+### 🚴 Bicycle Network (Next.js - Recommended for beginners)
+A Tinder-like social app for cyclists with integrated frontend and backend.
+
+### 🔧 Backend + Frontend (React + Express)
+Traditional separation with React frontend and Node.js/Express backend.
+
+---
+
+## 🚴 Quick Start: Bicycle Network
+
+**The easiest way to get started!**
+
+```bash
+# Clone and navigate
+git clone https://github.com/nacholn/copilot-test.git
+cd copilot-test/bicycle-network
+
+# Install and run
+npm install
+npm run dev
+```
+
+**Access at:** http://localhost:3000
+
+**Features:**
+- 👥 Swipe through cyclist profiles
+- 💚 Match with compatible riders  
+- 📍 Filter by location and experience
+- 🎯 No separate backend needed!
+
+---
+
+## 🔧 Traditional Backend + Frontend
+
 ## Option 1: Docker (Easiest) 🐳
 
 **Prerequisites:** Docker and Docker Compose installed

@@ -1,6 +1,14 @@
 # Frontend Backend Project
 
-A full-stack application template with React frontend and Node.js/Express backend, designed to work with different development agents.
+A collection of full-stack application templates designed to work with different development agents.
+
+## Projects Included
+
+### 1. Backend + Frontend (React + Express)
+Traditional separation of concerns with React frontend and Node.js/Express backend.
+
+### 2. Bicycle Network (Next.js)
+🚴 **NEW!** A Tinder-like social app for cyclists - match with riding partners based on experience, location, and preferences. Built with Next.js 14 (App Router) with integrated frontend and backend.
 
 ## Project Structure
 
@@ -11,6 +19,10 @@ A full-stack application template with React frontend and Node.js/Express backen
 │   └── src/           # React components and services
 ├── backend/           # Node.js/Express API server
 │   └── src/           # Server code, routes, and controllers
+├── bicycle-network/   # 🚴 Next.js cycling social app
+│   ├── app/           # Next.js app router pages & API
+│   ├── components/    # React components
+│   └── README.md      # Bicycle Network documentation
 ├── docs/              # Documentation
 │   └── .agents/       # Agent-specific instructions
 └── docker-compose.yml # Docker setup for easy deployment
@@ -26,7 +38,9 @@ A full-stack application template with React frontend and Node.js/Express backen
 
 ### Running Locally
 
-#### Backend
+#### Option 1: Backend + Frontend (Separate)
+
+**Backend**
 
 ```bash
 cd backend
@@ -36,6 +50,33 @@ npm run dev
 ```
 
 The backend server will start on `http://localhost:3001`
+
+**Frontend**
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm start
+```
+
+The frontend will start on `http://localhost:3000`
+
+#### Option 2: Bicycle Network (Next.js - All-in-One)
+
+```bash
+cd bicycle-network
+npm install
+npm run dev
+```
+
+The app will start on `http://localhost:3000`
+
+🚴 **Features:**
+- Swipe interface to discover cyclists
+- Match with compatible riding partners
+- View profiles with experience levels and preferences
+- Built-in API routes (no separate backend needed)
 
 #### Frontend
 

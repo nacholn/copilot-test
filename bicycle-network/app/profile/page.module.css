@@ -1,0 +1,162 @@
+.container {
+  min-height: 100vh;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: white;
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.main {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profileCard {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.avatar {
+  font-size: 5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.name {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.location {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 1.5rem 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 2rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.bio {
+  line-height: 1.6;
+  color: #555;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.detail {
+  color: #555;
+  line-height: 1.5;
+}
+
+.detail strong {
+  color: #333;
+}
+
+.interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.interest {
+  padding: 0.5rem 1rem;
+  background: #f0f0f0;
+  border-radius: 20px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.editButton {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.editButton:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .profileCard {
+    padding: 1.5rem;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

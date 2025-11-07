@@ -1,0 +1,136 @@
+.container {
+  min-height: 100vh;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  color: white;
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.matchCounter {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.main {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.cardContainer {
+  position: relative;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.passButton,
+.likeButton {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.passButton {
+  background: white;
+  color: #ff6b6b;
+}
+
+.passButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+.likeButton {
+  background: white;
+  color: #51cf66;
+}
+
+.likeButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(81, 207, 102, 0.4);
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: white;
+}
+
+.empty h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.empty p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.homeButton {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: white;
+  color: #667eea;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: transform 0.3s;
+}
+
+.homeButton:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .actions {
+    gap: 1rem;
+  }
+
+  .passButton,
+  .likeButton {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+}
