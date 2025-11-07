@@ -56,7 +56,11 @@ export const updateUser = (req: Request, res: Response): void => {
     return;
   }
   
-  users[userIndex] = { ...users[userIndex], ...req.body, id: userId };
+  // Only allow updating name and email fields
+  const { name, email } = req.body;
+  if (name !== undefined) users[userIndex].name = name;
+  if (email !== undefined) users[userIndex].email = email;
+  
   res.json({ success: true, data: users[userIndex] });
 };
 
