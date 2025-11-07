@@ -3,6 +3,7 @@ let users = [
   { id: 1, name: 'John Doe', email: 'john@example.com' },
   { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
 ];
+let nextUserId = 3;
 
 // Get all users
 const getAllUsers = (req, res) => {
@@ -26,7 +27,7 @@ const createUser = (req, res) => {
   }
   
   const newUser = {
-    id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+    id: nextUserId++,
     name,
     email
   };

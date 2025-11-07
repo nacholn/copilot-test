@@ -9,6 +9,9 @@ const api = axios.create({
   },
 });
 
+// API functions allow errors to propagate to component level
+// where they can be handled with user-friendly messages
+
 export const getUsers = async () => {
   const response = await api.get('/users');
   return response.data.data;
