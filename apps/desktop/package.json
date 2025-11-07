@@ -26,8 +26,8 @@
     }
   },
   "dependencies": {
-    "@cycling-network/config": "workspace:*",
-    "@cycling-network/ui": "workspace:*",
+    "@cycling-network/config": "*",
+    "@cycling-network/ui": "*",
     "@supabase/supabase-js": "^2.39.0",
     "next": "^14.0.4",
     "react": "^18.2.0",

@@ -5,13 +5,10 @@
  * in the monorepo for consistent type safety.
  */
 
-export interface User {
-  id: string;
-  email: string;
-  displayName?: string;
-  avatarUrl?: string;
-  createdAt: string;
-}
+import type { User as SupabaseUser } from '@supabase/supabase-js';
+
+// Re-export Supabase User type for consistency
+export type User = SupabaseUser;
 
 export interface AuthState {
   user: User | null;

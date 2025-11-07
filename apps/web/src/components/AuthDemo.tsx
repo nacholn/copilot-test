@@ -13,10 +13,10 @@ import { useState, useEffect } from 'react';
 import { createBrowserClient } from '@cycling-network/config/supabase';
 import { Button } from '@cycling-network/ui';
 import type { User } from '@cycling-network/config/types';
-
-const supabase = createBrowserClient();
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export const AuthDemo: React.FC = () => {
+  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,15 +24,19 @@ export const AuthDemo: React.FC = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
+    // Initialize Supabase client on mount (client-side only)
+    const client = createBrowserClient();
+    setSupabase(client);
+
     // Check current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    client.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user as User | null);
     });
 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = client.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user as User | null);
     });
 
@@ -41,6 +45,8 @@ export const AuthDemo: React.FC = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!supabase) return;
+    
     setLoading(true);
     setMessage('');
 
@@ -65,6 +71,8 @@ export const AuthDemo: React.FC = () => {
   };
 
   const handleSignOut = async () => {
+    if (!supabase) return;
+    
     setLoading(true);
     try {
       await supabase.auth.signOut();
@@ -75,6 +83,10 @@ export const AuthDemo: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (!supabase) {
+    return <div style={{ textAlign: 'center' }}>Loading...</div>;
+  }
 
   if (user) {
     return (

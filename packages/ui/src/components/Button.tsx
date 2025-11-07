@@ -17,6 +17,7 @@ export interface ButtonProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -26,6 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   type = 'button',
   className = '',
+  style,
 }) => {
   const baseStyles = {
     padding: '12px 24px',
@@ -56,6 +58,7 @@ export const Button: React.FC<ButtonProps> = ({
   const styles = {
     ...baseStyles,
     ...variantStyles[variant],
+    ...style,
   };
 
   return (

@@ -14,8 +14,8 @@
     "clean": "rm -rf .expo node_modules"
   },
   "dependencies": {
-    "@cycling-network/config": "workspace:*",
-    "@cycling-network/ui": "workspace:*",
+    "@cycling-network/config": "*",
+    "@cycling-network/ui": "*",
     "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@supabase/supabase-js": "^2.39.0",
