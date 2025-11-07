@@ -1,7 +1,13 @@
 import React from 'react';
 import './UserList.css';
+import { User } from '../services/api';
 
-function UserList({ users, onRefresh }) {
+interface UserListProps {
+  users: User[];
+  onRefresh: () => void;
+}
+
+function UserList({ users, onRefresh }: UserListProps) {
   return (
     <div className="user-list">
       <div className="user-list-header">

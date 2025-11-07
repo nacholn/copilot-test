@@ -1,32 +1,42 @@
+import { Request, Response } from 'express';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
 // Mock data store (replace with database in production)
-let users = [
+let users: User[] = [
   { id: 1, name: 'John Doe', email: 'john@example.com' },
   { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
 ];
 let nextUserId = 3;
 
 // Get all users
-const getAllUsers = (req, res) => {
+export const getAllUsers = (req: Request, res: Response): void => {
   res.json({ success: true, data: users });
 };
 
 // Get user by ID
-const getUserById = (req, res) => {
+export const getUserById = (req: Request, res: Response): void => {
   const user = users.find(u => u.id === parseInt(req.params.id));
   if (!user) {
-    return res.status(404).json({ success: false, error: 'User not found' });
+    res.status(404).json({ success: false, error: 'User not found' });
+    return;
   }
   res.json({ success: true, data: user });
 };
 
 // Create new user
-const createUser = (req, res) => {
+export const createUser = (req: Request, res: Response): void => {
   const { name, email } = req.body;
   if (!name || !email) {
-    return res.status(400).json({ success: false, error: 'Name and email are required' });
+    res.status(400).json({ success: false, error: 'Name and email are required' });
+    return;
   }
   
-  const newUser = {
+  const newUser: User = {
     id: nextUserId++,
     name,
     email
@@ -37,12 +47,13 @@ const createUser = (req, res) => {
 };
 
 // Update user
-const updateUser = (req, res) => {
+export const updateUser = (req: Request, res: Response): void => {
   const userId = parseInt(req.params.id);
   const userIndex = users.findIndex(u => u.id === userId);
   
   if (userIndex === -1) {
-    return res.status(404).json({ success: false, error: 'User not found' });
+    res.status(404).json({ success: false, error: 'User not found' });
+    return;
   }
   
   users[userIndex] = { ...users[userIndex], ...req.body, id: userId };
@@ -50,22 +61,15 @@ const updateUser = (req, res) => {
 };
 
 // Delete user
-const deleteUser = (req, res) => {
+export const deleteUser = (req: Request, res: Response): void => {
   const userId = parseInt(req.params.id);
   const userIndex = users.findIndex(u => u.id === userId);
   
   if (userIndex === -1) {
-    return res.status(404).json({ success: false, error: 'User not found' });
+    res.status(404).json({ success: false, error: 'User not found' });
+    return;
   }
   
   users.splice(userIndex, 1);
   res.json({ success: true, message: 'User deleted successfully' });
-};
-
-module.exports = {
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser
 };
