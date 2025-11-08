@@ -164,6 +164,18 @@ copilot-test/
 
 This repository is optimized for GitHub Copilot agents to assist with development.
 
+### Specialized Agents
+
+We've configured 5 specialized agents to help you work more efficiently:
+
+- **Backend API Agent** - Expert in Next.js API routes and server-side operations
+- **Web PWA Agent** - Specialist in React, Next.js web app, and PWA features
+- **Mobile App Agent** - Expert in Expo, React Native, and mobile development
+- **Shared UI Agent** - Specialist in cross-platform component development
+- **Config Package Agent** - Expert in shared types and configuration
+
+📚 **See `.github/agents/README.md`** for detailed agent documentation and usage examples.
+
 ### Using Copilot in this Repo
 
 1. **Code Completion** - Copilot provides context-aware suggestions based on:
@@ -172,11 +184,14 @@ This repository is optimized for GitHub Copilot agents to assist with developmen
    - Supabase patterns
    - Next.js and React Native best practices
 
-2. **Copilot Chat** - Ask questions about:
-   - How to add new features
-   - Authentication flows
-   - Component usage
-   - API endpoints
+2. **Copilot Chat with Agents** - Reference agents in your prompts:
+   ```
+   @backend-api-agent Create a new endpoint for fetching user routes
+   ```
+   Or ask questions:
+   ```
+   How do I add a new screen to the mobile app?
+   ```
 
 3. **Best Practices** - The codebase follows:
    - **Atomic Design** for UI components
@@ -186,12 +201,13 @@ This repository is optimized for GitHub Copilot agents to assist with developmen
    - **Accessibility** standards
    - **Performance** optimizations
 
-### Example Copilot Prompts
+### Example Copilot Prompts with Agents
 
-- "Add a new API endpoint for fetching user routes"
-- "Create a new shared UI component for a card"
-- "Implement password reset flow with Supabase"
-- "Add offline support to the mobile app"
+- **Backend**: "@backend-api-agent Create an endpoint to fetch user routes"
+- **Shared UI**: "@shared-ui-agent Create a Card component for web and mobile"
+- **Web**: "@web-pwa-agent Implement password reset flow with Supabase"
+- **Mobile**: "@mobile-app-agent Add pull-to-refresh to the activities list"
+- **Config**: "@config-package-agent Add types for the route sharing feature"
 
 ## 🛠️ Development Workflow
 
