@@ -25,6 +25,42 @@ export interface Route {
   createdAt: string;
 }
 
+/**
+ * Cyclist Profile
+ * Stores detailed information about each cyclist user
+ */
+export interface CyclistProfile {
+  id: string;
+  userId: string; // Foreign key to auth.users
+  email: string;
+  sex?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  level?: 'beginner' | 'intermediate' | 'advanced' | 'professional';
+  birthDate?: string; // ISO date string
+  photoUrl?: string; // URL to photo or generated avatar
+  city?: string;
+  latitude?: number;
+  longitude?: number;
+  description?: string;
+  bikeType?: 'road' | 'mountain' | 'hybrid' | 'gravel' | 'electric' | 'other';
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Request body for creating/updating cyclist profile
+ */
+export interface UpdateCyclistProfileRequest {
+  sex?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  level?: 'beginner' | 'intermediate' | 'advanced' | 'professional';
+  birthDate?: string;
+  photoUrl?: string;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
+  description?: string;
+  bikeType?: 'road' | 'mountain' | 'hybrid' | 'gravel' | 'electric' | 'other';
+}
+
 export interface ApiResponse<T> {
   data?: T;
   error?: string;
