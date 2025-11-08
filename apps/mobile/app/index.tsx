@@ -5,18 +5,21 @@
  */
 
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 import { Button } from '@cycling-network/ui/native';
 import { AuthDemo } from '@/components/AuthDemo';
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Cycling Network Platform</Text>
         <Text style={styles.subtitle}>Mobile App (Expo React Native)</Text>
         <View style={styles.buttonContainer}>
-          <Button variant="primary" onPress={() => console.log('Get Started')}>
-            Get Started
+          <Button variant="primary" onPress={() => router.push('/profile')}>
+            My Profile
           </Button>
           <Button variant="secondary" onPress={() => console.log('Learn More')}>
             Learn More

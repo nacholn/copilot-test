@@ -44,7 +44,9 @@ export default function Home() {
           Web Progressive Web App (PWA)
         </p>
         <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-          <Button variant="primary">Get Started</Button>
+          <a href="/profile" style={{ textDecoration: 'none' }}>
+            <Button variant="primary">My Profile</Button>
+          </a>
           <Button variant="secondary">Learn More</Button>
         </div>
       </header>
