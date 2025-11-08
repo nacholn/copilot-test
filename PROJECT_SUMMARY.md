@@ -43,7 +43,7 @@ curl http://localhost:3001/api/health
 - ✅ Successfully builds and runs
 
 **Features:**
-- Installable on mobile/desktop
+- Installable on mobile and desktop
 - Offline support (via service worker)
 - Full authentication flow
 - Responsive UI
@@ -54,23 +54,7 @@ cd apps/web && npm run dev
 # Visit http://localhost:3000
 ```
 
-#### 3. Desktop App (Next.js + Electron)
-- ✅ Next.js 14 configured for static export
-- ✅ Electron integration ready
-- ✅ Main and preload scripts configured
-- ✅ Same UI as web app (code reuse)
-- ✅ Supabase authentication support
-- ✅ Runs on port 3002
-- ✅ Successfully builds
-
-**Electron Setup:**
-```bash
-cd apps/desktop
-npm run dev           # Terminal 1: Next.js
-npm run electron:dev  # Terminal 2: Electron
-```
-
-#### 4. Mobile App (Expo React Native)
+#### 3. Mobile App (Expo React Native)
 - ✅ Expo 50 with expo-router
 - ✅ TypeScript configured
 - ✅ React Native navigation
@@ -112,7 +96,7 @@ import { createBrowserClient, createServerClient } from '@cycling-network/config
 
 **Usage:**
 ```typescript
-// Web/Desktop
+// Web
 import { Button } from '@cycling-network/ui';
 
 // Mobile
@@ -193,7 +177,6 @@ npm run build
 ✓ @cycling-network/ui:build
 ✓ @cycling-network/backend:build
 ✓ @cycling-network/web:build
-✓ @cycling-network/desktop:build
 ```
 
 ### Runtime Tests
@@ -210,7 +193,6 @@ npm run build
 ✓ npm run dev
   → Backend: localhost:3001
   → Web: localhost:3000
-  → Desktop: localhost:3002
   → Mobile: Expo dev server
 ```
 
@@ -243,7 +225,6 @@ cycling-network-platform/
 ├── apps/
 │   ├── backend/          # Next.js API (Port 3001)
 │   ├── web/              # Next.js PWA (Port 3000)
-│   ├── desktop/          # Electron App (Port 3002)
 │   └── mobile/           # Expo React Native
 ├── packages/
 │   ├── config/           # Shared config & types
@@ -311,12 +292,12 @@ This codebase is optimized for GitHub Copilot:
 
 ## 📊 Metrics
 
-- **Total Files Created:** 47+ files
-- **Lines of Code:** ~4,000+ lines
+- **Total Files Created:** 40+ files
+- **Lines of Code:** ~3,500+ lines
 - **Packages:** 2 shared packages
-- **Applications:** 4 complete apps
+- **Applications:** 3 complete apps (Backend, Web, Mobile)
 - **Dependencies:** 1,900+ packages installed
-- **Build Time:** ~27 seconds (all apps)
+- **Build Time:** ~20 seconds (all apps)
 - **Documentation:** 4 comprehensive guides
 
 ## ✨ Key Achievements
@@ -326,11 +307,10 @@ This codebase is optimized for GitHub Copilot:
 3. ✅ **Type Safety:** Consistent TypeScript across all packages
 4. ✅ **Auth Integration:** Working Supabase authentication in all apps
 5. ✅ **PWA Support:** Web app installable with offline capabilities
-6. ✅ **Electron Ready:** Desktop app configured and building
-7. ✅ **Mobile Ready:** Expo app with navigation and native UI
-8. ✅ **Documentation:** Comprehensive guides for developers and Copilot
-9. ✅ **Best Practices:** Modern patterns, accessibility, performance
-10. ✅ **Ready for Team:** All setup scripts and guides in place
+6. ✅ **Mobile Ready:** Expo app with navigation and native UI
+7. ✅ **Documentation:** Comprehensive guides for developers and Copilot
+8. ✅ **Best Practices:** Modern patterns, accessibility, performance
+9. ✅ **Ready for Team:** All setup scripts and guides in place
 
 ## 🎯 Production Readiness
 
@@ -359,7 +339,6 @@ The codebase includes working examples of:
 - Supabase authentication
 - Next.js API routes
 - PWA implementation
-- Electron integration
 - Expo React Native
 - GitHub Copilot optimization
 

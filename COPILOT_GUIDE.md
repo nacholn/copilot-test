@@ -8,7 +8,6 @@ This is a **monorepo** containing multiple applications and shared packages:
 
 - **Backend** (`apps/backend`) - Next.js API provider
 - **Web PWA** (`apps/web`) - Progressive Web App
-- **Desktop** (`apps/desktop`) - Electron desktop app
 - **Mobile** (`apps/mobile`) - Expo React Native app
 - **Shared Packages** (`packages/`) - Config and UI components
 
@@ -57,7 +56,7 @@ function handleUser(user) { ... }
 ### Cross-Platform Components
 
 Components in `packages/ui/src/components/` must support both:
-1. **Web/Desktop** - React with HTML elements
+1. **Web** - React with HTML elements
 2. **Mobile** - React Native components
 
 **File naming convention:**
@@ -98,7 +97,7 @@ Button.native.tsx → Mobile version (React Native)
 
 ### Styling Guidelines
 
-**Web/Desktop:**
+**Web:**
 - Use inline styles or CSS-in-JS
 - Follow responsive design principles
 - Ensure accessibility (ARIA labels, keyboard navigation)
@@ -147,7 +146,7 @@ const supabase = createClient(url, key);
 
 ### Authentication Flows
 
-**Client-side (Web/Desktop/Mobile):**
+**Client-side (Web/Mobile):**
 ```typescript
 import { createBrowserClient } from '@cycling-network/config/supabase';
 
@@ -403,7 +402,7 @@ git commit -m "fix bug"
 
 ## 📚 Common Patterns
 
-### Data Fetching (Web/Desktop)
+### Data Fetching (Web)
 
 ```typescript
 const [data, setData] = useState<Activity[]>([]);
@@ -522,7 +521,7 @@ try {
 - [ ] Create in `apps/[app]/src/pages/` or `apps/mobile/app/`
 - [ ] Import shared components
 - [ ] Add authentication if needed
-- [ ] Test responsiveness (web/desktop)
+- [ ] Test responsiveness (web)
 - [ ] Test on device (mobile)
 
 ---

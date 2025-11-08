@@ -34,20 +34,6 @@ npm run dev
 ```
 Visit: http://localhost:3000
 
-### Desktop App (Port 3002)
-```bash
-cd apps/desktop
-npm run dev
-```
-Visit: http://localhost:3002
-
-**For Electron:**
-```bash
-cd apps/desktop
-npm run dev           # Terminal 1: Start Next.js
-npm run electron:dev  # Terminal 2: Start Electron
-```
-
 ### Mobile App
 ```bash
 cd apps/mobile
@@ -102,7 +88,7 @@ npm install package-name -w apps/*
 
 4. Use in apps:
    ```typescript
-   // Web/Desktop
+   // Web
    import { MyComponent } from '@cycling-network/ui';
    
    // Mobile
@@ -167,13 +153,6 @@ cd apps/web
 npm run build
 ```
 
-### Build Desktop for Distribution
-```bash
-cd apps/desktop
-npm run build           # Build Next.js
-npm run electron:build  # Build Electron executable
-```
-
 ## 🧹 Cleaning
 
 ### Clean All
@@ -236,14 +215,12 @@ When running `npm run dev` from root, you'll see:
 ```
 [backend] ready - started server on 0.0.0.0:3001
 [web] ready - started server on 0.0.0.0:3000
-[desktop] ready - started server on 0.0.0.0:3002
 [mobile] Metro waiting on exp://192.168.x.x:8081
 ```
 
 You can access:
 - Backend: http://localhost:3001/api/health
 - Web: http://localhost:3000
-- Desktop: http://localhost:3002
 - Mobile: Scan QR in terminal with Expo Go
 
 ## 🐛 Troubleshooting
@@ -366,13 +343,11 @@ npm run android
 - [ ] Database migrations applied (if any)
 - [ ] API endpoints tested
 - [ ] Mobile app built with EAS (for mobile)
-- [ ] Desktop app built with electron-builder (for desktop)
 
 ### Deployment Targets
 
 - **Backend**: Vercel, Railway, Render
 - **Web**: Vercel, Netlify, Cloudflare Pages
-- **Desktop**: GitHub Releases, Microsoft Store, Mac App Store
 - **Mobile**: App Store (iOS), Google Play (Android)
 
 ## 📚 Additional Resources

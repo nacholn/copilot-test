@@ -10,13 +10,12 @@ This monorepo uses **Turborepo** for efficient building, caching, and orchestrat
 
 - **`apps/backend`** - Next.js API routes serving as the backend API provider for all clients
 - **`apps/web`** - Next.js web application with PWA support (Progressive Web App)
-- **`apps/desktop`** - Next.js application with Electron integration for native desktop experience
 - **`apps/mobile`** - Expo React Native mobile application
 
 ### Packages
 
 - **`packages/config`** - Shared configuration, types, and Supabase client utilities
-- **`packages/ui`** - Shared UI components for both React (web/desktop) and React Native (mobile)
+- **`packages/ui`** - Shared UI components for both React (web) and React Native (mobile)
 
 ## 🚀 Getting Started
 
@@ -55,7 +54,6 @@ This monorepo uses **Turborepo** for efficient building, caching, and orchestrat
    This starts:
    - Backend API on http://localhost:3001
    - Web PWA on http://localhost:3000
-   - Desktop app on http://localhost:3002
    - Mobile app with Expo (follow CLI instructions)
 
 ### Running Individual Apps
@@ -66,9 +64,6 @@ cd apps/backend && npm run dev
 
 # Web PWA
 cd apps/web && npm run dev
-
-# Desktop
-cd apps/desktop && npm run dev
 
 # Mobile (requires Expo Go app on your device)
 cd apps/mobile && npm start
@@ -136,24 +131,6 @@ npm run build
 npm run start
 ```
 
-## 🖥️ Desktop App (Electron)
-
-The desktop app uses Electron for native desktop features:
-
-### Development
-```bash
-cd apps/desktop
-npm run dev          # Start Next.js dev server
-npm run electron:dev # In another terminal, start Electron
-```
-
-### Building
-```bash
-cd apps/desktop
-npm run build        # Build Next.js app
-npm run electron:build # Build Electron executable
-```
-
 ## 📂 Project Structure
 
 ```
@@ -165,10 +142,6 @@ copilot-test/
 │   ├── web/            # Next.js PWA
 │   │   ├── src/
 │   │   ├── public/
-│   │   └── package.json
-│   ├── desktop/        # Next.js + Electron
-│   │   ├── src/
-│   │   ├── electron/
 │   │   └── package.json
 │   └── mobile/         # Expo React Native
 │       ├── app/
@@ -250,7 +223,7 @@ This repository is optimized for GitHub Copilot agents to assist with developmen
 
 3. Use in apps:
    ```typescript
-   // Web/Desktop
+   // Web
    import { MyComponent } from '@cycling-network/ui';
    
    // Mobile
@@ -262,7 +235,7 @@ This repository is optimized for GitHub Copilot agents to assist with developmen
 Testing infrastructure can be added based on your needs:
 
 - **Unit tests** - Jest + React Testing Library
-- **E2E tests** - Playwright (web/desktop), Detox (mobile)
+- **E2E tests** - Playwright (web), Detox (mobile)
 - **API tests** - Supertest for backend endpoints
 
 ## 🚢 Deployment
@@ -274,10 +247,6 @@ Testing infrastructure can be added based on your needs:
 ### Web PWA
 - Deploy to Vercel (recommended for Next.js)
 - Automatic PWA optimizations
-
-### Desktop
-- Build with `electron-builder`
-- Distribute via GitHub Releases or app stores
 
 ### Mobile
 - Use [Expo EAS Build](https://docs.expo.dev/build/introduction/)
