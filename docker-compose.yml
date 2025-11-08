@@ -1,0 +1,54 @@
+# Docker Compose for Cycling Network Platform
+# Provides local PostgreSQL database for development
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: cycling-network-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: cycling_user
+      POSTGRES_PASSWORD: cycling_password
+      POSTGRES_DB: cycling_network
+      POSTGRES_INITDB_ARGS: "-E UTF8"
+    volumes:
+      # Persist data
+      - postgres_data:/var/lib/postgresql/data
+      # Auto-run initialization scripts
+      - ./apps/backend/database/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cycling_user -d cycling_network"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin - PostgreSQL Web UI (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cycling-network-pgadmin
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cycling.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+    name: cycling_network_postgres_data
+  pgadmin_data:
+    name: cycling_network_pgadmin_data
+
+networks:
+  default:
+    name: cycling_network

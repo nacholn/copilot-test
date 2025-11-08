@@ -7,7 +7,7 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createServerClient } from '@cycling-network/config/supabase';
+import { query } from '@/lib/db';
 import type { CyclistProfile, ApiResponse } from '@cycling-network/config/types';
 
 export default async function handler(
@@ -25,20 +25,15 @@ export default async function handler(
       return res.status(400).json({ error: 'Invalid user ID' });
     }
 
-    const supabase = createServerClient();
+    const result = await query(
+      'SELECT * FROM cyclist_profiles WHERE user_id = $1',
+      [id]
+    );
 
-    const { data: profile, error } = await supabase
-      .from('cyclist_profiles')
-      .select('*')
-      .eq('user_id', id)
-      .single();
+    const profile = result.rows[0];
 
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return res.status(404).json({ error: 'Profile not found' });
-      }
-      console.error('Error fetching profile:', error);
-      return res.status(500).json({ error: 'Failed to fetch profile' });
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
     }
 
     // Convert snake_case to camelCase

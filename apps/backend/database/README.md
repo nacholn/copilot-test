@@ -1,24 +1,39 @@
 # Database Setup for Cycling Network Platform
 
-This directory contains database migrations and setup instructions for the PostgreSQL database running on Supabase.
+This directory contains database migrations and setup instructions for the PostgreSQL database using Docker Compose.
 
-## Quick Setup
+## Quick Setup (Docker)
 
-1. **Go to your Supabase Dashboard**
-   - Visit https://app.supabase.com
-   - Select your project
-   - Navigate to SQL Editor
+1. **Start PostgreSQL with Docker Compose**
+   ```bash
+   # From project root
+   docker-compose up -d
+   ```
 
-2. **Run the Migration**
-   - Open `migrations/001_create_cyclist_profiles.sql`
-   - Copy the entire content
-   - Paste it into the SQL Editor
-   - Click "Run" to execute
+2. **Database is Auto-Initialized**
+   - The schema from `init/001_create_schema.sql` runs automatically
+   - Tables, triggers, and test user are created
+   - No manual SQL execution needed!
 
 3. **Verify Setup**
-   - Go to Table Editor
-   - You should see `cyclist_profiles` table
-   - Check that RLS (Row Level Security) is enabled
+   ```bash
+   # Connect to database
+   docker-compose exec postgres psql -U cycling_user -d cycling_network
+   
+   # List tables
+   \dt
+   
+   # Check test user exists
+   SELECT * FROM users WHERE email = 'test@cycling.local';
+   
+   # Exit
+   \q
+   ```
+
+4. **Access pgAdmin (Optional)**
+   - Open http://localhost:5050
+   - Login: admin@cycling.local / admin
+   - Add server connection (see DOCKER_SETUP.md)
 
 ## Database Schema
 

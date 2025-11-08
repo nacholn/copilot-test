@@ -8,7 +8,8 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createServerClient } from '@cycling-network/config/supabase';
+import { query } from '@/lib/db';
+import { verifyToken } from '@/lib/auth';
 import type { CyclistProfile, ApiResponse, UpdateCyclistProfileRequest } from '@cycling-network/config/types';
 
 export default async function handler(
@@ -22,34 +23,30 @@ export default async function handler(
     return res.status(401).json({ error: 'Unauthorized - No token provided' });
   }
 
-  const supabase = createServerClient();
+  // Verify token and get user
+  const payload = verifyToken(token);
   
-  // Verify user
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-
-  if (authError || !user) {
+  if (!payload) {
     return res.status(401).json({ error: 'Unauthorized - Invalid token' });
   }
+
+  const userId = payload.userId;
 
   // Handle GET - Fetch current user's profile
   if (req.method === 'GET') {
     try {
-      const { data: profile, error } = await supabase
-        .from('cyclist_profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
+      const result = await query(
+        'SELECT * FROM cyclist_profiles WHERE user_id = $1',
+        [userId]
+      );
 
-      if (error) {
-        // If profile doesn't exist, return 404
-        if (error.code === 'PGRST116') {
-          return res.status(404).json({ 
-            error: 'Profile not found',
-            message: 'Cyclist profile has not been created yet' 
-          });
-        }
-        console.error('Error fetching profile:', error);
-        return res.status(500).json({ error: 'Failed to fetch profile' });
+      const profile = result.rows[0];
+
+      if (!profile) {
+        return res.status(404).json({ 
+          error: 'Profile not found',
+          message: 'Cyclist profile has not been created yet' 
+        });
       }
 
       // Convert snake_case to camelCase
@@ -82,31 +79,67 @@ export default async function handler(
     try {
       const updates: UpdateCyclistProfileRequest = req.body;
 
-      // Convert camelCase to snake_case for database
-      const dbUpdates: any = {
-        updated_at: new Date().toISOString(),
-      };
+      // Build SET clause dynamically
+      const setClauses: string[] = [];
+      const values: any[] = [];
+      let paramIndex = 1;
 
-      if (updates.sex !== undefined) dbUpdates.sex = updates.sex;
-      if (updates.level !== undefined) dbUpdates.level = updates.level;
-      if (updates.birthDate !== undefined) dbUpdates.birth_date = updates.birthDate;
-      if (updates.photoUrl !== undefined) dbUpdates.photo_url = updates.photoUrl;
-      if (updates.city !== undefined) dbUpdates.city = updates.city;
-      if (updates.latitude !== undefined) dbUpdates.latitude = updates.latitude;
-      if (updates.longitude !== undefined) dbUpdates.longitude = updates.longitude;
-      if (updates.description !== undefined) dbUpdates.description = updates.description;
-      if (updates.bikeType !== undefined) dbUpdates.bike_type = updates.bikeType;
+      if (updates.sex !== undefined) {
+        setClauses.push(`sex = $${paramIndex++}`);
+        values.push(updates.sex);
+      }
+      if (updates.level !== undefined) {
+        setClauses.push(`level = $${paramIndex++}`);
+        values.push(updates.level);
+      }
+      if (updates.birthDate !== undefined) {
+        setClauses.push(`birth_date = $${paramIndex++}`);
+        values.push(updates.birthDate);
+      }
+      if (updates.photoUrl !== undefined) {
+        setClauses.push(`photo_url = $${paramIndex++}`);
+        values.push(updates.photoUrl);
+      }
+      if (updates.city !== undefined) {
+        setClauses.push(`city = $${paramIndex++}`);
+        values.push(updates.city);
+      }
+      if (updates.latitude !== undefined) {
+        setClauses.push(`latitude = $${paramIndex++}`);
+        values.push(updates.latitude);
+      }
+      if (updates.longitude !== undefined) {
+        setClauses.push(`longitude = $${paramIndex++}`);
+        values.push(updates.longitude);
+      }
+      if (updates.description !== undefined) {
+        setClauses.push(`description = $${paramIndex++}`);
+        values.push(updates.description);
+      }
+      if (updates.bikeType !== undefined) {
+        setClauses.push(`bike_type = $${paramIndex++}`);
+        values.push(updates.bikeType);
+      }
 
-      const { data: profile, error } = await supabase
-        .from('cyclist_profiles')
-        .update(dbUpdates)
-        .eq('user_id', user.id)
-        .select()
-        .single();
+      if (setClauses.length === 0) {
+        return res.status(400).json({ error: 'No fields to update' });
+      }
 
-      if (error) {
-        console.error('Error updating profile:', error);
-        return res.status(500).json({ error: 'Failed to update profile' });
+      // Add userId to values
+      values.push(userId);
+
+      const result = await query(
+        `UPDATE cyclist_profiles 
+         SET ${setClauses.join(', ')} 
+         WHERE user_id = $${paramIndex}
+         RETURNING *`,
+        values
+      );
+
+      const profile = result.rows[0];
+
+      if (!profile) {
+        return res.status(404).json({ error: 'Profile not found' });
       }
 
       // Convert snake_case to camelCase

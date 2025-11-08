@@ -11,7 +11,7 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createServerClient } from '@cycling-network/config/supabase';
+import { query as dbQuery } from '@/lib/db';
 import type { CyclistProfile, ApiResponse } from '@cycling-network/config/types';
 
 export default async function handler(
@@ -23,35 +23,42 @@ export default async function handler(
   }
 
   try {
-    const supabase = createServerClient();
-
     // Parse query parameters
     const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
     const offset = parseInt(req.query.offset as string) || 0;
     const city = req.query.city as string;
     const level = req.query.level as string;
 
-    // Build query
-    let query = supabase
-      .from('cyclist_profiles')
-      .select('*')
-      .range(offset, offset + limit - 1)
-      .order('created_at', { ascending: false });
+    // Build WHERE clause
+    const whereClauses: string[] = [];
+    const values: any[] = [];
+    let paramIndex = 1;
 
-    // Apply filters
     if (city) {
-      query = query.ilike('city', `%${city}%`);
+      whereClauses.push(`city ILIKE $${paramIndex++}`);
+      values.push(`%${city}%`);
     }
     if (level) {
-      query = query.eq('level', level);
+      whereClauses.push(`level = $${paramIndex++}`);
+      values.push(level);
     }
 
-    const { data: profiles, error } = await query;
+    // Add limit and offset
+    values.push(limit, offset);
 
-    if (error) {
-      console.error('Error fetching profiles:', error);
-      return res.status(500).json({ error: 'Failed to fetch profiles' });
-    }
+    const whereClause = whereClauses.length > 0 
+      ? `WHERE ${whereClauses.join(' AND ')}` 
+      : '';
+
+    const result = await dbQuery(
+      `SELECT * FROM cyclist_profiles 
+       ${whereClause}
+       ORDER BY created_at DESC 
+       LIMIT $${paramIndex++} OFFSET $${paramIndex++}`,
+      values
+    );
+
+    const profiles = result.rows;
 
     // Convert snake_case to camelCase
     const camelCaseProfiles: CyclistProfile[] = profiles.map((profile: any) => ({
