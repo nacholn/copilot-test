@@ -45,7 +45,7 @@ export default function HomeScreen() {
             <Text style={styles.featureIcon}>🔐</Text>
             <Text style={styles.featureTitle}>Secure Auth</Text>
             <Text style={styles.featureDescription}>
-              Supabase authentication
+              JWT authentication
             </Text>
           </View>
           <View style={styles.featureCard}>

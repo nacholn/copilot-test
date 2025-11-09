@@ -1,7 +1,7 @@
 /**
  * AuthDemo Component
  * 
- * Demonstrates Supabase authentication integration:
+ * Demonstrates JWT authentication integration:
  * - Sign in with email/password
  * - Sign out
  * - Display current user info
@@ -10,72 +10,46 @@
  */
 
 import { useState, useEffect } from 'react';
-import { createBrowserClient } from '@cycling-network/config/supabase';
 import { Button } from '@cycling-network/ui';
-import type { User } from '@cycling-network/config/types';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import { login, logout, getUser } from '@/lib/auth';
 
 export const AuthDemo: React.FC = () => {
-  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // Initialize Supabase client on mount (client-side only)
-    const client = createBrowserClient();
-    setSupabase(client);
-
-    // Check current session
-    client.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user as User | null);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = client.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user as User | null);
-    });
-
-    return () => subscription.unsubscribe();
+    // Check current session on mount
+    const currentUser = getUser();
+    setUser(currentUser);
   }, []);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!supabase) return;
     
     setLoading(true);
     setMessage('');
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        setMessage(`Error: ${error.message}`);
-      } else {
-        setMessage('Signed in successfully!');
-        setEmail('');
-        setPassword('');
-      }
+      const authUser = await login(email, password);
+      setUser({ id: authUser.id, email: authUser.email });
+      setMessage('Signed in successfully!');
+      setEmail('');
+      setPassword('');
     } catch (error) {
-      setMessage('An unexpected error occurred');
+      setMessage(`Error: ${error instanceof Error ? error.message : 'Login failed'}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignOut = async () => {
-    if (!supabase) return;
-    
+  const handleSignOut = () => {
     setLoading(true);
     try {
-      await supabase.auth.signOut();
+      logout();
+      setUser(null);
       setMessage('Signed out successfully!');
     } catch (error) {
       setMessage('Error signing out');
@@ -83,10 +57,6 @@ export const AuthDemo: React.FC = () => {
       setLoading(false);
     }
   };
-
-  if (!supabase) {
-    return <div style={{ textAlign: 'center' }}>Loading...</div>;
-  }
 
   if (user) {
     return (
@@ -170,7 +140,7 @@ export const AuthDemo: React.FC = () => {
         </p>
       )}
       <p style={{ marginTop: '24px', textAlign: 'center', fontSize: '14px', color: '#64748b' }}>
-        Demo: Create an account in your Supabase project to test authentication
+        Demo: Use test@cycling.local / password123 to test authentication
       </p>
     </div>
   );

@@ -6,36 +6,39 @@
 
 import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Alert } from 'react-native';
-import { createBrowserClient } from '@cycling-network/config/supabase';
 import { ProfileForm } from '@/components/ProfileForm';
 import { Button } from '@cycling-network/ui/native';
+import { getToken, isAuthenticated, getUser } from '@/lib/auth';
 import type { CyclistProfile, UpdateCyclistProfileRequest } from '@cycling-network/config/types';
-import type { SupabaseClient } from '@supabase/supabase-js';
 
 export default function ProfileScreen() {
-  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
   const [profile, setProfile] = useState<CyclistProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const client = createBrowserClient();
-    setSupabase(client);
-
-    // Check authentication
-    client.auth.getSession().then(({ data: { session } }) => {
-      setIsAuthenticated(!!session);
-      if (session) {
-        fetchProfile(client, session.access_token);
-      } else {
-        setLoading(false);
-      }
-    });
+    checkAuthAndFetchProfile();
   }, []);
 
-  const fetchProfile = async (client: SupabaseClient, token: string) => {
+  const checkAuthAndFetchProfile = async () => {
+    const isAuth = await isAuthenticated();
+    setAuthenticated(isAuth);
+    
+    if (isAuth) {
+      await fetchProfile();
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const fetchProfile = async () => {
+    const token = await getToken();
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
     try {
-      // In a real app, you'd need to configure your API URL
       const apiUrl = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
       
       const response = await fetch(`${apiUrl}/api/profiles/me`, {
@@ -62,10 +65,8 @@ export default function ProfileScreen() {
   };
 
   const handleSaveProfile = async (updates: UpdateCyclistProfileRequest) => {
-    if (!supabase) return;
-
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    const token = await getToken();
+    if (!token) {
       throw new Error('Not authenticated');
     }
 
@@ -74,14 +75,15 @@ export default function ProfileScreen() {
     const response = await fetch(`${apiUrl}/api/profiles/me`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${session.access_token}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update profile');
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to update profile');
     }
 
     const data = await response.json();
@@ -96,7 +98,7 @@ export default function ProfileScreen() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!authenticated) {
     return (
       <View style={styles.centerContainer}>
         <Text style={styles.title}>Profile</Text>

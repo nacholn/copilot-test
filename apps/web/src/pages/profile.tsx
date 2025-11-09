@@ -5,36 +5,38 @@
  */
 
 import { useState, useEffect } from 'react';
-import { createBrowserClient } from '@cycling-network/config/supabase';
 import { ProfileForm } from '@/components/ProfileForm';
+import { getToken, isAuthenticated, getUser } from '@/lib/auth';
 import type { CyclistProfile, UpdateCyclistProfileRequest } from '@cycling-network/config/types';
-import type { SupabaseClient } from '@supabase/supabase-js';
 
 export default function ProfilePage() {
-  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
   const [profile, setProfile] = useState<CyclistProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const client = createBrowserClient();
-    setSupabase(client);
-
     // Check authentication
-    client.auth.getSession().then(({ data: { session } }) => {
-      setIsAuthenticated(!!session);
-      if (session) {
-        fetchProfile(client, session.access_token);
-      } else {
-        setLoading(false);
-      }
-    });
+    const isAuth = isAuthenticated();
+    setAuthenticated(isAuth);
+    
+    if (isAuth) {
+      fetchProfile();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
-  const fetchProfile = async (client: SupabaseClient, token: string) => {
+  const fetchProfile = async () => {
+    const token = getToken();
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch('/api/profiles/me', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/profiles/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -58,24 +60,24 @@ export default function ProfilePage() {
   };
 
   const handleSaveProfile = async (updates: UpdateCyclistProfileRequest) => {
-    if (!supabase) return;
-
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    const token = getToken();
+    if (!token) {
       throw new Error('Not authenticated');
     }
 
-    const response = await fetch('/api/profiles/me', {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const response = await fetch(`${apiUrl}/api/profiles/me`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${session.access_token}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update profile');
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to update profile');
     }
 
     const data = await response.json();
@@ -90,7 +92,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!authenticated) {
     return (
       <main style={{ padding: '48px 24px', textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
         <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '16px' }}>
