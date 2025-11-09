@@ -10,12 +10,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { query } from '@/lib/db';
 import { verifyToken } from '@/lib/auth';
+import { corsMiddleware } from '@/middleware/cors';
 import type { CyclistProfile, ApiResponse, UpdateCyclistProfileRequest } from '@cycling-network/config/types';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<CyclistProfile>>
 ) {
+  // Apply CORS headers
+  if (corsMiddleware(req, res)) {
+    return; // Preflight request handled
+  }
+
   // Get auth token
   const token = req.headers.authorization?.replace('Bearer ', '');
   

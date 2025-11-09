@@ -6,6 +6,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { authenticateUser } from '@/lib/auth';
+import { corsMiddleware } from '@/middleware/cors';
 import type { ApiResponse } from '@cycling-network/config/types';
 
 interface LoginRequest {
@@ -25,6 +26,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse<LoginResponse>>
 ) {
+  // Apply CORS headers
+  if (corsMiddleware(req, res)) {
+    return; // Preflight request handled
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
