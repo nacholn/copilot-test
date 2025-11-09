@@ -31,19 +31,19 @@ export interface Route {
  */
 export interface CyclistProfile {
   id: string;
-  userId: string; // Foreign key to auth.users
+  user_id: string; // Foreign key to auth.users
   email: string;
   sex?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
   level?: 'beginner' | 'intermediate' | 'advanced' | 'professional';
-  birthDate?: string; // ISO date string
-  photoUrl?: string; // URL to photo or generated avatar
+  birth_date?: string; // ISO date string
+  photo_url?: string; // URL to photo or generated avatar
   city?: string;
   latitude?: number;
   longitude?: number;
   description?: string;
-  bikeType?: 'road' | 'mountain' | 'hybrid' | 'gravel' | 'electric' | 'other';
-  createdAt: string;
-  updatedAt: string;
+  bike_type?: 'road' | 'mountain' | 'hybrid' | 'gravel' | 'electric' | 'other';
+  created_at: string;
+  updated_at: string;
 }
 
 /**
@@ -52,17 +52,36 @@ export interface CyclistProfile {
 export interface UpdateCyclistProfileRequest {
   sex?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
   level?: 'beginner' | 'intermediate' | 'advanced' | 'professional';
-  birthDate?: string;
-  photoUrl?: string;
+  birth_date?: string;
+  photo_url?: string;
   city?: string;
   latitude?: number;
   longitude?: number;
   description?: string;
-  bikeType?: 'road' | 'mountain' | 'hybrid' | 'gravel' | 'electric' | 'other';
+  bike_type?: 'road' | 'mountain' | 'hybrid' | 'gravel' | 'electric' | 'other';
 }
 
 export interface ApiResponse<T> {
   data?: T;
   error?: string;
   message?: string;
+}
+
+/**
+ * Supabase Database Type Definitions
+ * Generated from database schema for type-safe queries
+ */
+export interface Database {
+  public: {
+    Tables: {
+      cyclist_profiles: {
+        Row: CyclistProfile;
+        Insert: Omit<CyclistProfile, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<CyclistProfile, 'id' | 'user_id' | 'created_at' | 'updated_at'>>;
+      };
+    };
+    Views: {};
+    Functions: {};
+    Enums: {};
+  };
 }

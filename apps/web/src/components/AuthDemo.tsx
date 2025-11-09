@@ -1,55 +1,85 @@
 /**
  * AuthDemo Component
  * 
- * Demonstrates JWT authentication integration:
+ * Demonstrates Supabase authentication integration:
  * - Sign in with email/password
+ * - Sign up with email verification
+ * - OAuth providers (Google, Apple, Microsoft)
  * - Sign out
  * - Display current user info
- * 
- * This is a demo component showing authentication patterns.
  */
 
 import { useState, useEffect } from 'react';
 import { Button } from '@cycling-network/ui';
-import { login, logout, getUser } from '@/lib/auth';
+import {
+  signInWithPassword,
+  signUp,
+  signOut,
+  signInWithOAuth,
+  getUser,
+  onAuthStateChange,
+} from '@/lib/auth';
+import type { User } from '@cycling-network/config/types';
 
 export const AuthDemo: React.FC = () => {
-  const [user, setUser] = useState<{ id: string; email: string } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
-    // Check current session on mount
-    const currentUser = getUser();
-    setUser(currentUser);
+    // Load current session
+    getUser().then(setUser);
+
+    // Listen for auth state changes
+    const unsubscribe = onAuthStateChange((newUser) => {
+      setUser(newUser);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     setLoading(true);
     setMessage('');
 
     try {
-      const authUser = await login(email, password);
-      setUser({ id: authUser.id, email: authUser.email });
-      setMessage('Signed in successfully!');
+      if (isSignUp) {
+        await signUp(email, password);
+        setMessage('Check your email to verify your account!');
+      } else {
+        await signInWithPassword(email, password);
+        setMessage('Signed in successfully!');
+      }
       setEmail('');
       setPassword('');
     } catch (error) {
-      setMessage(`Error: ${error instanceof Error ? error.message : 'Login failed'}`);
+      setMessage(`Error: ${error instanceof Error ? error.message : 'Authentication failed'}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSignOut = () => {
+  const handleOAuthSignIn = async (provider: 'google' | 'apple' | 'azure') => {
+    setLoading(true);
+    setMessage('');
+
+    try {
+      await signInWithOAuth(provider);
+      // Note: OAuth redirects, so this won't execute
+    } catch (error) {
+      setMessage(`Error: ${error instanceof Error ? error.message : 'OAuth failed'}`);
+      setLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
     setLoading(true);
     try {
-      logout();
-      setUser(null);
+      await signOut();
       setMessage('Signed out successfully!');
     } catch (error) {
       setMessage('Error signing out');
@@ -78,8 +108,12 @@ export const AuthDemo: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Sign In</h2>
-      <form onSubmit={handleSignIn}>
+      <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>
+        {isSignUp ? 'Sign Up' : 'Sign In'}
+      </h2>
+      
+      {/* Email/Password Form */}
+      <form onSubmit={handleEmailAuth}>
         <div style={{ marginBottom: '16px' }}>
           <label
             htmlFor="email"
@@ -125,9 +159,63 @@ export const AuthDemo: React.FC = () => {
           />
         </div>
         <Button type="submit" disabled={loading} style={{ width: '100%' }}>
-          {loading ? 'Signing in...' : 'Sign In'}
+          {loading ? (isSignUp ? 'Signing up...' : 'Signing in...') : (isSignUp ? 'Sign Up' : 'Sign In')}
         </Button>
       </form>
+
+      {/* Toggle Sign In/Sign Up */}
+      <p style={{ marginTop: '16px', textAlign: 'center', fontSize: '14px' }}>
+        {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+        <button
+          onClick={() => {
+            setIsSignUp(!isSignUp);
+            setMessage('');
+          }}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#3b82f6',
+            cursor: 'pointer',
+            textDecoration: 'underline',
+          }}
+        >
+          {isSignUp ? 'Sign In' : 'Sign Up'}
+        </button>
+      </p>
+
+      {/* OAuth Providers */}
+      <div style={{ marginTop: '24px' }}>
+        <p style={{ textAlign: 'center', marginBottom: '16px', fontSize: '14px', color: '#64748b' }}>
+          Or continue with
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <Button
+            onClick={() => handleOAuthSignIn('google')}
+            disabled={loading}
+            variant="secondary"
+            style={{ width: '100%' }}
+          >
+            Continue with Google
+          </Button>
+          <Button
+            onClick={() => handleOAuthSignIn('apple')}
+            disabled={loading}
+            variant="secondary"
+            style={{ width: '100%' }}
+          >
+            Continue with Apple
+          </Button>
+          <Button
+            onClick={() => handleOAuthSignIn('azure')}
+            disabled={loading}
+            variant="secondary"
+            style={{ width: '100%' }}
+          >
+            Continue with Microsoft
+          </Button>
+        </div>
+      </div>
+
       {message && (
         <p
           style={{
@@ -139,9 +227,6 @@ export const AuthDemo: React.FC = () => {
           {message}
         </p>
       )}
-      <p style={{ marginTop: '24px', textAlign: 'center', fontSize: '14px', color: '#64748b' }}>
-        Demo: Use test@cycling.local / password123 to test authentication
-      </p>
     </div>
   );
 };

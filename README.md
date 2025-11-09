@@ -23,7 +23,7 @@ This monorepo uses **Turborepo** for efficient building, caching, and orchestrat
 
 - **Node.js** >= 18.0.0
 - **npm** >= 9.0.0
-- **Supabase Account** - Sign up at [supabase.com](https://supabase.com)
+- **Supabase Account** (Free tier) - Sign up at [supabase.com](https://supabase.com)
 
 ### Setup
 
@@ -38,15 +38,30 @@ This monorepo uses **Turborepo** for efficient building, caching, and orchestrat
    npm install
    ```
 
-3. **Configure environment variables:**
+3. **Setup Supabase:**
+   ```bash
+   # See SUPABASE_SETUP.md for detailed instructions
+   
+   # Quick version:
+   # 1. Create project at https://supabase.com/dashboard
+   # 2. Run migration SQL in SQL Editor
+   # 3. Configure OAuth providers (optional)
+   # 4. Get API keys from Settings → API
+   ```
+
+4. **Configure environment variables:**
    ```bash
    cp .env.example .env
    ```
    
    Edit `.env` and add your Supabase credentials:
-   - Get `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from your [Supabase project settings](https://app.supabase.com)
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   ```
 
-4. **Run all apps in development mode:**
+5. **Run all apps in development mode:**
    ```bash
    npm run dev
    ```
@@ -82,17 +97,29 @@ From the root directory:
 
 All apps use **Supabase Authentication** with the following features:
 
-- Email/password authentication
-- Session management
-- Auto-refresh tokens
-- Persistent sessions
+- ✅ Email/password authentication with verification
+- ✅ OAuth providers (Google, Apple, Microsoft/Outlook)
+- ✅ Password recovery via email
+- ✅ Session management
+- ✅ Auto-refresh tokens
+- ✅ Persistent sessions
+- ✅ Row Level Security (RLS)
 
 ### Setting up Authentication
 
-1. Create a Supabase project at [app.supabase.com](https://app.supabase.com)
-2. Enable Email authentication in Authentication > Providers
-3. Create test users in Authentication > Users
-4. Copy your project URL and anon key to `.env`
+1. **Create Supabase project** at [supabase.com/dashboard](https://supabase.com/dashboard)
+2. **Run database migration** from `apps/backend/database/supabase/001_create_cyclist_profiles.sql`
+3. **Configure OAuth providers** (optional but recommended):
+   - Google: For Gmail users
+   - Apple: For iPhone/Mac users
+   - Microsoft: For Outlook users
+4. **Copy credentials** to `.env` file:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY` (backend only)
+
+📖 **Detailed setup guide**: See `SUPABASE_SETUP.md`  
+🔑 **OAuth configuration**: See `OAUTH_PROVIDERS.md`
 
 ## 🎨 Shared UI Components
 

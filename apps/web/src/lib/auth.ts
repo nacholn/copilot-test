@@ -1,137 +1,163 @@
 /**
  * Authentication Utilities - Web Client
  * 
- * Handles JWT token storage and authentication state
+ * Handles Supabase authentication with support for:
+ * - Email/password authentication
+ * - OAuth providers (Google, Apple, Microsoft)
+ * - Session management
+ * - Auto token refresh
  */
 
-export interface AuthUser {
-  id: string;
-  email: string;
-  token: string;
-}
+import { createBrowserClient } from '@cycling-network/config/supabase';
+import type { User } from '@cycling-network/config/types';
 
-const TOKEN_KEY = 'auth_token';
-const USER_KEY = 'auth_user';
+// Create singleton Supabase client
+let supabase: ReturnType<typeof createBrowserClient> | null = null;
 
 /**
- * Store authentication data in localStorage
+ * Get or create Supabase client
  */
-export function setAuth(user: AuthUser): void {
-  if (typeof window === 'undefined') return;
-  
-  localStorage.setItem(TOKEN_KEY, user.token);
-  localStorage.setItem(USER_KEY, JSON.stringify({
-    id: user.id,
-    email: user.email,
-  }));
-}
-
-/**
- * Get current authentication token
- */
-export function getToken(): string | null {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem(TOKEN_KEY);
+export function getSupabaseClient() {
+  if (!supabase) {
+    supabase = createBrowserClient();
+  }
+  return supabase;
 }
 
 /**
  * Get current user
  */
-export function getUser(): { id: string; email: string } | null {
-  if (typeof window === 'undefined') return null;
-  
-  const userStr = localStorage.getItem(USER_KEY);
-  if (!userStr) return null;
-  
-  try {
-    return JSON.parse(userStr);
-  } catch {
-    return null;
-  }
+export async function getUser(): Promise<User | null> {
+  const supabase = getSupabaseClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
 }
 
 /**
- * Clear authentication data
+ * Get current session
  */
-export function clearAuth(): void {
-  if (typeof window === 'undefined') return;
-  
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+export async function getSession() {
+  const supabase = getSupabaseClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  return session;
 }
 
 /**
  * Check if user is authenticated
  */
-export function isAuthenticated(): boolean {
-  return !!getToken();
+export async function isAuthenticated(): Promise<boolean> {
+  const user = await getUser();
+  return !!user;
 }
 
 /**
- * Login with email and password
+ * Sign in with email and password
  */
-export async function login(email: string, password: string): Promise<AuthUser> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  
-  const response = await fetch(`${apiUrl}/api/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
+export async function signInWithPassword(email: string, password: string) {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Login failed');
+  if (error) {
+    throw new Error(error.message);
   }
 
-  const data = await response.json();
-  
-  const authUser: AuthUser = {
-    id: data.data.user.id,
-    email: data.data.user.email,
-    token: data.data.token,
-  };
-  
-  setAuth(authUser);
-  return authUser;
+  return data;
 }
 
 /**
- * Register a new user
+ * Sign up with email and password
  */
-export async function register(email: string, password: string): Promise<AuthUser> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-  
-  const response = await fetch(`${apiUrl}/api/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+export async function signUp(email: string, password: string) {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
-    body: JSON.stringify({ email, password }),
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Registration failed');
+  if (error) {
+    throw new Error(error.message);
   }
 
-  const data = await response.json();
-  
-  const authUser: AuthUser = {
-    id: data.data.user.id,
-    email: data.data.user.email,
-    token: data.data.token,
-  };
-  
-  setAuth(authUser);
-  return authUser;
+  return data;
 }
 
 /**
- * Logout
+ * Sign in with OAuth provider
  */
-export function logout(): void {
-  clearAuth();
+export async function signInWithOAuth(provider: 'google' | 'apple' | 'azure') {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: `${window.location.origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+/**
+ * Sign out
+ */
+export async function signOut() {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * Reset password (send recovery email)
+ */
+export async function resetPassword(email: string) {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/auth/reset-password`,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * Update password
+ */
+export async function updatePassword(newPassword: string) {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * Listen to auth state changes
+ */
+export function onAuthStateChange(callback: (user: User | null) => void) {
+  const supabase = getSupabaseClient();
+  const { data: { subscription } } = supabase.auth.onAuthStateChange(
+    (_event, session) => {
+      callback(session?.user ?? null);
+    }
+  );
+
+  return () => {
+    subscription.unsubscribe();
+  };
 }
