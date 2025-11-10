@@ -1,0 +1,35 @@
+{
+  "$schema": "https://github.com/github/schemas/blob/main/schemas/copilot-agents.schema.json",
+  "agents": [
+    {
+      "name": "backend-api",
+      "description": "Expert in Next.js 14 API routes, PostgreSQL operations, and Supabase authentication for the backend application",
+      "prompt_file": "agents/backend-api-agent-2.md",
+      "tags": ["backend", "api", "nextjs", "postgresql", "supabase"]
+    },
+    {
+      "name": "database-migration",
+      "description": "Expert in PostgreSQL schema design, node-pg-migrate migrations, and database best practices",
+      "prompt_file": "agents/database-migration-agent-2.md",
+      "tags": ["database", "postgresql", "migrations", "schema"]
+    },
+    {
+      "name": "react-native-ui",
+      "description": "Expert in creating cross-platform React Native UI components that work on iOS, Android, and Web",
+      "prompt_file": "agents/react-native-ui-agent-2.md",
+      "tags": ["ui", "react-native", "components", "cross-platform"]
+    },
+    {
+      "name": "expo-mobile",
+      "description": "Expert in Expo mobile development with expo-router navigation and mobile-specific features",
+      "prompt_file": "agents/expo-mobile-agent-2.md",
+      "tags": ["mobile", "expo", "react-native", "ios", "android"]
+    },
+    {
+      "name": "nextjs-web",
+      "description": "Expert in Next.js 14 web development with App Router, PWA configuration, and CSS Modules",
+      "prompt_file": "agents/nextjs-web-agent-2.md",
+      "tags": ["web", "nextjs", "pwa", "frontend"]
+    }
+  ]
+}
