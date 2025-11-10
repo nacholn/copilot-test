@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
+import { API_URL } from '@cyclists/config';
 
 export default function Login() {
   const router = useRouter();
@@ -19,7 +20,8 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+      // Use relative path so dev proxy (rewrites) can forward to backend and avoid CORS
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

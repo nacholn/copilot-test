@@ -26,7 +26,7 @@ services:
     image: dpage/pgadmin4:latest
     container_name: cyclists-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@cyclists.local
+      PGADMIN_DEFAULT_EMAIL: nacholn@gmail.com
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
@@ -35,8 +35,8 @@ services:
       - postgres
     networks:
       - cyclists-network
-    profiles:
-      - tools
+    # profiles:
+    #   - tools
 
 volumes:
   postgres_data:

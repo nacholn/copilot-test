@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styles from './profile.module.css';
+import { API_URL } from '@cyclists/config';
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>(null);
@@ -13,7 +14,8 @@ export default function Profile() {
     
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/profile?userId=${mockUserId}`);
+  // Use relative path so dev proxy (rewrites) can forward to backend and avoid CORS
+  const response = await fetch(`/api/profile?userId=${mockUserId}`);
         const data = await response.json();
         
         if (data.success) {

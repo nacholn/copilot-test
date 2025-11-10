@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './register.module.css';
+import { API_URL } from '@cyclists/config';
 
 export default function Register() {
   const router = useRouter();
@@ -30,7 +31,8 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/register', {
+      // Use relative path so dev proxy (rewrites) can forward to backend and avoid CORS
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
