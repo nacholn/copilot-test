@@ -27,10 +27,8 @@ export default function Profile() {
 
         if (data.success) {
           setProfile(data.data);
-        } else if (response.status === 404) {
-          // Profile doesn't exist, allow user to create one
-          console.log('Profile not found, user can create one');
         }
+        // Profile doesn't exist if 404 - allow user to create one
       } catch (error) {
         console.error('Error fetching profile:', error);
       } finally {
