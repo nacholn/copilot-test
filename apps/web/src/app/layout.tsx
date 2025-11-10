@@ -8,11 +8,7 @@ export const metadata = {
   themeColor: '#007AFF',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -20,9 +16,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#007AFF" />
       </head>
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

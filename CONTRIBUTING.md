@@ -13,24 +13,28 @@ Thank you for your interest in contributing! This guide will help you get starte
 ## Coding Standards
 
 ### TypeScript
+
 - Use TypeScript for all new code
 - Enable strict mode
 - Define explicit types for function parameters and return values
 - Avoid `any` types when possible
 
 ### Code Style
+
 - Run `npm run format` before committing
 - Follow existing code patterns in the repository
 - Use meaningful variable and function names
 - Add comments for complex logic
 
 ### Component Guidelines
+
 - Keep components small and focused
 - Use functional components with hooks
 - Separate business logic from presentation
 - Make components reusable when possible
 
 ### API Guidelines
+
 - Use RESTful conventions
 - Return consistent response formats
 - Include proper error handling
@@ -39,6 +43,7 @@ Thank you for your interest in contributing! This guide will help you get starte
 ## Testing
 
 ### Before Submitting a PR
+
 ```bash
 # Build all packages and apps
 npm run build
@@ -54,6 +59,7 @@ npm run test
 ```
 
 ### Manual Testing
+
 - Test your changes in all affected apps
 - Test on different screen sizes (mobile/tablet/desktop)
 - Verify authentication flows work correctly
@@ -62,6 +68,7 @@ npm run test
 ## Commit Messages
 
 Follow conventional commit format:
+
 - `feat:` New feature
 - `fix:` Bug fix
 - `docs:` Documentation changes
@@ -71,6 +78,7 @@ Follow conventional commit format:
 - `chore:` Maintenance tasks
 
 Examples:
+
 ```
 feat: add route sharing feature
 fix: resolve login redirect issue
@@ -103,6 +111,7 @@ cyclists-social-network/
 ## Working with Workspaces
 
 ### Installing Dependencies
+
 ```bash
 # Install for specific workspace
 npm install <package> --workspace=apps/backend
@@ -112,6 +121,7 @@ npm install -D <package> --workspace=packages/ui
 ```
 
 ### Running Scripts
+
 ```bash
 # Run script in specific workspace
 npm run dev --workspace=apps/web
@@ -123,6 +133,7 @@ npm run build
 ## Adding New Features
 
 ### Adding a New API Endpoint
+
 1. Create route file in `apps/backend/src/app/api/`
 2. Add type definitions in `packages/config/src/types.ts`
 3. Update API documentation
@@ -130,6 +141,7 @@ npm run build
 5. Test thoroughly
 
 ### Adding a New UI Component
+
 1. Create component in `packages/ui/src/components/`
 2. Export from `packages/ui/src/index.ts`
 3. Add TypeScript types
@@ -137,6 +149,7 @@ npm run build
 5. Document props and usage
 
 ### Adding a New Page
+
 1. Create page in app router structure
 2. Implement UI using shared components
 3. Add routing/navigation
@@ -146,6 +159,7 @@ npm run build
 ## Database Changes
 
 When modifying the database schema:
+
 1. Update SQL in `apps/backend/src/lib/db.ts`
 2. Update TypeScript types in `packages/config/src/types.ts`
 3. Create migration script if needed

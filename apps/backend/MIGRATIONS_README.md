@@ -58,8 +58,8 @@ exports.up = (pgm) => {
     created_at: {
       type: 'timestamp',
       notNull: true,
-      default: pgm.func('current_timestamp')
-    }
+      default: pgm.func('current_timestamp'),
+    },
   });
 };
 
@@ -178,7 +178,7 @@ exports.up = (pgm) => {
       type: 'uuid',
       notNull: true,
       references: 'profiles(id)',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     },
     title: { type: 'varchar(255)', notNull: true },
     distance: { type: 'decimal(10, 2)' },
@@ -186,8 +186,8 @@ exports.up = (pgm) => {
     created_at: {
       type: 'timestamp',
       notNull: true,
-      default: pgm.func('current_timestamp')
-    }
+      default: pgm.func('current_timestamp'),
+    },
   });
 
   pgm.createIndex('rides', 'user_id');
@@ -204,8 +204,8 @@ exports.down = (pgm) => {
 exports.up = (pgm) => {
   pgm.addColumn('profiles', {
     phone_number: {
-      type: 'varchar(20)'
-    }
+      type: 'varchar(20)',
+    },
   });
 };
 
@@ -219,13 +219,13 @@ exports.down = (pgm) => {
 ```javascript
 exports.up = (pgm) => {
   pgm.createIndex('profiles', ['city', 'level'], {
-    name: 'idx_profiles_city_level'
+    name: 'idx_profiles_city_level',
   });
 };
 
 exports.down = (pgm) => {
   pgm.dropIndex('profiles', ['city', 'level'], {
-    name: 'idx_profiles_city_level'
+    name: 'idx_profiles_city_level',
   });
 };
 ```
@@ -243,5 +243,4 @@ exports.down = (pgm) => {
 - Test migrations thoroughly in staging before production
 - Keep migrations in version control
 - Never modify migrations that have been applied to production
-
 ````

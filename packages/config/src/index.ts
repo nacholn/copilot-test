@@ -6,10 +6,10 @@ export * from './supabase';
  * Uses NEXT_PUBLIC_API_URL when available, falls back to localhost for dev.
  */
 export const API_URL: string =
-	(typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_URL)
-		? process.env.NEXT_PUBLIC_API_URL
-		: 'http://localhost:3001';
+  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_URL
+    ? process.env.NEXT_PUBLIC_API_URL
+    : 'http://localhost:3001';
 
 export function getApiUrl(): string {
-	return API_URL;
+  return API_URL;
 }

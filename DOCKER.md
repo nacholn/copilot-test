@@ -5,6 +5,7 @@ This guide explains how to use Docker for local development with the Cyclists So
 ## Overview
 
 The `docker-compose.yml` file provides:
+
 - **PostgreSQL 15**: Database for storing profiles and application data
 - **pgAdmin** (optional): Web-based database management tool
 
@@ -22,6 +23,7 @@ docker-compose up -d postgres
 ```
 
 This starts PostgreSQL in the background. The database will be accessible at:
+
 - **Host**: localhost
 - **Port**: 5432
 - **Database**: cyclists_db
@@ -106,6 +108,7 @@ docker-compose restart postgres
 ### PostgreSQL
 
 **Connection Details:**
+
 - URL: `postgresql://postgres:postgres@localhost:5432/cyclists_db`
 - Host: `localhost`
 - Port: `5432`
@@ -124,16 +127,19 @@ PostgreSQL includes a health check that runs every 10 seconds to ensure the data
 Web-based PostgreSQL management tool.
 
 **Access:**
+
 - URL: http://localhost:5050
 - Email: admin@cyclists.local
 - Password: admin
 
 **To Enable:**
+
 ```bash
 docker-compose --profile tools up -d pgadmin
 ```
 
 **Connect to PostgreSQL from pgAdmin:**
+
 1. Open http://localhost:5050
 2. Login with the credentials above
 3. Add New Server:
@@ -149,11 +155,13 @@ docker-compose --profile tools up -d pgadmin
 ### Connect to PostgreSQL
 
 Using psql from your local machine:
+
 ```bash
 psql postgresql://postgres:postgres@localhost:5432/cyclists_db
 ```
 
 Using Docker exec:
+
 ```bash
 docker-compose exec postgres psql -U postgres -d cyclists_db
 ```
@@ -207,7 +215,7 @@ environment:
   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
   POSTGRES_DB: ${POSTGRES_DB:-cyclists_db}
 ports:
-  - "${POSTGRES_PORT:-5432}:5432"
+  - '${POSTGRES_PORT:-5432}:5432'
 ```
 
 ## Production Considerations
@@ -215,6 +223,7 @@ ports:
 ⚠️ **Warning**: This Docker setup is for **local development only**.
 
 For production:
+
 - Use managed database services (AWS RDS, Google Cloud SQL, etc.)
 - Never use default credentials
 - Enable SSL/TLS connections
@@ -315,6 +324,7 @@ services:
 If you prefer not to use Docker, you can install PostgreSQL locally:
 
 **macOS:**
+
 ```bash
 brew install postgresql@15
 brew services start postgresql@15
@@ -322,6 +332,7 @@ createdb cyclists_db
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 sudo apt update
 sudo apt install postgresql-15
@@ -342,6 +353,7 @@ Download and install from [postgresql.org](https://www.postgresql.org/download/w
 ## Support
 
 For issues with:
+
 - **Docker setup**: Check Docker logs and this guide
 - **Database migrations**: See `apps/backend/migrations/README.md`
 - **Application setup**: See `SETUP.md` and `DEV.md`

@@ -5,6 +5,7 @@ This file provides context and guidelines for GitHub Copilot when working with t
 ## Project Overview
 
 This is a Turborepo monorepo for a social network application for cyclists, featuring:
+
 - **Backend API**: Next.js API routes on port 3001
 - **Web PWA**: Next.js Progressive Web App on port 3000
 - **Mobile App**: Expo React Native application with expo-router
@@ -23,16 +24,19 @@ This is a Turborepo monorepo for a social network application for cyclists, feat
 ## Architecture Patterns
 
 ### Authentication Flow
+
 - Users are created in Supabase (auth.users)
 - Profiles are stored in PostgreSQL (profiles table)
 - Registration creates both simultaneously
 - Session tokens are managed by Supabase
 
 ### Data Storage
+
 - **Supabase**: Authentication, session management
 - **PostgreSQL**: User profiles, cycling data, social features
 
 ### Code Organization
+
 ```
 apps/
   backend/      # Next.js API routes
@@ -46,6 +50,7 @@ packages/
 ## Coding Guidelines
 
 ### TypeScript
+
 - Use strict mode
 - Define explicit types for all function parameters and return values
 - Avoid `any` types
@@ -53,6 +58,7 @@ packages/
 - Export types from `packages/config`
 
 ### API Endpoints
+
 - Use Next.js API routes in `apps/backend/src/app/api/`
 - Validate all inputs
 - Return consistent response format: `{ success: boolean, data?: T, error?: string }`
@@ -60,6 +66,7 @@ packages/
 - Handle errors gracefully
 
 ### Components
+
 - Keep components small and focused
 - Use functional components with hooks
 - Make components cross-platform when in `packages/ui`
@@ -67,6 +74,7 @@ packages/
 - Separate business logic from presentation
 
 ### Database Operations
+
 - Use migrations in `apps/backend/migrations/` directory
 - Never modify schema directly in code
 - Always use parameterized queries (prevent SQL injection)
@@ -74,6 +82,7 @@ packages/
 - Use transactions for multi-step operations
 
 ### Environment Variables
+
 - Prefix public variables with `NEXT_PUBLIC_` or `EXPO_PUBLIC_`
 - Keep sensitive data in environment variables
 - Provide `.env.example` files
@@ -82,6 +91,7 @@ packages/
 ## Common Tasks
 
 ### Adding a New API Endpoint
+
 1. Create route file in `apps/backend/src/app/api/[endpoint]/route.ts`
 2. Define types in `packages/config/src/types.ts`
 3. Add validation
@@ -89,6 +99,7 @@ packages/
 5. Update API documentation
 
 ### Adding a New Database Table
+
 1. Run `npm run migrate:create <name>` in apps/backend
 2. Edit the migration file in `apps/backend/migrations/`
 3. Run `npm run migrate:up` to apply
@@ -96,12 +107,14 @@ packages/
 5. Update API endpoints as needed
 
 ### Creating a Shared Component
+
 1. Create component in `packages/ui/src/components/`
 2. Use React Native primitives (View, Text, TouchableOpacity, etc.)
 3. Export from `packages/ui/src/index.ts`
 4. Test on both web and mobile
 
 ### Testing Changes
+
 ```bash
 # Build all packages
 npm run build
@@ -121,6 +134,7 @@ cd apps/mobile && npm start
 ## Database Schema
 
 ### profiles table
+
 - `id`: UUID primary key
 - `user_id`: UUID unique (links to Supabase auth.users)
 - `level`: ENUM (beginner, intermediate, advanced, expert)
@@ -135,6 +149,7 @@ cd apps/mobile && npm start
 ## Best Practices
 
 ### Security
+
 - Validate all user inputs
 - Use parameterized queries
 - Store sensitive data in environment variables
@@ -142,6 +157,7 @@ cd apps/mobile && npm start
 - Use HTTPS in production
 
 ### Performance
+
 - Use indexes on frequently queried columns
 - Implement caching where appropriate
 - Optimize images with Next.js Image component
@@ -149,6 +165,7 @@ cd apps/mobile && npm start
 - Lazy load components when possible
 
 ### Error Handling
+
 - Provide meaningful error messages
 - Log errors for debugging
 - Return user-friendly error responses
@@ -156,6 +173,7 @@ cd apps/mobile && npm start
 - Use try-catch blocks
 
 ### Code Quality
+
 - Run Prettier before committing
 - Fix ESLint warnings
 - Write descriptive commit messages

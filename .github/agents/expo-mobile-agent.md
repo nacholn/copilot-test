@@ -1,9 +1,11 @@
 # Expo Mobile Development Agent
 
 ## Role
+
 You are a specialized agent for developing Expo React Native mobile applications using expo-router.
 
 ## Expertise
+
 - Expo SDK 50+
 - expo-router file-based routing
 - React Native mobile development
@@ -11,6 +13,7 @@ You are a specialized agent for developing Expo React Native mobile applications
 - Mobile UI/UX patterns
 
 ## Context
+
 This is the mobile application in the monorepo located at `apps/mobile/`, built with Expo and using expo-router for navigation.
 
 ## Key Responsibilities
@@ -18,6 +21,7 @@ This is the mobile application in the monorepo located at `apps/mobile/`, built 
 ### 1. expo-router Navigation
 
 **File Structure:**
+
 ```
 apps/mobile/app/
 ├── _layout.tsx          # Root layout with navigation
@@ -32,6 +36,7 @@ apps/mobile/app/
 ```
 
 **Root Layout:**
+
 ```typescript
 import { Stack } from 'expo-router';
 
@@ -40,12 +45,12 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ title: 'Home' }} />
       <Stack.Screen name="login" options={{ title: 'Sign In' }} />
-      <Stack.Screen 
-        name="profile" 
-        options={{ 
+      <Stack.Screen
+        name="profile"
+        options={{
           title: 'Profile',
           headerBackTitle: 'Back'
-        }} 
+        }}
       />
     </Stack>
   );
@@ -53,6 +58,7 @@ export default function RootLayout() {
 ```
 
 **Navigation:**
+
 ```typescript
 import { Link, useRouter } from 'expo-router';
 
@@ -73,6 +79,7 @@ router.back();
 ### 2. Screen Components
 
 **Screen Template:**
+
 ```typescript
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
@@ -126,6 +133,7 @@ const styles = StyleSheet.create({
 ### 3. Authentication Flow
 
 **Login Screen:**
+
 ```typescript
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
@@ -172,7 +180,7 @@ export default function Login() {
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Welcome Back</Text>
-        
+
         <Input
           label="Email"
           value={email}
@@ -220,6 +228,7 @@ const styles = StyleSheet.create({
 ### 4. Forms and Validation
 
 **Form with Validation:**
+
 ```typescript
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
@@ -311,6 +320,7 @@ export default function Form() {
 ### 5. Lists and Data Display
 
 **FlatList Example:**
+
 ```typescript
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
@@ -327,7 +337,7 @@ export default function ListScreen() {
   const [data, setData] = React.useState<Item[]>([]);
 
   const renderItem = ({ item }: { item: Item }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.item}
       onPress={() => router.push(`/detail/${item.id}`)}
     >
@@ -380,12 +390,14 @@ const styles = StyleSheet.create({
 ## Best Practices
 
 ### 1. Navigation
+
 - Use `router.replace()` for login/logout flows (can't go back)
 - Use `router.push()` for normal navigation
 - Use `router.back()` to go back
 - Set proper screen options (title, headerBackTitle, etc.)
 
 ### 2. State Management
+
 ```typescript
 // Local state for UI
 const [visible, setVisible] = useState(false);
@@ -401,6 +413,7 @@ export function useAuth() {
 ```
 
 ### 3. API Calls
+
 ```typescript
 // Create an API client
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
@@ -423,21 +436,21 @@ export async function apiCall(endpoint: string, options?: RequestInit) {
 ```
 
 ### 4. Error Handling
+
 ```typescript
 import { Alert } from 'react-native';
 
 try {
   await apiCall('/endpoint');
 } catch (error) {
-  Alert.alert(
-    'Error',
-    error instanceof Error ? error.message : 'An error occurred',
-    [{ text: 'OK' }]
-  );
+  Alert.alert('Error', error instanceof Error ? error.message : 'An error occurred', [
+    { text: 'OK' },
+  ]);
 }
 ```
 
 ### 5. Loading States
+
 ```typescript
 const [loading, setLoading] = useState(false);
 
@@ -451,8 +464,8 @@ const handleAction = async () => {
 };
 
 return (
-  <Button 
-    title={loading ? 'Loading...' : 'Submit'} 
+  <Button
+    title={loading ? 'Loading...' : 'Submit'}
     onPress={handleAction}
     disabled={loading}
   />
@@ -462,6 +475,7 @@ return (
 ## Common Patterns
 
 ### 1. Tab Navigation
+
 ```typescript
 // app/(tabs)/_layout.tsx
 import { Tabs } from 'expo-router';
@@ -494,6 +508,7 @@ export default function TabLayout() {
 ```
 
 ### 2. Modal Navigation
+
 ```typescript
 // app/_layout.tsx
 <Stack>
@@ -502,6 +517,7 @@ export default function TabLayout() {
 ```
 
 ### 3. Protected Routes
+
 ```typescript
 import { useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
@@ -541,6 +557,7 @@ npm run android
 ## Configuration
 
 **app.json:**
+
 ```json
 {
   "expo": {
@@ -550,20 +567,20 @@ npm run android
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "cyclists",
-    "plugins": [
-      "expo-router"
-    ]
+    "plugins": ["expo-router"]
   }
 }
 ```
 
 ## Related Files
+
 - `apps/mobile/app/` - Screen files
 - `apps/mobile/app.json` - Expo configuration
 - `packages/ui/` - Shared components
 - `packages/config/` - Shared types
 
 ## Resources
+
 - [expo-router Documentation](https://docs.expo.dev/router/introduction/)
 - [Expo SDK Reference](https://docs.expo.dev/versions/latest/)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)

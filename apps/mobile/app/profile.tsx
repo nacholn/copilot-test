@@ -15,7 +15,7 @@ export default function Profile() {
         const mockUserId = 'example-user-id';
         const response = await fetch(`http://localhost:3001/api/profile?userId=${mockUserId}`);
         const data = await response.json();
-        
+
         if (data.success) {
           setProfile(data.data);
         }
@@ -41,11 +41,7 @@ export default function Profile() {
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.avatarContainer}>
-          <Avatar
-            name={profile?.city || 'User'}
-            imageUri={profile?.avatar}
-            size={120}
-          />
+          <Avatar name={profile?.city || 'User'} imageUri={profile?.avatar} size={120} />
         </View>
 
         {profile ? (
@@ -73,16 +69,10 @@ export default function Profile() {
             )}
           </View>
         ) : (
-          <Text style={styles.notFound}>
-            Profile not found. Please complete your registration.
-          </Text>
+          <Text style={styles.notFound}>Profile not found. Please complete your registration.</Text>
         )}
 
-        <Button
-          title="Back to Home"
-          onPress={() => router.push('/')}
-          variant="secondary"
-        />
+        <Button title="Back to Home" onPress={() => router.push('/')} variant="secondary" />
       </View>
     </ScrollView>
   );
