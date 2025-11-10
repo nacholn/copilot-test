@@ -9,8 +9,12 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [level, setLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert'>('beginner');
-  const [bikeType, setBikeType] = useState<'road' | 'mountain' | 'hybrid' | 'electric' | 'gravel' | 'other'>('road');
+  const [level, setLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert'>(
+    'beginner'
+  );
+  const [bikeType, setBikeType] = useState<
+    'road' | 'mountain' | 'hybrid' | 'electric' | 'gravel' | 'other'
+  >('road');
   const [city, setCity] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -88,10 +92,7 @@ export default function Register() {
         <View style={styles.field}>
           <Text style={styles.label}>Cycling Level</Text>
           <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={level}
-              onValueChange={setLevel}
-            >
+            <Picker selectedValue={level} onValueChange={setLevel}>
               <Picker.Item label="Beginner" value="beginner" />
               <Picker.Item label="Intermediate" value="intermediate" />
               <Picker.Item label="Advanced" value="advanced" />
@@ -103,10 +104,7 @@ export default function Register() {
         <View style={styles.field}>
           <Text style={styles.label}>Bike Type</Text>
           <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={bikeType}
-              onValueChange={setBikeType}
-            >
+            <Picker selectedValue={bikeType} onValueChange={setBikeType}>
               <Picker.Item label="Road" value="road" />
               <Picker.Item label="Mountain" value="mountain" />
               <Picker.Item label="Hybrid" value="hybrid" />
@@ -117,12 +115,7 @@ export default function Register() {
           </View>
         </View>
 
-        <Input
-          label="City"
-          value={city}
-          onChangeText={setCity}
-          placeholder="Your city"
-        />
+        <Input label="City" value={city} onChangeText={setCity} placeholder="Your city" />
 
         <Button
           title={loading ? 'Creating Account...' : 'Create Account'}

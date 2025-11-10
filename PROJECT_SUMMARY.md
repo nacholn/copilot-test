@@ -3,6 +3,7 @@
 ## Overview
 
 A complete Turborepo monorepo implementation for a cyclists social network featuring:
+
 - **3 Applications**: Backend API, Web PWA, Mobile App
 - **2 Shared Packages**: Config (types & Supabase), UI (components)
 - **Full Authentication Flow**: Supabase + PostgreSQL integration
@@ -11,6 +12,7 @@ A complete Turborepo monorepo implementation for a cyclists social network featu
 ## What Was Built
 
 ### 🏗️ Infrastructure
+
 - **Turborepo Configuration**: Optimized build pipeline with caching
 - **npm Workspaces**: Efficient package management and linking
 - **TypeScript**: Strict typing throughout the monorepo
@@ -19,6 +21,7 @@ A complete Turborepo monorepo implementation for a cyclists social network featu
 ### 📦 Shared Packages
 
 #### packages/config
+
 - **Purpose**: Shared types and Supabase client
 - **Exports**:
   - TypeScript types for User, Profile, Auth, API responses
@@ -26,6 +29,7 @@ A complete Turborepo monorepo implementation for a cyclists social network featu
   - Type-safe interfaces for all data structures
 
 #### packages/ui
+
 - **Purpose**: Cross-platform UI components
 - **Components**:
   - `Button`: Styled button with variants (primary/secondary)
@@ -36,12 +40,14 @@ A complete Turborepo monorepo implementation for a cyclists social network featu
 ### 🖥️ Backend Application (apps/backend)
 
 #### Technology Stack
+
 - Next.js 14 with App Router
 - PostgreSQL for data storage
 - Supabase for authentication
 - TypeScript for type safety
 
 #### API Endpoints
+
 ```
 POST   /api/auth/register   - Create user in Supabase + profile in PostgreSQL
 POST   /api/auth/login      - Authenticate user with Supabase
@@ -51,6 +57,7 @@ PATCH  /api/profile         - Update user profile
 ```
 
 #### Database Schema
+
 ```sql
 profiles {
   id: UUID (PK)
@@ -69,6 +76,7 @@ profiles {
 ```
 
 #### Features
+
 - Auto-creates database tables on startup
 - Validates all inputs
 - Proper error handling
@@ -78,18 +86,21 @@ profiles {
 ### 🌐 Web Application (apps/web)
 
 #### Technology Stack
+
 - Next.js 14 with App Router
 - next-pwa for PWA capabilities
 - CSS Modules for styling
 - TypeScript
 
 #### Pages
+
 1. **Home** (`/`): Landing page with call-to-action
 2. **Login** (`/login`): Email/password authentication
 3. **Register** (`/register`): User registration with profile creation
 4. **Profile** (`/profile`): View user profile information
 
 #### Features
+
 - Progressive Web App with service worker
 - Offline capabilities via PWA
 - Responsive design (mobile-first)
@@ -99,6 +110,7 @@ profiles {
 - Loading states
 
 #### PWA Configuration
+
 - Manifest file with app metadata
 - Service worker for caching
 - Installable on mobile/desktop
@@ -107,18 +119,21 @@ profiles {
 ### 📱 Mobile Application (apps/mobile)
 
 #### Technology Stack
+
 - Expo SDK 50
 - expo-router for navigation
 - React Native
 - TypeScript
 
 #### Screens
+
 1. **Home** (`/`): Welcome screen with navigation
 2. **Login** (`/login`): Native login form
 3. **Register** (`/register`): Multi-step registration with pickers
 4. **Profile** (`/profile`): Native profile display
 
 #### Features
+
 - File-based routing with expo-router
 - Native UI components
 - Cross-platform (iOS/Android/Web)
@@ -188,30 +203,35 @@ cyclists-social-network/
 ## Technical Decisions
 
 ### Why Turborepo?
+
 - Efficient monorepo builds with intelligent caching
 - Parallel task execution
 - Clear dependency graph
 - Easy to scale
 
 ### Why npm Workspaces?
+
 - Native npm support
 - Simple package linking
 - No additional tools needed
 - Good TypeScript support
 
 ### Why Next.js for Backend?
+
 - API routes with serverless deployment
 - TypeScript support
 - Easy to scale
 - Modern development experience
 
 ### Why Expo for Mobile?
+
 - Simplified React Native development
 - expo-router for navigation
 - Over-the-air updates
 - Easy testing with Expo Go
 
 ### Why Supabase + PostgreSQL?
+
 - Supabase handles authentication complexity
 - PostgreSQL for flexible data storage
 - Separation of concerns
@@ -222,6 +242,7 @@ cyclists-social-network/
 ### Required Environment Variables
 
 **apps/backend/.env**
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxx...
@@ -230,6 +251,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 **apps/web/.env**
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxx...
@@ -237,6 +259,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
 **apps/mobile/.env**
+
 ```env
 EXPO_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJxxx...
@@ -246,6 +269,7 @@ EXPO_PUBLIC_API_URL=http://localhost:3001
 ## Build Status
 
 ✅ All builds successful:
+
 ```bash
 Tasks:    5 successful, 5 total
 Cached:    2 cached, 5 total
@@ -253,6 +277,7 @@ Time:    ~20s
 ```
 
 ### Build Outputs
+
 - **packages/config**: TypeScript declarations in dist/
 - **packages/ui**: TypeScript declarations in dist/
 - **apps/backend**: Next.js production build (.next/)
@@ -262,9 +287,11 @@ Time:    ~20s
 ## Security
 
 ### CodeQL Scan Results
+
 ✅ **0 vulnerabilities found**
 
 ### Security Measures Implemented
+
 - Environment variables for sensitive data
 - Input validation on all endpoints
 - SQL parameterized queries (prevents SQL injection)
@@ -275,6 +302,7 @@ Time:    ~20s
 ## Testing Checklist
 
 ### Manual Testing Required
+
 - [ ] Create Supabase project and configure
 - [ ] Setup PostgreSQL database
 - [ ] Run backend server
@@ -286,23 +314,27 @@ Time:    ~20s
 - [ ] Test mobile app on device/simulator
 
 ### Test Data
+
 Use scripts/init-db.sql to initialize the database with optional sample data.
 
 ## Deployment Considerations
 
 ### Backend
+
 - Deploy to Vercel, Netlify, or any Node.js host
 - Configure environment variables
 - Setup PostgreSQL (Supabase, Railway, Render)
 - Enable CORS for frontend domains
 
 ### Web
+
 - Deploy to Vercel (recommended for Next.js)
 - Configure environment variables
 - Enable HTTPS
 - Configure PWA settings
 
 ### Mobile
+
 - Build with EAS Build (Expo Application Services)
 - Submit to App Store / Google Play
 - Configure app signing
@@ -311,6 +343,7 @@ Use scripts/init-db.sql to initialize the database with optional sample data.
 ## Future Enhancements
 
 Potential features to add:
+
 - [ ] Social feed and posts
 - [ ] Route sharing and mapping
 - [ ] Real-time messaging
@@ -325,6 +358,7 @@ Potential features to add:
 ## Performance Optimizations
 
 ### Implemented
+
 - Turborepo caching
 - Database indexes on frequently queried fields
 - Next.js image optimization (ready to use)
@@ -332,6 +366,7 @@ Potential features to add:
 - Code splitting with dynamic imports
 
 ### Recommended
+
 - CDN for static assets
 - Database connection pooling
 - Redis for session management
@@ -341,6 +376,7 @@ Potential features to add:
 ## Monitoring & Analytics
 
 ### Recommended Tools
+
 - **Error Tracking**: Sentry
 - **Analytics**: PostHog, Mixpanel
 - **Performance**: Vercel Analytics, Lighthouse
@@ -350,6 +386,7 @@ Potential features to add:
 ## Documentation
 
 Complete documentation suite:
+
 - **README.md**: Project overview and setup
 - **SETUP.md**: Step-by-step setup guide
 - **DEV.md**: Development quick reference
@@ -359,6 +396,7 @@ Complete documentation suite:
 ## Success Metrics
 
 ### ✅ Completed
+
 - [x] Turborepo monorepo structure
 - [x] All packages building successfully
 - [x] Backend API with full CRUD operations
@@ -372,6 +410,7 @@ Complete documentation suite:
 - [x] Database schema and migrations
 
 ### 🎯 Ready For
+
 - Production deployment
 - Team collaboration
 - Feature development
@@ -401,6 +440,7 @@ npm run format                 # Format code
 ## Support
 
 For help:
+
 1. Check SETUP.md for setup issues
 2. Check DEV.md for development questions
 3. Check CONTRIBUTING.md for contribution guidelines

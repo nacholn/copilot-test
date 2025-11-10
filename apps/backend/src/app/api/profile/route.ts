@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { transformProfile, toSnakeCase } from '@/lib/utils';
 import type { UpdateProfileInput, CreateProfileInput, ApiResponse } from '@cyclists/config';
 
 // GET profile by user ID
@@ -29,22 +30,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Transform snake_case to camelCase for frontend
-    const profile = result.rows[0];
-    const transformedProfile = {
-      id: profile.id,
-      userId: profile.user_id,
-      level: profile.level,
-      bikeType: profile.bike_type,
-      city: profile.city,
-      latitude: profile.latitude,
-      longitude: profile.longitude,
-      dateOfBirth: profile.date_of_birth,
-      avatar: profile.avatar,
-      bio: profile.bio,
-      createdAt: profile.created_at,
-      updatedAt: profile.updated_at,
-    };
+    const transformedProfile = transformProfile(result.rows[0]);
 
     return NextResponse.json<ApiResponse>(
       {
@@ -82,18 +68,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body: UpdateProfileInput = await request.json();
+    const snakeCaseBody = toSnakeCase(body);
+
     const updateFields: string[] = [];
-    const values: any[] = [];
+    const values: unknown[] = [];
     let paramCount = 1;
 
     // Dynamically build update query
-    Object.entries(body).forEach(([key, value]) => {
-      if (value !== undefined) {
-        const snakeKey = key.replace(/([A-Z])/g, '_$1').toLowerCase();
-        updateFields.push(`${snakeKey} = $${paramCount}`);
-        values.push(value);
-        paramCount++;
-      }
+    Object.entries(snakeCaseBody).forEach(([key, value]) => {
+      updateFields.push(`${key} = $${paramCount}`);
+      values.push(value);
+      paramCount++;
     });
 
     if (updateFields.length === 0) {
@@ -127,22 +112,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    // Transform snake_case to camelCase for frontend
-    const profile = result.rows[0];
-    const transformedProfile = {
-      id: profile.id,
-      userId: profile.user_id,
-      level: profile.level,
-      bikeType: profile.bike_type,
-      city: profile.city,
-      latitude: profile.latitude,
-      longitude: profile.longitude,
-      dateOfBirth: profile.date_of_birth,
-      avatar: profile.avatar,
-      bio: profile.bio,
-      createdAt: profile.created_at,
-      updatedAt: profile.updated_at,
-    };
+    const transformedProfile = transformProfile(result.rows[0]);
 
     return NextResponse.json<ApiResponse>(
       {
@@ -212,22 +182,7 @@ export async function POST(request: NextRequest) {
     ];
     const result = await query(insertQuery, values);
 
-    // Transform snake_case to camelCase for frontend
-    const profile = result.rows[0];
-    const transformedProfile = {
-      id: profile.id,
-      userId: profile.user_id,
-      level: profile.level,
-      bikeType: profile.bike_type,
-      city: profile.city,
-      latitude: profile.latitude,
-      longitude: profile.longitude,
-      dateOfBirth: profile.date_of_birth,
-      avatar: profile.avatar,
-      bio: profile.bio,
-      createdAt: profile.created_at,
-      updatedAt: profile.updated_at,
-    };
+    const transformedProfile = transformProfile(result.rows[0]);
 
     return NextResponse.json<ApiResponse>(
       {

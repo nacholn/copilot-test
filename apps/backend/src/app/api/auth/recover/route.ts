@@ -8,10 +8,13 @@ export async function POST(request: NextRequest) {
     const { email } = body;
 
     if (!email) {
-      return NextResponse.json<ApiResponse>({
-        success: false,
-        error: 'Email is required',
-      }, { status: 400 });
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Email is required',
+        },
+        { status: 400 }
+      );
     }
 
     const supabase = createSupabaseClient();
@@ -20,22 +23,30 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      return NextResponse.json<ApiResponse>({
-        success: false,
-        error: error.message,
-      }, { status: 400 });
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: error.message,
+        },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json<ApiResponse>({
-      success: true,
-      data: { message: 'Password recovery email sent' },
-    }, { status: 200 });
-
+    return NextResponse.json<ApiResponse>(
+      {
+        success: true,
+        data: { message: 'Password recovery email sent' },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Password recovery error:', error);
-    return NextResponse.json<ApiResponse>({
-      success: false,
-      error: 'Internal server error',
-    }, { status: 500 });
+    return NextResponse.json<ApiResponse>(
+      {
+        success: false,
+        error: 'Internal server error',
+      },
+      { status: 500 }
+    );
   }
 }

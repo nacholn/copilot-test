@@ -1,9 +1,11 @@
 # Next.js Web Development Agent
 
 ## Role
+
 You are a specialized agent for developing the Next.js PWA web application for the Cyclists Social Network.
 
 ## Expertise
+
 - Next.js 14 with App Router
 - Progressive Web App (PWA) features
 - Server-side rendering (SSR) and static generation (SSG)
@@ -12,6 +14,7 @@ You are a specialized agent for developing the Next.js PWA web application for t
 - React hooks and patterns
 
 ## Context
+
 This is the web application in the monorepo located at `apps/web/`, built with Next.js 14 and configured as a PWA.
 
 ## Key Responsibilities
@@ -19,6 +22,7 @@ This is the web application in the monorepo located at `apps/web/`, built with N
 ### 1. App Router Structure
 
 **Directory Layout:**
+
 ```
 apps/web/src/app/
 ├── layout.tsx           # Root layout
@@ -36,6 +40,7 @@ apps/web/src/app/
 ```
 
 **Root Layout:**
+
 ```typescript
 // app/layout.tsx
 import type { Metadata } from 'next';
@@ -67,6 +72,7 @@ export default function RootLayout({
 ### 2. Page Components
 
 **Page Template:**
+
 ```typescript
 // app/page-name/page.tsx
 import styles from './page-name.module.css';
@@ -85,6 +91,7 @@ export default function PageName() {
 ```
 
 **CSS Module:**
+
 ```css
 /* page-name.module.css */
 .container {
@@ -113,6 +120,7 @@ export default function PageName() {
 ### 3. Client Components
 
 For interactive components, use 'use client':
+
 ```typescript
 'use client';
 
@@ -159,7 +167,7 @@ export default function LoginPage() {
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
         <h1 className={styles.title}>Welcome Back</h1>
-        
+
         {error && <div className={styles.error}>{error}</div>}
 
         <Input
@@ -191,6 +199,7 @@ export default function LoginPage() {
 ### 4. Server Components and Data Fetching
 
 **Server Component with Data:**
+
 ```typescript
 // app/profile/page.tsx
 import { headers } from 'next/headers';
@@ -224,6 +233,7 @@ export default async function ProfilePage() {
 ### 5. PWA Configuration
 
 **Manifest:**
+
 ```json
 // public/manifest.json
 {
@@ -250,6 +260,7 @@ export default async function ProfilePage() {
 ```
 
 **next.config.js with PWA:**
+
 ```javascript
 const withPWA = require('next-pwa')({
   dest: 'public',
@@ -270,6 +281,7 @@ module.exports = withPWA(nextConfig);
 ### 6. Metadata and SEO
 
 **Dynamic Metadata:**
+
 ```typescript
 import type { Metadata } from 'next';
 
@@ -289,6 +301,7 @@ export async function generateMetadata(): Promise<Metadata> {
 ### 7. Loading and Error States
 
 **Loading UI:**
+
 ```typescript
 // app/profile/loading.tsx
 export default function Loading() {
@@ -302,6 +315,7 @@ export default function Loading() {
 ```
 
 **Error UI:**
+
 ```typescript
 // app/profile/error.tsx
 'use client';
@@ -326,17 +340,18 @@ export default function Error({
 ## Styling Patterns
 
 ### 1. CSS Modules
+
 ```css
 /* Use semantic class names */
 .container {
   /* Layout */
   display: flex;
   flex-direction: column;
-  
+
   /* Spacing */
   padding: 2rem;
   gap: 1rem;
-  
+
   /* Visual */
   background-color: #ffffff;
   border-radius: 8px;
@@ -361,6 +376,7 @@ export default function Error({
 ```
 
 ### 2. Global Styles
+
 ```css
 /* app/globals.css */
 * {
@@ -385,12 +401,14 @@ a {
 ## Best Practices
 
 ### 1. Component Structure
+
 - Use Server Components by default (faster, smaller bundle)
 - Use Client Components only when needed (interactivity, hooks)
 - Keep components small and focused
 - Extract reusable logic to custom hooks
 
 ### 2. Data Fetching
+
 ```typescript
 // Server Component - fetch on server
 async function getData() {
@@ -418,6 +436,7 @@ function ClientData() {
 ```
 
 ### 3. Forms
+
 ```typescript
 'use client';
 
@@ -443,6 +462,7 @@ export default function Form() {
 ```
 
 ### 4. Navigation
+
 ```typescript
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -458,6 +478,7 @@ router.back();
 ```
 
 ### 5. Images
+
 ```typescript
 import Image from 'next/image';
 
@@ -473,6 +494,7 @@ import Image from 'next/image';
 ## Common Patterns
 
 ### 1. Protected Routes
+
 ```typescript
 // middleware.ts
 import { NextResponse } from 'next/server';
@@ -494,6 +516,7 @@ export const config = {
 ```
 
 ### 2. API Routes Usage
+
 ```typescript
 'use client';
 
@@ -513,6 +536,7 @@ async function callAPI() {
 ```
 
 ### 3. Environment Variables
+
 ```typescript
 // Access public env vars
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -544,6 +568,7 @@ npm run lint
 5. Test "Add to Home Screen"
 
 ## Related Files
+
 - `apps/web/src/app/` - Pages and layouts
 - `apps/web/public/` - Static assets and PWA files
 - `apps/web/next.config.js` - Next.js configuration
@@ -551,6 +576,7 @@ npm run lint
 - `packages/config/` - Shared types
 
 ## Resources
+
 - [Next.js Documentation](https://nextjs.org/docs)
 - [App Router](https://nextjs.org/docs/app)
 - [PWA with Next.js](https://github.com/shadowwalker/next-pwa)

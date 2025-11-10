@@ -21,6 +21,7 @@ npm run dev
 ## Development Commands
 
 ### Build Commands
+
 ```bash
 # Build everything
 npm run build
@@ -36,6 +37,7 @@ npm run clean
 ```
 
 ### Development Servers
+
 ```bash
 # Start all dev servers (uses Turborepo)
 npm run dev
@@ -47,6 +49,7 @@ cd apps/mobile && npm start        # Expo DevTools
 ```
 
 ### Linting & Formatting
+
 ```bash
 # Run all linters
 npm run lint
@@ -59,6 +62,7 @@ npm run lint --workspace=apps/backend
 ```
 
 ### Package Management
+
 ```bash
 # Add dependency to specific app
 npm install <package> --workspace=apps/backend
@@ -80,6 +84,7 @@ npm outdated
 ### Using curl
 
 **Register a new user:**
+
 ```bash
 curl -X POST http://localhost:3001/api/auth/register \
   -H "Content-Type: application/json" \
@@ -95,6 +100,7 @@ curl -X POST http://localhost:3001/api/auth/register \
 ```
 
 **Login:**
+
 ```bash
 curl -X POST http://localhost:3001/api/auth/login \
   -H "Content-Type: application/json" \
@@ -105,11 +111,13 @@ curl -X POST http://localhost:3001/api/auth/login \
 ```
 
 **Get profile:**
+
 ```bash
 curl http://localhost:3001/api/profile?userId=<user-id>
 ```
 
 **Update profile:**
+
 ```bash
 curl -X PATCH http://localhost:3001/api/profile?userId=<user-id> \
   -H "Content-Type: application/json" \
@@ -120,6 +128,7 @@ curl -X PATCH http://localhost:3001/api/profile?userId=<user-id> \
 ```
 
 **Recover password:**
+
 ```bash
 curl -X POST http://localhost:3001/api/auth/recover \
   -H "Content-Type: application/json" \
@@ -131,6 +140,7 @@ curl -X POST http://localhost:3001/api/auth/recover \
 ## Docker Operations
 
 ### PostgreSQL
+
 ```bash
 docker-compose up -d postgres     # Start database
 docker-compose down               # Stop all services
@@ -143,6 +153,7 @@ See [DOCKER.md](DOCKER.md) for comprehensive Docker documentation.
 ## Database Operations
 
 ### Run migrations
+
 ```bash
 cd apps/backend
 npm run migrate:up        # Apply all pending migrations
@@ -151,16 +162,19 @@ npm run migrate:create name  # Create new migration
 ```
 
 ### Connect to database
+
 ```bash
 psql $DATABASE_URL
 ```
 
 ### View profiles
+
 ```sql
 SELECT * FROM profiles;
 ```
 
 ### Delete test data
+
 ```sql
 DELETE FROM profiles WHERE email LIKE '%test%';
 ```
@@ -168,6 +182,7 @@ DELETE FROM profiles WHERE email LIKE '%test%';
 ## Troubleshooting
 
 ### Clear all caches
+
 ```bash
 rm -rf node_modules apps/*/node_modules packages/*/node_modules
 rm -rf .turbo apps/*/.next apps/*/.expo packages/*/dist
@@ -176,6 +191,7 @@ npm run build
 ```
 
 ### Reset database
+
 ```bash
 cd apps/backend
 # Rollback all migrations
@@ -186,6 +202,7 @@ npm run migrate:up
 ```
 
 ### Port already in use
+
 ```bash
 # Find process using port
 lsof -ti:3000
@@ -197,6 +214,7 @@ kill -9 $(lsof -ti:3001)
 ```
 
 ### Supabase connection issues
+
 1. Check environment variables are set
 2. Verify Supabase project is active
 3. Check API keys are correct
@@ -205,17 +223,20 @@ kill -9 $(lsof -ti:3001)
 ## Mobile Development
 
 ### Start Expo
+
 ```bash
 cd apps/mobile
 npm start
 ```
 
 ### Run on device
+
 1. Install Expo Go app on your phone
 2. Scan QR code from terminal
 3. App will load on your device
 
 ### Run on simulator
+
 ```bash
 # iOS (requires Mac with Xcode)
 npm run ios
@@ -225,6 +246,7 @@ npm run android
 ```
 
 ### Clear Expo cache
+
 ```bash
 cd apps/mobile
 rm -rf .expo node_modules
@@ -235,6 +257,7 @@ npm start -- --clear
 ## IDE Setup
 
 ### VS Code Extensions
+
 - ESLint
 - Prettier
 - TypeScript and JavaScript
@@ -242,7 +265,9 @@ npm start -- --clear
 - Expo Tools
 
 ### VS Code Settings
+
 Add to `.vscode/settings.json`:
+
 ```json
 {
   "editor.formatOnSave": true,
@@ -264,6 +289,7 @@ Add to `.vscode/settings.json`:
 ## Hot Reload
 
 All apps support hot reload:
+
 - **Backend**: Changes to API routes reload automatically
 - **Web**: Changes to pages/components reload automatically
 - **Mobile**: Changes reload in Expo Go automatically
@@ -282,20 +308,24 @@ cd apps/web && npm run build && npm start
 ## Common Issues
 
 **"Cannot find module '@cyclists/config'"**
+
 - Run `npm run build --workspace=packages/config`
 - Restart your dev server
 
 **"Database connection failed"**
+
 - Check DATABASE_URL in .env
 - Ensure PostgreSQL is running
 - Test connection: `psql $DATABASE_URL`
 
 **"Supabase client error"**
+
 - Verify SUPABASE_URL and SUPABASE_ANON_KEY
 - Check project status in Supabase dashboard
 - Ensure authentication is enabled
 
 **Expo Metro bundler issues**
+
 - Clear cache: `npm start -- --clear`
 - Reset: `rm -rf .expo && npm start`
 - Check node_modules are installed

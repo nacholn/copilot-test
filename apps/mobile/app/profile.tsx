@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button, Avatar } from '@cyclists/ui';
+import type { Profile } from '@cyclists/config';
 
 export default function Profile() {
   const router = useRouter();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export default function Profile() {
         const mockUserId = 'example-user-id';
         const response = await fetch(`http://localhost:3001/api/profile?userId=${mockUserId}`);
         const data = await response.json();
-        
+
         if (data.success) {
           setProfile(data.data);
         }
@@ -41,11 +42,7 @@ export default function Profile() {
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.avatarContainer}>
-          <Avatar
-            name={profile?.city || 'User'}
-            imageUri={profile?.avatar}
-            size={120}
-          />
+          <Avatar name={profile?.city || 'User'} imageUri={profile?.avatar} size={120} />
         </View>
 
         {profile ? (
@@ -57,7 +54,7 @@ export default function Profile() {
 
             <View style={styles.field}>
               <Text style={styles.label}>Bike Type</Text>
-              <Text style={styles.value}>{profile.bike_type}</Text>
+              <Text style={styles.value}>{profile.bikeType}</Text>
             </View>
 
             <View style={styles.field}>
@@ -73,16 +70,10 @@ export default function Profile() {
             )}
           </View>
         ) : (
-          <Text style={styles.notFound}>
-            Profile not found. Please complete your registration.
-          </Text>
+          <Text style={styles.notFound}>Profile not found. Please complete your registration.</Text>
         )}
 
-        <Button
-          title="Back to Home"
-          onPress={() => router.push('/')}
-          variant="secondary"
-        />
+        <Button title="Back to Home" onPress={() => router.push('/')} variant="secondary" />
       </View>
     </ScrollView>
   );

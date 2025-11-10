@@ -19,6 +19,7 @@ cyclists-social-network/
 ## 🚀 Features
 
 ### Backend (apps/backend)
+
 - **Authentication API**: Register, login, password recovery
 - **Profile Management**: Create and update user profiles
 - **Supabase Integration**: User authentication with Supabase
@@ -26,6 +27,7 @@ cyclists-social-network/
 - **Next.js API Routes**: RESTful API endpoints
 
 ### Web App (apps/web)
+
 - **Progressive Web App**: Offline-capable with service worker
 - **Authentication UI**: Login, register, password recovery flows
 - **Profile Management**: View and edit user profiles
@@ -33,6 +35,7 @@ cyclists-social-network/
 - **Next.js 14**: Latest App Router features
 
 ### Mobile App (apps/mobile)
+
 - **Expo React Native**: Cross-platform mobile development
 - **Expo Router**: File-based routing system
 - **Authentication Flows**: Native mobile auth experience
@@ -40,6 +43,7 @@ cyclists-social-network/
 - **Shared Components**: Uses @cyclists/ui package
 
 ### Shared Packages
+
 - **@cyclists/config**: TypeScript types, Supabase client factory
 - **@cyclists/ui**: Cross-platform UI components (Button, Input, Avatar)
 
@@ -69,12 +73,14 @@ npm install
 ### 3. Environment Configuration
 
 #### Backend (.env)
+
 ```bash
 cd apps/backend
 cp .env.example .env
 ```
 
 Edit `apps/backend/.env`:
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
@@ -83,12 +89,14 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 #### Web (.env)
+
 ```bash
 cd apps/web
 cp .env.example .env
 ```
 
 Edit `apps/web/.env`:
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
@@ -96,12 +104,14 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
 #### Mobile (.env)
+
 ```bash
 cd apps/mobile
 cp .env.example .env
 ```
 
 Edit `apps/mobile/.env`:
+
 ```env
 EXPO_PUBLIC_SUPABASE_URL=your-supabase-project-url
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
@@ -121,6 +131,7 @@ docker-compose up -d postgres
 The database will be available at `postgresql://postgres:postgres@localhost:5432/cyclists_db`
 
 Update your `apps/backend/.env`:
+
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
 ```
@@ -141,6 +152,7 @@ npm run migrate:up
 ```
 
 The profile schema includes:
+
 - `id`: UUID primary key
 - `user_id`: UUID (links to Supabase auth)
 - `level`: Cycling level (beginner, intermediate, advanced, expert)
@@ -168,6 +180,7 @@ npm run dev
 ```
 
 This will start:
+
 - Backend API: http://localhost:3001
 - Web app: http://localhost:3000
 - Mobile app: Follow Expo CLI instructions
@@ -175,18 +188,21 @@ This will start:
 ### Individual Apps
 
 #### Backend only
+
 ```bash
 cd apps/backend
 npm run dev
 ```
 
 #### Web only
+
 ```bash
 cd apps/web
 npm run dev
 ```
 
 #### Mobile only
+
 ```bash
 cd apps/mobile
 npm start
@@ -195,11 +211,13 @@ npm start
 ## 🏗️ Building
 
 ### Build all apps
+
 ```bash
 npm run build
 ```
 
 ### Build individual apps
+
 ```bash
 cd apps/backend && npm run build
 cd apps/web && npm run build
@@ -209,18 +227,21 @@ cd apps/mobile && npm run build
 ## 📱 Mobile Development
 
 ### iOS
+
 ```bash
 cd apps/mobile
 npm run ios
 ```
 
 ### Android
+
 ```bash
 cd apps/mobile
 npm run android
 ```
 
 ### Web (Expo)
+
 ```bash
 cd apps/mobile
 npm run web
@@ -242,11 +263,13 @@ npm run format      # Format code with Prettier
 ## 📚 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user with profile
 - `POST /api/auth/login` - Login user
 - `POST /api/auth/recover` - Request password recovery
 
 ### Profile
+
 - `GET /api/profile?userId={id}` - Get user profile
 - `PATCH /api/profile?userId={id}` - Update user profile
 
@@ -260,6 +283,7 @@ npm run format      # Format code with Prettier
 ## 📦 Package Linking
 
 The monorepo uses npm workspaces for package linking:
+
 - `@cyclists/config` provides shared types and Supabase client
 - `@cyclists/ui` provides cross-platform components
 - Apps import packages using workspace protocol (`"@cyclists/config": "*"`)
@@ -267,6 +291,7 @@ The monorepo uses npm workspaces for package linking:
 ## 🔧 Turborepo Configuration
 
 The `turbo.json` defines:
+
 - **build**: Builds all packages and apps with dependency awareness
 - **dev**: Runs all dev servers concurrently
 - **lint**: Runs linting across the monorepo
@@ -297,7 +322,9 @@ MIT
 ## 🆘 Troubleshooting
 
 ### Port already in use
+
 If port 3000 or 3001 is in use, you can change the port:
+
 ```bash
 # Backend
 PORT=3002 npm run dev
@@ -307,16 +334,19 @@ PORT=3003 npm run dev
 ```
 
 ### Database connection issues
+
 - Verify DATABASE_URL is correct
 - Ensure PostgreSQL is running
 - Check firewall settings
 
 ### Supabase connection issues
+
 - Verify Supabase URL and keys
 - Check project status in Supabase dashboard
 - Ensure email authentication is enabled
 
 ### Module resolution issues
+
 ```bash
 # Clear all node_modules and reinstall
 rm -rf node_modules apps/*/node_modules packages/*/node_modules

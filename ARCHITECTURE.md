@@ -191,6 +191,7 @@ packages/
 ## Technology Stack
 
 ### Frontend
+
 - **Framework**: Next.js 14 (Web), Expo SDK 50 (Mobile)
 - **Language**: TypeScript (Strict mode)
 - **Styling**: CSS Modules (Web), StyleSheet (Mobile)
@@ -198,6 +199,7 @@ packages/
 - **PWA**: next-pwa with service worker
 
 ### Backend
+
 - **Framework**: Next.js 14 API Routes
 - **Language**: TypeScript (Strict mode)
 - **Database**: PostgreSQL
@@ -205,6 +207,7 @@ packages/
 - **ORM**: Native pg client (parameterized queries)
 
 ### Shared
+
 - **Monorepo**: Turborepo
 - **Package Manager**: npm workspaces
 - **Build Tool**: Turborepo + tsc
@@ -240,6 +243,7 @@ packages/
 ## API Contracts
 
 ### POST /api/auth/register
+
 ```typescript
 Request:
 {
@@ -269,6 +273,7 @@ Response:
 ```
 
 ### POST /api/auth/login
+
 ```typescript
 Request:
 {
@@ -288,6 +293,7 @@ Response:
 ```
 
 ### GET /api/profile?userId={id}
+
 ```typescript
 Response:
 {
@@ -298,6 +304,7 @@ Response:
 ```
 
 ### PATCH /api/profile?userId={id}
+
 ```typescript
 Request:
 {
@@ -322,6 +329,7 @@ Response:
 ## Security Architecture
 
 ### Authentication
+
 ```
 Client ──► Backend ──► Supabase Auth ──► JWT Token ──► Client
                 │                              │
@@ -330,6 +338,7 @@ Client ──► Backend ──► Supabase Auth ──► JWT Token ──► C
 ```
 
 ### Environment Variables
+
 ```
 Development:
 - .env files (gitignored)
@@ -342,6 +351,7 @@ Production:
 ```
 
 ### Data Validation
+
 ```
 User Input ──► Frontend Validation ──► API Validation ──► Database
               (Type checking)        (Server-side)      (Constraints)
@@ -399,12 +409,14 @@ User Input ──► Frontend Validation ──► API Validation ──► Data
 ## Performance Considerations
 
 ### Caching Strategy
+
 - Turborepo: Build output caching
 - Next.js: Automatic page caching
 - PWA: Service worker caching
 - Database: Query result caching (recommended)
 
 ### Optimization Points
+
 - Database indexes on common queries
 - API response pagination (future)
 - Image optimization (Next.js Image)
@@ -414,6 +426,7 @@ User Input ──► Frontend Validation ──► API Validation ──► Data
 ## Scalability
 
 ### Horizontal Scaling
+
 ```
 Load Balancer
      │
@@ -426,6 +439,7 @@ Load Balancer
 ```
 
 ### Vertical Scaling
+
 - Increase database resources
 - Optimize queries with indexes
 - Add Redis for caching
@@ -434,18 +448,21 @@ Load Balancer
 ## Monitoring Points
 
 ### Application
+
 - API response times
 - Error rates
 - Authentication success/failure
 - Database query performance
 
 ### Infrastructure
+
 - Server CPU/Memory
 - Database connections
 - Disk I/O
 - Network latency
 
 ### Business Metrics
+
 - User registrations
 - Active users
 - Profile completeness

@@ -12,7 +12,7 @@ export function getDbPool(): Pool {
   return pool;
 }
 
-export async function query(text: string, params?: any[]): Promise<QueryResult> {
+export async function query(text: string, params?: unknown[]): Promise<QueryResult> {
   const pool = getDbPool();
   return pool.query(text, params);
 }

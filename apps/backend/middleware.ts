@@ -2,8 +2,11 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // CORS configuration (can be a single origin or CSV list). For dev you can set '*' as value.
-const RAW_ALLOWED = process.env.NEXT_PUBLIC_ALLOWED_ORIGINS || process.env.NEXT_PUBLIC_ALLOWED_ORIGIN || '*';
-const ALLOWED_ORIGINS = RAW_ALLOWED.split(',').map((s) => s.trim()).filter(Boolean);
+const RAW_ALLOWED =
+  process.env.NEXT_PUBLIC_ALLOWED_ORIGINS || process.env.NEXT_PUBLIC_ALLOWED_ORIGIN || '*';
+const ALLOWED_ORIGINS = RAW_ALLOWED.split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 const ALLOW_CREDENTIALS = process.env.NEXT_PUBLIC_ALLOW_CREDENTIALS === 'true';
 
 function getAllowedOrigin(requestOrigin: string | null) {

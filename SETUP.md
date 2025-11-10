@@ -29,6 +29,7 @@ cp .env.example .env
 ```
 
 Edit `apps/backend/.env` with your values:
+
 - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
 - `DATABASE_URL`: PostgreSQL connection string
@@ -111,24 +112,30 @@ CREATE TABLE profiles (
 Open three terminal windows:
 
 **Terminal 1 - Backend:**
+
 ```bash
 cd apps/backend
 npm run dev
 ```
+
 Backend will be available at http://localhost:3001
 
 **Terminal 2 - Web:**
+
 ```bash
 cd apps/web
 npm run dev
 ```
+
 Web app will be available at http://localhost:3000
 
 **Terminal 3 - Mobile (Optional):**
+
 ```bash
 cd apps/mobile
 npm start
 ```
+
 Follow Expo CLI instructions to open in Expo Go or simulator.
 
 ### 6. Test the Application
@@ -148,20 +155,24 @@ Follow Expo CLI instructions to open in Expo Go or simulator.
 ## Troubleshooting
 
 ### Backend won't start
+
 - Verify DATABASE_URL is correct
 - Ensure PostgreSQL is running
 - Check logs for specific errors
 
 ### "Supabase client not configured" error
+
 - Verify environment variables are set correctly
 - Restart the development server after changing .env files
 - Check that Supabase URL and keys don't have extra spaces
 
 ### CORS errors
+
 - Ensure NEXT_PUBLIC_APP_URL matches your frontend URL
 - Check Supabase project settings > API > CORS allowed origins
 
 ### Mobile app won't build
+
 - Run `npm install` in apps/mobile
 - Clear Expo cache: `cd apps/mobile && rm -rf .expo`
 - Try restarting the Metro bundler
@@ -224,6 +235,7 @@ npm install <package> --workspace=apps/backend
 ## Support
 
 For issues and questions, please open a GitHub issue or refer to:
+
 - [Turborepo Documentation](https://turbo.build/repo/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Expo Documentation](https://docs.expo.dev)

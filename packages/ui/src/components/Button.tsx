@@ -10,13 +10,13 @@ interface ButtonProps {
   textStyle?: TextStyle;
 }
 
-export function Button({ 
-  title, 
-  onPress, 
-  disabled = false, 
+export function Button({
+  title,
+  onPress,
+  disabled = false,
   variant = 'primary',
   style,
-  textStyle 
+  textStyle,
 }: ButtonProps) {
   return (
     <TouchableOpacity
@@ -24,18 +24,20 @@ export function Button({
         styles.button,
         variant === 'primary' ? styles.primaryButton : styles.secondaryButton,
         disabled && styles.disabledButton,
-        style
+        style,
       ]}
       onPress={onPress}
       disabled={disabled}
       activeOpacity={0.7}
     >
-      <Text style={[
-        styles.text,
-        variant === 'primary' ? styles.primaryText : styles.secondaryText,
-        disabled && styles.disabledText,
-        textStyle
-      ]}>
+      <Text
+        style={[
+          styles.text,
+          variant === 'primary' ? styles.primaryText : styles.secondaryText,
+          disabled && styles.disabledText,
+          textStyle,
+        ]}
+      >
         {title}
       </Text>
     </TouchableOpacity>
