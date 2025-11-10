@@ -8,7 +8,13 @@ Quick reference for common development tasks.
 # One-time setup
 ./scripts/setup-dev.sh
 
-# Start all development servers (in separate terminals)
+# Start PostgreSQL (using Docker)
+docker-compose up -d postgres
+
+# Run migrations
+cd apps/backend && npm run migrate:up && cd ../..
+
+# Start all development servers
 npm run dev
 ```
 
@@ -121,6 +127,18 @@ curl -X POST http://localhost:3001/api/auth/recover \
     "email": "test@example.com"
   }'
 ```
+
+## Docker Operations
+
+### PostgreSQL
+```bash
+docker-compose up -d postgres     # Start database
+docker-compose down               # Stop all services
+docker-compose logs postgres      # View logs
+docker-compose restart postgres   # Restart database
+```
+
+See [DOCKER.md](DOCKER.md) for comprehensive Docker documentation.
 
 ## Database Operations
 

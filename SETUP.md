@@ -64,7 +64,23 @@ Edit `apps/mobile/.env` with the same Supabase credentials.
 
 ### 4. Setup PostgreSQL Database
 
-Run database migrations to create the necessary tables:
+#### Using Docker (Recommended)
+
+```bash
+# Start PostgreSQL
+docker-compose up -d postgres
+
+# Update apps/backend/.env with:
+# DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+```
+
+See [DOCKER.md](DOCKER.md) for more details.
+
+#### Using Local PostgreSQL
+
+If you prefer a local installation, ensure PostgreSQL is running and update `DATABASE_URL` in `apps/backend/.env`.
+
+#### Run Migrations
 
 ```bash
 cd apps/backend

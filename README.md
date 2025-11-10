@@ -47,7 +47,8 @@ cyclists-social-network/
 
 - Node.js 18+ (recommended: 20.19.5)
 - npm 10+
-- PostgreSQL database
+- PostgreSQL database (or Docker for local development)
+- Docker & Docker Compose (optional, for simplified database setup)
 - Supabase account
 
 ## 🛠️ Setup
@@ -109,7 +110,30 @@ EXPO_PUBLIC_API_URL=http://localhost:3001
 
 ### 4. Database Setup
 
-Run database migrations to create the necessary tables:
+#### Option A: Using Docker (Recommended for Local Development)
+
+Start PostgreSQL using Docker Compose:
+
+```bash
+docker-compose up -d postgres
+```
+
+The database will be available at `postgresql://postgres:postgres@localhost:5432/cyclists_db`
+
+Update your `apps/backend/.env`:
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+```
+
+See [DOCKER.md](DOCKER.md) for detailed Docker setup and management.
+
+#### Option B: Using Local PostgreSQL
+
+If you have PostgreSQL installed locally, create a database and update the `DATABASE_URL` in `apps/backend/.env`.
+
+#### Run Migrations
+
+After setting up the database, run migrations:
 
 ```bash
 cd apps/backend
