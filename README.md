@@ -109,7 +109,12 @@ EXPO_PUBLIC_API_URL=http://localhost:3001
 
 ### 4. Database Setup
 
-The backend will automatically create the necessary tables on first run. Ensure your PostgreSQL database is running and accessible.
+Run database migrations to create the necessary tables:
+
+```bash
+cd apps/backend
+npm run migrate:up
+```
 
 The profile schema includes:
 - `id`: UUID primary key

@@ -64,7 +64,14 @@ Edit `apps/mobile/.env` with the same Supabase credentials.
 
 ### 4. Setup PostgreSQL Database
 
-The backend will automatically create the necessary tables on first run. The schema includes:
+Run database migrations to create the necessary tables:
+
+```bash
+cd apps/backend
+npm run migrate:up
+```
+
+This will create the profiles table with the following schema:
 
 ```sql
 CREATE TABLE profiles (

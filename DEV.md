@@ -124,9 +124,12 @@ curl -X POST http://localhost:3001/api/auth/recover \
 
 ## Database Operations
 
-### Initialize database
+### Run migrations
 ```bash
-psql -U postgres -d cyclists_db -f scripts/init-db.sql
+cd apps/backend
+npm run migrate:up        # Apply all pending migrations
+npm run migrate:down      # Rollback last migration
+npm run migrate:create name  # Create new migration
 ```
 
 ### Connect to database
@@ -156,8 +159,12 @@ npm run build
 
 ### Reset database
 ```bash
-psql $DATABASE_URL -c "DROP TABLE IF EXISTS profiles CASCADE;"
-psql $DATABASE_URL -f scripts/init-db.sql
+cd apps/backend
+# Rollback all migrations
+npm run migrate:down
+
+# Re-apply all migrations
+npm run migrate:up
 ```
 
 ### Port already in use
