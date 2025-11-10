@@ -1,0 +1,11 @@
+node_modules
+.next
+.expo
+dist
+build
+coverage
+package-lock.json
+*.log
+.turbo
+public/sw.js
+public/workbox-*.js
