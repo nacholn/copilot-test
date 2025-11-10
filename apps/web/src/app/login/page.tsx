@@ -1,40 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
-import { API_URL } from '@cyclists/config';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function Login() {
   const router = useRouter();
+  const { user, signIn, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && !authLoading) {
+      router.push('/profile');
+    }
+  }, [user, authLoading, router]);
 
+  // Show loading state while auth is being checked
+  if (authLoading) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <p>Loading...</p>
+        </div>
+      </main>
+    );
+  }
+
+  // If user is logged in, don't render the form (redirect is in progress)
+  if (user) {
+    return null;
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
-      // Use relative path so dev proxy (rewrites) can forward to backend and avoid CORS
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      const result = await signIn(formData.email, formData.password);
 
-      const data = await response.json();
-
-      if (!data.success) {
-        setError(data.error || 'Login failed');
+      if (result.error) {
+        setError(result.error);
         return;
       }
 
-      router.push('/profile');
+      // The useEffect will handle the redirect once user state is updated
     } catch (err) {
       setError('An error occurred. Please try again.');
     } finally {
@@ -48,7 +63,7 @@ export default function Login() {
         <h1 className={styles.title}>Welcome Back</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className={styles.error}>{error}</div>}
-          
+
           <div className={styles.field}>
             <label>Email</label>
             <input

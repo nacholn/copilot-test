@@ -1,4 +1,5 @@
 import './globals.css';
+import { AuthProvider } from '../contexts/AuthContext';
 
 export const metadata = {
   title: 'Cyclists Social Network',
@@ -18,7 +19,11 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#007AFF" />
       </head>
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

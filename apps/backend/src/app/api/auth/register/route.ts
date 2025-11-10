@@ -10,10 +10,13 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!email || !password || !profile.level || !profile.bikeType || !profile.city) {
-      return NextResponse.json<ApiResponse>({
-        success: false,
-        error: 'Missing required fields',
-      }, { status: 400 });
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Missing required fields',
+        },
+        { status: 400 }
+      );
     }
 
     // Create user in Supabase
@@ -24,10 +27,13 @@ export async function POST(request: NextRequest) {
     });
 
     if (authError || !authData.user) {
-      return NextResponse.json<ApiResponse>({
-        success: false,
-        error: authError?.message || 'Failed to create user',
-      }, { status: 400 });
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: authError?.message || 'Failed to create user',
+        },
+        { status: 400 }
+      );
     }
 
     // Create profile in PostgreSQL
@@ -48,22 +54,43 @@ export async function POST(request: NextRequest) {
       profile.avatar || null,
       profile.bio || null,
     ];
-
     const result = await query(insertQuery, values);
 
-    return NextResponse.json<ApiResponse>({
-      success: true,
-      data: {
-        user: authData.user,
-        profile: result.rows[0],
-      },
-    }, { status: 201 });
+    // Transform snake_case to camelCase for frontend
+    const profileData = result.rows[0];
+    const transformedProfile = {
+      id: profileData.id,
+      userId: profileData.user_id,
+      level: profileData.level,
+      bikeType: profileData.bike_type,
+      city: profileData.city,
+      latitude: profileData.latitude,
+      longitude: profileData.longitude,
+      dateOfBirth: profileData.date_of_birth,
+      avatar: profileData.avatar,
+      bio: profileData.bio,
+      createdAt: profileData.created_at,
+      updatedAt: profileData.updated_at,
+    };
 
+    return NextResponse.json<ApiResponse>(
+      {
+        success: true,
+        data: {
+          user: authData.user,
+          profile: transformedProfile,
+        },
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Registration error:', error);
-    return NextResponse.json<ApiResponse>({
-      success: false,
-      error: 'Internal server error',
-    }, { status: 500 });
+    return NextResponse.json<ApiResponse>(
+      {
+        success: false,
+        error: 'Internal server error',
+      },
+      { status: 500 }
+    );
   }
 }

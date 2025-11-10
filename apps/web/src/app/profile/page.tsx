@@ -1,25 +1,35 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './profile.module.css';
-import { API_URL } from '@cyclists/config';
+import { API_URL, type Profile } from '@cyclists/config';
+import { useAuth } from '../../contexts/AuthContext';
+import { AuthGuard } from '../../components/AuthGuard';
+import { ProfileForm } from '../../components/ProfileForm';
 
 export default function Profile() {
-  const [profile, setProfile] = useState<any>(null);
+  const { user, signOut } = useAuth();
+  const router = useRouter();
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    // In a real app, we would get the user ID from auth context
-    const mockUserId = 'example-user-id';
-    
+    // Only fetch profile if we have a user
+    if (!user) return;
+
     const fetchProfile = async () => {
       try {
-  // Use relative path so dev proxy (rewrites) can forward to backend and avoid CORS
-  const response = await fetch(`/api/profile?userId=${mockUserId}`);
+        // Use relative path so dev proxy (rewrites) can forward to backend and avoid CORS
+        const response = await fetch(`/api/profile?userId=${user.id}`);
         const data = await response.json();
-        
+
         if (data.success) {
           setProfile(data.data);
+        } else if (response.status === 404) {
+          // Profile doesn't exist, allow user to create one
+          console.log('Profile not found, user can create one');
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
@@ -29,54 +39,98 @@ export default function Profile() {
     };
 
     fetchProfile();
-  }, []);
+  }, [user]);
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/login');
+  };
+
+  const handleProfileSave = (savedProfile: Profile) => {
+    setProfile(savedProfile);
+    setEditing(false);
+  };
 
   if (loading) {
     return (
-      <main className={styles.main}>
-        <div className={styles.container}>
-          <p>Loading profile...</p>
-        </div>
-      </main>
+      <AuthGuard>
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <p>Loading profile...</p>
+          </div>
+        </main>
+      </AuthGuard>
     );
   }
 
   return (
-    <main className={styles.main}>
-      <div className={styles.container}>
-        <h1 className={styles.title}>Your Profile</h1>
-        
-        <div className={styles.avatar}>
-          <div className={styles.avatarPlaceholder}>
-            <span>👤</span>
-          </div>
-        </div>
+    <AuthGuard>
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <h1 className={styles.title}>Your Profile</h1>
 
-        {profile ? (
-          <div className={styles.details}>
-            <div className={styles.field}>
-              <strong>Level:</strong> {profile.level}
+          {editing ? (
+            <div>
+              <h2>Edit Profile</h2>
+              <ProfileForm initialProfile={profile} onSave={handleProfileSave} />
+              <button
+                onClick={() => setEditing(false)}
+                className={styles.button}
+                style={{ marginTop: '1rem' }}
+              >
+                Cancel
+              </button>
             </div>
-            <div className={styles.field}>
-              <strong>Bike Type:</strong> {profile.bike_type}
-            </div>
-            <div className={styles.field}>
-              <strong>City:</strong> {profile.city}
-            </div>
-            {profile.bio && (
-              <div className={styles.field}>
-                <strong>Bio:</strong> {profile.bio}
+          ) : profile ? (
+            <>
+              <div className={styles.avatar}>
+                <div className={styles.avatarPlaceholder}>
+                  <span>👤</span>
+                </div>
               </div>
-            )}
-          </div>
-        ) : (
-          <p>Profile not found. Please complete your registration.</p>
-        )}
 
-        <div className={styles.actions}>
-          <a href="/" className={styles.button}>Back to Home</a>
+              <div className={styles.details}>
+                <div className={styles.field}>
+                  <strong>Level:</strong> {profile.level}
+                </div>
+                <div className={styles.field}>
+                  <strong>Bike Type:</strong> {profile.bikeType}
+                </div>
+                <div className={styles.field}>
+                  <strong>City:</strong> {profile.city}
+                </div>
+                {profile.dateOfBirth && (
+                  <div className={styles.field}>
+                    <strong>Date of Birth:</strong>{' '}
+                    {new Date(profile.dateOfBirth).toLocaleDateString()}
+                  </div>
+                )}
+                {profile.bio && (
+                  <div className={styles.field}>
+                    <strong>Bio:</strong> {profile.bio}
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.actions}>
+                <button onClick={() => setEditing(true)} className={styles.button}>
+                  Edit Profile
+                </button>
+                <a href="/" className={styles.button}>
+                  Back to Home
+                </a>
+                <button onClick={handleSignOut} className={styles.button}>
+                  Sign Out
+                </button>
+              </div>
+            </>
+          ) : (
+            <div>
+              <p>Welcome! Let&apos;s create your cycling profile.</p>
+              <ProfileForm onSave={handleProfileSave} />
+            </div>
+          )}
         </div>
-      </div>
-    </main>
+      </main>
+    </AuthGuard>
   );
 }

@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './register.module.css';
-import { API_URL } from '@cyclists/config';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function Register() {
   const router = useRouter();
+  const { user, signUp, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,7 +19,28 @@ export default function Register() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && !authLoading) {
+      router.push('/profile');
+    }
+  }, [user, authLoading, router]);
 
+  // Show loading state while auth is being checked
+  if (authLoading) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <p>Loading...</p>
+        </div>
+      </main>
+    );
+  }
+
+  // If user is logged in, don't render the form (redirect is in progress)
+  if (user) {
+    return null;
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -31,7 +53,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      // Use relative path so dev proxy (rewrites) can forward to backend and avoid CORS
+      // Use the backend register endpoint which handles both user and profile creation
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -54,7 +76,8 @@ export default function Register() {
         return;
       }
 
-      router.push('/profile');
+      // After successful registration, the user should be automatically logged in
+      // The auth context will pick up the session change from Supabase
     } catch (err) {
       setError('An error occurred. Please try again.');
     } finally {
@@ -68,7 +91,7 @@ export default function Register() {
         <h1 className={styles.title}>Create Account</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className={styles.error}>{error}</div>}
-          
+
           <div className={styles.field}>
             <label>Email</label>
             <input
