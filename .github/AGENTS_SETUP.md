@@ -75,7 +75,7 @@ The main configuration file that maps agent names to their prompt files.
     {
       "name": "backend-api",
       "description": "Expert in Next.js 14 API routes...",
-      "prompt_file": "agents/backend-api-agent-2.md",
+      "prompt_file": "agents/backend-api-agent.md",
       "tags": ["backend", "api", "nextjs", "postgresql", "supabase"]
     }
   ]
@@ -84,11 +84,11 @@ The main configuration file that maps agent names to their prompt files.
 
 ### Agent Prompt Files
 Located in `.github/agents/` directory:
-- `backend-api-agent-2.md` - Backend development expertise
-- `database-migration-agent-2.md` - Database schema expertise
-- `react-native-ui-agent-2.md` - Cross-platform UI expertise
-- `expo-mobile-agent-2.md` - Mobile app expertise
-- `nextjs-web-agent-2.md` - Web app expertise
+- `backend-api-agent.md` - Backend development expertise
+- `database-migration-agent.md` - Database schema expertise
+- `react-native-ui-agent.md` - Cross-platform UI expertise
+- `expo-mobile-agent.md` - Mobile app expertise
+- `nextjs-web-agent.md` - Web app expertise
 
 ## Validation
 

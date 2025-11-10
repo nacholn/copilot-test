@@ -10,7 +10,7 @@ Custom agents are configured in `.github/agents.json` which maps agent names to 
 
 ### 1. Backend API Development Agent
 **Agent Name:** `@backend-api`  
-**File:** `backend-api-agent-2.md`
+**File:** `backend-api-agent.md`
 
 **Expertise:**
 - Next.js 14 API routes
@@ -33,7 +33,7 @@ Custom agents are configured in `.github/agents.json` which maps agent names to 
 
 ### 2. Database Migration Agent
 **Agent Name:** `@database-migration`  
-**File:** `database-migration-agent-2.md`
+**File:** `database-migration-agent.md`
 
 **Expertise:**
 - PostgreSQL schema design
@@ -56,7 +56,7 @@ Custom agents are configured in `.github/agents.json` which maps agent names to 
 
 ### 3. React Native UI Component Agent
 **Agent Name:** `@react-native-ui`  
-**File:** `react-native-ui-agent-2.md`
+**File:** `react-native-ui-agent.md`
 
 **Expertise:**
 - React Native primitives
@@ -79,7 +79,7 @@ Custom agents are configured in `.github/agents.json` which maps agent names to 
 
 ### 4. Expo Mobile Development Agent
 **Agent Name:** `@expo-mobile`  
-**File:** `expo-mobile-agent-2.md`
+**File:** `expo-mobile-agent.md`
 
 **Expertise:**
 - Expo SDK and configuration
@@ -102,7 +102,7 @@ Custom agents are configured in `.github/agents.json` which maps agent names to 
 
 ### 5. Next.js Web Development Agent
 **Agent Name:** `@nextjs-web`  
-**File:** `nextjs-web-agent-2.md`
+**File:** `nextjs-web-agent.md`
 
 **Expertise:**
 - Next.js 14 App Router
