@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button, Avatar } from '@cyclists/ui';
+import type { Profile } from '@cyclists/config';
 
 export default function Profile() {
   const router = useRouter();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function Profile() {
 
             <View style={styles.field}>
               <Text style={styles.label}>Bike Type</Text>
-              <Text style={styles.value}>{profile.bike_type}</Text>
+              <Text style={styles.value}>{profile.bikeType}</Text>
             </View>
 
             <View style={styles.field}>

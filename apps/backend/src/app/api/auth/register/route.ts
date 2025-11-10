@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseClient } from '@cyclists/config';
 import { query } from '@/lib/db';
+import { transformProfile } from '@/lib/utils';
 import type { RegisterInput, ApiResponse } from '@cyclists/config';
 
 export async function POST(request: NextRequest) {
@@ -56,22 +57,7 @@ export async function POST(request: NextRequest) {
     ];
     const result = await query(insertQuery, values);
 
-    // Transform snake_case to camelCase for frontend
-    const profileData = result.rows[0];
-    const transformedProfile = {
-      id: profileData.id,
-      userId: profileData.user_id,
-      level: profileData.level,
-      bikeType: profileData.bike_type,
-      city: profileData.city,
-      latitude: profileData.latitude,
-      longitude: profileData.longitude,
-      dateOfBirth: profileData.date_of_birth,
-      avatar: profileData.avatar,
-      bio: profileData.bio,
-      createdAt: profileData.created_at,
-      updatedAt: profileData.updated_at,
-    };
+    const transformedProfile = transformProfile(result.rows[0]);
 
     return NextResponse.json<ApiResponse>(
       {
