@@ -2,9 +2,14 @@
 
 This directory contains specialized Copilot agent configurations for the Cyclists Social Network monorepo. Each agent is an expert in a specific domain and can help you write better code faster.
 
+## Configuration
+
+Custom agents are configured in `.github/agents.json` which maps agent names to their prompt files. GitHub Copilot reads this configuration to make the agents available.
+
 ## Available Agents
 
 ### 1. Backend API Development Agent
+**Agent Name:** `@backend-api`  
 **File:** `backend-api-agent.md`
 
 **Expertise:**
@@ -22,11 +27,12 @@ This directory contains specialized Copilot agent configurations for the Cyclist
 - Writing backend TypeScript code
 
 **Example Prompt:**
-> Using the backend API agent, create a new endpoint to retrieve cycling routes for a user
+> @backend-api create a new endpoint to retrieve cycling routes for a user
 
 ---
 
 ### 2. Database Migration Agent
+**Agent Name:** `@database-migration`  
 **File:** `database-migration-agent.md`
 
 **Expertise:**
@@ -44,11 +50,12 @@ This directory contains specialized Copilot agent configurations for the Cyclist
 - Rolling back changes
 
 **Example Prompt:**
-> Using the database migration agent, create a migration to add a 'cycling_routes' table with appropriate indexes
+> @database-migration create a migration to add a 'cycling_routes' table with appropriate indexes
 
 ---
 
 ### 3. React Native UI Component Agent
+**Agent Name:** `@react-native-ui`  
 **File:** `react-native-ui-agent.md`
 
 **Expertise:**
@@ -66,11 +73,12 @@ This directory contains specialized Copilot agent configurations for the Cyclist
 - Writing component TypeScript types
 
 **Example Prompt:**
-> Using the React Native UI agent, create a Card component that works on all platforms
+> @react-native-ui create a Card component that works on all platforms
 
 ---
 
 ### 4. Expo Mobile Development Agent
+**Agent Name:** `@expo-mobile`  
 **File:** `expo-mobile-agent.md`
 
 **Expertise:**
@@ -88,11 +96,12 @@ This directory contains specialized Copilot agent configurations for the Cyclist
 - Working with Expo APIs
 
 **Example Prompt:**
-> Using the Expo mobile agent, create a profile edit screen with form validation
+> @expo-mobile create a profile edit screen with form validation
 
 ---
 
 ### 5. Next.js Web Development Agent
+**Agent Name:** `@nextjs-web`  
 **File:** `nextjs-web-agent.md`
 
 **Expertise:**
@@ -110,77 +119,78 @@ This directory contains specialized Copilot agent configurations for the Cyclist
 - Setting up routes and layouts
 
 **Example Prompt:**
-> Using the Next.js web agent, create a dashboard page that fetches user statistics
+> @nextjs-web create a dashboard page that fetches user statistics
 
 ---
 
 ## How to Use Agents
 
-### Method 1: Direct Reference
-Mention the agent in your prompt:
+### Method 1: @ Mention (Recommended)
+Use the @ symbol followed by the agent name in your prompt:
 
 ```
-Using the [agent name], create [feature]
+@backend-api create an endpoint to update user preferences
 ```
 
-Example:
-```
-Using the backend API agent, create an endpoint to update user preferences
-```
+This is the standard way to invoke custom GitHub Copilot agents.
 
-### Method 2: Context Loading
-Copy relevant sections from the agent file into your conversation for more detailed guidance.
-
-### Method 3: File Reference
-When asking Copilot to generate code, reference the agent file:
+### Method 2: Direct Request
+You can also request an agent by name:
 
 ```
-Based on backend-api-agent.md, implement a new authentication endpoint
+Can the backend API agent help me create an authentication endpoint?
 ```
+
+### Method 3: Context-Aware
+Copilot will automatically suggest relevant agents based on:
+- File location (e.g., files in `apps/backend/` might trigger the backend-api agent)
+- File type (e.g., migration files trigger the database-migration agent)
+- Current context and conversation
 
 ## Agent Selection Guide
 
-| Task | Recommended Agent |
-|------|------------------|
-| Create API endpoint | Backend API Development Agent |
-| Add database table | Database Migration Agent |
-| Build shared button | React Native UI Component Agent |
-| Create mobile screen | Expo Mobile Development Agent |
-| Build web page | Next.js Web Development Agent |
-| Modify profile schema | Database Migration Agent |
-| Add navigation | Expo Mobile Agent (mobile) or Next.js Web Agent (web) |
-| Style component | React Native UI Agent (shared) or Next.js Web Agent (web-only) |
-| Handle authentication | Backend API Agent (API) + Expo/Next.js Agent (UI) |
+| Task | Agent Command | Description |
+|------|--------------|-------------|
+| Create API endpoint | `@backend-api` | Backend API Development Agent |
+| Add database table | `@database-migration` | Database Migration Agent |
+| Build shared button | `@react-native-ui` | React Native UI Component Agent |
+| Create mobile screen | `@expo-mobile` | Expo Mobile Development Agent |
+| Build web page | `@nextjs-web` | Next.js Web Development Agent |
+| Modify profile schema | `@database-migration` | Database Migration Agent |
+| Add mobile navigation | `@expo-mobile` | Expo Mobile Agent |
+| Add web navigation | `@nextjs-web` | Next.js Web Agent |
+| Style shared component | `@react-native-ui` | React Native UI Agent |
+| Handle authentication | `@backend-api` | Backend API Agent |
 
 ## Combining Agents
 
-For complex features, you may need multiple agents:
+For complex features, you may need multiple agents. Here's how to work with them sequentially:
 
 **Example: Adding a New Feature**
 
 1. **Database Migration Agent**: Create database schema
    ```
-   Using the database migration agent, create tables for cycling routes
+   @database-migration create tables for cycling routes with user_id, name, distance, and elevation
    ```
 
 2. **Backend API Agent**: Create API endpoints
    ```
-   Using the backend API agent, create CRUD endpoints for routes
+   @backend-api create CRUD endpoints for cycling routes at /api/routes
    ```
 
 3. **React Native UI Agent**: Create shared components
    ```
-   Using the React Native UI agent, create a RouteCard component
+   @react-native-ui create a RouteCard component that displays route information
    ```
 
 4. **Expo Mobile Agent**: Create mobile screens
    ```
-   Using the Expo mobile agent, create a routes list screen
+   @expo-mobile create a routes list screen that uses the RouteCard component
    ```
 
 5. **Next.js Web Agent**: Create web pages
    ```
-   Using the Next.js web agent, create a routes dashboard page
+   @nextjs-web create a routes dashboard page that fetches and displays routes
    ```
 
 ## Tips for Effective Agent Use
@@ -208,42 +218,40 @@ As the project evolves, consider:
 
 ### Example 1: User Preferences Feature
 
-**Step 1 - Database (Migration Agent):**
+**Step 1 - Database:**
 ```
-Using the database migration agent, create a user_preferences table with:
+@database-migration create a user_preferences table with:
 - user_id (foreign key to profiles)
 - theme (dark/light)
 - notifications_enabled (boolean)
 - language (varchar)
 ```
 
-**Step 2 - API (Backend API Agent):**
+**Step 2 - API:**
 ```
-Using the backend API agent, create:
-- GET /api/preferences?userId=<id>
-- PATCH /api/preferences?userId=<id>
+@backend-api create GET and PATCH endpoints at /api/preferences for user preferences
 ```
 
-**Step 3 - UI (React Native UI Agent):**
+**Step 3 - UI Components:**
 ```
-Using the React Native UI agent, create a SettingsToggle component for preferences
-```
-
-**Step 4 - Mobile (Expo Mobile Agent):**
-```
-Using the Expo mobile agent, create a settings screen using the SettingsToggle
+@react-native-ui create a SettingsToggle component for preferences with dark/light theme support
 ```
 
-**Step 5 - Web (Next.js Web Agent):**
+**Step 4 - Mobile:**
 ```
-Using the Next.js web agent, create a settings page with the same functionality
+@expo-mobile create a settings screen using the SettingsToggle component
+```
+
+**Step 5 - Web:**
+```
+@nextjs-web create a settings page with the same functionality as the mobile version
 ```
 
 ### Example 2: Quick Component Creation
 
 **Single Agent:**
 ```
-Using the React Native UI agent, create a CyclingStatCard component that displays:
+@react-native-ui create a CyclingStatCard component that displays:
 - Distance (in km)
 - Duration (in minutes)
 - Elevation gain (in meters)
@@ -254,14 +262,19 @@ Should be styled with a white background, rounded corners, and shadow.
 
 ### Example 3: Full Stack Feature
 
-**Combined Agents:**
+**Multiple Agents in Sequence:**
 ```
-I need to add a "favorite routes" feature. Using:
-1. Database migration agent: Create favorites table
-2. Backend API agent: Create add/remove favorite endpoints
-3. React Native UI agent: Create FavoriteButton component
-4. Expo mobile agent: Integrate into route list screen
-5. Next.js web agent: Add favorites page
+I need to add a "favorite routes" feature.
+
+@database-migration create a favorites table with user_id and route_id
+
+@backend-api create POST /api/favorites and DELETE /api/favorites/:id endpoints
+
+@react-native-ui create a FavoriteButton component with heart icon
+
+@expo-mobile integrate FavoriteButton into the route list screen
+
+@nextjs-web add favorites page that displays user's favorite routes
 ```
 
 ## Getting Help
