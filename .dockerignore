@@ -1,0 +1,29 @@
+node_modules
+npm-debug.log
+.next
+.expo
+.turbo
+dist
+build
+coverage
+*.log
+
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Environment files
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
