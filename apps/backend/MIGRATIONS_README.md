@@ -1,3 +1,4 @@
+````markdown
 # Database Migrations
 
 This directory contains database migrations for the backend application using [node-pg-migrate](https://salsita.github.io/node-pg-migrate/).
@@ -102,23 +103,19 @@ npm run migrate:create alter-user-email-unique
 
 ### Running in Different Environments
 
-#### Development
-
 ```bash
+# Development
+
 # Set DATABASE_URL in .env
 npm run migrate:up
 ```
 
-#### Production
-
 ```bash
+# Production
+
 # Set DATABASE_URL environment variable
 DATABASE_URL=******production-host:5432/prod_db npm run migrate:up
 ```
-
-#### CI/CD
-
-Include migration runs in your deployment pipeline:
 
 ```yaml
 # Example GitHub Actions workflow
@@ -246,3 +243,5 @@ exports.down = (pgm) => {
 - Test migrations thoroughly in staging before production
 - Keep migrations in version control
 - Never modify migrations that have been applied to production
+
+````
