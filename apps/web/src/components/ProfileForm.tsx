@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
 import { type Profile } from '@cyclists/config';
+import { LocationPicker } from './LocationPicker';
 import styles from './profile-form.module.css';
 
 interface ProfileFormProps {
@@ -20,6 +21,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
     level: 'beginner' as 'beginner' | 'intermediate' | 'advanced' | 'expert',
     bikeType: 'road' as 'road' | 'mountain' | 'hybrid' | 'electric' | 'gravel' | 'other',
     city: '',
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined,
     dateOfBirth: '',
     bio: '',
   });
@@ -30,6 +33,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
         level: initialProfile.level,
         bikeType: initialProfile.bikeType,
         city: initialProfile.city,
+        latitude: initialProfile.latitude,
+        longitude: initialProfile.longitude,
         dateOfBirth: initialProfile.dateOfBirth
           ? new Date(initialProfile.dateOfBirth).toISOString().split('T')[0]
           : '',
@@ -55,6 +60,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
             level: formData.level,
             bikeType: formData.bikeType,
             city: formData.city,
+            latitude: formData.latitude,
+            longitude: formData.longitude,
             dateOfBirth: formData.dateOfBirth || undefined,
             bio: formData.bio || undefined,
           }
@@ -63,6 +70,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
             level: formData.level,
             bikeType: formData.bikeType,
             city: formData.city,
+            latitude: formData.latitude,
+            longitude: formData.longitude,
             dateOfBirth: formData.dateOfBirth || undefined,
             bio: formData.bio || undefined,
           };
@@ -128,12 +137,13 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
 
       <div className={styles.field}>
         <label>City</label>
-        <input
-          type="text"
+        <LocationPicker
           value={formData.city}
-          onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-          required
-          placeholder="Your city"
+          latitude={formData.latitude}
+          longitude={formData.longitude}
+          onChange={(city, latitude, longitude) =>
+            setFormData({ ...formData, city, latitude, longitude })
+          }
         />
       </div>
 
