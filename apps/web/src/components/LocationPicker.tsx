@@ -9,6 +9,16 @@ interface LocationResult {
   lat: string;
   lon: string;
   name: string;
+  address?: {
+    city?: string;
+    town?: string;
+    village?: string;
+    municipality?: string;
+    locality?: string;
+    state?: string;
+    country?: string;
+    postcode?: string;
+  };
 }
 
 interface LocationPickerProps {
@@ -95,9 +105,16 @@ export function LocationPicker({ value, latitude, longitude, onChange }: Locatio
       searchCities(query);
     }, 300);
   };
-
   const handleSelectCity = (result: LocationResult) => {
-    const cityName = result.name || result.display_name.split(',')[0];
+    //const cityName = result.name || result.display_name.split(',')[0];
+    const cityName =
+      result.address?.city ||
+      result.address?.town ||
+      result.address?.village ||
+      result.address?.municipality ||
+      result.address?.locality ||
+      result.name ||
+      result.display_name.split(',')[0];
     setSearchQuery(cityName);
     setShowResults(false);
     onChange(cityName, parseFloat(result.lat), parseFloat(result.lon));
@@ -188,8 +205,7 @@ export function LocationPicker({ value, latitude, longitude, onChange }: Locatio
             <span className={styles.locationIcon}>📍</span>
           )}
         </button>
-      </div>
-
+      </div>{' '}
       {showResults && results.length > 0 && (
         <ul className={styles.results}>
           {results.map((result) => (
@@ -203,13 +219,11 @@ export function LocationPicker({ value, latitude, longitude, onChange }: Locatio
           ))}
         </ul>
       )}
-
-      {isSearching && <div className={styles.searching}>Searching...</div>}
-
+      {isSearching && <div className={styles.searching}>Searching...</div>}{' '}
       {latitude && longitude && (
         <div className={styles.coordinates}>
           <small>
-            Coordinates: {latitude.toFixed(6)}, {longitude.toFixed(6)}
+            Coordinates: {Number(latitude).toFixed(6)}, {Number(longitude).toFixed(6)}
           </small>
         </div>
       )}
