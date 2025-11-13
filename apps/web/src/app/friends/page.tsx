@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import { AuthGuard } from '../../components/AuthGuard';
+import { Avatar } from '../../components/Avatar';
 import type { FriendProfile } from '@cyclists/config';
 import styles from './friends.module.css';
 
@@ -80,13 +81,7 @@ export default function Friends() {
               {friends.map((friend) => (
                 <div key={friend.friendshipId} className={styles.friendCard}>
                   <Link href={`/users/${friend.userId}`} className={styles.friendLink}>
-                    <div className={styles.friendAvatar}>
-                      {friend.avatar ? (
-                        <img src={friend.avatar} alt={friend.name} />
-                      ) : (
-                        <span>👤</span>
-                      )}
-                    </div>
+                    <Avatar src={friend.avatar} name={friend.name} size="large" />
                     <div className={styles.friendInfo}>
                       <h3>{friend.name}</h3>
                       <p className={styles.friendEmail}>{friend.email}</p>

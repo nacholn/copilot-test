@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { AuthGuard } from '../../components/AuthGuard';
+import { Avatar } from '../../components/Avatar';
 import type { Profile } from '@cyclists/config';
 import styles from './users.module.css';
 
@@ -125,13 +126,7 @@ export default function Users() {
                   href={`/users/${user.userId}`}
                   className={styles.userCard}
                 >
-                  <div className={styles.userAvatar}>
-                    {user.avatar ? (
-                      <img src={user.avatar} alt={user.name} />
-                    ) : (
-                      <span>👤</span>
-                    )}
-                  </div>
+                  <Avatar src={user.avatar} name={user.name} size="medium" />
                   <div className={styles.userInfo}>
                     <h3>{user.name}</h3>
                     <p className={styles.userEmail}>{user.email}</p>

@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../../contexts/AuthContext';
 import { AuthGuard } from '../../../components/AuthGuard';
+import { Avatar } from '../../../components/Avatar';
 import type { Profile } from '@cyclists/config';
 import styles from './userProfile.module.css';
 
@@ -164,12 +165,8 @@ export default function UserProfile() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.profileCard}>
-            <div className={styles.avatar}>
-              {profile.avatar ? (
-                <img src={profile.avatar} alt={profile.name} />
-              ) : (
-                <span>👤</span>
-              )}
+            <div className={styles.avatarContainer}>
+              <Avatar src={profile.avatar} name={profile.name} size="large" />
             </div>
 
             <h1 className={styles.name}>{profile.name}</h1>

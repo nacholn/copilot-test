@@ -75,24 +75,7 @@
   color: inherit;
 }
 
-.friendAvatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-.friendAvatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+/* Avatar component handles sizing and styling */
 
 .friendInfo {
   flex: 1;
