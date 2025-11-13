@@ -3,6 +3,9 @@ import { query } from '@/lib/db';
 import { transformProfile, transformFriendship } from '@/lib/utils';
 import type { ApiResponse, AddFriendInput } from '@cyclists/config';
 
+// Mark route as dynamic
+export const dynamic = 'force-dynamic';
+
 // GET user's friends
 export async function GET(request: NextRequest) {
   try {

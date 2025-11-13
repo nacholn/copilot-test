@@ -70,7 +70,7 @@ export default function Friends() {
             <p>Loading friends...</p>
           ) : friends.length === 0 ? (
             <div className={styles.emptyState}>
-              <p className={styles.emptyText}>You don't have any friends yet.</p>
+              <p className={styles.emptyText}>You don&apos;t have any friends yet.</p>
               <Link href="/users" className={styles.addFriendsButton}>
                 Find Friends
               </Link>

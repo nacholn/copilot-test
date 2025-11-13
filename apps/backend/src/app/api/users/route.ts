@@ -3,6 +3,9 @@ import { query } from '@/lib/db';
 import { transformProfile } from '@/lib/utils';
 import type { ApiResponse, UserSearchParams } from '@cyclists/config';
 
+// Mark route as dynamic
+export const dynamic = 'force-dynamic';
+
 // GET all users with optional search filters
 export async function GET(request: NextRequest) {
   try {
