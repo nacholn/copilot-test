@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './login.module.css';
+import styles from '../../styles/common.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function Login() {
@@ -25,7 +25,7 @@ export default function Login() {
   if (authLoading) {
     return (
       <main className={styles.main}>
-        <div className={styles.container}>
+        <div className={styles.containerSmall}>
           <p>Loading...</p>
         </div>
       </main>
@@ -59,7 +59,7 @@ export default function Login() {
 
   return (
     <main className={styles.main}>
-      <div className={styles.container}>
+      <div className={styles.containerSmall}>
         <h1 className={styles.title}>Welcome Back</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className={styles.error}>{error}</div>}

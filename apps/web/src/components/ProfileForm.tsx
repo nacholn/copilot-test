@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
 import { type Profile } from '@cyclists/config';
 import { LocationPicker } from './LocationPicker';
-import styles from './profile-form.module.css';
+import styles from '../styles/common.module.css';
 
 interface ProfileFormProps {
   initialProfile?: Profile | null;
@@ -24,6 +24,7 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
     latitude: undefined as number | undefined,
     longitude: undefined as number | undefined,
     dateOfBirth: '',
+    avatar: '',
     bio: '',
   });
 
@@ -38,6 +39,7 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
         dateOfBirth: initialProfile.dateOfBirth
           ? new Date(initialProfile.dateOfBirth).toISOString().split('T')[0]
           : '',
+        avatar: initialProfile.avatar || '',
         bio: initialProfile.bio || '',
       });
     }
@@ -63,6 +65,7 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
             latitude: formData.latitude,
             longitude: formData.longitude,
             dateOfBirth: formData.dateOfBirth || undefined,
+            avatar: formData.avatar || undefined,
             bio: formData.bio || undefined,
           }
         : {
@@ -73,6 +76,7 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
             latitude: formData.latitude,
             longitude: formData.longitude,
             dateOfBirth: formData.dateOfBirth || undefined,
+            avatar: formData.avatar || undefined,
             bio: formData.bio || undefined,
           };
 
@@ -154,6 +158,31 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           value={formData.dateOfBirth}
           onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
         />
+      </div>
+
+      <div className={styles.field}>
+        <label>Profile Image URL (Optional)</label>
+        <input
+          type="url"
+          value={formData.avatar}
+          onChange={(e) => setFormData({ ...formData, avatar: e.target.value })}
+          placeholder="https://example.com/your-image.jpg"
+        />
+        {formData.avatar && (
+          <div style={{ marginTop: '0.5rem' }}>
+            <div className={styles.avatar}>
+              <div className={styles.avatarPlaceholder} style={{ width: '80px', height: '80px', fontSize: '2rem' }}>
+                <img src={formData.avatar} alt="Preview" onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement!.innerHTML = '<span>❌</span>';
+                }} />
+              </div>
+            </div>
+            <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#666', marginTop: '0.5rem' }}>
+              Image preview
+            </p>
+          </div>
+        )}
       </div>
 
       <div className={styles.field}>
