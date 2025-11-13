@@ -1,0 +1,202 @@
+.main {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.emptyText {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.addFriendsButton {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.addFriendsButton:hover {
+  background: #0056b3;
+}
+
+.friendsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.friendCard {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.friendCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.friendLink {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.friendAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.friendAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.friendInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.friendInfo h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.friendEmail {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.friendDetails {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #e9ecef;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: #495057;
+  text-transform: capitalize;
+}
+
+.location {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.removeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #dc3545;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+  line-height: 1;
+}
+
+.removeButton:hover {
+  background: #c82333;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 0.75rem 2rem;
+  background: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+  display: inline-block;
+}
+
+.button:hover {
+  background: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .friendsList {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
+  }
+}

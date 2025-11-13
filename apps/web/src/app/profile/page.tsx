@@ -88,6 +88,12 @@ export default function Profile() {
 
               <div className={styles.details}>
                 <div className={styles.field}>
+                  <strong>Name:</strong> {profile.name}
+                </div>
+                <div className={styles.field}>
+                  <strong>Email:</strong> {profile.email}
+                </div>
+                <div className={styles.field}>
                   <strong>Level:</strong> {profile.level}
                 </div>
                 <div className={styles.field}>
