@@ -31,8 +31,11 @@ export default function Home() {
               <Link href="/profile" className={styles.primaryButton}>
                 View Profile
               </Link>
-              <Link href="#" className={styles.secondaryButton}>
-                Explore Routes
+              <Link href="/users" className={styles.secondaryButton}>
+                All Users
+              </Link>
+              <Link href="/friends" className={styles.secondaryButton}>
+                My Friends
               </Link>
             </>
           ) : (
