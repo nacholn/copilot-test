@@ -35,6 +35,8 @@ export function transformProfile(profile: Record<string, any>) {
   return {
     id: profile.id,
     userId: profile.user_id,
+    email: profile.email,
+    name: profile.name,
     level: profile.level,
     bikeType: profile.bike_type,
     city: profile.city,
@@ -45,5 +47,17 @@ export function transformProfile(profile: Record<string, any>) {
     bio: profile.bio,
     createdAt: profile.created_at,
     updatedAt: profile.updated_at,
+  };
+}
+
+/**
+ * Transforms a friendship database row to Friendship type
+ */
+export function transformFriendship(friendship: Record<string, any>) {
+  return {
+    id: friendship.id,
+    userId: friendship.user_id,
+    friendId: friendship.friend_id,
+    createdAt: friendship.created_at,
   };
 }

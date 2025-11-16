@@ -10,11 +10,11 @@ export async function POST(request: NextRequest) {
     const { email, password, profile } = body;
 
     // Validate required fields
-    if (!email || !password || !profile.level || !profile.bikeType || !profile.city) {
+    if (!email || !password || !profile.email || !profile.name || !profile.level || !profile.bikeType || !profile.city) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
-          error: 'Missing required fields',
+          error: 'Missing required fields: email, password, name, level, bikeType, city',
         },
         { status: 400 }
       );
@@ -39,13 +39,15 @@ export async function POST(request: NextRequest) {
 
     // Create profile in PostgreSQL
     const insertQuery = `
-      INSERT INTO profiles (user_id, level, bike_type, city, latitude, longitude, date_of_birth, avatar, bio)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO profiles (user_id, email, name, level, bike_type, city, latitude, longitude, date_of_birth, avatar, bio)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *
     `;
 
     const values = [
       authData.user.id,
+      profile.email,
+      profile.name,
       profile.level,
       profile.bikeType,
       profile.city,
