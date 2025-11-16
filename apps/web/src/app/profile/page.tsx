@@ -7,6 +7,7 @@ import { API_URL, type Profile } from '@cyclists/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { AuthGuard } from '../../components/AuthGuard';
 import { ProfileForm } from '../../components/ProfileForm';
+import { Avatar } from '../../components/Avatar';
 
 export default function Profile() {
   const { user, signOut } = useAuth();
@@ -81,18 +82,18 @@ export default function Profile() {
             </div>
           ) : profile ? (
             <>
-              <div className={styles.avatar}>
-                <div className={styles.avatarPlaceholder}>
-                  {profile.avatar ? (
-                    <img src={profile.avatar} alt="Profile" />
-                  ) : (
-                    <span>👤</span>
-                  )}
-                </div>
+              <div className={styles.avatarContainer}>
+                <Avatar src={profile.avatar} name={profile.name} size="large" />
               </div>
 
-              <div>
-                <div className={styles.infoField}>
+              <div className={styles.details}>
+                <div className={styles.field}>
+                  <strong>Name:</strong> {profile.name}
+                </div>
+                <div className={styles.field}>
+                  <strong>Email:</strong> {profile.email}
+                </div>
+                <div className={styles.field}>
                   <strong>Level:</strong> {profile.level}
                 </div>
                 <div className={styles.infoField}>

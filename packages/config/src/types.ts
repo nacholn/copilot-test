@@ -9,6 +9,8 @@ export interface User {
 export interface Profile {
   id: string;
   userId: string;
+  email: string;
+  name: string;
   level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
   bikeType: 'road' | 'mountain' | 'hybrid' | 'electric' | 'gravel' | 'other';
   city: string;
@@ -23,6 +25,8 @@ export interface Profile {
 
 export interface CreateProfileInput {
   userId: string;
+  email: string;
+  name: string;
   level: Profile['level'];
   bikeType: Profile['bikeType'];
   city: string;
@@ -34,6 +38,8 @@ export interface CreateProfileInput {
 }
 
 export interface UpdateProfileInput {
+  email?: string;
+  name?: string;
   level?: Profile['level'];
   bikeType?: Profile['bikeType'];
   city?: string;
@@ -70,4 +76,29 @@ export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   error?: string;
+}
+
+// Friendship types
+export interface Friendship {
+  id: string;
+  userId: string;
+  friendId: string;
+  createdAt: Date;
+}
+
+export interface FriendProfile extends Profile {
+  friendshipId: string;
+}
+
+export interface AddFriendInput {
+  userId: string;
+  friendId: string;
+}
+
+// User listing types
+export interface UserSearchParams {
+  query?: string;
+  level?: Profile['level'];
+  bikeType?: Profile['bikeType'];
+  city?: string;
 }

@@ -18,6 +18,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
+    email: '',
+    name: '',
     level: 'beginner' as 'beginner' | 'intermediate' | 'advanced' | 'expert',
     bikeType: 'road' as 'road' | 'mountain' | 'hybrid' | 'electric' | 'gravel' | 'other',
     city: '',
@@ -31,6 +33,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
   useEffect(() => {
     if (initialProfile) {
       setFormData({
+        email: initialProfile.email,
+        name: initialProfile.name,
         level: initialProfile.level,
         bikeType: initialProfile.bikeType,
         city: initialProfile.city,
@@ -42,8 +46,11 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
         avatar: initialProfile.avatar || '',
         bio: initialProfile.bio || '',
       });
+    } else if (user) {
+      // For new profiles, pre-fill email from user data
+      setFormData((prev) => ({ ...prev, email: user.email || '' }));
     }
-  }, [initialProfile]);
+  }, [initialProfile, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,6 +66,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
 
       const payload = isUpdate
         ? {
+            email: formData.email,
+            name: formData.name,
             level: formData.level,
             bikeType: formData.bikeType,
             city: formData.city,
@@ -70,6 +79,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           }
         : {
             userId: user.id,
+            email: formData.email,
+            name: formData.name,
             level: formData.level,
             bikeType: formData.bikeType,
             city: formData.city,
@@ -108,6 +119,26 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       {error && <div className={styles.error}>{error}</div>}
+
+      <div className={styles.field}>
+        <label>Email</label>
+        <input
+          type="email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          required
+        />
+      </div>
+
+      <div className={styles.field}>
+        <label>Name</label>
+        <input
+          type="text"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          required
+        />
+      </div>
 
       <div className={styles.field}>
         <label>Cycling Level</label>
