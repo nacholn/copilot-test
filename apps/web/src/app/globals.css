@@ -13,7 +13,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #FE3C72 0%, #FF6036 100%);
+  background: var(--tinder-light);
   min-height: 100vh;
 }
 

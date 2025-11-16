@@ -1,0 +1,169 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--tinder-primary);
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logoIcon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.logoText {
+  letter-spacing: -0.02em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--tinder-text);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.navLink:hover {
+  background: rgba(254, 60, 114, 0.08);
+  color: var(--tinder-primary);
+}
+
+.loginButton {
+  text-decoration: none;
+  color: var(--tinder-primary);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+  border: 2px solid var(--tinder-primary);
+}
+
+.loginButton:hover {
+  background: var(--tinder-primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.signupButton {
+  text-decoration: none;
+  background: var(--tinder-gradient);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.625rem 1.75rem;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 12px rgba(254, 60, 114, 0.3);
+}
+
+.signupButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(254, 60, 114, 0.4);
+}
+
+.logoutButton {
+  background: transparent;
+  border: 2px solid var(--tinder-primary);
+  color: var(--tinder-primary);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.logoutButton:hover {
+  background: var(--tinder-primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo {
+    font-size: 1.125rem;
+  }
+
+  .logoIcon {
+    font-size: 1.5rem;
+  }
+
+  .nav {
+    gap: 0.5rem;
+  }
+
+  .navLink {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .loginButton,
+  .signupButton,
+  .logoutButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .logoText {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .navLink {
+    display: none;
+  }
+}
