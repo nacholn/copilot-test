@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './register.module.css';
+import styles from '../../styles/common.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { LocationPicker } from '../../components/LocationPicker';
 

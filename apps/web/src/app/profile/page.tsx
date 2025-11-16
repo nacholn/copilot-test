@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './profile.module.css';
+import styles from '../../styles/common.module.css';
 import { API_URL, type Profile } from '@cyclists/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { AuthGuard } from '../../components/AuthGuard';
@@ -69,15 +69,16 @@ export default function Profile() {
 
           {editing ? (
             <div>
-              <h2>Edit Profile</h2>
+              <h2 className={styles.title} style={{ fontSize: '1.5rem' }}>Edit Profile</h2>
               <ProfileForm initialProfile={profile} onSave={handleProfileSave} />
-              <button
-                onClick={() => setEditing(false)}
-                className={styles.button}
-                style={{ marginTop: '1rem' }}
-              >
-                Cancel
-              </button>
+              <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                <button
+                  onClick={() => setEditing(false)}
+                  className={styles.secondaryButton}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           ) : profile ? (
             <>
@@ -95,33 +96,33 @@ export default function Profile() {
                 <div className={styles.field}>
                   <strong>Level:</strong> {profile.level}
                 </div>
-                <div className={styles.field}>
+                <div className={styles.infoField}>
                   <strong>Bike Type:</strong> {profile.bikeType}
                 </div>
-                <div className={styles.field}>
+                <div className={styles.infoField}>
                   <strong>City:</strong> {profile.city}
                 </div>
                 {profile.dateOfBirth && (
-                  <div className={styles.field}>
+                  <div className={styles.infoField}>
                     <strong>Date of Birth:</strong>{' '}
                     {new Date(profile.dateOfBirth).toLocaleDateString()}
                   </div>
                 )}
                 {profile.bio && (
-                  <div className={styles.field}>
+                  <div className={styles.infoField}>
                     <strong>Bio:</strong> {profile.bio}
                   </div>
                 )}
               </div>
 
               <div className={styles.actions}>
-                <button onClick={() => setEditing(true)} className={styles.button}>
+                <button onClick={() => setEditing(true)} className={styles.primaryButton}>
                   Edit Profile
                 </button>
-                <a href="/" className={styles.button}>
+                <a href="/" className={styles.secondaryButton}>
                   Back to Home
                 </a>
-                <button onClick={handleSignOut} className={styles.button}>
+                <button onClick={handleSignOut} className={styles.secondaryButton}>
                   Sign Out
                 </button>
               </div>
