@@ -13,6 +13,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #FE3C72 0%, #FF6036 100%);
+  min-height: 100vh;
 }
 
 a {
@@ -22,4 +24,17 @@ a {
 
 button {
   font-family: inherit;
+}
+
+/* Tinder-inspired CSS variables */
+:root {
+  --tinder-primary: #FE3C72;
+  --tinder-secondary: #FF6036;
+  --tinder-gradient: linear-gradient(135deg, #FE3C72 0%, #FF6036 100%);
+  --tinder-dark: #21232D;
+  --tinder-text: #424242;
+  --tinder-light: #F8F9FA;
+  --tinder-white: #FFFFFF;
+  --tinder-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  --tinder-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.18);
 }
