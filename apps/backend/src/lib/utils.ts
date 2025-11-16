@@ -35,15 +35,29 @@ export function transformProfile(profile: Record<string, any>) {
   return {
     id: profile.id,
     userId: profile.user_id,
+    email: profile.email,
+    name: profile.name,
     level: profile.level,
     bikeType: profile.bike_type,
     city: profile.city,
-    latitude: profile.latitude,
-    longitude: profile.longitude,
+    latitude: profile.latitude ? parseFloat(profile.latitude) : undefined,
+    longitude: profile.longitude ? parseFloat(profile.longitude) : undefined,
     dateOfBirth: profile.date_of_birth,
     avatar: profile.avatar,
     bio: profile.bio,
     createdAt: profile.created_at,
     updatedAt: profile.updated_at,
+  };
+}
+
+/**
+ * Transforms a friendship database row to Friendship type
+ */
+export function transformFriendship(friendship: Record<string, any>) {
+  return {
+    id: friendship.id,
+    userId: friendship.user_id,
+    friendId: friendship.friend_id,
+    createdAt: friendship.created_at,
   };
 }

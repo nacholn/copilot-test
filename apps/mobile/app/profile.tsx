@@ -60,6 +60,11 @@ export default function Profile() {
             <View style={styles.field}>
               <Text style={styles.label}>City</Text>
               <Text style={styles.value}>{profile.city}</Text>
+              {profile.latitude && profile.longitude && (
+                <Text style={styles.coordinates}>
+                  {profile.latitude.toFixed(6)}, {profile.longitude.toFixed(6)}
+                </Text>
+              )}
             </View>
 
             {profile.bio && (
@@ -112,6 +117,12 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     color: '#111827',
+  },
+  coordinates: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 4,
+    fontFamily: 'monospace',
   },
   notFound: {
     textAlign: 'center',

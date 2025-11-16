@@ -2,19 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './register.module.css';
+import styles from '../../styles/common.module.css';
 import { useAuth } from '../../contexts/AuthContext';
+import { LocationPicker } from '../../components/LocationPicker';
 
 export default function Register() {
   const router = useRouter();
   const { user, signUp, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
+    name: '',
     password: '',
     confirmPassword: '',
     level: 'beginner' as const,
     bikeType: 'road' as const,
     city: '',
+    latitude: undefined as number | undefined,
+    longitude: undefined as number | undefined,
     dateOfBirth: '',
   });
   const [error, setError] = useState('');
@@ -61,9 +65,13 @@ export default function Register() {
           email: formData.email,
           password: formData.password,
           profile: {
+            email: formData.email,
+            name: formData.name,
             level: formData.level,
             bikeType: formData.bikeType,
             city: formData.city,
+            latitude: formData.latitude,
+            longitude: formData.longitude,
             dateOfBirth: formData.dateOfBirth || undefined,
           },
         }),
@@ -99,6 +107,17 @@ export default function Register() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label>Name</label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Your full name"
             />
           </div>
 
@@ -153,11 +172,13 @@ export default function Register() {
 
           <div className={styles.field}>
             <label>City</label>
-            <input
-              type="text"
-              required
+            <LocationPicker
               value={formData.city}
-              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              latitude={formData.latitude}
+              longitude={formData.longitude}
+              onChange={(city, latitude, longitude) =>
+                setFormData({ ...formData, city, latitude, longitude })
+              }
             />
           </div>
 
