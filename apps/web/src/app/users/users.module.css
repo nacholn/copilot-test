@@ -332,7 +332,7 @@
   }
 
   .container {
-    max-width: 900px;
+    max-width: 1100px;
   }
 
   .title {
@@ -347,11 +347,38 @@
   .userList {
     gap: 1.5rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .userCard {
     padding: 2rem 1.75rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .userInfo {
+    margin-top: 0;
+  }
+
+  .userInfo h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Large Desktop styles */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  .userList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .userCard {
+    padding: 2.25rem 2rem;
   }
 
   .userInfo h3 {

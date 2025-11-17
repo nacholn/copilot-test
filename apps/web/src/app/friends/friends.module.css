@@ -309,7 +309,7 @@
   }
 
   .container {
-    max-width: 900px;
+    max-width: 1100px;
   }
 
   .title {
@@ -320,7 +320,7 @@
   .friendsList {
     gap: 1.5rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .friendCard {
@@ -333,5 +333,25 @@
 
   .emptyState {
     padding: 4rem 3rem;
+  }
+}
+
+/* Large Desktop styles */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  .friendsList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .friendCard {
+    padding: 2.25rem 2rem;
+  }
+
+  .friendInfo h3 {
+    font-size: 1.625rem;
   }
 }
