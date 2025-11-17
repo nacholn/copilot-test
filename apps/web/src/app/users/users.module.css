@@ -264,9 +264,11 @@
   transform: scale(0.98);
 }
 
+/* Mobile styles */
 @media (max-width: 768px) {
   .main {
     padding: 0.75rem;
+    padding-top: 90px;
   }
 
   .container {
@@ -286,10 +288,73 @@
   .clearButton {
     width: 100%;
   }
+
+  .userCard {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .userInfo h3 {
+    font-size: 1.25rem;
+  }
 }
 
-@media (min-width: 769px) {
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .main {
+    padding: 1.25rem;
+    padding-top: 100px;
+  }
+
   .container {
-    max-width: 540px;
+    max-width: 700px;
+  }
+
+  .userList {
+    gap: 1.25rem;
+  }
+
+  .userCard {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .userInfo {
+    margin-top: 0;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .main {
+    padding: 2rem;
+    padding-top: 120px;
+  }
+
+  .container {
+    max-width: 900px;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filters {
+    padding: 1.5rem;
+  }
+
+  .userList {
+    gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+
+  .userCard {
+    padding: 2rem 1.75rem;
+  }
+
+  .userInfo h3 {
+    font-size: 1.625rem;
   }
 }

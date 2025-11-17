@@ -1,37 +1,92 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import Swal from 'sweetalert2';
 import styles from './header.module.css';
 
 export function Header() {
   const { user, signOut } = useAuth();
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
-    await signOut();
-    router.push('/');
+    const result = await Swal.fire({
+      title: 'Sign Out?',
+      text: 'Are you sure you want to sign out?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#FE3C72',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, sign out',
+      cancelButtonText: 'Cancel',
+      customClass: {
+        popup: styles.swalPopup,
+        title: styles.swalTitle,
+        confirmButton: styles.swalConfirm,
+        cancelButton: styles.swalCancel,
+      },
+    });
+
+    if (result.isConfirmed) {
+      await signOut();
+      setIsMenuOpen(false);
+      router.push('/');
+      
+      Swal.fire({
+        title: 'Signed Out!',
+        text: 'You have been successfully signed out.',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false,
+        customClass: {
+          popup: styles.swalPopup,
+          title: styles.swalTitle,
+        },
+      });
+    }
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/" className={styles.logo} onClick={closeMenu}>
           <span className={styles.logoIcon}>🚴</span>
           <span className={styles.logoText}>Cyclists</span>
         </Link>
         
-        <nav className={styles.nav}>
+        {/* Hamburger button for mobile */}
+        <button 
+          className={`${styles.hamburger} ${isMenuOpen ? styles.hamburgerActive : ''}`}
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        {/* Navigation - Desktop and Mobile */}
+        <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           {user ? (
             <>
-              <Link href="/users" className={styles.navLink}>
+              <Link href="/users" className={styles.navLink} onClick={closeMenu}>
                 Discover
               </Link>
-              <Link href="/friends" className={styles.navLink}>
+              <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
                 Friends
               </Link>
-              <Link href="/profile" className={styles.navLink}>
+              <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
                 Profile
               </Link>
               <button onClick={handleSignOut} className={styles.logoutButton}>
@@ -40,15 +95,20 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link href="/login" className={styles.loginButton}>
+              <Link href="/login" className={styles.loginButton} onClick={closeMenu}>
                 Login
               </Link>
-              <Link href="/register" className={styles.signupButton}>
+              <Link href="/register" className={styles.signupButton} onClick={closeMenu}>
                 Sign Up
               </Link>
             </>
           )}
         </nav>
+
+        {/* Overlay for mobile menu */}
+        {isMenuOpen && (
+          <div className={styles.overlay} onClick={closeMenu}></div>
+        )}
       </div>
     </header>
   );
