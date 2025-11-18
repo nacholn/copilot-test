@@ -1,122 +1,175 @@
 .main {
   min-height: 100vh;
-  padding: 2rem;
-  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+  padding: 1rem;
+  background: var(--tinder-gradient);
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
   text-align: center;
-  color: #333;
+  color: white;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .filters {
   background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  padding: 1.25rem;
+  border-radius: 16px;
+  box-shadow: var(--tinder-shadow);
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .searchInput {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  transition: border-color 0.3s;
+  padding: 0.875rem 1rem;
+  border: 2px solid #E8E8E8;
+  border-radius: 12px;
+  font-size: 0.9375rem;
+  margin-bottom: 0.875rem;
+  transition: all 0.2s ease;
 }
 
 .searchInput:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--tinder-primary);
+  box-shadow: 0 0 0 3px rgba(254, 60, 114, 0.1);
+}
+
+.searchInput::placeholder {
+  color: #999;
 }
 
 .filterRow {
   display: flex;
-  gap: 1rem;
+  gap: 0.625rem;
   flex-wrap: wrap;
 }
 
 .select,
 .cityInput {
-  padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 0.75rem 0.875rem;
+  border: 2px solid #E8E8E8;
+  border-radius: 12px;
+  font-size: 0.875rem;
   background: white;
-  transition: border-color 0.3s;
+  transition: all 0.2s ease;
 }
 
 .select {
   flex: 1;
-  min-width: 150px;
+  min-width: 120px;
 }
 
 .cityInput {
   flex: 1;
-  min-width: 150px;
+  min-width: 120px;
 }
 
 .select:focus,
 .cityInput:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--tinder-primary);
+  box-shadow: 0 0 0 3px rgba(254, 60, 114, 0.1);
 }
 
 .clearButton {
-  padding: 0.75rem 1.5rem;
-  background: #6c757d;
+  padding: 0.75rem 1.25rem;
+  background: var(--tinder-dark);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .clearButton:hover {
-  background: #5a6268;
+  background: #2C2F3A;
+  transform: scale(1.03);
 }
 
 .noResults {
   text-align: center;
-  color: #666;
-  font-size: 1.1rem;
-  padding: 2rem;
+  color: white;
+  font-size: 1.0625rem;
+  padding: 3rem 1rem;
+  font-weight: 500;
 }
 
 .userList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .userCard {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
   background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.75rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: var(--tinder-shadow);
   text-decoration: none;
   color: inherit;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  animation: cardSlideIn 0.4s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .userCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--tinder-shadow-hover);
+}
+
+.userCard:active {
+  transform: scale(0.98);
 }
 
 /* Avatar component handles sizing and styling */
@@ -124,80 +177,106 @@
 .userInfo {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
 .userInfo h3 {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.25rem;
-  color: #333;
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--tinder-dark);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .userEmail {
-  margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
-  color: #666;
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--tinder-text);
+  font-weight: 400;
 }
 
 .userDetails {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .badge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background: #e9ecef;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  color: #495057;
+  padding: 0.375rem 0.875rem;
+  background: linear-gradient(135deg, rgba(254, 60, 114, 0.1) 0%, rgba(255, 96, 54, 0.1) 100%);
+  border: 1px solid rgba(254, 60, 114, 0.2);
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  color: var(--tinder-primary);
   text-transform: capitalize;
+  font-weight: 600;
 }
 
 .location {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 0.875rem;
+  color: var(--tinder-text);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .userBio {
-  margin: 0.5rem 0 0 0;
-  font-size: 0.9rem;
-  color: #666;
-  line-height: 1.4;
+  margin: 0.75rem 0 0 0;
+  font-size: 0.9375rem;
+  color: var(--tinder-text);
+  line-height: 1.5;
 }
 
 .actions {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .backButton {
   display: inline-block;
-  padding: 0.75rem 2rem;
-  background: #6c757d;
+  padding: 0.875rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background 0.3s;
+  border-radius: 28px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  border: 2px solid white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
 }
 
 .backButton:hover {
-  background: #5a6268;
+  background: white;
+  color: var(--tinder-primary);
+  transform: scale(1.03);
 }
 
+.backButton:active {
+  transform: scale(0.98);
+}
+
+/* Mobile styles */
 @media (max-width: 768px) {
   .main {
-    padding: 1rem;
+    padding: 0.75rem;
+    padding-top: 90px;
+  }
+
+  .container {
+    max-width: 100%;
   }
 
   .title {
-    font-size: 2rem;
-  }
-
-  .userList {
-    grid-template-columns: 1fr;
+    font-size: 1.75rem;
   }
 
   .filterRow {
@@ -208,5 +287,101 @@
   .cityInput,
   .clearButton {
     width: 100%;
+  }
+
+  .userCard {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .userInfo h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .main {
+    padding: 1.25rem;
+    padding-top: 100px;
+  }
+
+  .container {
+    max-width: 700px;
+  }
+
+  .userList {
+    gap: 1.25rem;
+  }
+
+  .userCard {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .userInfo {
+    margin-top: 0;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .main {
+    padding: 2rem;
+    padding-top: 120px;
+  }
+
+  .container {
+    max-width: 1100px;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filters {
+    padding: 1.5rem;
+  }
+
+  .userList {
+    gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .userCard {
+    padding: 2rem 1.75rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .userInfo {
+    margin-top: 0;
+  }
+
+  .userInfo h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Large Desktop styles */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  .userList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .userCard {
+    padding: 2.25rem 2rem;
+  }
+
+  .userInfo h3 {
+    font-size: 1.625rem;
   }
 }

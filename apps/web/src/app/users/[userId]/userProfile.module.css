@@ -1,39 +1,63 @@
 .main {
   min-height: 100vh;
-  padding: 2rem;
-  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+  padding: 1rem;
+  background: var(--tinder-gradient);
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .container {
-  max-width: 800px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
 .profileCard {
   background: white;
-  padding: 3rem;
+  padding: 2.5rem 2rem;
   border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--tinder-shadow);
   text-align: center;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .avatarContainer {
   display: flex;
   justify-content: center;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1.25rem;
 }
 
 .name {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 800;
   margin: 0 0 0.5rem 0;
-  color: #333;
+  color: var(--tinder-dark);
+  letter-spacing: -0.02em;
 }
 
 .email {
-  font-size: 1.1rem;
-  color: #666;
+  font-size: 0.9375rem;
+  color: var(--tinder-text);
   margin: 0 0 2rem 0;
+  font-weight: 400;
 }
 
 .details {
@@ -44,47 +68,55 @@
 .field {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  background: var(--tinder-light);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  border: 1px solid #E8E8E8;
 }
 
 .field:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .field strong {
-  color: #333;
-  font-weight: 600;
+  color: var(--tinder-primary);
+  font-weight: 700;
 }
 
 .value {
-  color: #666;
+  color: var(--tinder-text);
   text-transform: capitalize;
+  font-weight: 500;
 }
 
 .bioSection {
-  padding: 1rem;
-  border-top: 2px solid #e0e0e0;
+  padding: 1.25rem;
+  background: var(--tinder-light);
+  border-radius: 12px;
   margin-top: 1rem;
+  border: 1px solid #E8E8E8;
 }
 
 .bioSection strong {
   display: block;
-  margin-bottom: 0.5rem;
-  color: #333;
-  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--tinder-primary);
+  font-weight: 700;
 }
 
 .bio {
   margin: 0;
-  color: #666;
+  color: var(--tinder-text);
   line-height: 1.6;
   text-align: left;
+  font-weight: 400;
 }
 
 .actions {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: center;
   margin-top: 2rem;
   flex-wrap: wrap;
@@ -93,71 +125,95 @@
 .addFriendButton,
 .removeFriendButton,
 .backButton {
-  padding: 0.75rem 2rem;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 28px;
+  font-size: 0.9375rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--tinder-shadow);
 }
 
 .addFriendButton {
-  background: #28a745;
+  background: var(--tinder-gradient);
   color: white;
 }
 
 .addFriendButton:hover:not(:disabled) {
-  background: #218838;
+  transform: scale(1.03);
+  box-shadow: var(--tinder-shadow-hover);
+}
+
+.addFriendButton:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .addFriendButton:disabled {
-  background: #6c757d;
+  background: #CCC;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .removeFriendButton {
-  background: #dc3545;
+  background: var(--tinder-primary);
   color: white;
 }
 
 .removeFriendButton:hover:not(:disabled) {
-  background: #c82333;
+  background: var(--tinder-secondary);
+  transform: scale(1.03);
+  box-shadow: var(--tinder-shadow-hover);
+}
+
+.removeFriendButton:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .removeFriendButton:disabled {
-  background: #6c757d;
+  background: #CCC;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .backButton {
-  background: #6c757d;
-  color: white;
+  background: transparent;
+  color: var(--tinder-primary);
+  border: 2px solid var(--tinder-primary);
+  box-shadow: none;
 }
 
 .backButton:hover {
-  background: #5a6268;
+  background: var(--tinder-primary);
+  color: white;
+  transform: scale(1.03);
+}
+
+.backButton:active {
+  transform: scale(0.98);
 }
 
 @media (max-width: 768px) {
   .main {
-    padding: 1rem;
+    padding: 0.75rem;
+  }
+
+  .container {
+    max-width: 100%;
   }
 
   .profileCard {
-    padding: 2rem 1rem;
+    padding: 2rem 1.5rem;
   }
 
   .name {
-    font-size: 2rem;
-  }
-
-  .avatar {
-    width: 120px;
-    height: 120px;
-    font-size: 4rem;
+    font-size: 1.75rem;
   }
 
   .actions {
@@ -168,5 +224,11 @@
   .removeFriendButton,
   .backButton {
     width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .container {
+    max-width: 540px;
   }
 }

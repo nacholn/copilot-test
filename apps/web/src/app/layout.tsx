@@ -1,11 +1,12 @@
 import './globals.css';
 import { AuthProvider } from '../contexts/AuthContext';
+import { Header } from '../components/Header';
 
 export const metadata = {
   title: 'Cyclists Social Network',
   description: 'Connect with cyclists around the world',
   manifest: '/manifest.json',
-  themeColor: '#007AFF',
+  themeColor: '#FE3C72',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -13,10 +14,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#007AFF" />
+        <meta name="theme-color" content="#FE3C72" />
       </head>
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <Header />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

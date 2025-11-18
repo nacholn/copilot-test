@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Avatar } from '../../components/Avatar';
 import type { FriendProfile } from '@cyclists/config';
+import Swal from 'sweetalert2';
 import styles from './friends.module.css';
 
 export default function Friends() {
@@ -37,7 +38,22 @@ export default function Friends() {
   };
 
   const handleRemoveFriend = async (friendshipId: string) => {
-    if (!confirm('Are you sure you want to remove this friend?')) {
+    const result = await Swal.fire({
+      title: 'Remove Friend?',
+      text: 'Are you sure you want to remove this friend from your list?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#FE3C72',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, remove',
+      cancelButtonText: 'Cancel',
+      customClass: {
+        popup: 'swal-popup',
+        title: 'swal-title',
+      },
+    });
+
+    if (!result.isConfirmed) {
       return;
     }
 
@@ -51,13 +67,42 @@ export default function Friends() {
       if (data.success) {
         // Remove friend from local state
         setFriends(friends.filter((f) => f.friendshipId !== friendshipId));
-        alert('Friend removed successfully!');
+        
+        Swal.fire({
+          title: 'Removed!',
+          text: 'Friend has been removed from your list.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'swal-popup',
+            title: 'swal-title',
+          },
+        });
       } else {
-        alert(data.error || 'Failed to remove friend');
+        Swal.fire({
+          title: 'Error',
+          text: data.error || 'Failed to remove friend',
+          icon: 'error',
+          confirmButtonColor: '#FE3C72',
+          customClass: {
+            popup: 'swal-popup',
+            title: 'swal-title',
+          },
+        });
       }
     } catch (error) {
       console.error('Error removing friend:', error);
-      alert('Failed to remove friend');
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to remove friend. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#FE3C72',
+        customClass: {
+          popup: 'swal-popup',
+          title: 'swal-title',
+        },
+      });
     }
   };
 
