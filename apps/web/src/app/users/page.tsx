@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Avatar } from '../../components/Avatar';
+import { Loader } from '../../components/Loader';
 import type { Profile } from '@cyclists/config';
 import styles from './users.module.css';
 
@@ -115,7 +116,9 @@ export default function Users() {
           </div>
 
           {loading ? (
-            <p>Loading users...</p>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
+              <Loader size="large" message="Loading users..." />
+            </div>
           ) : users.length === 0 ? (
             <p className={styles.noResults}>No users found matching your criteria.</p>
           ) : (

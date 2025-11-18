@@ -1,2 +1,27 @@
 /* Profile page styles - uses common styles from common.module.css */
 /* Additional profile-specific overrides can go here if needed */
+
+/* Two-column layout for edit form on laptop and higher resolutions */
+.editContainer {
+  width: 100%;
+}
+
+/* Apply two-column layout to the form inside editContainer on laptop+ */
+@media (min-width: 1024px) {
+  .editContainer form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .editContainer form > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .editContainer form button[type='submit'] {
+    grid-column: 1 / -1;
+    max-width: 400px;
+    margin: 1rem auto 0;
+  }
+}

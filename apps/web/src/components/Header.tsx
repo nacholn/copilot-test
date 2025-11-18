@@ -86,6 +86,9 @@ export function Header() {
               <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
                 Friends
               </Link>
+              <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
+                Chat
+              </Link>
               <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
                 Profile
               </Link>
