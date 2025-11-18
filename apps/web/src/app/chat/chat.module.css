@@ -1,0 +1,333 @@
+.chatContainer {
+  display: flex;
+  height: 100vh;
+  background: var(--tinder-light);
+  padding-top: 80px;
+}
+
+/* Conversations List (Left Sidebar) */
+.conversationsList {
+  width: 350px;
+  background: white;
+  border-right: 1px solid #E8E8E8;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.conversationsTitle {
+  padding: 1.5rem 1.25rem;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--tinder-dark);
+  border-bottom: 1px solid #E8E8E8;
+  background: var(--tinder-light);
+}
+
+.conversationsScroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.noConversations {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--tinder-text);
+}
+
+.noConversations p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.conversationItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: none;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.conversationItem:hover {
+  background: var(--tinder-light);
+}
+
+.conversationItem.active {
+  background: rgba(254, 60, 114, 0.08);
+  border-left: 3px solid var(--tinder-primary);
+}
+
+.conversationInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.conversationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.conversationInfo h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--tinder-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.unreadBadge {
+  background: var(--tinder-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.lastMessage {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--tinder-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Chat Window (Right Side) */
+.chatWindow {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 1.5rem;
+  border-bottom: 1px solid #E8E8E8;
+  background: var(--tinder-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chatHeader h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--tinder-dark);
+}
+
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #F8F8F8;
+}
+
+.noMessages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--tinder-text);
+  font-size: 1rem;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.message.sent {
+  justify-content: flex-end;
+}
+
+.message.received {
+  justify-content: flex-start;
+}
+
+.messageContent {
+  max-width: 70%;
+  padding: 0.875rem 1.125rem;
+  border-radius: 16px;
+  animation: messageSlideIn 0.2s ease-out;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.sent .messageContent {
+  background: var(--tinder-gradient);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.message.received .messageContent {
+  background: white;
+  color: var(--tinder-dark);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.messageContent p {
+  margin: 0 0 0.25rem 0;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.messageTime {
+  font-size: 0.6875rem;
+  opacity: 0.7;
+  display: block;
+}
+
+.messageForm {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border-top: 1px solid #E8E8E8;
+}
+
+.messageInput {
+  flex: 1;
+  padding: 0.875rem 1.125rem;
+  border: 2px solid #E8E8E8;
+  border-radius: 24px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.messageInput:focus {
+  outline: none;
+  border-color: var(--tinder-primary);
+  box-shadow: 0 0 0 3px rgba(254, 60, 114, 0.1);
+}
+
+.messageInput::placeholder {
+  color: #999;
+}
+
+.sendButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--tinder-gradient);
+  color: white;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--tinder-shadow);
+}
+
+.sendButton:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: var(--tinder-shadow-hover);
+}
+
+.sendButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.sendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.noSelection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--tinder-text);
+  font-size: 1.125rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .chatContainer {
+    flex-direction: column;
+    padding-top: 70px;
+  }
+
+  .conversationsList {
+    width: 100%;
+    height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid #E8E8E8;
+  }
+
+  .conversationsTitle {
+    padding: 1rem;
+    font-size: 1.25rem;
+  }
+
+  .conversationItem {
+    padding: 0.875rem 1rem;
+  }
+
+  .chatWindow {
+    height: 60vh;
+  }
+
+  .chatHeader {
+    padding: 1rem 1rem;
+  }
+
+  .chatHeader h2 {
+    font-size: 1.125rem;
+  }
+
+  .messagesContainer {
+    padding: 1rem;
+  }
+
+  .messageContent {
+    max-width: 85%;
+  }
+
+  .messageForm {
+    padding: 1rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .conversationsList {
+    width: 300px;
+  }
+
+  .conversationsTitle {
+    font-size: 1.375rem;
+  }
+}

@@ -102,3 +102,43 @@ export interface UserSearchParams {
   bikeType?: Profile['bikeType'];
   city?: string;
 }
+
+// Profile Image types
+export interface ProfileImage {
+  id: string;
+  userId: string;
+  imageUrl: string;
+  cloudinaryPublicId: string;
+  isPrimary: boolean;
+  displayOrder: number;
+  createdAt: Date;
+}
+
+export interface UploadImageInput {
+  userId: string;
+  isPrimary?: boolean;
+}
+
+// Message types
+export interface Message {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  message: string;
+  isRead: boolean;
+  createdAt: Date;
+}
+
+export interface SendMessageInput {
+  senderId: string;
+  receiverId: string;
+  message: string;
+}
+
+export interface Conversation {
+  friendId: string;
+  friendName: string;
+  friendAvatar?: string;
+  lastMessage?: Message;
+  unreadCount: number;
+}
