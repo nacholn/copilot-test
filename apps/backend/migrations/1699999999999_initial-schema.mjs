@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 
-exports.shorthands = undefined;
+export const shorthands = undefined;
 
-exports.up = (pgm) => {
+export const up = (pgm) => {
   // Create profiles table
   pgm.createTable('profiles', {
     id: {
@@ -82,7 +82,7 @@ exports.up = (pgm) => {
   `);
 };
 
-exports.down = (pgm) => {
+export const down = (pgm) => {
   // Drop trigger
   pgm.sql('DROP TRIGGER IF EXISTS update_profiles_updated_at ON profiles;');
 

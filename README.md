@@ -158,6 +158,8 @@ cd apps/backend
 npm run migrate:up
 ```
 
+> **📝 Note**: Migration files use `.mjs` extension with ES module syntax for optimal performance and to avoid Node.js module warnings.
+
 The profile schema includes:
 
 - `id`: UUID primary key
