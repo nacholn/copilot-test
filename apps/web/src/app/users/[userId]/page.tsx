@@ -4,14 +4,18 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
 import { Avatar } from '../../../components/Avatar';
+import { Loader } from '../../../components/Loader';
+import { ProfileImageGallery } from '../../../components/ProfileImageGallery';
 import type { Profile } from '@cyclists/config';
 import Swal from 'sweetalert2';
 import styles from './userProfile.module.css';
 
 export default function UserProfile() {
   const { user } = useAuth();
+  const { t } = useTranslations();
   const params = useParams();
   const router = useRouter();
   const userId = params.userId as string;
@@ -21,6 +25,7 @@ export default function UserProfile() {
   const [isFriend, setIsFriend] = useState(false);
   const [friendshipId, setFriendshipId] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -204,11 +209,7 @@ export default function UserProfile() {
   if (loading) {
     return (
       <AuthGuard>
-        <main className={styles.main}>
-          <div className={styles.container}>
-            <p>Loading user profile...</p>
-          </div>
-        </main>
+        <Loader fullScreen message={t('common.loading')} />
       </AuthGuard>
     );
   }
@@ -247,28 +248,62 @@ export default function UserProfile() {
             <p className={styles.email}>{profile.email}</p>
 
             <div className={styles.details}>
-              <div className={styles.field}>
-                <strong>Level:</strong> <span className={styles.value}>{profile.level}</span>
+              <div className={styles.infoCard}>
+                <span className={styles.icon}>⭐</span>
+                <div className={styles.infoContent}>
+                  <span className={styles.infoLabel}>{t('profile.level')}</span>
+                  <span className={styles.infoValue}>{t(`levels.${profile.level}`)}</span>
+                </div>
               </div>
-              <div className={styles.field}>
-                <strong>Bike Type:</strong> <span className={styles.value}>{profile.bikeType}</span>
+              <div className={styles.infoCard}>
+                <span className={styles.icon}>🚴</span>
+                <div className={styles.infoContent}>
+                  <span className={styles.infoLabel}>{t('profile.bikeType')}</span>
+                  <span className={styles.infoValue}>{t(`bikeTypes.${profile.bikeType}`)}</span>
+                </div>
               </div>
-              <div className={styles.field}>
-                <strong>City:</strong> <span className={styles.value}>{profile.city}</span>
+              <div className={styles.infoCard}>
+                <span className={styles.icon}>📍</span>
+                <div className={styles.infoContent}>
+                  <span className={styles.infoLabel}>{t('profile.city')}</span>
+                  <span className={styles.infoValue}>{profile.city}</span>
+                </div>
               </div>
               {profile.dateOfBirth && (
-                <div className={styles.field}>
-                  <strong>Date of Birth:</strong>{' '}
-                  <span className={styles.value}>
-                    {new Date(profile.dateOfBirth).toLocaleDateString()}
-                  </span>
+                <div className={styles.infoCard}>
+                  <span className={styles.icon}>🎂</span>
+                  <div className={styles.infoContent}>
+                    <span className={styles.infoLabel}>{t('profile.dateOfBirth')}</span>
+                    <span className={styles.infoValue}>
+                      {new Date(profile.dateOfBirth).toLocaleDateString()}
+                    </span>
+                  </div>
                 </div>
               )}
               {profile.bio && (
-                <div className={styles.bioSection}>
-                  <strong>Bio:</strong>
-                  <p className={styles.bio}>{profile.bio}</p>
+                <div className={styles.infoCard}>
+                  <span className={styles.icon}>📝</span>
+                  <div className={styles.infoContent}>
+                    <span className={styles.infoLabel}>{t('profile.bio')}</span>
+                    <span className={styles.infoValue}>{profile.bio}</span>
+                  </div>
                 </div>
+              )}
+            </div>
+
+            {/* User Images Gallery */}
+            <div className={styles.imagesSection}>
+              <button
+                onClick={() => setShowGallery(!showGallery)}
+                className={styles.galleryToggle}
+              >
+                {showGallery ? '− ' : '+ '}{t('profile.images')}
+              </button>
+              {showGallery && (
+                <ProfileImageGallery
+                  userId={userId}
+                  editable={false}
+                />
               )}
             </div>
 

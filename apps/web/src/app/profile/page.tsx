@@ -89,30 +89,59 @@ export default function Profile() {
               </div>
 
               <div className={commonStyles.details}>
-                <div className={commonStyles.field}>
-                  <strong>{t('profile.name')}:</strong> {profile.name}
+                <div className={styles.infoCard}>
+                  <span className={styles.icon}>👤</span>
+                  <div className={styles.infoContent}>
+                    <span className={styles.infoLabel}>{t('profile.name')}</span>
+                    <span className={styles.infoValue}>{profile.name}</span>
+                  </div>
                 </div>
-                <div className={commonStyles.field}>
-                  <strong>{t('profile.email')}:</strong> {profile.email}
+                <div className={styles.infoCard}>
+                  <span className={styles.icon}>✉️</span>
+                  <div className={styles.infoContent}>
+                    <span className={styles.infoLabel}>{t('profile.email')}</span>
+                    <span className={styles.infoValue}>{profile.email}</span>
+                  </div>
                 </div>
-                <div className={commonStyles.field}>
-                  <strong>{t('profile.level')}:</strong> {t(`levels.${profile.level}`)}
+                <div className={styles.infoCard}>
+                  <span className={styles.icon}>⭐</span>
+                  <div className={styles.infoContent}>
+                    <span className={styles.infoLabel}>{t('profile.level')}</span>
+                    <span className={styles.infoValue}>{t(`levels.${profile.level}`)}</span>
+                  </div>
                 </div>
-                <div className={commonStyles.infoField}>
-                  <strong>{t('profile.bikeType')}:</strong> {t(`bikeTypes.${profile.bikeType}`)}
+                <div className={styles.infoCard}>
+                  <span className={styles.icon}>🚴</span>
+                  <div className={styles.infoContent}>
+                    <span className={styles.infoLabel}>{t('profile.bikeType')}</span>
+                    <span className={styles.infoValue}>{t(`bikeTypes.${profile.bikeType}`)}</span>
+                  </div>
                 </div>
-                <div className={commonStyles.infoField}>
-                  <strong>{t('profile.city')}:</strong> {profile.city}
+                <div className={styles.infoCard}>
+                  <span className={styles.icon}>📍</span>
+                  <div className={styles.infoContent}>
+                    <span className={styles.infoLabel}>{t('profile.city')}</span>
+                    <span className={styles.infoValue}>{profile.city}</span>
+                  </div>
                 </div>
                 {profile.dateOfBirth && (
-                  <div className={commonStyles.infoField}>
-                    <strong>{t('profile.dateOfBirth')}:</strong>{' '}
-                    {new Date(profile.dateOfBirth).toLocaleDateString()}
+                  <div className={styles.infoCard}>
+                    <span className={styles.icon}>🎂</span>
+                    <div className={styles.infoContent}>
+                      <span className={styles.infoLabel}>{t('profile.dateOfBirth')}</span>
+                      <span className={styles.infoValue}>
+                        {new Date(profile.dateOfBirth).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                 )}
                 {profile.bio && (
-                  <div className={commonStyles.infoField}>
-                    <strong>{t('profile.bio')}:</strong> {profile.bio}
+                  <div className={styles.infoCard}>
+                    <span className={styles.icon}>📝</span>
+                    <div className={styles.infoContent}>
+                      <span className={styles.infoLabel}>{t('profile.bio')}</span>
+                      <span className={styles.infoValue}>{profile.bio}</span>
+                    </div>
                   </div>
                 )}
               </div>

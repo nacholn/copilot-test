@@ -13,6 +13,11 @@
     "primary": "Primary",
     "secondary": "Secondary"
   },
+  "languages": {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French"
+  },
   "profile": {
     "title": "Your Profile",
     "editTitle": "Edit Profile",
