@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { createNotification } from '@/lib/notifications';
+import { emitNotification, emitMessage } from '@/lib/websocket';
 import type { ApiResponse, Message, SendMessageInput } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -128,13 +129,21 @@ export async function POST(request: NextRequest) {
       createdAt: new Date(result.rows[0].created_at),
     };
 
+    // Emit message via WebSocket
+    emitMessage(body.receiverId, {
+      id: message.id,
+      senderId: message.senderId,
+      message: message.message,
+      createdAt: message.createdAt,
+    });
+
     // Create notification for the receiver
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const messagePreview = body.message.length > 50 
       ? body.message.substring(0, 50) + '...' 
       : body.message;
     
-    await createNotification({
+    const notification = await createNotification({
       userId: body.receiverId,
       type: 'message',
       title: 'New Message',
@@ -144,6 +153,11 @@ export async function POST(request: NextRequest) {
       relatedType: 'message',
       actionUrl: `${appUrl}/chat?friendId=${body.senderId}`,
     });
+
+    // Emit notification via WebSocket
+    if (notification) {
+      emitNotification(body.receiverId, notification);
+    }
 
     return NextResponse.json<ApiResponse>(
       {

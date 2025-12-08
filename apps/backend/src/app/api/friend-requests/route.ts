@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { createNotification } from '@/lib/notifications';
 import { sendEmail, getFriendRequestEmailTemplate, getFriendRequestAcceptedEmailTemplate } from '@/lib/email';
+import { emitNotification } from '@/lib/websocket';
 import type { 
   ApiResponse, 
   SendFriendRequestInput, 
@@ -175,7 +176,7 @@ export async function POST(request: NextRequest) {
 
     // Create notification for the addressee
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    await createNotification({
+    const notification = await createNotification({
       userId: body.addresseeId,
       type: 'friend_request',
       title: 'New Friend Request',
@@ -185,6 +186,11 @@ export async function POST(request: NextRequest) {
       relatedType: 'friend_request',
       actionUrl: `${appUrl}/friend-requests`,
     });
+
+    // Emit notification via WebSocket
+    if (notification) {
+      emitNotification(body.addresseeId, notification);
+    }
 
     // Send email notification
     const emailHtml = getFriendRequestEmailTemplate(
@@ -295,7 +301,7 @@ export async function PATCH(request: NextRequest) {
 
       // Create notification for the requester
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-      await createNotification({
+      const notification = await createNotification({
         userId: friendRequest.requester_id,
         type: 'friend_request_accepted',
         title: 'Friend Request Accepted',
@@ -305,6 +311,11 @@ export async function PATCH(request: NextRequest) {
         relatedType: 'friend_request',
         actionUrl: `${appUrl}/users/${friendRequest.addressee_id}`,
       });
+
+      // Emit notification via WebSocket
+      if (notification) {
+        emitNotification(friendRequest.requester_id, notification);
+      }
 
       // Send email notification
       const emailHtml = getFriendRequestAcceptedEmailTemplate(
