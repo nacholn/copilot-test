@@ -1,6 +1,7 @@
 .main {
   min-height: 100vh;
   padding: 2rem;
+  padding-top: var(--header-height); /* Account for fixed header */
   display: flex;
   align-items: center;
   justify-content: center;

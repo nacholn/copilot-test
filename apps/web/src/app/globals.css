@@ -8,9 +8,9 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--tinder-light);
@@ -28,13 +28,14 @@ button {
 
 /* Tinder-inspired CSS variables */
 :root {
-  --tinder-primary: #FE3C72;
-  --tinder-secondary: #FF6036;
-  --tinder-gradient: linear-gradient(135deg, #FE3C72 0%, #FF6036 100%);
-  --tinder-dark: #21232D;
+  --tinder-primary: #fe3c72;
+  --tinder-secondary: #ff6036;
+  --tinder-gradient: linear-gradient(135deg, #fe3c72 0%, #ff6036 100%);
+  --tinder-dark: #21232d;
   --tinder-text: #424242;
-  --tinder-light: #F8F9FA;
-  --tinder-white: #FFFFFF;
+  --tinder-light: #f8f9fa;
+  --tinder-white: #ffffff;
   --tinder-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   --tinder-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.18);
+  --header-height: 80px; /* Fixed header height for consistent spacing */
 }

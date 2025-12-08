@@ -12,6 +12,22 @@ const withPWA = require('next-pwa')({
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@cyclists/config', '@cyclists/ui'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
   async rewrites() {
     return [
       {

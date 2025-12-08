@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
 import { type Profile } from '@cyclists/config';
 import { LocationPicker } from './LocationPicker';
+import { ImageUpload } from './ImageUpload';
 import styles from '../styles/common.module.css';
 
 interface ProfileFormProps {
@@ -119,7 +120,6 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       {error && <div className={styles.error}>{error}</div>}
-
       <div className={styles.field}>
         <label>Email</label>
         <input
@@ -129,7 +129,6 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           required
         />
       </div>
-
       <div className={styles.field}>
         <label>Name</label>
         <input
@@ -139,7 +138,6 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           required
         />
       </div>
-
       <div className={styles.field}>
         <label>Cycling Level</label>
         <select
@@ -153,7 +151,6 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           <option value="expert">Expert</option>
         </select>
       </div>
-
       <div className={styles.field}>
         <label>Bike Type</label>
         <select
@@ -169,7 +166,6 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           <option value="other">Other</option>
         </select>
       </div>
-
       <div className={styles.field}>
         <label>City</label>
         <LocationPicker
@@ -181,7 +177,6 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           }
         />
       </div>
-
       <div className={styles.field}>
         <label>Date of Birth (Optional)</label>
         <input
@@ -189,33 +184,16 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           value={formData.dateOfBirth}
           onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
         />
-      </div>
-
+      </div>{' '}
       <div className={styles.field}>
-        <label>Profile Image URL (Optional)</label>
-        <input
-          type="url"
-          value={formData.avatar}
-          onChange={(e) => setFormData({ ...formData, avatar: e.target.value })}
-          placeholder="https://example.com/your-image.jpg"
+        <label>Profile Image</label>
+        <ImageUpload
+          currentImage={formData.avatar}
+          folder="cyclists/profiles"
+          onImageChange={(imageUrl) => setFormData({ ...formData, avatar: imageUrl || '' })}
+          size="medium"
         />
-        {formData.avatar && (
-          <div style={{ marginTop: '0.5rem' }}>
-            <div className={styles.avatar}>
-              <div className={styles.avatarPlaceholder} style={{ width: '80px', height: '80px', fontSize: '2rem' }}>
-                <img src={formData.avatar} alt="Preview" onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML = '<span>❌</span>';
-                }} />
-              </div>
-            </div>
-            <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#666', marginTop: '0.5rem' }}>
-              Image preview
-            </p>
-          </div>
-        )}
       </div>
-
       <div className={styles.field}>
         <label>Bio (Optional)</label>
         <textarea
@@ -225,7 +203,6 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           rows={4}
         />
       </div>
-
       <button type="submit" disabled={loading} className={styles.submitButton}>
         {loading ? 'Saving...' : initialProfile ? 'Update Profile' : 'Create Profile'}
       </button>

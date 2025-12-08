@@ -1,6 +1,7 @@
 .main {
   min-height: 100vh;
   padding: 1rem;
+  padding-top: var(--header-height); /* Account for fixed header */
   background: var(--tinder-gradient);
   animation: fadeIn 0.5s ease-in;
 }
@@ -73,7 +74,7 @@
   background: var(--tinder-light);
   border-radius: 12px;
   margin-bottom: 0.75rem;
-  border: 1px solid #E8E8E8;
+  border: 1px solid #e8e8e8;
 }
 
 .field:last-child {
@@ -96,7 +97,7 @@
   background: var(--tinder-light);
   border-radius: 12px;
   margin-top: 1rem;
-  border: 1px solid #E8E8E8;
+  border: 1px solid #e8e8e8;
 }
 
 .bioSection strong {
@@ -154,7 +155,7 @@
 }
 
 .addFriendButton:disabled {
-  background: #CCC;
+  background: #ccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -176,7 +177,7 @@
 }
 
 .removeFriendButton:disabled {
-  background: #CCC;
+  background: #ccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;

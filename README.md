@@ -22,6 +22,7 @@ cyclists-social-network/
 
 - **Authentication API**: Register, login, password recovery
 - **Profile Management**: Create and update user profiles
+- **Image Upload API**: Cloudinary integration for profile pictures
 - **Supabase Integration**: User authentication with Supabase
 - **PostgreSQL Database**: Profile storage with rich schema
 - **Next.js API Routes**: RESTful API endpoints
@@ -30,7 +31,8 @@ cyclists-social-network/
 
 - **Progressive Web App**: Offline-capable with service worker
 - **Authentication UI**: Login, register, password recovery flows
-- **Profile Management**: View and edit user profiles
+- **Profile Management**: View and edit user profiles with image upload
+- **Drag-Drop Image Upload**: Intuitive profile picture management
 - **Responsive Design**: Mobile-first approach
 - **Next.js 14**: Latest App Router features
 
@@ -85,8 +87,13 @@ Edit `apps/backend/.env`:
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 DATABASE_URL=postgresql://user:password@host:5432/database
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
+
+> **📸 Image Upload Setup**: For profile picture uploads, you'll need a [Cloudinary account](https://cloudinary.com). See [CLOUDINARY_SETUP.md](./CLOUDINARY_SETUP.md) for detailed instructions.
 
 #### Web (.env)
 
