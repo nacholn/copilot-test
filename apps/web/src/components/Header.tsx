@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { LanguageSelector } from './LanguageSelector';
 import Swal from 'sweetalert2';
 import styles from './header.module.css';
 
@@ -64,6 +65,11 @@ export function Header() {
           <span className={styles.logoIcon}>🚴</span>
           <span className={styles.logoText}>Cyclists</span>
         </Link>
+        
+        {/* Language Selector */}
+        <div className={styles.languageWrapper}>
+          <LanguageSelector />
+        </div>
         
         {/* Hamburger button for mobile */}
         <button 

@@ -1,0 +1,32 @@
+.languageSelector {
+  display: inline-block;
+}
+
+.select {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--tinder-text);
+}
+
+.select:hover {
+  border-color: var(--tinder-primary);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--tinder-primary);
+  box-shadow: 0 0 0 3px rgba(254, 60, 114, 0.1);
+}
+
+@media (max-width: 768px) {
+  .select {
+    font-size: 0.8125rem;
+    padding: 0.4rem 0.6rem;
+  }
+}

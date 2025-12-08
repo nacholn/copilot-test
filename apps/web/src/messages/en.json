@@ -1,0 +1,70 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "signOut": "Sign Out",
+    "change": "Change",
+    "remove": "Remove",
+    "upload": "Upload",
+    "primary": "Primary",
+    "secondary": "Secondary"
+  },
+  "profile": {
+    "title": "Your Profile",
+    "editTitle": "Edit Profile",
+    "loadingProfile": "Loading profile...",
+    "welcomeMessage": "Welcome! Let's create your cycling profile.",
+    "name": "Name",
+    "email": "Email",
+    "level": "Level",
+    "bikeType": "Bike Type",
+    "city": "City",
+    "dateOfBirth": "Date of Birth",
+    "bio": "Bio",
+    "avatar": "Avatar",
+    "images": "Profile Images",
+    "addImage": "Add Image",
+    "primaryImage": "Primary Image",
+    "secondaryImages": "Additional Images",
+    "noSecondaryImages": "No additional images yet",
+    "editProfile": "Edit Profile",
+    "backToHome": "Back to Home",
+    "createProfile": "Create Profile",
+    "updateProfile": "Update Profile"
+  },
+  "levels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  },
+  "bikeTypes": {
+    "road": "Road",
+    "mountain": "Mountain",
+    "hybrid": "Hybrid",
+    "electric": "Electric",
+    "gravel": "Gravel",
+    "other": "Other"
+  },
+  "navigation": {
+    "discover": "Discover",
+    "friends": "Friends",
+    "chat": "Chat",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "signUp": "Sign Up"
+  },
+  "imageUpload": {
+    "clickToUpload": "Click to upload or drag and drop an image",
+    "fileFormat": "PNG, JPG, GIF up to 10MB",
+    "uploading": "Uploading...",
+    "uploadFailed": "Upload failed",
+    "fileSizeError": "File size must be less than 10MB",
+    "fileTypeError": "Please select an image file"
+  }
+}

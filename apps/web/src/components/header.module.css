@@ -28,6 +28,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+.languageWrapper {
+  margin-left: auto;
+  margin-right: 1rem;
 }
 
 .logo {
@@ -205,6 +211,10 @@
 
   .logoText {
     display: none;
+  }
+
+  .languageWrapper {
+    margin-right: 0.5rem;
   }
 
   /* Show hamburger on mobile */

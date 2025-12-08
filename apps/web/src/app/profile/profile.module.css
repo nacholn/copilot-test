@@ -25,3 +25,12 @@
     margin: 1rem auto 0;
   }
 }
+
+/* Images Section */
+.imagesSection {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--tinder-light);
+  border-radius: 16px;
+  border: 1px solid #E8E8E8;
+}

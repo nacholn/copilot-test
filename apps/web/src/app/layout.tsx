@@ -1,5 +1,6 @@
 import './globals.css';
 import { AuthProvider } from '../contexts/AuthContext';
+import { LanguageProvider } from '../contexts/LanguageContext';
 import { Header } from '../components/Header';
 
 export const metadata = {
@@ -17,10 +18,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#FE3C72" />
       </head>
       <body>
-        <AuthProvider>
-          <Header />
-          {children}
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <Header />
+            {children}
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

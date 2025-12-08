@@ -1,0 +1,70 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Volver",
+    "signOut": "Cerrar Sesión",
+    "change": "Cambiar",
+    "remove": "Quitar",
+    "upload": "Subir",
+    "primary": "Principal",
+    "secondary": "Secundaria"
+  },
+  "profile": {
+    "title": "Tu Perfil",
+    "editTitle": "Editar Perfil",
+    "loadingProfile": "Cargando perfil...",
+    "welcomeMessage": "¡Bienvenido! Vamos a crear tu perfil de ciclista.",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "level": "Nivel",
+    "bikeType": "Tipo de Bicicleta",
+    "city": "Ciudad",
+    "dateOfBirth": "Fecha de Nacimiento",
+    "bio": "Biografía",
+    "avatar": "Avatar",
+    "images": "Imágenes de Perfil",
+    "addImage": "Agregar Imagen",
+    "primaryImage": "Imagen Principal",
+    "secondaryImages": "Imágenes Adicionales",
+    "noSecondaryImages": "Aún no hay imágenes adicionales",
+    "editProfile": "Editar Perfil",
+    "backToHome": "Volver al Inicio",
+    "createProfile": "Crear Perfil",
+    "updateProfile": "Actualizar Perfil"
+  },
+  "levels": {
+    "beginner": "Principiante",
+    "intermediate": "Intermedio",
+    "advanced": "Avanzado",
+    "expert": "Experto"
+  },
+  "bikeTypes": {
+    "road": "Ruta",
+    "mountain": "Montaña",
+    "hybrid": "Híbrida",
+    "electric": "Eléctrica",
+    "gravel": "Gravel",
+    "other": "Otra"
+  },
+  "navigation": {
+    "discover": "Descubrir",
+    "friends": "Amigos",
+    "chat": "Chat",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión",
+    "login": "Iniciar Sesión",
+    "signUp": "Registrarse"
+  },
+  "imageUpload": {
+    "clickToUpload": "Haz clic para subir o arrastra y suelta una imagen",
+    "fileFormat": "PNG, JPG, GIF hasta 10MB",
+    "uploading": "Subiendo...",
+    "uploadFailed": "Error al subir",
+    "fileSizeError": "El tamaño del archivo debe ser menor a 10MB",
+    "fileTypeError": "Por favor selecciona un archivo de imagen"
+  }
+}
