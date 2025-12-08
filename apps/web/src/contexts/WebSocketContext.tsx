@@ -87,8 +87,8 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     // Handle new message
     newSocket.on('new_message', (message: any) => {
       console.log('[WebSocket] New message received:', message);
-      // Call all registered callbacks
-      Array.from(messageCallbacks).forEach((callback) => callback(message));
+      // Call all registered callbacks - Set.forEach is more efficient
+      messageCallbacks.forEach((callback) => callback(message));
     });
 
     // Handle user status changes
@@ -134,7 +134,12 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     try {
       // Configurable notification limit
       const NOTIFICATION_LIMIT = 20;
-      const response = await fetch(`/api/notifications?userId=${user.id}&limit=${NOTIFICATION_LIMIT}`);
+      // Use URLSearchParams for safe URL encoding
+      const params = new URLSearchParams({
+        userId: user.id,
+        limit: NOTIFICATION_LIMIT.toString(),
+      });
+      const response = await fetch(`/api/notifications?${params}`);
       const data = await response.json();
       if (data.success) {
         setNotifications(data.data);

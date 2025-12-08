@@ -37,6 +37,17 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Validate type parameter with whitelist to prevent SQL injection
+    if (type !== 'sent' && type !== 'received') {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Invalid type parameter. Must be "sent" or "received"',
+        },
+        { status: 400 }
+      );
+    }
+
     const userField = type === 'sent' ? 'requester_id' : 'addressee_id';
     const profileJoinField = type === 'sent' ? 'addressee_id' : 'requester_id';
 
