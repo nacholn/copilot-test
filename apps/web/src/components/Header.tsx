@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { LanguageSelector } from './LanguageSelector';
 import Swal from 'sweetalert2';
 import styles from './header.module.css';
 
@@ -65,6 +66,11 @@ export function Header() {
           <span className={styles.logoText}>Cyclists</span>
         </Link>
         
+        {/* Language Selector */}
+        <div className={styles.languageWrapper}>
+          <LanguageSelector />
+        </div>
+        
         {/* Hamburger button for mobile */}
         <button 
           className={`${styles.hamburger} ${isMenuOpen ? styles.hamburgerActive : ''}`}
@@ -85,6 +91,9 @@ export function Header() {
               </Link>
               <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
                 Friends
+              </Link>
+              <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
+                Chat
               </Link>
               <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
                 Profile

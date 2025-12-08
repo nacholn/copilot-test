@@ -1,0 +1,75 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "back": "Retour",
+    "signOut": "Se Déconnecter",
+    "change": "Changer",
+    "remove": "Retirer",
+    "upload": "Télécharger",
+    "primary": "Principale",
+    "secondary": "Secondaire"
+  },
+  "languages": {
+    "en": "Anglais",
+    "es": "Espagnol",
+    "fr": "Français"
+  },
+  "profile": {
+    "title": "Votre Profil",
+    "editTitle": "Modifier le Profil",
+    "loadingProfile": "Chargement du profil...",
+    "welcomeMessage": "Bienvenue ! Créons votre profil de cycliste.",
+    "name": "Nom",
+    "email": "E-mail",
+    "level": "Niveau",
+    "bikeType": "Type de Vélo",
+    "city": "Ville",
+    "dateOfBirth": "Date de Naissance",
+    "bio": "Biographie",
+    "avatar": "Avatar",
+    "images": "Images de Profil",
+    "addImage": "Ajouter une Image",
+    "primaryImage": "Image Principale",
+    "secondaryImages": "Images Supplémentaires",
+    "noSecondaryImages": "Pas encore d'images supplémentaires",
+    "editProfile": "Modifier le Profil",
+    "backToHome": "Retour à l'Accueil",
+    "createProfile": "Créer le Profil",
+    "updateProfile": "Mettre à Jour le Profil"
+  },
+  "levels": {
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "expert": "Expert"
+  },
+  "bikeTypes": {
+    "road": "Route",
+    "mountain": "VTT",
+    "hybrid": "Hybride",
+    "electric": "Électrique",
+    "gravel": "Gravel",
+    "other": "Autre"
+  },
+  "navigation": {
+    "discover": "Découvrir",
+    "friends": "Amis",
+    "chat": "Chat",
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "signUp": "S'inscrire"
+  },
+  "imageUpload": {
+    "clickToUpload": "Cliquez pour télécharger ou faites glisser une image",
+    "fileFormat": "PNG, JPG, GIF jusqu'à 10MB",
+    "uploading": "Téléchargement...",
+    "uploadFailed": "Échec du téléchargement",
+    "fileSizeError": "La taille du fichier doit être inférieure à 10MB",
+    "fileTypeError": "Veuillez sélectionner un fichier image"
+  }
+}

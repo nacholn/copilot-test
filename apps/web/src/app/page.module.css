@@ -1,6 +1,6 @@
 .main {
   min-height: 100vh;
-  padding-top: 80px;
+  padding-top: var(--header-height);
   background: var(--tinder-light);
   animation: fadeIn 0.5s ease-in;
 }

@@ -1,6 +1,7 @@
 .main {
   min-height: 100vh;
   padding: 1rem;
+  padding-top: var(--header-height); /* Account for fixed header */
   background: var(--tinder-gradient);
   animation: fadeIn 0.5s ease-in;
 }
@@ -65,53 +66,86 @@
   margin: 2rem 0;
 }
 
-.field {
+/* Info Card Layout - matching profile page */
+.infoCard {
   display: flex;
-  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  border: 1px solid #E8E8E8;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.infoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--tinder-primary);
+}
+
+.icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  min-width: 1.5rem;
+  display: flex;
   align-items: center;
-  padding: 1rem;
-  background: var(--tinder-light);
-  border-radius: 12px;
-  margin-bottom: 0.75rem;
-  border: 1px solid #E8E8E8;
+  justify-content: center;
 }
 
-.field:last-child {
-  margin-bottom: 0;
+.infoContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.field strong {
-  color: var(--tinder-primary);
-  font-weight: 700;
-}
-
-.value {
+.infoLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
   color: var(--tinder-text);
-  text-transform: capitalize;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+.infoValue {
+  font-size: 1rem;
   font-weight: 500;
+  color: var(--tinder-dark);
 }
 
-.bioSection {
-  padding: 1.25rem;
+/* Images Section */
+.imagesSection {
+  margin: 2rem 0;
+  padding: 1.5rem;
   background: var(--tinder-light);
-  border-radius: 12px;
-  margin-top: 1rem;
+  border-radius: 16px;
   border: 1px solid #E8E8E8;
 }
 
-.bioSection strong {
-  display: block;
-  margin-bottom: 0.75rem;
+.galleryToggle {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
   color: var(--tinder-primary);
+  border: 2px solid var(--tinder-primary);
+  border-radius: 28px;
+  font-size: 0.9375rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
 }
 
-.bio {
-  margin: 0;
-  color: var(--tinder-text);
-  line-height: 1.6;
-  text-align: left;
-  font-weight: 400;
+.galleryToggle:hover {
+  background: var(--tinder-primary);
+  color: white;
+  transform: scale(1.02);
 }
 
 .actions {
@@ -154,7 +188,7 @@
 }
 
 .addFriendButton:disabled {
-  background: #CCC;
+  background: #ccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -176,7 +210,7 @@
 }
 
 .removeFriendButton:disabled {
-  background: #CCC;
+  background: #ccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -224,6 +258,22 @@
   .removeFriendButton,
   .backButton {
     width: 100%;
+  }
+
+  .infoCard {
+    padding: 0.875rem 1rem;
+  }
+
+  .icon {
+    font-size: 1.25rem;
+  }
+
+  .infoLabel {
+    font-size: 0.6875rem;
+  }
+
+  .infoValue {
+    font-size: 0.9375rem;
   }
 }
 

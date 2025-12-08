@@ -1,6 +1,7 @@
 .main {
   min-height: 100vh;
   padding: 1rem;
+  padding-top: var(--header-height); /* Account for fixed header */
   background: var(--tinder-gradient);
   animation: fadeIn 0.5s ease-in;
 }

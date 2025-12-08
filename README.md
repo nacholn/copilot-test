@@ -22,6 +22,7 @@ cyclists-social-network/
 
 - **Authentication API**: Register, login, password recovery
 - **Profile Management**: Create and update user profiles
+- **Image Upload API**: Cloudinary integration for profile pictures
 - **Supabase Integration**: User authentication with Supabase
 - **PostgreSQL Database**: Profile storage with rich schema
 - **Next.js API Routes**: RESTful API endpoints
@@ -30,7 +31,8 @@ cyclists-social-network/
 
 - **Progressive Web App**: Offline-capable with service worker
 - **Authentication UI**: Login, register, password recovery flows
-- **Profile Management**: View and edit user profiles
+- **Profile Management**: View and edit user profiles with image upload
+- **Drag-Drop Image Upload**: Intuitive profile picture management
 - **Responsive Design**: Mobile-first approach
 - **Next.js 14**: Latest App Router features
 
@@ -85,8 +87,13 @@ Edit `apps/backend/.env`:
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 DATABASE_URL=postgresql://user:password@host:5432/database
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
+
+> **📸 Image Upload Setup**: For profile picture uploads, you'll need a [Cloudinary account](https://cloudinary.com). See [CLOUDINARY_SETUP.md](./CLOUDINARY_SETUP.md) for detailed instructions.
 
 #### Web (.env)
 
@@ -150,6 +157,8 @@ After setting up the database, run migrations:
 cd apps/backend
 npm run migrate:up
 ```
+
+> **📝 Note**: Migration files use `.mjs` extension with ES module syntax for optimal performance and to avoid Node.js module warnings.
 
 The profile schema includes:
 
@@ -297,14 +306,26 @@ The `turbo.json` defines:
 - **lint**: Runs linting across the monorepo
 - **test**: Runs tests with proper dependencies
 
+## ✨ Recent Updates
+
+### New Features Added
+- ✅ **Cloudinary Integration**: Profile images now stored securely in the cloud with automatic optimization
+- ✅ **Multiple Images**: Users can upload and manage multiple profile images
+- ✅ **Friend Chat System**: Real-time messaging between friends with unread indicators
+- ✅ **Loading States**: Professional loading indicators throughout the app
+- ✅ **Responsive Profile Edit**: Two-column layout on larger screens for better UX
+- ✅ **Fixed Header**: Improved spacing to prevent content overlap
+
+See [NEW_FEATURES.md](./NEW_FEATURES.md) for detailed documentation.
+
 ## 🌟 Future Enhancements
 
 - [ ] Social features (posts, comments, likes)
 - [ ] Route sharing and discovery
-- [ ] Real-time messaging
+- [ ] WebSocket-based real-time messaging
 - [ ] Activity tracking and statistics
 - [ ] Group rides and events
-- [ ] Photo galleries
+- [ ] Photo galleries with multiple images
 - [ ] Map integration for routes
 - [ ] Push notifications
 

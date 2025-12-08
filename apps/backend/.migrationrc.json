@@ -1,0 +1,7 @@
+{
+  "migrations-dir": "migrations",
+  "migrations-table": "pgmigrations",
+  "migration-file-language": "js",
+  "migration-filename-format": "timestamp",
+  "template-file-name": "template.mjs"
+}
