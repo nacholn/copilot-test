@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { useWebSocket } from '../contexts/WebSocketContext';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from '../hooks/useTranslations';
 import { LanguageSelector } from './LanguageSelector';
 import Swal from 'sweetalert2';
 import styles from './header.module.css';
@@ -13,6 +14,7 @@ export function Header() {
   const { user, signOut } = useAuth();
   const { unreadNotificationCount } = useWebSocket();
   const router = useRouter();
+  const { t } = useTranslations();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -89,16 +91,16 @@ export function Header() {
           {user ? (
             <>
               <Link href="/users" className={styles.navLink} onClick={closeMenu}>
-                Discover
+                {t('navigation.discover')}
               </Link>
               <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
-                Friends
+                {t('navigation.friends')}
               </Link>
               <Link href="/friend-requests" className={styles.navLink} onClick={closeMenu}>
-                Requests
+                {t('navigation.requests')}
               </Link>
               <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
-                Chat
+                {t('navigation.chat')}
               </Link>
               <Link href="/notifications" className={styles.navLinkNotifications} onClick={closeMenu}>
                 <span>🔔</span>
@@ -107,19 +109,19 @@ export function Header() {
                 )}
               </Link>
               <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
-                Profile
+                {t('navigation.profile')}
               </Link>
               <button onClick={handleSignOut} className={styles.logoutButton}>
-                Logout
+                {t('navigation.logout')}
               </button>
             </>
           ) : (
             <>
               <Link href="/login" className={styles.loginButton} onClick={closeMenu}>
-                Login
+                {t('navigation.login')}
               </Link>
               <Link href="/register" className={styles.signupButton} onClick={closeMenu}>
-                Sign Up
+                {t('navigation.signUp')}
               </Link>
             </>
           )}

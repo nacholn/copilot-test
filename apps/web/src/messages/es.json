@@ -11,12 +11,76 @@
     "remove": "Quitar",
     "upload": "Subir",
     "primary": "Principal",
-    "secondary": "Secundaria"
+    "secondary": "Secundaria",
+    "yes": "Sí",
+    "no": "No",
+    "error": "Error",
+    "success": "Éxito"
   },
   "languages": {
     "en": "Inglés",
     "es": "Español",
     "fr": "Francés"
+  },
+  "home": {
+    "heroTitle": "Tu Aventura en Bicicleta Comienza Aquí",
+    "heroDescription": "Únete a miles de ciclistas compartiendo rutas, haciendo amigos y superando sus límites juntos",
+    "discoverCyclists": "Descubrir Ciclistas",
+    "myProfile": "Mi Perfil",
+    "joinNow": "Únete Ahora",
+    "signIn": "Iniciar Sesión",
+    "featuresTitle": "Todo lo que Necesitas",
+    "discoverRoutes": "Descubrir Rutas",
+    "discoverRoutesDesc": "Explora rutas ciclistas panorámicas compartidas por la comunidad. Desde senderos de montaña hasta carreteras costeras.",
+    "connect": "Conectar",
+    "connectDesc": "Encuentra compañeros de ciclismo cerca de ti. Encuentra ciclistas según el nivel de habilidad y tipo de bicicleta.",
+    "trackProgress": "Seguir Progreso",
+    "trackProgressDesc": "Monitorea tus recorridos, establece objetivos y celebra logros con tu comunidad ciclista.",
+    "communityTitle": "Únete a Nuestra Comunidad",
+    "activeCyclists": "Ciclistas Activos",
+    "routesShared": "Rutas Compartidas",
+    "cities": "Ciudades",
+    "allTypesTitle": "Todos los Tipos de Ciclismo",
+    "mountainBiking": "Ciclismo de Montaña",
+    "mountainBikingDesc": "Conquista senderos y terrenos difíciles",
+    "roadCycling": "Ciclismo de Ruta",
+    "roadCyclingDesc": "Velocidad y resistencia en carreteras pavimentadas",
+    "gravelRiding": "Ciclismo Gravel",
+    "gravelRidingDesc": "Aventura en terreno mixto",
+    "eBiking": "Bicicleta Eléctrica",
+    "eBikingDesc": "Diversión en bicicleta con asistencia eléctrica",
+    "ctaTitle": "¿Listo para Rodar?",
+    "ctaDescription": "Crea tu perfil y comienza a conectar con ciclistas hoy",
+    "getStartedFree": "Comenzar Gratis"
+  },
+  "login": {
+    "title": "Bienvenido de Nuevo",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "signIn": "Iniciar Sesión",
+    "signingIn": "Iniciando sesión...",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes una cuenta?",
+    "createOne": "Crea una"
+  },
+  "register": {
+    "title": "Crear Cuenta",
+    "email": "Correo Electrónico",
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre completo",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "cyclingLevel": "Nivel de Ciclismo",
+    "bikeType": "Tipo de Bicicleta",
+    "city": "Ciudad",
+    "dateOfBirth": "Fecha de Nacimiento (Opcional)",
+    "createAccount": "Crear Cuenta",
+    "creatingAccount": "Creando Cuenta...",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signInLink": "Iniciar sesión",
+    "passwordsNotMatch": "Las contraseñas no coinciden",
+    "registrationFailed": "Error al registrarse",
+    "errorOccurred": "Ocurrió un error. Por favor, intenta de nuevo."
   },
   "profile": {
     "title": "Tu Perfil",
@@ -41,6 +105,51 @@
     "createProfile": "Crear Perfil",
     "updateProfile": "Actualizar Perfil"
   },
+  "users": {
+    "title": "Todos los Usuarios",
+    "searchPlaceholder": "Buscar por nombre, correo, ciudad o biografía...",
+    "allLevels": "Todos los Niveles",
+    "allBikeTypes": "Todos los Tipos de Bicicleta",
+    "filterByCity": "Filtrar por ciudad",
+    "noUsersFound": "No se encontraron usuarios",
+    "viewProfile": "Ver Perfil"
+  },
+  "friends": {
+    "title": "Mis Amigos",
+    "noFriends": "Aún no tienes amigos",
+    "startDiscovering": "Comienza a descubrir ciclistas",
+    "removeFriendTitle": "¿Eliminar Amigo?",
+    "removeFriendText": "¿Estás seguro de que quieres eliminar a este amigo de tu lista?",
+    "yesRemove": "Sí, eliminar",
+    "removed": "¡Eliminado!",
+    "friendRemoved": "El amigo ha sido eliminado de tu lista.",
+    "failedToRemove": "Error al eliminar amigo",
+    "failedToRemoveTryAgain": "Error al eliminar amigo. Por favor, intenta de nuevo.",
+    "message": "Mensaje"
+  },
+  "friendRequests": {
+    "title": "Solicitudes de Amistad",
+    "received": "Recibidas",
+    "sent": "Enviadas",
+    "noReceivedRequests": "No hay solicitudes de amistad pendientes",
+    "noSentRequests": "No hay solicitudes enviadas pendientes",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "cancel": "Cancelar"
+  },
+  "chat": {
+    "title": "Chat",
+    "selectFriend": "Selecciona un amigo para comenzar a chatear",
+    "typePlaceholder": "Escribe un mensaje...",
+    "send": "Enviar",
+    "noMessages": "Aún no hay mensajes",
+    "startConversation": "¡Comienza una conversación!"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "noNotifications": "Aún no hay notificaciones",
+    "markAllRead": "Marcar todas como leídas"
+  },
   "levels": {
     "beginner": "Principiante",
     "intermediate": "Intermedio",
@@ -58,6 +167,7 @@
   "navigation": {
     "discover": "Descubrir",
     "friends": "Amigos",
+    "requests": "Solicitudes",
     "chat": "Chat",
     "profile": "Perfil",
     "logout": "Cerrar Sesión",

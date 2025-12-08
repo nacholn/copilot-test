@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../../styles/common.module.css';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslations } from '../../hooks/useTranslations';
 
 export default function Login() {
   const router = useRouter();
   const { user, signIn, loading: authLoading } = useAuth();
+  const { t } = useTranslations();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -26,7 +28,7 @@ export default function Login() {
     return (
       <main className={styles.main}>
         <div className={styles.containerSmall}>
-          <p>Loading...</p>
+          <p>{t('common.loading')}</p>
         </div>
       </main>
     );
@@ -51,7 +53,7 @@ export default function Login() {
 
       // The useEffect will handle the redirect once user state is updated
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError(t('register.errorOccurred'));
     } finally {
       setLoading(false);
     }
@@ -60,12 +62,12 @@ export default function Login() {
   return (
     <main className={styles.main}>
       <div className={styles.containerSmall}>
-        <h1 className={styles.title}>Welcome Back</h1>
+        <h1 className={styles.title}>{t('login.title')}</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className={styles.error}>{error}</div>}
 
           <div className={styles.field}>
-            <label>Email</label>
+            <label>{t('login.email')}</label>
             <input
               type="email"
               required
@@ -75,7 +77,7 @@ export default function Login() {
           </div>
 
           <div className={styles.field}>
-            <label>Password</label>
+            <label>{t('login.password')}</label>
             <input
               type="password"
               required
@@ -85,15 +87,15 @@ export default function Login() {
           </div>
 
           <button type="submit" disabled={loading} className={styles.submitButton}>
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('login.signingIn') : t('login.signIn')}
           </button>
 
           <div className={styles.links}>
-            <a href="/recover">Forgot password?</a>
+            <a href="/recover">{t('login.forgotPassword')}</a>
           </div>
 
           <p className={styles.footer}>
-            Don&apos;t have an account? <a href="/register">Create one</a>
+            {t('login.noAccount')} <a href="/register">{t('login.createOne')}</a>
           </p>
         </form>
       </div>

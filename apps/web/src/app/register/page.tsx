@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../../styles/common.module.css';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslations } from '../../hooks/useTranslations';
 import { LocationPicker } from '../../components/LocationPicker';
 
 export default function Register() {
   const router = useRouter();
   const { user, signUp, loading: authLoading } = useAuth();
+  const { t } = useTranslations();
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -35,7 +37,7 @@ export default function Register() {
     return (
       <main className={styles.main}>
         <div className={styles.container}>
-          <p>Loading...</p>
+          <p>{t('common.loading')}</p>
         </div>
       </main>
     );
@@ -50,7 +52,7 @@ export default function Register() {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('register.passwordsNotMatch'));
       return;
     }
 
@@ -80,14 +82,14 @@ export default function Register() {
       const data = await response.json();
 
       if (!data.success) {
-        setError(data.error || 'Registration failed');
+        setError(data.error || t('register.registrationFailed'));
         return;
       }
 
       // After successful registration, the user should be automatically logged in
       // The auth context will pick up the session change from Supabase
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError(t('register.errorOccurred'));
     } finally {
       setLoading(false);
     }
@@ -96,12 +98,12 @@ export default function Register() {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Create Account</h1>
+        <h1 className={styles.title}>{t('register.title')}</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className={styles.error}>{error}</div>}
 
           <div className={styles.field}>
-            <label>Email</label>
+            <label>{t('register.email')}</label>
             <input
               type="email"
               required
@@ -111,18 +113,18 @@ export default function Register() {
           </div>
 
           <div className={styles.field}>
-            <label>Name</label>
+            <label>{t('register.name')}</label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Your full name"
+              placeholder={t('register.namePlaceholder')}
             />
           </div>
 
           <div className={styles.field}>
-            <label>Password</label>
+            <label>{t('register.password')}</label>
             <input
               type="password"
               required
@@ -133,7 +135,7 @@ export default function Register() {
           </div>
 
           <div className={styles.field}>
-            <label>Confirm Password</label>
+            <label>{t('register.confirmPassword')}</label>
             <input
               type="password"
               required
@@ -143,35 +145,35 @@ export default function Register() {
           </div>
 
           <div className={styles.field}>
-            <label>Cycling Level</label>
+            <label>{t('register.cyclingLevel')}</label>
             <select
               value={formData.level}
               onChange={(e) => setFormData({ ...formData, level: e.target.value as any })}
             >
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-              <option value="expert">Expert</option>
+              <option value="beginner">{t('levels.beginner')}</option>
+              <option value="intermediate">{t('levels.intermediate')}</option>
+              <option value="advanced">{t('levels.advanced')}</option>
+              <option value="expert">{t('levels.expert')}</option>
             </select>
           </div>
 
           <div className={styles.field}>
-            <label>Bike Type</label>
+            <label>{t('register.bikeType')}</label>
             <select
               value={formData.bikeType}
               onChange={(e) => setFormData({ ...formData, bikeType: e.target.value as any })}
             >
-              <option value="road">Road</option>
-              <option value="mountain">Mountain</option>
-              <option value="hybrid">Hybrid</option>
-              <option value="electric">Electric</option>
-              <option value="gravel">Gravel</option>
-              <option value="other">Other</option>
+              <option value="road">{t('bikeTypes.road')}</option>
+              <option value="mountain">{t('bikeTypes.mountain')}</option>
+              <option value="hybrid">{t('bikeTypes.hybrid')}</option>
+              <option value="electric">{t('bikeTypes.electric')}</option>
+              <option value="gravel">{t('bikeTypes.gravel')}</option>
+              <option value="other">{t('bikeTypes.other')}</option>
             </select>
           </div>
 
           <div className={styles.field}>
-            <label>City</label>
+            <label>{t('register.city')}</label>
             <LocationPicker
               value={formData.city}
               latitude={formData.latitude}
@@ -183,7 +185,7 @@ export default function Register() {
           </div>
 
           <div className={styles.field}>
-            <label>Date of Birth (Optional)</label>
+            <label>{t('register.dateOfBirth')}</label>
             <input
               type="date"
               value={formData.dateOfBirth}
@@ -192,11 +194,11 @@ export default function Register() {
           </div>
 
           <button type="submit" disabled={loading} className={styles.submitButton}>
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? t('register.creatingAccount') : t('register.createAccount')}
           </button>
 
           <p className={styles.footer}>
-            Already have an account? <a href="/login">Sign in</a>
+            {t('register.alreadyHaveAccount')} <a href="/login">{t('register.signInLink')}</a>
           </p>
         </form>
       </div>
