@@ -8,6 +8,8 @@ import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Avatar } from '../../components/Avatar';
 import { Loader } from '../../components/Loader';
+import { FilterBikeTypeSelector } from '../../components/FilterBikeTypeSelector';
+import { FilterCyclingLevelSelector } from '../../components/FilterCyclingLevelSelector';
 import type { Profile } from '@cyclists/config';
 import styles from './users.module.css';
 
@@ -22,32 +24,32 @@ export default function Users() {
   const [cityFilter, setCityFilter] = useState('');
 
   useEffect(() => {
-    fetchUsers();
-  }, [searchQuery, levelFilter, bikeTypeFilter, cityFilter]);
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const params = new URLSearchParams();
+        if (searchQuery) params.append('query', searchQuery);
+        if (levelFilter) params.append('level', levelFilter);
+        if (bikeTypeFilter) params.append('bikeType', bikeTypeFilter);
+        if (cityFilter) params.append('city', cityFilter);
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const params = new URLSearchParams();
-      if (searchQuery) params.append('query', searchQuery);
-      if (levelFilter) params.append('level', levelFilter);
-      if (bikeTypeFilter) params.append('bikeType', bikeTypeFilter);
-      if (cityFilter) params.append('city', cityFilter);
+        const response = await fetch(`/api/users?${params.toString()}`);
+        const data = await response.json();
 
-      const response = await fetch(`/api/users?${params.toString()}`);
-      const data = await response.json();
-
-      if (data.success) {
-        // Filter out the current user from the list
-        const filteredUsers = data.data.filter((u: Profile) => u.userId !== user?.id);
-        setUsers(filteredUsers);
+        if (data.success) {
+          // Filter out the current user from the list
+          const filteredUsers = data.data.filter((u: Profile) => u.userId !== user?.id);
+          setUsers(filteredUsers);
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchUsers();
+  }, [searchQuery, levelFilter, bikeTypeFilter, cityFilter, user?.id]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -66,34 +68,21 @@ export default function Users() {
               value={searchQuery}
               onChange={handleSearchChange}
               className={styles.searchInput}
-            />
-
+            />{' '}
             <div className={styles.filterRow}>
-              <select
+              <FilterCyclingLevelSelector
                 value={levelFilter}
-                onChange={(e) => setLevelFilter(e.target.value)}
+                onChange={setLevelFilter}
+                placeholder={t('users.allLevels')}
                 className={styles.select}
-              >
-                <option value="">{t('users.allLevels')}</option>
-                <option value="beginner">{t('levels.beginner')}</option>
-                <option value="intermediate">{t('levels.intermediate')}</option>
-                <option value="advanced">{t('levels.advanced')}</option>
-                <option value="expert">{t('levels.expert')}</option>
-              </select>
+              />
 
-              <select
+              <FilterBikeTypeSelector
                 value={bikeTypeFilter}
-                onChange={(e) => setBikeTypeFilter(e.target.value)}
+                onChange={setBikeTypeFilter}
+                placeholder={t('users.allBikeTypes')}
                 className={styles.select}
-              >
-                <option value="">{t('users.allBikeTypes')}</option>
-                <option value="road">{t('bikeTypes.road')}</option>
-                <option value="mountain">{t('bikeTypes.mountain')}</option>
-                <option value="hybrid">{t('bikeTypes.hybrid')}</option>
-                <option value="electric">{t('bikeTypes.electric')}</option>
-                <option value="gravel">{t('bikeTypes.gravel')}</option>
-                <option value="other">{t('bikeTypes.other')}</option>
-              </select>
+              />
 
               <input
                 type="text"
@@ -126,11 +115,7 @@ export default function Users() {
           ) : (
             <div className={styles.userList}>
               {users.map((user) => (
-                <Link
-                  key={user.userId}
-                  href={`/users/${user.userId}`}
-                  className={styles.userCard}
-                >
+                <Link key={user.userId} href={`/users/${user.userId}`} className={styles.userCard}>
                   <Avatar src={user.avatar} name={user.name} size="medium" />
                   <div className={styles.userInfo}>
                     <h3>{user.name}</h3>
@@ -140,9 +125,7 @@ export default function Users() {
                       <span className={styles.badge}>{user.bikeType}</span>
                       <span className={styles.location}>📍 {user.city}</span>
                     </div>
-                    {user.bio && (
-                      <p className={styles.userBio}>{user.bio.substring(0, 100)}...</p>
-                    )}
+                    {user.bio && <p className={styles.userBio}>{user.bio.substring(0, 100)}...</p>}
                   </div>
                 </Link>
               ))}
