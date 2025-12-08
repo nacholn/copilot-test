@@ -36,7 +36,7 @@ async function runSystemTests() {
       'CLOUDINARY_API_SECRET',
     ];
 
-    const missing = requiredVars.filter(v => !process.env[v]);
+    const missing = requiredVars.filter((v) => !process.env[v]);
     if (missing.length > 0) {
       console.log(`❌ Missing environment variables: ${missing.join(', ')}`);
     } else {
@@ -81,7 +81,7 @@ async function runSystemTests() {
       const testImageBuffer = Buffer.from([
         0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,
       ]);
-      
+
       const FormData = require('form-data');
       const form = new FormData();
       form.append('file', testImageBuffer, {
@@ -96,7 +96,7 @@ async function runSystemTests() {
 
       if (uploadResponse.data.success) {
         console.log('✅ Cloudinary upload working');
-        
+
         // Clean up test image
         await axios.delete(
           `http://localhost:3001/api/upload?publicId=${encodeURIComponent(uploadResponse.data.data.publicId)}`
@@ -150,7 +150,7 @@ async function runSystemTests() {
 
   const passed = Object.values(results).filter(Boolean).length;
   const total = Object.keys(results).length;
-  
+
   console.log(`\n🎯 Overall Score: ${passed}/${total} components working`);
 
   if (passed === total) {
@@ -175,7 +175,7 @@ async function runSystemTests() {
 function ensureHealthEndpoint() {
   const healthPath = path.join(__dirname, 'src', 'app', 'api', 'health', 'route.ts');
   const fs = require('fs');
-  
+
   if (!fs.existsSync(healthPath)) {
     const healthContent = `import { NextResponse } from 'next/server';
 
@@ -186,7 +186,7 @@ export async function GET() {
     timestamp: new Date().toISOString()
   });
 }`;
-    
+
     fs.mkdirSync(path.dirname(healthPath), { recursive: true });
     fs.writeFileSync(healthPath, healthContent);
     console.log('✅ Created health check endpoint');

@@ -1,8 +1,8 @@
-import { createServer } from 'http';
-import { parse } from 'url';
-import next from 'next';
-import { Server } from 'socket.io';
-import { getDbPool } from './src/lib/db';
+const { createServer } = require('http');
+const { parse } = require('url');
+const next = require('next');
+const { Server } = require('socket.io');
+const { getDbPool } = require('./src/lib/db');
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
@@ -22,17 +22,12 @@ const handle = app.getRequestHandler();
  * - We track all connections to properly manage online/offline status
  * - User is only marked offline when ALL their connections are closed
  */
-const onlineUsers = new Map<string, Set<string>>();
-
-// Type declaration for global io instance
-declare global {
-  var io: Server | undefined;
-}
+const onlineUsers = new Map();
 
 app.prepare().then(() => {
   const httpServer = createServer(async (req, res) => {
     try {
-      const parsedUrl = parse(req.url || '', true);
+      const parsedUrl = parse(req.url, true);
       await handle(req, res, parsedUrl);
     } catch (err) {
       console.error('Error occurred handling', req.url, err);
@@ -59,11 +54,13 @@ app.prepare().then(() => {
       if (!userId) {
         console.error('[WebSocket] Register failed: no userId provided');
         return;
-      } // Add socket to user's socket set
+      }
+
+      // Add socket to user's socket set
       if (!onlineUsers.has(userId)) {
         onlineUsers.set(userId, new Set());
       }
-      onlineUsers.get(userId)?.add(socket.id);
+      onlineUsers.get(userId).add(socket.id);
 
       // Store userId in socket data
       socket.data.userId = userId;
@@ -94,12 +91,13 @@ app.prepare().then(() => {
            FROM friendships f
            WHERE f.user_id = $1 OR f.friend_id = $1`,
           [userId]
-        ); // Broadcast online status to friends
+        );
+
+        // Broadcast online status to friends
         friendsResult.rows.forEach((row) => {
           const friendId = row.friend_id;
-          const friendSockets = onlineUsers.get(friendId);
-          if (friendSockets) {
-            friendSockets.forEach((socketId: string) => {
+          if (onlineUsers.has(friendId)) {
+            onlineUsers.get(friendId).forEach((socketId) => {
               io.to(socketId).emit('user_status_change', {
                 userId,
                 status: 'online',
@@ -208,12 +206,13 @@ app.prepare().then(() => {
                  FROM friendships f
                  WHERE f.user_id = $1 OR f.friend_id = $1`,
                 [userId]
-              ); // Broadcast offline status to friends
+              );
+
+              // Broadcast offline status to friends
               friendsResult.rows.forEach((row) => {
                 const friendId = row.friend_id;
-                const friendSockets = onlineUsers.get(friendId);
-                if (friendSockets) {
-                  friendSockets.forEach((socketId: string) => {
+                if (onlineUsers.has(friendId)) {
+                  onlineUsers.get(friendId).forEach((socketId) => {
                     io.to(socketId).emit('user_status_change', {
                       userId,
                       status: 'offline',
