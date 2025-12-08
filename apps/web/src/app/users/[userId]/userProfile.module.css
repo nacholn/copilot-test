@@ -158,6 +158,8 @@
 
 .addFriendButton,
 .removeFriendButton,
+.acceptFriendButton,
+.pendingButton,
 .backButton {
   padding: 1rem 2rem;
   border: none;
@@ -214,6 +216,38 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+.acceptFriendButton {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.acceptFriendButton:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow: var(--tinder-shadow-hover);
+}
+
+.acceptFriendButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.acceptFriendButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.pendingButton {
+  background: #fff3cd;
+  color: #856404;
+  cursor: default;
+  box-shadow: none;
+}
+
+.pendingButton:hover {
+  transform: none;
 }
 
 .backButton {

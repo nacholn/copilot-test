@@ -24,6 +24,9 @@ export default function UserProfile() {
   const [loading, setLoading] = useState(true);
   const [isFriend, setIsFriend] = useState(false);
   const [friendshipId, setFriendshipId] = useState<string | null>(null);
+  const [friendRequestSent, setFriendRequestSent] = useState(false);
+  const [friendRequestReceived, setFriendRequestReceived] = useState(false);
+  const [friendRequestId, setFriendRequestId] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
 
@@ -31,6 +34,7 @@ export default function UserProfile() {
     if (userId) {
       fetchUserProfile();
       checkFriendship();
+      checkFriendRequests();
     }
   }, [userId]);
 
@@ -70,31 +74,61 @@ export default function UserProfile() {
     }
   };
 
-  const handleAddFriend = async () => {
+  const checkFriendRequests = async () => {
+    if (!user) return;
+
+    try {
+      // Check sent requests
+      const sentResponse = await fetch(`/api/friend-requests?userId=${user.id}&type=sent&status=pending`);
+      const sentData = await sentResponse.json();
+      if (sentData.success) {
+        const sentRequest = sentData.data.find((req: any) => req.addresseeId === userId);
+        if (sentRequest) {
+          setFriendRequestSent(true);
+          setFriendRequestId(sentRequest.id);
+        }
+      }
+
+      // Check received requests
+      const receivedResponse = await fetch(`/api/friend-requests?userId=${user.id}&type=received&status=pending`);
+      const receivedData = await receivedResponse.json();
+      if (receivedData.success) {
+        const receivedRequest = receivedData.data.find((req: any) => req.requesterId === userId);
+        if (receivedRequest) {
+          setFriendRequestReceived(true);
+          setFriendRequestId(receivedRequest.id);
+        }
+      }
+    } catch (error) {
+      console.error('Error checking friend requests:', error);
+    }
+  };
+
+  const handleSendFriendRequest = async () => {
     if (!user) return;
 
     setActionLoading(true);
     try {
-      const response = await fetch('/api/friends', {
+      const response = await fetch('/api/friend-requests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: user.id,
-          friendId: userId,
+          requesterId: user.id,
+          addresseeId: userId,
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setIsFriend(true);
-        setFriendshipId(data.data.id);
+        setFriendRequestSent(true);
+        setFriendRequestId(data.data.id);
         
         Swal.fire({
-          title: 'Friend Added!',
-          text: 'You are now friends!',
+          title: 'Request Sent!',
+          text: 'Friend request sent successfully!',
           icon: 'success',
           timer: 2000,
           showConfirmButton: false,
@@ -106,7 +140,7 @@ export default function UserProfile() {
       } else {
         Swal.fire({
           title: 'Error',
-          text: data.error || 'Failed to add friend',
+          text: data.error || 'Failed to send friend request',
           icon: 'error',
           confirmButtonColor: '#FE3C72',
           customClass: {
@@ -116,10 +150,75 @@ export default function UserProfile() {
         });
       }
     } catch (error) {
-      console.error('Error adding friend:', error);
+      console.error('Error sending friend request:', error);
       Swal.fire({
         title: 'Error',
-        text: 'Failed to add friend. Please try again.',
+        text: 'Failed to send friend request. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#FE3C72',
+        customClass: {
+          popup: 'swal-popup',
+          title: 'swal-title',
+        },
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleAcceptFriendRequest = async () => {
+    if (!friendRequestId) return;
+
+    setActionLoading(true);
+    try {
+      const response = await fetch('/api/friend-requests', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          requestId: friendRequestId,
+          status: 'accepted',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setFriendRequestReceived(false);
+        setIsFriend(true);
+        
+        Swal.fire({
+          title: 'Accepted!',
+          text: 'You are now friends!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'swal-popup',
+            title: 'swal-title',
+          },
+        });
+
+        // Refresh to get friendship ID
+        checkFriendship();
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: data.error || 'Failed to accept friend request',
+          icon: 'error',
+          confirmButtonColor: '#FE3C72',
+          customClass: {
+            popup: 'swal-popup',
+            title: 'swal-title',
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Error accepting friend request:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to accept friend request. Please try again.',
         icon: 'error',
         confirmButtonColor: '#FE3C72',
         customClass: {
@@ -316,13 +415,28 @@ export default function UserProfile() {
                 >
                   {actionLoading ? 'Removing...' : 'Remove Friend'}
                 </button>
+              ) : friendRequestReceived ? (
+                <button
+                  onClick={handleAcceptFriendRequest}
+                  className={styles.acceptFriendButton}
+                  disabled={actionLoading}
+                >
+                  {actionLoading ? 'Accepting...' : 'Accept Friend Request'}
+                </button>
+              ) : friendRequestSent ? (
+                <button
+                  className={styles.pendingButton}
+                  disabled
+                >
+                  Request Pending
+                </button>
               ) : (
                 <button
-                  onClick={handleAddFriend}
+                  onClick={handleSendFriendRequest}
                   className={styles.addFriendButton}
                   disabled={actionLoading}
                 >
-                  {actionLoading ? 'Adding...' : 'Add Friend'}
+                  {actionLoading ? 'Sending...' : 'Send Friend Request'}
                 </button>
               )}
               <Link href="/users" className={styles.backButton}>
