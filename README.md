@@ -309,6 +309,7 @@ The `turbo.json` defines:
 ## ✨ Recent Updates
 
 ### New Features Added
+
 - ✅ **Cloudinary Integration**: Profile images now stored securely in the cloud with automatic optimization
 - ✅ **Multiple Images**: Users can upload and manage multiple profile images
 - ✅ **Friend Chat System**: Real-time messaging between friends with unread indicators

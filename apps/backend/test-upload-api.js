@@ -26,7 +26,8 @@ async function testUploadAPI() {
       filename: 'test-image.png',
       contentType: 'image/png',
     });
-    form.append('folder', 'cyclists/test');    console.log('📤 Testing upload to http://localhost:3001/api/upload...');
+    form.append('folder', 'cyclists/test');
+    console.log('📤 Testing upload to http://localhost:3001/api/upload...');
 
     const response = await axios.post('http://localhost:3001/api/upload', form, {
       headers: {
@@ -40,7 +41,7 @@ async function testUploadAPI() {
       console.log('✅ Upload successful!');
       console.log(`   Status: ${response.status}`);
       console.log(`   Image URL: ${data.data.url}`);
-      console.log(`   Public ID: ${data.data.publicId}`);      // Test deletion
+      console.log(`   Public ID: ${data.data.publicId}`); // Test deletion
       console.log('\n🗑️ Testing image deletion...');
       const deleteResponse = await axios.delete(
         `http://localhost:3001/api/upload?publicId=${encodeURIComponent(data.data.publicId)}`
@@ -54,7 +55,8 @@ async function testUploadAPI() {
         console.log('\n💡 You can now use image uploads in your profile form');
       } else {
         console.log('❌ Deletion failed:', deleteData.error);
-      }    } else {
+      }
+    } else {
       console.log('❌ Upload failed:');
       console.log(`   Status: ${response.status}`);
       console.log(`   Error: ${data.error}`);
