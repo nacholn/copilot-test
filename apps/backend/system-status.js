@@ -18,7 +18,7 @@ const envChecks = [
 
 console.log('📋 Environment Variables:');
 let envOk = true;
-envChecks.forEach(check => {
+envChecks.forEach((check) => {
   const value = process.env[check.var];
   if (value) {
     console.log(`  ✅ ${check.name}: Configured`);
@@ -44,6 +44,6 @@ if (envOk) {
 }
 
 console.log('\n📚 Documentation:');
-console.log('  • CLOUDINARY_SETUP.md - Image upload setup guide');  
+console.log('  • CLOUDINARY_SETUP.md - Image upload setup guide');
 console.log('  • CLOUDINARY_IMPLEMENTATION_COMPLETE.md - Implementation details');
 console.log('  • README.md - General setup instructions');

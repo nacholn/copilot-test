@@ -3,26 +3,28 @@
 ## 🚀 Ready to Use Components
 
 ### ImageUpload Component
+
 ```tsx
 import { ImageUpload } from '@/components/ImageUpload';
 
 <ImageUpload
   currentImage={profileData.avatar}
   folder="cyclists/profiles"
-  onImageChange={(imageUrl) => setProfileData({...profileData, avatar: imageUrl})}
+  onImageChange={(imageUrl) => setProfileData({ ...profileData, avatar: imageUrl })}
   size="medium" // "small" | "medium" | "large"
   className="custom-class" // optional
-/>
+/>;
 ```
 
 ### API Endpoints
+
 ```javascript
 // Upload Image
 POST /api/upload
 FormData: { file: File, folder?: string }
 Response: { success: boolean, data: { url: string, publicId: string } }
 
-// Delete Image  
+// Delete Image
 DELETE /api/upload?publicId=<publicId>
 Response: { success: boolean }
 
@@ -43,14 +45,14 @@ node test-upload-api.js
 # Start backend
 npm run dev  # in apps/backend/
 
-# Start frontend  
+# Start frontend
 npm run dev  # in apps/web/
 ```
 
 ## 🎯 Endpoints Available
 
 - **Frontend**: http://localhost:3002
-- **Backend**: http://localhost:3001  
+- **Backend**: http://localhost:3001
 - **Health Check**: http://localhost:3001/api/health
 - **Upload API**: http://localhost:3001/api/upload
 
@@ -59,13 +61,14 @@ npm run dev  # in apps/web/
 ```env
 # Required in apps/backend/.env
 CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key  
+CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 ```
 
 ## ⚙️ Next.js Configuration
 
 Add to `apps/web/next.config.js`:
+
 ```javascript
 images: {
   remotePatterns: [
@@ -84,7 +87,7 @@ images: {
 ```
 cyclists/
 ├── profiles/     # User profile images
-├── uploads/      # General uploads  
+├── uploads/      # General uploads
 └── test/         # Test images (auto-cleanup)
 ```
 
@@ -106,5 +109,5 @@ cyclists/
 ## 📚 Documentation
 
 - `CLOUDINARY_SETUP.md` - Initial setup
-- `CLOUDINARY_IMPLEMENTATION_COMPLETE.md` - Technical details  
+- `CLOUDINARY_IMPLEMENTATION_COMPLETE.md` - Technical details
 - `CLOUDINARY_SUCCESS_REPORT.md` - Test results
