@@ -13,6 +13,20 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "declarationMap": true,
-    "incremental": true
-  }
+    "incremental": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["packages/*/src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".next",
+    "apps/*/migrations/**/*",
+    "apps/*/*.js",
+    "apps/*/test-*.js",
+    "apps/*/check-*.js",
+    "apps/*/system-*.js",
+    "apps/*/verify-*.js",
+    "**/*.mjs"
+  ]
 }

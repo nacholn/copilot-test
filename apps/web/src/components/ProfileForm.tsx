@@ -6,6 +6,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { type Profile } from '@cyclists/config';
 import { LocationPicker } from './LocationPicker';
 import { ImageUpload } from './ImageUpload';
+import { BikeTypeSelector, type BikeType } from './BikeTypeSelector';
+import { CyclingLevelSelector, type CyclingLevel } from './CyclingLevelSelector';
 import styles from '../styles/common.module.css';
 
 interface ProfileFormProps {
@@ -21,8 +23,8 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
   const [formData, setFormData] = useState({
     email: '',
     name: '',
-    level: 'beginner' as 'beginner' | 'intermediate' | 'advanced' | 'expert',
-    bikeType: 'road' as 'road' | 'mountain' | 'hybrid' | 'electric' | 'gravel' | 'other',
+    level: 'beginner' as CyclingLevel,
+    bikeType: 'road' as BikeType,
     city: '',
     latitude: undefined as number | undefined,
     longitude: undefined as number | undefined,
@@ -137,34 +139,22 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
         />
-      </div>
+      </div>{' '}
       <div className={styles.field}>
         <label>Cycling Level</label>
-        <select
+        <CyclingLevelSelector
           value={formData.level}
-          onChange={(e) => setFormData({ ...formData, level: e.target.value as any })}
+          onChange={(level) => setFormData({ ...formData, level })}
           required
-        >
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-          <option value="expert">Expert</option>
-        </select>
+        />
       </div>
       <div className={styles.field}>
         <label>Bike Type</label>
-        <select
+        <BikeTypeSelector
           value={formData.bikeType}
-          onChange={(e) => setFormData({ ...formData, bikeType: e.target.value as any })}
+          onChange={(bikeType) => setFormData({ ...formData, bikeType })}
           required
-        >
-          <option value="road">Road</option>
-          <option value="mountain">Mountain</option>
-          <option value="hybrid">Hybrid</option>
-          <option value="electric">Electric</option>
-          <option value="gravel">Gravel</option>
-          <option value="other">Other</option>
-        </select>
+        />
       </div>
       <div className={styles.field}>
         <label>City</label>

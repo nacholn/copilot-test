@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Selector Flag Test</title>
+    <style>
+      .flag-test {
+        font-size: 20px;
+        font-family:
+          'Apple Color Emoji',
+          /* macOS/iOS */ 'Segoe UI Emoji',
+          /* Windows */ 'Noto Color Emoji',
+          /* Android/Linux */ 'Twitter Color Emoji',
+          /* Web fallback */ 'Emoji',
+          /* Generic emoji font */ sans-serif;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .test-result {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f0f0f0;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Language Selector Flag Emoji Test</h1>
+
+    <h2>Current Flag Emojis in LanguageSelector:</h2>
+    <div class="flag-test">🇬🇧 English (UK Flag)</div>
+    <div class="flag-test">🇪🇸 Español (Spain Flag)</div>
+    <div class="flag-test">🇫🇷 Français (France Flag)</div>
+
+    <div class="test-result">
+      <strong>Expected Result:</strong> You should see colorful flag emojis next to each language
+      name above. <br /><br />
+      <strong>If you see:</strong>
+      <ul>
+        <li>✅ Colorful flags: Emoji support is working properly</li>
+        <li>❌ Black & white symbols or squares: Limited emoji support</li>
+        <li>❌ Nothing or question marks: No emoji support</li>
+      </ul>
+    </div>
+
+    <h2>Alternative Test Characters:</h2>
+    <div class="flag-test">🌐 Globe (fallback icon)</div>
+    <div class="flag-test">🔵 Blue circle</div>
+    <div class="flag-test">🔴 Red circle</div>
+
+    <script>
+      // Check if emojis are rendered correctly
+      console.log('Flag emoji test loaded');
+      console.log('Browser:', navigator.userAgent);
+    </script>
+  </body>
+</html>

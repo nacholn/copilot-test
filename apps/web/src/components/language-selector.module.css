@@ -1,41 +1,150 @@
+/* Language Selector with Flag Icons */
 .languageSelector {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   position: relative;
+}
+
+.dropdown {
+  position: relative;
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.selected {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #e8e8e8;
+  border-radius: 8px;
+  background: white;
+  transition: all 0.2s ease;
+  color: var(--tinder-text);
+}
+
+.dropdown:hover .selected,
+.dropdown.open .selected {
+  border-color: var(--tinder-primary);
+}
+
+.dropdown:focus {
+  outline: 2px solid var(--tinder-primary);
+  outline-offset: 2px;
 }
 
 .flagIcon {
   font-size: 1.25rem;
   line-height: 1;
   user-select: none;
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  /* Enhanced emoji font stack for better cross-platform support */
+  font-family:
+    'Apple Color Emoji',
+    /* macOS/iOS */ 'Segoe UI Emoji',
+    /* Windows */ 'Noto Color Emoji',
+    /* Android/Linux */ 'Twitter Color Emoji',
+    /* Web fallback */ 'Emoji',
+    /* Generic emoji font */ sans-serif;
+  /* Ensure proper emoji rendering */
+  font-variant-emoji: emoji;
+  -webkit-font-feature-settings: 'liga' off;
+  font-feature-settings: 'liga' off;
+  text-rendering: optimizeSpeed;
 }
 
-.select {
-  padding: 0.5rem 0.75rem;
-  border: 2px solid #E8E8E8;
-  border-radius: 8px;
+/* Fallback styling for country codes when emoji doesn't work */
+.fallbackFlag {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: bold;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  text-transform: uppercase;
+}
+
+.languageName {
+  flex: 1;
   font-size: 0.875rem;
-  font-family: inherit;
+  font-weight: 500;
+}
+
+.arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+
+.arrowUp {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
   background: white;
+  border: 2px solid var(--tinder-primary);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
   color: var(--tinder-text);
 }
 
-.select:hover {
-  border-color: var(--tinder-primary);
+.option:hover {
+  background-color: #f3f4f6;
 }
 
-.select:focus {
-  outline: none;
-  border-color: var(--tinder-primary);
-  box-shadow: 0 0 0 3px rgba(254, 60, 114, 0.1);
+.option.optionSelected {
+  background-color: var(--tinder-primary);
+  color: white;
 }
 
+.option.optionSelected:hover {
+  background-color: var(--tinder-primary-dark);
+}
+
+/* Keyboard navigation */
+.dropdown:focus .dropdownMenu {
+  display: block;
+}
+
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .select {
-    font-size: 0.8125rem;
-    padding: 0.4rem 0.6rem;
+  .dropdown {
+    min-width: 120px;
+  }
+
+  .languageName {
+    font-size: 0.8rem;
+  }
+
+  .flagIcon {
+    font-size: 1rem;
+    width: 16px;
   }
 }

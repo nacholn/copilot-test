@@ -39,7 +39,7 @@ export function Header() {
       await signOut();
       setIsMenuOpen(false);
       router.push('/');
-      
+
       Swal.fire({
         title: 'Signed Out!',
         text: 'You have been successfully signed out.',
@@ -68,15 +68,13 @@ export function Header() {
         <Link href="/" className={styles.logo} onClick={closeMenu}>
           <span className={styles.logoIcon}>🚴</span>
           <span className={styles.logoText}>Cyclists</span>
-        </Link>
-        
+        </Link>{' '}
         {/* Language Selector */}
         <div className={styles.languageWrapper}>
           <LanguageSelector />
         </div>
-        
         {/* Hamburger button for mobile */}
-        <button 
+        <button
           className={`${styles.hamburger} ${isMenuOpen ? styles.hamburgerActive : ''}`}
           onClick={toggleMenu}
           aria-label="Toggle menu"
@@ -85,7 +83,6 @@ export function Header() {
           <span></span>
           <span></span>
         </button>
-
         {/* Navigation - Desktop and Mobile */}
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           {user ? (
@@ -102,7 +99,11 @@ export function Header() {
               <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.chat')}
               </Link>
-              <Link href="/notifications" className={styles.navLinkNotifications} onClick={closeMenu}>
+              <Link
+                href="/notifications"
+                className={styles.navLinkNotifications}
+                onClick={closeMenu}
+              >
                 <span>🔔</span>
                 {unreadNotificationCount > 0 && (
                   <span className={styles.notificationBadge}>{unreadNotificationCount}</span>
@@ -126,11 +127,8 @@ export function Header() {
             </>
           )}
         </nav>
-
         {/* Overlay for mobile menu */}
-        {isMenuOpen && (
-          <div className={styles.overlay} onClick={closeMenu}></div>
-        )}
+        {isMenuOpen && <div className={styles.overlay} onClick={closeMenu}></div>}
       </div>
     </header>
   );

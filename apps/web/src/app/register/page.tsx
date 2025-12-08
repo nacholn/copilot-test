@@ -6,6 +6,8 @@ import styles from '../../styles/common.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { LocationPicker } from '../../components/LocationPicker';
+import { BikeTypeSelector, type BikeType } from '../../components/BikeTypeSelector';
+import { CyclingLevelSelector, type CyclingLevel } from '../../components/CyclingLevelSelector';
 
 export default function Register() {
   const router = useRouter();
@@ -16,8 +18,8 @@ export default function Register() {
     name: '',
     password: '',
     confirmPassword: '',
-    level: 'beginner' as const,
-    bikeType: 'road' as const,
+    level: 'beginner' as CyclingLevel,
+    bikeType: 'road' as BikeType,
     city: '',
     latitude: undefined as number | undefined,
     longitude: undefined as number | undefined,
@@ -101,7 +103,6 @@ export default function Register() {
         <h1 className={styles.title}>{t('register.title')}</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className={styles.error}>{error}</div>}
-
           <div className={styles.field}>
             <label>{t('register.email')}</label>
             <input
@@ -111,7 +112,6 @@ export default function Register() {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
-
           <div className={styles.field}>
             <label>{t('register.name')}</label>
             <input
@@ -122,7 +122,6 @@ export default function Register() {
               placeholder={t('register.namePlaceholder')}
             />
           </div>
-
           <div className={styles.field}>
             <label>{t('register.password')}</label>
             <input
@@ -133,7 +132,6 @@ export default function Register() {
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
           </div>
-
           <div className={styles.field}>
             <label>{t('register.confirmPassword')}</label>
             <input
@@ -142,36 +140,23 @@ export default function Register() {
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
             />
-          </div>
-
+          </div>{' '}
           <div className={styles.field}>
             <label>{t('register.cyclingLevel')}</label>
-            <select
+            <CyclingLevelSelector
               value={formData.level}
-              onChange={(e) => setFormData({ ...formData, level: e.target.value as any })}
-            >
-              <option value="beginner">{t('levels.beginner')}</option>
-              <option value="intermediate">{t('levels.intermediate')}</option>
-              <option value="advanced">{t('levels.advanced')}</option>
-              <option value="expert">{t('levels.expert')}</option>
-            </select>
+              onChange={(level) => setFormData({ ...formData, level })}
+              required
+            />
           </div>
-
           <div className={styles.field}>
             <label>{t('register.bikeType')}</label>
-            <select
+            <BikeTypeSelector
               value={formData.bikeType}
-              onChange={(e) => setFormData({ ...formData, bikeType: e.target.value as any })}
-            >
-              <option value="road">{t('bikeTypes.road')}</option>
-              <option value="mountain">{t('bikeTypes.mountain')}</option>
-              <option value="hybrid">{t('bikeTypes.hybrid')}</option>
-              <option value="electric">{t('bikeTypes.electric')}</option>
-              <option value="gravel">{t('bikeTypes.gravel')}</option>
-              <option value="other">{t('bikeTypes.other')}</option>
-            </select>
+              onChange={(bikeType) => setFormData({ ...formData, bikeType })}
+              required
+            />
           </div>
-
           <div className={styles.field}>
             <label>{t('register.city')}</label>
             <LocationPicker
@@ -183,7 +168,6 @@ export default function Register() {
               }
             />
           </div>
-
           <div className={styles.field}>
             <label>{t('register.dateOfBirth')}</label>
             <input
@@ -192,11 +176,9 @@ export default function Register() {
               onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
             />
           </div>
-
           <button type="submit" disabled={loading} className={styles.submitButton}>
             {loading ? t('register.creatingAccount') : t('register.createAccount')}
           </button>
-
           <p className={styles.footer}>
             {t('register.alreadyHaveAccount')} <a href="/login">{t('register.signInLink')}</a>
           </p>
