@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Avatar } from '../../components/Avatar';
 import type { FriendProfile } from '@cyclists/config';
@@ -11,6 +12,7 @@ import styles from './friends.module.css';
 
 export default function Friends() {
   const { user } = useAuth();
+  const { t } = useTranslations();
   const [friends, setFriends] = useState<FriendProfile[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,14 +41,14 @@ export default function Friends() {
 
   const handleRemoveFriend = async (friendshipId: string) => {
     const result = await Swal.fire({
-      title: 'Remove Friend?',
-      text: 'Are you sure you want to remove this friend from your list?',
+      title: t('friends.removeFriendTitle'),
+      text: t('friends.removeFriendText'),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#FE3C72',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Yes, remove',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: t('friends.yesRemove'),
+      cancelButtonText: t('common.cancel'),
       customClass: {
         popup: 'swal-popup',
         title: 'swal-title',
@@ -69,8 +71,8 @@ export default function Friends() {
         setFriends(friends.filter((f) => f.friendshipId !== friendshipId));
         
         Swal.fire({
-          title: 'Removed!',
-          text: 'Friend has been removed from your list.',
+          title: t('friends.removed'),
+          text: t('friends.friendRemoved'),
           icon: 'success',
           timer: 2000,
           showConfirmButton: false,
@@ -81,8 +83,8 @@ export default function Friends() {
         });
       } else {
         Swal.fire({
-          title: 'Error',
-          text: data.error || 'Failed to remove friend',
+          title: t('common.error'),
+          text: data.error || t('friends.failedToRemove'),
           icon: 'error',
           confirmButtonColor: '#FE3C72',
           customClass: {
@@ -94,8 +96,8 @@ export default function Friends() {
     } catch (error) {
       console.error('Error removing friend:', error);
       Swal.fire({
-        title: 'Error',
-        text: 'Failed to remove friend. Please try again.',
+        title: t('common.error'),
+        text: t('friends.failedToRemoveTryAgain'),
         icon: 'error',
         confirmButtonColor: '#FE3C72',
         customClass: {
@@ -110,15 +112,15 @@ export default function Friends() {
     <AuthGuard>
       <main className={styles.main}>
         <div className={styles.container}>
-          <h1 className={styles.title}>My Friends</h1>
+          <h1 className={styles.title}>{t('friends.title')}</h1>
 
           {loading ? (
-            <p>Loading friends...</p>
+            <p>{t('common.loading')}</p>
           ) : friends.length === 0 ? (
             <div className={styles.emptyState}>
-              <p className={styles.emptyText}>You don&apos;t have any friends yet.</p>
+              <p className={styles.emptyText}>{t('friends.noFriends')}</p>
               <Link href="/users" className={styles.addFriendsButton}>
-                Find Friends
+                {t('friends.startDiscovering')}
               </Link>
             </div>
           ) : (
@@ -131,8 +133,8 @@ export default function Friends() {
                       <h3>{friend.name}</h3>
                       <p className={styles.friendEmail}>{friend.email}</p>
                       <div className={styles.friendDetails}>
-                        <span className={styles.badge}>{friend.level}</span>
-                        <span className={styles.badge}>{friend.bikeType}</span>
+                        <span className={styles.badge}>{t(`levels.${friend.level}`)}</span>
+                        <span className={styles.badge}>{t(`bikeTypes.${friend.bikeType}`)}</span>
                         <span className={styles.location}>📍 {friend.city}</span>
                       </div>
                     </div>
@@ -140,7 +142,7 @@ export default function Friends() {
                   <button
                     onClick={() => handleRemoveFriend(friend.friendshipId)}
                     className={styles.removeButton}
-                    title="Remove friend"
+                    title={t('common.remove')}
                   >
                     ✕
                   </button>
@@ -151,10 +153,10 @@ export default function Friends() {
 
           <div className={styles.actions}>
             <Link href="/users" className={styles.button}>
-              Find More Friends
+              {t('friends.startDiscovering')}
             </Link>
             <Link href="/" className={styles.button}>
-              Back to Home
+              {t('profile.backToHome')}
             </Link>
           </div>
         </div>

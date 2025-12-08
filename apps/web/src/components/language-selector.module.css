@@ -1,5 +1,14 @@
 .languageSelector {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.flagIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+  user-select: none;
 }
 
 .select {

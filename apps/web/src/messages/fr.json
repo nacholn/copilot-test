@@ -11,12 +11,76 @@
     "remove": "Retirer",
     "upload": "Télécharger",
     "primary": "Principale",
-    "secondary": "Secondaire"
+    "secondary": "Secondaire",
+    "yes": "Oui",
+    "no": "Non",
+    "error": "Erreur",
+    "success": "Succès"
   },
   "languages": {
     "en": "Anglais",
     "es": "Espagnol",
     "fr": "Français"
+  },
+  "home": {
+    "heroTitle": "Votre Aventure Cycliste Commence Ici",
+    "heroDescription": "Rejoignez des milliers de cyclistes partageant des itinéraires, se faisant des amis et repoussant leurs limites ensemble",
+    "discoverCyclists": "Découvrir des Cyclistes",
+    "myProfile": "Mon Profil",
+    "joinNow": "Rejoindre Maintenant",
+    "signIn": "Se Connecter",
+    "featuresTitle": "Tout ce Dont Vous Avez Besoin",
+    "discoverRoutes": "Découvrir des Itinéraires",
+    "discoverRoutesDesc": "Explorez des itinéraires cyclables panoramiques partagés par la communauté. Des sentiers de montagne aux routes côtières.",
+    "connect": "Connecter",
+    "connectDesc": "Trouvez des partenaires de cyclisme près de chez vous. Associez-vous avec des cyclistes en fonction du niveau de compétence et du type de vélo.",
+    "trackProgress": "Suivre les Progrès",
+    "trackProgressDesc": "Surveillez vos sorties, fixez des objectifs et célébrez les réalisations avec votre communauté cycliste.",
+    "communityTitle": "Rejoignez Notre Communauté",
+    "activeCyclists": "Cyclistes Actifs",
+    "routesShared": "Itinéraires Partagés",
+    "cities": "Villes",
+    "allTypesTitle": "Tous les Types de Cyclisme",
+    "mountainBiking": "VTT",
+    "mountainBikingDesc": "Conquérir les sentiers et les terrains difficiles",
+    "roadCycling": "Cyclisme sur Route",
+    "roadCyclingDesc": "Vitesse et endurance sur routes pavées",
+    "gravelRiding": "Cyclisme Gravel",
+    "gravelRidingDesc": "Aventure sur terrain mixte",
+    "eBiking": "Vélo Électrique",
+    "eBikingDesc": "Plaisir du cyclisme assisté électriquement",
+    "ctaTitle": "Prêt à Rouler ?",
+    "ctaDescription": "Créez votre profil et commencez à vous connecter avec des cyclistes aujourd'hui",
+    "getStartedFree": "Commencer Gratuitement"
+  },
+  "login": {
+    "title": "Bon Retour",
+    "email": "E-mail",
+    "password": "Mot de Passe",
+    "signIn": "Se Connecter",
+    "signingIn": "Connexion...",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "createOne": "Créez-en un"
+  },
+  "register": {
+    "title": "Créer un Compte",
+    "email": "E-mail",
+    "name": "Nom",
+    "namePlaceholder": "Votre nom complet",
+    "password": "Mot de Passe",
+    "confirmPassword": "Confirmer le Mot de Passe",
+    "cyclingLevel": "Niveau de Cyclisme",
+    "bikeType": "Type de Vélo",
+    "city": "Ville",
+    "dateOfBirth": "Date de Naissance (Optionnel)",
+    "createAccount": "Créer un Compte",
+    "creatingAccount": "Création du Compte...",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signInLink": "Se connecter",
+    "passwordsNotMatch": "Les mots de passe ne correspondent pas",
+    "registrationFailed": "Échec de l'inscription",
+    "errorOccurred": "Une erreur s'est produite. Veuillez réessayer."
   },
   "profile": {
     "title": "Votre Profil",
@@ -41,6 +105,51 @@
     "createProfile": "Créer le Profil",
     "updateProfile": "Mettre à Jour le Profil"
   },
+  "users": {
+    "title": "Tous les Utilisateurs",
+    "searchPlaceholder": "Rechercher par nom, e-mail, ville ou bio...",
+    "allLevels": "Tous les Niveaux",
+    "allBikeTypes": "Tous les Types de Vélo",
+    "filterByCity": "Filtrer par ville",
+    "noUsersFound": "Aucun utilisateur trouvé",
+    "viewProfile": "Voir le Profil"
+  },
+  "friends": {
+    "title": "Mes Amis",
+    "noFriends": "Vous n'avez pas encore d'amis",
+    "startDiscovering": "Commencez à découvrir des cyclistes",
+    "removeFriendTitle": "Retirer l'Ami ?",
+    "removeFriendText": "Êtes-vous sûr de vouloir retirer cet ami de votre liste ?",
+    "yesRemove": "Oui, retirer",
+    "removed": "Retiré !",
+    "friendRemoved": "L'ami a été retiré de votre liste.",
+    "failedToRemove": "Échec du retrait de l'ami",
+    "failedToRemoveTryAgain": "Échec du retrait de l'ami. Veuillez réessayer.",
+    "message": "Message"
+  },
+  "friendRequests": {
+    "title": "Demandes d'Amis",
+    "received": "Reçues",
+    "sent": "Envoyées",
+    "noReceivedRequests": "Aucune demande d'ami en attente",
+    "noSentRequests": "Aucune demande envoyée en attente",
+    "accept": "Accepter",
+    "reject": "Rejeter",
+    "cancel": "Annuler"
+  },
+  "chat": {
+    "title": "Chat",
+    "selectFriend": "Sélectionnez un ami pour commencer à discuter",
+    "typePlaceholder": "Tapez un message...",
+    "send": "Envoyer",
+    "noMessages": "Pas encore de messages",
+    "startConversation": "Commencez une conversation !"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "Pas encore de notifications",
+    "markAllRead": "Tout marquer comme lu"
+  },
   "levels": {
     "beginner": "Débutant",
     "intermediate": "Intermédiaire",
@@ -58,6 +167,7 @@
   "navigation": {
     "discover": "Découvrir",
     "friends": "Amis",
+    "requests": "Demandes",
     "chat": "Chat",
     "profile": "Profil",
     "logout": "Déconnexion",

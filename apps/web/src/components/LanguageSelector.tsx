@@ -14,8 +14,11 @@ export function LanguageSelector() {
   const { locale, setLocale } = useLanguage();
   const { t } = useTranslations();
 
+  const currentLanguage = languages.find(lang => lang.code === locale) || languages[0];
+
   return (
     <div className={styles.languageSelector}>
+      <span className={styles.flagIcon}>{currentLanguage.flag}</span>
       <select
         value={locale}
         onChange={(e) => setLocale(e.target.value as 'en' | 'es' | 'fr')}
@@ -24,7 +27,7 @@ export function LanguageSelector() {
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>
-            {lang.flag} {t(`languages.${lang.code}`)}
+            {t(`languages.${lang.code}`)}
           </option>
         ))}
       </select>

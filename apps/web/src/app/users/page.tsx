@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Avatar } from '../../components/Avatar';
 import { Loader } from '../../components/Loader';
@@ -12,6 +13,7 @@ import styles from './users.module.css';
 
 export default function Users() {
   const { user } = useAuth();
+  const { t } = useTranslations();
   const [users, setUsers] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,12 +57,12 @@ export default function Users() {
     <AuthGuard>
       <main className={styles.main}>
         <div className={styles.container}>
-          <h1 className={styles.title}>All Users</h1>
+          <h1 className={styles.title}>{t('users.title')}</h1>
 
           <div className={styles.filters}>
             <input
               type="text"
-              placeholder="Search by name, email, city, or bio..."
+              placeholder={t('users.searchPlaceholder')}
               value={searchQuery}
               onChange={handleSearchChange}
               className={styles.searchInput}
@@ -72,11 +74,11 @@ export default function Users() {
                 onChange={(e) => setLevelFilter(e.target.value)}
                 className={styles.select}
               >
-                <option value="">All Levels</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-                <option value="expert">Expert</option>
+                <option value="">{t('users.allLevels')}</option>
+                <option value="beginner">{t('levels.beginner')}</option>
+                <option value="intermediate">{t('levels.intermediate')}</option>
+                <option value="advanced">{t('levels.advanced')}</option>
+                <option value="expert">{t('levels.expert')}</option>
               </select>
 
               <select
@@ -84,18 +86,18 @@ export default function Users() {
                 onChange={(e) => setBikeTypeFilter(e.target.value)}
                 className={styles.select}
               >
-                <option value="">All Bike Types</option>
-                <option value="road">Road</option>
-                <option value="mountain">Mountain</option>
-                <option value="hybrid">Hybrid</option>
-                <option value="electric">Electric</option>
-                <option value="gravel">Gravel</option>
-                <option value="other">Other</option>
+                <option value="">{t('users.allBikeTypes')}</option>
+                <option value="road">{t('bikeTypes.road')}</option>
+                <option value="mountain">{t('bikeTypes.mountain')}</option>
+                <option value="hybrid">{t('bikeTypes.hybrid')}</option>
+                <option value="electric">{t('bikeTypes.electric')}</option>
+                <option value="gravel">{t('bikeTypes.gravel')}</option>
+                <option value="other">{t('bikeTypes.other')}</option>
               </select>
 
               <input
                 type="text"
-                placeholder="Filter by city"
+                placeholder={t('users.filterByCity')}
                 value={cityFilter}
                 onChange={(e) => setCityFilter(e.target.value)}
                 className={styles.cityInput}
@@ -110,17 +112,17 @@ export default function Users() {
                 }}
                 className={styles.clearButton}
               >
-                Clear Filters
+                {t('common.cancel')}
               </button>
             </div>
           </div>
 
           {loading ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
-              <Loader size="large" message="Loading users..." />
+              <Loader size="large" message={t('common.loading')} />
             </div>
           ) : users.length === 0 ? (
-            <p className={styles.noResults}>No users found matching your criteria.</p>
+            <p className={styles.noResults}>{t('users.noUsersFound')}</p>
           ) : (
             <div className={styles.userList}>
               {users.map((user) => (

@@ -11,12 +11,76 @@
     "remove": "Remove",
     "upload": "Upload",
     "primary": "Primary",
-    "secondary": "Secondary"
+    "secondary": "Secondary",
+    "yes": "Yes",
+    "no": "No",
+    "error": "Error",
+    "success": "Success"
   },
   "languages": {
     "en": "English",
     "es": "Spanish",
     "fr": "French"
+  },
+  "home": {
+    "heroTitle": "Your Cycling Adventure Starts Here",
+    "heroDescription": "Join thousands of cyclists sharing routes, making friends, and pushing their limits together",
+    "discoverCyclists": "Discover Cyclists",
+    "myProfile": "My Profile",
+    "joinNow": "Join Now",
+    "signIn": "Sign In",
+    "featuresTitle": "Everything You Need",
+    "discoverRoutes": "Discover Routes",
+    "discoverRoutesDesc": "Explore scenic cycling routes shared by the community. From mountain trails to coastal roads.",
+    "connect": "Connect",
+    "connectDesc": "Find cycling partners near you. Match with riders based on skill level and bike type.",
+    "trackProgress": "Track Progress",
+    "trackProgressDesc": "Monitor your rides, set goals, and celebrate achievements with your cycling community.",
+    "communityTitle": "Join Our Community",
+    "activeCyclists": "Active Cyclists",
+    "routesShared": "Routes Shared",
+    "cities": "Cities",
+    "allTypesTitle": "All Types of Cycling",
+    "mountainBiking": "Mountain Biking",
+    "mountainBikingDesc": "Conquer trails and rough terrain",
+    "roadCycling": "Road Cycling",
+    "roadCyclingDesc": "Speed and endurance on paved roads",
+    "gravelRiding": "Gravel Riding",
+    "gravelRidingDesc": "Adventure on mixed terrain",
+    "eBiking": "E-Biking",
+    "eBikingDesc": "Electric-assisted cycling fun",
+    "ctaTitle": "Ready to Ride?",
+    "ctaDescription": "Create your profile and start connecting with cyclists today",
+    "getStartedFree": "Get Started Free"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one"
+  },
+  "register": {
+    "title": "Create Account",
+    "email": "Email",
+    "name": "Name",
+    "namePlaceholder": "Your full name",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "cyclingLevel": "Cycling Level",
+    "bikeType": "Bike Type",
+    "city": "City",
+    "dateOfBirth": "Date of Birth (Optional)",
+    "createAccount": "Create Account",
+    "creatingAccount": "Creating Account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "passwordsNotMatch": "Passwords do not match",
+    "registrationFailed": "Registration failed",
+    "errorOccurred": "An error occurred. Please try again."
   },
   "profile": {
     "title": "Your Profile",
@@ -41,6 +105,51 @@
     "createProfile": "Create Profile",
     "updateProfile": "Update Profile"
   },
+  "users": {
+    "title": "All Users",
+    "searchPlaceholder": "Search by name, email, city, or bio...",
+    "allLevels": "All Levels",
+    "allBikeTypes": "All Bike Types",
+    "filterByCity": "Filter by city",
+    "noUsersFound": "No users found",
+    "viewProfile": "View Profile"
+  },
+  "friends": {
+    "title": "My Friends",
+    "noFriends": "You don't have any friends yet",
+    "startDiscovering": "Start discovering cyclists",
+    "removeFriendTitle": "Remove Friend?",
+    "removeFriendText": "Are you sure you want to remove this friend from your list?",
+    "yesRemove": "Yes, remove",
+    "removed": "Removed!",
+    "friendRemoved": "Friend has been removed from your list.",
+    "failedToRemove": "Failed to remove friend",
+    "failedToRemoveTryAgain": "Failed to remove friend. Please try again.",
+    "message": "Message"
+  },
+  "friendRequests": {
+    "title": "Friend Requests",
+    "received": "Received",
+    "sent": "Sent",
+    "noReceivedRequests": "No pending friend requests",
+    "noSentRequests": "No pending sent requests",
+    "accept": "Accept",
+    "reject": "Reject",
+    "cancel": "Cancel"
+  },
+  "chat": {
+    "title": "Chat",
+    "selectFriend": "Select a friend to start chatting",
+    "typePlaceholder": "Type a message...",
+    "send": "Send",
+    "noMessages": "No messages yet",
+    "startConversation": "Start a conversation!"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "No notifications yet",
+    "markAllRead": "Mark all as read"
+  },
   "levels": {
     "beginner": "Beginner",
     "intermediate": "Intermediate",
@@ -58,6 +167,7 @@
   "navigation": {
     "discover": "Discover",
     "friends": "Friends",
+    "requests": "Requests",
     "chat": "Chat",
     "profile": "Profile",
     "logout": "Logout",
