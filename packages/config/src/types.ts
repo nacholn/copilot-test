@@ -142,3 +142,73 @@ export interface Conversation {
   lastMessage?: Message;
   unreadCount: number;
 }
+
+// Friend Request types
+export interface FriendRequest {
+  id: string;
+  requesterId: string;
+  addresseeId: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FriendRequestWithProfile extends FriendRequest {
+  requesterName: string;
+  requesterAvatar?: string;
+  requesterEmail: string;
+}
+
+export interface SendFriendRequestInput {
+  requesterId: string;
+  addresseeId: string;
+}
+
+export interface UpdateFriendRequestInput {
+  requestId: string;
+  status: 'accepted' | 'rejected';
+}
+
+// Notification types
+export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system';
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  actorId?: string;
+  relatedId?: string;
+  relatedType?: string;
+  isRead: boolean;
+  readAt?: Date;
+  actionUrl?: string;
+  createdAt: Date;
+}
+
+export interface NotificationWithActor extends Notification {
+  actorName?: string;
+  actorAvatar?: string;
+}
+
+export interface CreateNotificationInput {
+  userId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  actorId?: string;
+  relatedId?: string;
+  relatedType?: string;
+  actionUrl?: string;
+}
+
+// User Status types
+export type UserStatusType = 'online' | 'offline' | 'away';
+
+export interface UserStatus {
+  userId: string;
+  status: UserStatusType;
+  lastSeen: Date;
+  updatedAt: Date;
+}
