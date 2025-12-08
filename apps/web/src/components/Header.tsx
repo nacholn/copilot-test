@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
+import { useWebSocket } from '../contexts/WebSocketContext';
 import { useRouter } from 'next/navigation';
 import { LanguageSelector } from './LanguageSelector';
 import Swal from 'sweetalert2';
@@ -10,6 +11,7 @@ import styles from './header.module.css';
 
 export function Header() {
   const { user, signOut } = useAuth();
+  const { unreadNotificationCount } = useWebSocket();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -92,8 +94,17 @@ export function Header() {
               <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
                 Friends
               </Link>
+              <Link href="/friend-requests" className={styles.navLink} onClick={closeMenu}>
+                Requests
+              </Link>
               <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
                 Chat
+              </Link>
+              <Link href="/notifications" className={styles.navLinkNotifications} onClick={closeMenu}>
+                <span>🔔</span>
+                {unreadNotificationCount > 0 && (
+                  <span className={styles.notificationBadge}>{unreadNotificationCount}</span>
+                )}
               </Link>
               <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
                 Profile

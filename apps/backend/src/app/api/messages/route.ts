@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { createNotification } from '@/lib/notifications';
+import { emitNotification, emitMessage } from '@/lib/websocket';
 import type { ApiResponse, Message, SendMessageInput } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -92,9 +94,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify both users exist
+    // Verify both users exist and get their names
     const usersResult = await query(
-      'SELECT user_id FROM profiles WHERE user_id = $1 OR user_id = $2',
+      'SELECT user_id, name FROM profiles WHERE user_id = $1 OR user_id = $2',
       [body.senderId, body.receiverId]
     );
 
@@ -107,6 +109,8 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    const sender = usersResult.rows.find((u) => u.user_id === body.senderId);
 
     // Insert message
     const result = await query(
@@ -124,6 +128,36 @@ export async function POST(request: NextRequest) {
       isRead: result.rows[0].is_read,
       createdAt: new Date(result.rows[0].created_at),
     };
+
+    // Emit message via WebSocket
+    emitMessage(body.receiverId, {
+      id: message.id,
+      senderId: message.senderId,
+      message: message.message,
+      createdAt: message.createdAt,
+    });
+
+    // Create notification for the receiver
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const messagePreview = body.message.length > 50 
+      ? body.message.substring(0, 50) + '...' 
+      : body.message;
+    
+    const notification = await createNotification({
+      userId: body.receiverId,
+      type: 'message',
+      title: 'New Message',
+      message: `${sender!.name}: ${messagePreview}`,
+      actorId: body.senderId,
+      relatedId: message.id,
+      relatedType: 'message',
+      actionUrl: `${appUrl}/chat?friendId=${body.senderId}`,
+    });
+
+    // Emit notification via WebSocket
+    if (notification) {
+      emitNotification(body.receiverId, notification);
+    }
 
     return NextResponse.json<ApiResponse>(
       {
@@ -169,6 +203,14 @@ export async function PATCH(request: NextRequest) {
        SET is_read = true 
        WHERE sender_id = $1 AND receiver_id = $2 AND is_read = false`,
       [friendId, userId]
+    );
+
+    // Mark all message notifications from friendId as read
+    await query(
+      `UPDATE notifications 
+       SET is_read = true, read_at = CURRENT_TIMESTAMP
+       WHERE user_id = $1 AND actor_id = $2 AND type = 'message' AND is_read = false`,
+      [userId, friendId]
     );
 
     return NextResponse.json<ApiResponse>(

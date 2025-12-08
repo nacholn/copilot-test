@@ -1,6 +1,7 @@
 import './globals.css';
 import { AuthProvider } from '../contexts/AuthContext';
 import { LanguageProvider } from '../contexts/LanguageContext';
+import { WebSocketProvider } from '../contexts/WebSocketContext';
 import { Header } from '../components/Header';
 
 export const metadata = {
@@ -20,8 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <LanguageProvider>
           <AuthProvider>
-            <Header />
-            {children}
+            <WebSocketProvider>
+              <Header />
+              {children}
+            </WebSocketProvider>
           </AuthProvider>
         </LanguageProvider>
       </body>

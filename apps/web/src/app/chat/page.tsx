@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
+import { useWebSocket } from '../../contexts/WebSocketContext';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Loader } from '../../components/Loader';
 import { Avatar } from '../../components/Avatar';
@@ -11,6 +12,7 @@ import styles from './chat.module.css';
 
 export default function Chat() {
   const { user } = useAuth();
+  const { onNewMessage, offNewMessage, sendTypingIndicator, onlineUsers } = useWebSocket();
   const router = useRouter();
   const searchParams = useSearchParams();
   const friendIdFromUrl = searchParams.get('friendId');
@@ -18,9 +20,11 @@ export default function Chat() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedFriendId, setSelectedFriendId] = useState<string | null>(friendIdFromUrl);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [messageIds, setMessageIds] = useState<Set<string>>(new Set());
   const [messageText, setMessageText] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Fetch conversations on mount
   useEffect(() => {
@@ -35,15 +39,47 @@ export default function Chat() {
       fetchMessages(selectedFriendId);
       // Mark messages as read
       markMessagesAsRead(selectedFriendId);
-      
-      // Poll for new messages every 3 seconds
-      const interval = setInterval(() => {
-        fetchMessages(selectedFriendId);
-      }, 3000);
-      
-      return () => clearInterval(interval);
     }
   }, [user, selectedFriendId]);
+
+  // Listen for new messages via WebSocket
+  useEffect(() => {
+    const handleNewMessage = (message: any) => {
+      // Only add message if it's for the current conversation and not a duplicate
+      if (
+        selectedFriendId &&
+        !messageIds.has(message.id) &&
+        ((message.senderId === selectedFriendId && message.receiverId === user?.id) ||
+          (message.senderId === user?.id && message.receiverId === selectedFriendId))
+      ) {
+        const newMessage: Message = {
+          id: message.id,
+          senderId: message.senderId,
+          receiverId: message.receiverId,
+          message: message.message,
+          isRead: message.senderId === user?.id,
+          createdAt: new Date(message.timestamp || message.createdAt),
+        };
+        
+        setMessages((prev) => [...prev, newMessage]);
+        setMessageIds((prev) => new Set(prev).add(message.id));
+
+        // Mark as read if sender is the selected friend
+        if (message.senderId === selectedFriendId) {
+          markMessagesAsRead(selectedFriendId);
+        }
+      }
+
+      // Refresh conversations list to update unread counts
+      fetchConversations();
+    };
+
+    onNewMessage(handleNewMessage);
+
+    return () => {
+      offNewMessage(handleNewMessage);
+    };
+  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage]);
 
   const fetchConversations = async () => {
     try {
@@ -70,7 +106,10 @@ export default function Chat() {
 
       if (data.success) {
         // Reverse to show oldest first
-        setMessages(data.data.reverse());
+        const reversedMessages = data.data.reverse();
+        setMessages(reversedMessages);
+        // Build message ID set for fast lookup
+        setMessageIds(new Set(reversedMessages.map((m: Message) => m.id)));
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -89,11 +128,42 @@ export default function Chat() {
     }
   };
 
+  const handleMessageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessageText(e.target.value);
+
+    // Send typing indicator
+    if (selectedFriendId && e.target.value.trim()) {
+      sendTypingIndicator(selectedFriendId, true);
+
+      // Clear previous timeout
+      if (typingTimeout) {
+        clearTimeout(typingTimeout);
+      }
+
+      // Set new timeout to stop typing indicator after 2 seconds
+      const timeout = setTimeout(() => {
+        sendTypingIndicator(selectedFriendId, false);
+      }, 2000);
+
+      setTypingTimeout(timeout);
+    }
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!messageText.trim() || !selectedFriendId || !user) return;
 
+    // Stop typing indicator
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+      setTypingTimeout(null);
+    }
+    sendTypingIndicator(selectedFriendId, false);
+
     setSending(true);
+    const messageToSend = messageText.trim();
+    setMessageText(''); // Clear input immediately
+
     try {
       const response = await fetch('/api/messages', {
         method: 'POST',
@@ -101,19 +171,35 @@ export default function Chat() {
         body: JSON.stringify({
           senderId: user.id,
           receiverId: selectedFriendId,
-          message: messageText.trim(),
+          message: messageToSend,
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setMessages([...messages, data.data]);
-        setMessageText('');
+        // Message will be added via WebSocket, but add it optimistically for better UX
+        const optimisticMessage: Message = {
+          id: data.data.id,
+          senderId: user.id,
+          receiverId: selectedFriendId,
+          message: messageToSend,
+          isRead: false,
+          createdAt: new Date(),
+        };
+        
+        // Check if message not already in list (from WebSocket) using Set for O(1) lookup
+        if (!messageIds.has(data.data.id)) {
+          setMessages([...messages, optimisticMessage]);
+          setMessageIds((prev) => new Set(prev).add(data.data.id));
+        }
+        
         fetchConversations(); // Update conversation list
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      // Restore message text on error
+      setMessageText(messageToSend);
     } finally {
       setSending(false);
     }
@@ -191,7 +277,12 @@ export default function Chat() {
                   name={selectedConversation?.friendName || ''}
                   size="small"
                 />
-                <h2>{selectedConversation?.friendName}</h2>
+                <div className={styles.chatHeaderInfo}>
+                  <h2>{selectedConversation?.friendName}</h2>
+                  {selectedFriendId && onlineUsers.has(selectedFriendId) && (
+                    <span className={styles.onlineIndicator}>● Online</span>
+                  )}
+                </div>
               </div>
 
               {/* Messages */}
@@ -227,7 +318,7 @@ export default function Chat() {
                 <input
                   type="text"
                   value={messageText}
-                  onChange={(e) => setMessageText(e.target.value)}
+                  onChange={handleMessageInputChange}
                   placeholder="Type a message..."
                   className={styles.messageInput}
                   disabled={sending}

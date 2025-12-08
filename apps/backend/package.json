@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "clean": "rm -rf .next",
     "migrate:up": "node-pg-migrate up --migrations-file-extension=mjs",
@@ -30,7 +30,9 @@
     "node-pg-migrate": "^8.0.3",
     "pg": "^8.11.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "resend": "^6.5.2",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
