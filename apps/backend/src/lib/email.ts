@@ -21,7 +21,7 @@ export async function sendEmail({ to, subject, html, from }: SendEmailParams): P
     // Skip sending email if in test/development without proper configuration
     if (!process.env.RESEND_API_KEY) {
       console.log('[Email] Skipping email send (no RESEND_API_KEY configured)');
-      console.log(`[Email] Would send to: ${to}, subject: ${subject}`);
+      console.log('[Email] Would send email with subject:', subject.substring(0, 50));
       return true;
     }
 

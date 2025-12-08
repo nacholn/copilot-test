@@ -12,8 +12,17 @@ const port = parseInt(process.env.PORT || '3001', 10);
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
-// Track online users
-const onlineUsers = new Map(); // userId -> Set of socketIds
+/**
+ * Track online users and their active socket connections
+ * Structure: Map<userId, Set<socketId>>
+ * 
+ * Why a Set of socketIds per user?
+ * - Users can have multiple devices/tabs connected simultaneously
+ * - Each tab/device creates a separate WebSocket connection
+ * - We track all connections to properly manage online/offline status
+ * - User is only marked offline when ALL their connections are closed
+ */
+const onlineUsers = new Map();
 
 app.prepare().then(() => {
   const httpServer = createServer(async (req, res) => {

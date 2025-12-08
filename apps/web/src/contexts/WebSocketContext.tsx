@@ -28,7 +28,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
-  const [messageCallbacks, setMessageCallbacks] = useState<Array<(message: any) => void>>([]);
+  const [messageCallbacks] = useState<Set<(message: any) => void>>(() => new Set());
 
   // Initialize socket connection
   useEffect(() => {
@@ -87,7 +87,8 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     // Handle new message
     newSocket.on('new_message', (message: any) => {
       console.log('[WebSocket] New message received:', message);
-      messageCallbacks.forEach((callback) => callback(message));
+      // Call all registered callbacks
+      Array.from(messageCallbacks).forEach((callback) => callback(message));
     });
 
     // Handle user status changes
@@ -131,7 +132,9 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     if (!user) return;
 
     try {
-      const response = await fetch(`/api/notifications?userId=${user.id}&limit=20`);
+      // Configurable notification limit
+      const NOTIFICATION_LIMIT = 20;
+      const response = await fetch(`/api/notifications?userId=${user.id}&limit=${NOTIFICATION_LIMIT}`);
       const data = await response.json();
       if (data.success) {
         setNotifications(data.data);
@@ -196,12 +199,12 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
   }, [user]);
 
   const onNewMessage = useCallback((callback: (message: any) => void) => {
-    setMessageCallbacks((prev) => [...prev, callback]);
-  }, []);
+    messageCallbacks.add(callback);
+  }, [messageCallbacks]);
 
   const offNewMessage = useCallback((callback: (message: any) => void) => {
-    setMessageCallbacks((prev) => prev.filter((cb) => cb !== callback));
-  }, []);
+    messageCallbacks.delete(callback);
+  }, [messageCallbacks]);
 
   const sendTypingIndicator = useCallback(
     (receiverId: string, isTyping: boolean) => {

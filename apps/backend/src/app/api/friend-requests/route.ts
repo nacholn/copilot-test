@@ -292,12 +292,18 @@ export async function PATCH(request: NextRequest) {
     // If accepted, create bidirectional friendship
     if (body.status === 'accepted') {
       // Create friendship in both directions
-      await query(
+      const friendshipResult = await query(
         `INSERT INTO friendships (user_id, friend_id)
          VALUES ($1, $2), ($2, $1)
-         ON CONFLICT DO NOTHING`,
+         ON CONFLICT DO NOTHING
+         RETURNING id`,
         [friendRequest.requester_id, friendRequest.addressee_id]
       );
+
+      // Log if friendships already existed (conflict occurred)
+      if (friendshipResult.rows.length < 2) {
+        console.log('[Friend Requests] Friendship already existed, skipped duplicate creation');
+      }
 
       // Create notification for the requester
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
