@@ -69,6 +69,8 @@ export async function GET(request: NextRequest) {
 
     const result = await query(sqlQuery, [userId]);
 
+    // For list view, we only need to show if there's an image, not full details
+    // The actual image data will be fetched when viewing the post detail
     const posts: PostWithDetails[] = result.rows.map((row) => ({
       id: row.id,
       userId: row.user_id,
@@ -80,10 +82,10 @@ export async function GET(request: NextRequest) {
       authorName: row.author_name,
       authorAvatar: row.author_avatar,
       images: row.first_image_url ? [{
-        id: '',
+        id: 'preview', // Placeholder ID for list view
         postId: row.id,
         imageUrl: row.first_image_url,
-        cloudinaryPublicId: '',
+        cloudinaryPublicId: '', // Not needed for list view
         displayOrder: 0,
         createdAt: new Date(row.created_at),
       }] : [],

@@ -70,7 +70,7 @@ export default function CreatePost() {
     if (!user || !title.trim() || !content.trim()) {
       Swal.fire({
         title: t('common.error'),
-        text: 'Please fill in all required fields',
+        text: t('posts.createPostFailed'),
         icon: 'error',
         confirmButtonColor: '#FE3C72',
       });

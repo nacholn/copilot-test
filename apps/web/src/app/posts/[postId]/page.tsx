@@ -41,31 +41,11 @@ export default function PostDetail() {
 
   const fetchPost = async () => {
     try {
-      // For now, we'll need to get post details from the list endpoint
-      // In a production app, you'd want a dedicated endpoint for single post
-      const response = await fetch(`/api/posts?userId=${user!.id}&showAll=true`);
+      const response = await fetch(`/api/posts/${postId}?userId=${user!.id}`);
       const data = await response.json();
 
       if (data.success) {
-        const foundPost = data.data.find((p: any) => p.id === postId);
-        if (foundPost) {
-          // Fetch all images for this post
-          const imagesResponse = await fetch(`/api/posts/${postId}/images`);
-          let images = foundPost.images || [];
-          
-          setPost({
-            id: foundPost.id,
-            userId: foundPost.userId,
-            title: foundPost.title,
-            content: foundPost.content,
-            visibility: foundPost.visibility,
-            createdAt: foundPost.createdAt,
-            updatedAt: foundPost.updatedAt,
-            authorName: foundPost.authorName,
-            authorAvatar: foundPost.authorAvatar,
-            images: images,
-          });
-        }
+        setPost(data.data);
       }
     } catch (error) {
       console.error('Error fetching post:', error);
