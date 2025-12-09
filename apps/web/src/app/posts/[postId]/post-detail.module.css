@@ -1,0 +1,353 @@
+.main {
+  min-height: 100vh;
+  padding: 1rem;
+  padding-top: var(--header-height);
+  background: var(--tinder-gradient);
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.errorState {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--tinder-shadow);
+}
+
+.backLink {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.backLink:hover {
+  transform: translateX(-4px);
+}
+
+.backButton {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--tinder-gradient);
+  color: white;
+  text-decoration: none;
+  border-radius: 28px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: var(--tinder-shadow);
+  margin-top: 1rem;
+}
+
+.backButton:hover {
+  transform: scale(1.03);
+  box-shadow: var(--tinder-shadow-hover);
+}
+
+.postCard {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--tinder-shadow);
+  margin-bottom: 2rem;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.postHeader {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.authorName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--tinder-dark);
+  margin: 0;
+}
+
+.postDate {
+  font-size: 0.875rem;
+  color: var(--tinder-text);
+  margin: 0.25rem 0 0 0;
+}
+
+.postTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--tinder-dark);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.3;
+}
+
+.imagesSection {
+  margin-bottom: 2rem;
+}
+
+.mainImage {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: #f0f0f0;
+}
+
+.mainImage img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  display: block;
+}
+
+.imageThumbnails {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+}
+
+.thumbnail {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  background: none;
+}
+
+.thumbnail:hover {
+  border-color: var(--tinder-primary);
+}
+
+.thumbnailActive {
+  border-color: var(--tinder-primary);
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.postContent {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--tinder-text);
+  white-space: pre-wrap;
+}
+
+.repliesSection {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--tinder-shadow);
+  animation: slideUp 0.6s ease-out 0.2s both;
+}
+
+.repliesTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--tinder-dark);
+  margin: 0 0 1.5rem 0;
+}
+
+.replyForm {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.replyInput {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.replyInput:focus {
+  outline: none;
+  border-color: var(--tinder-primary);
+  box-shadow: 0 0 0 3px rgba(254, 60, 114, 0.1);
+}
+
+.replyButton {
+  padding: 0.75rem 1.75rem;
+  background: var(--tinder-gradient);
+  color: white;
+  border: none;
+  border-radius: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--tinder-shadow);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+}
+
+.replyButton:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow: var(--tinder-shadow-hover);
+}
+
+.replyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.noReplies {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--tinder-text);
+}
+
+.noReplies p {
+  margin: 0.5rem 0;
+}
+
+.noRepliesHint {
+  font-size: 0.875rem;
+  color: #999;
+}
+
+.repliesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.replyCard {
+  padding: 1.25rem;
+  background: #f8f8f8;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.replyCard:hover {
+  background: #f0f0f0;
+}
+
+.replyHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.replyMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.replyAuthor {
+  font-weight: 600;
+  color: var(--tinder-dark);
+  font-size: 0.9375rem;
+}
+
+.replyDate {
+  font-size: 0.8125rem;
+  color: var(--tinder-text);
+}
+
+.replyContent {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--tinder-text);
+  white-space: pre-wrap;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .main {
+    padding: 0.75rem;
+    padding-top: 90px;
+  }
+
+  .postCard,
+  .repliesSection {
+    padding: 1.5rem;
+  }
+
+  .postTitle {
+    font-size: 1.5rem;
+  }
+
+  .mainImage img {
+    max-height: 300px;
+  }
+
+  .postContent {
+    font-size: 1rem;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .main {
+    padding: 1.25rem;
+    padding-top: 100px;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .main {
+    padding: 2rem;
+    padding-top: 120px;
+  }
+
+  .postTitle {
+    font-size: 2.5rem;
+  }
+}
