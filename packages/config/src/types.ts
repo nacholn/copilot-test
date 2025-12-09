@@ -170,7 +170,7 @@ export interface UpdateFriendRequestInput {
 }
 
 // Notification types
-export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply' | 'new_post';
+export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply' | 'new_post' | 'group_message';
 
 export interface Notification {
   id: string;
@@ -279,4 +279,95 @@ export interface CreatePostReplyInput {
   postId: string;
   userId: string;
   content: string;
+}
+
+// Group types
+export interface Group {
+  id: string;
+  name: string;
+  description?: string;
+  location?: string;
+  avatar?: string;
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GroupMember {
+  id: string;
+  groupId: string;
+  userId: string;
+  role: 'admin' | 'member';
+  joinedAt: Date;
+}
+
+export interface GroupImage {
+  id: string;
+  groupId: string;
+  imageUrl: string;
+  cloudinaryPublicId: string;
+  isPrimary: boolean;
+  displayOrder: number;
+  createdAt: Date;
+}
+
+export interface GroupMessage {
+  id: string;
+  groupId: string;
+  senderId: string;
+  message: string;
+  createdAt: Date;
+}
+
+export interface GroupMessageRead {
+  id: string;
+  groupId: string;
+  userId: string;
+  lastReadMessageId?: string;
+  lastReadAt: Date;
+}
+
+export interface GroupWithDetails extends Group {
+  memberCount: number;
+  isAdmin: boolean;
+  isMember: boolean;
+  images: GroupImage[];
+}
+
+export interface GroupConversation {
+  groupId: string;
+  groupName: string;
+  groupAvatar?: string;
+  lastMessage?: GroupMessage;
+  unreadCount: number;
+  memberCount: number;
+}
+
+export interface GroupMessageWithSender extends GroupMessage {
+  senderName: string;
+  senderAvatar?: string;
+}
+
+export interface CreateGroupInput {
+  name: string;
+  description?: string;
+  location?: string;
+  createdBy: string;
+  images?: Array<{
+    imageUrl: string;
+    cloudinaryPublicId: string;
+  }>;
+}
+
+export interface UpdateGroupInput {
+  name?: string;
+  description?: string;
+  location?: string;
+  avatar?: string;
+}
+
+export interface SendGroupMessageInput {
+  groupId: string;
+  senderId: string;
+  message: string;
 }
