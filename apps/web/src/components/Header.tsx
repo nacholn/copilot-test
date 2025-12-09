@@ -96,6 +96,9 @@ export function Header() {
               <Link href="/friend-requests" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.requests')}
               </Link>
+              <Link href="/groups" className={styles.navLink} onClick={closeMenu}>
+                {t('navigation.groups')}
+              </Link>
               <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.chat')}
               </Link>
