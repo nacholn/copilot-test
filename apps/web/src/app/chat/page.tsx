@@ -346,10 +346,7 @@ export default function Chat() {
                   </div>
                 ) : (
                   messages.map((message) => {
-                    const isSent =
-                      selectedType === 'friend'
-                        ? message.senderId === user?.id
-                        : message.senderId === user?.id;
+                    const isSent = message.senderId === user?.id;
 
                     return (
                       <div
