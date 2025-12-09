@@ -170,7 +170,7 @@ export interface UpdateFriendRequestInput {
 }
 
 // Notification types
-export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply';
+export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply' | 'new_post';
 
 export interface Notification {
   id: string;

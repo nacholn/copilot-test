@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { uploadImage } from '@/lib/cloudinary';
+import { createNotification } from '@/lib/notifications';
+import { emitNotification } from '@/lib/websocket';
 import type { ApiResponse, CreatePostInput, PostWithDetails } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -171,6 +173,42 @@ export async function POST(request: NextRequest) {
           console.error('[Posts] Image upload error:', uploadError);
           // Continue with other images even if one fails
         }
+      }
+    }
+
+    // Get post author name for notifications
+    const authorResult = await query(
+      'SELECT name FROM profiles WHERE user_id = $1',
+      [userId]
+    );
+    const authorName = authorResult.rows[0]?.name || 'Someone';
+
+    // Send notifications to friends based on post visibility
+    // For both public and friends-only posts, notify the creator's friends
+    const friendsResult = await query(
+      'SELECT friend_id FROM friendships WHERE user_id = $1',
+      [userId]
+    );
+
+    // Send notification to each friend
+    for (const row of friendsResult.rows) {
+      const friendId = row.friend_id;
+      
+      // Create notification
+      const notification = await createNotification({
+        userId: friendId,
+        type: 'new_post',
+        title: visibility === 'public' ? 'New public post' : 'New post from friend',
+        message: `${authorName} shared a new post: "${title}"`,
+        actorId: userId,
+        relatedId: post.id,
+        relatedType: 'post',
+        actionUrl: `/posts/${post.id}`,
+      });
+
+      // Emit via WebSocket for real-time notification
+      if (notification) {
+        emitNotification(friendId, notification);
       }
     }
 
