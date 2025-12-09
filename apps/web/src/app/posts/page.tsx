@@ -95,7 +95,7 @@ export default function Posts() {
                   <div className={styles.postContent}>
                     <div className={styles.postHeader}>
                       <div className={styles.authorInfo}>
-                        <Avatar src={post.authorAvatar} name={post.authorName} size={32} />
+                        <Avatar src={post.authorAvatar} name={post.authorName} size="small" />
                         <span className={styles.authorName}>{post.authorName}</span>
                       </div>
                       {post.hasNewActivity && (

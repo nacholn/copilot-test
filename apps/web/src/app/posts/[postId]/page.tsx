@@ -183,7 +183,7 @@ export default function PostDetail() {
           <article className={styles.postCard}>
             <div className={styles.postHeader}>
               <div className={styles.authorInfo}>
-                <Avatar src={post.authorAvatar} name={post.authorName} size={48} />
+                <Avatar src={post.authorAvatar} name={post.authorName} size="large" />
                 <div>
                   <h2 className={styles.authorName}>{post.authorName}</h2>
                   <p className={styles.postDate}>
@@ -259,7 +259,7 @@ export default function PostDetail() {
                 {replies.map((reply) => (
                   <div key={reply.id} className={styles.replyCard}>
                     <div className={styles.replyHeader}>
-                      <Avatar src={reply.authorAvatar} name={reply.authorName} size={36} />
+                      <Avatar src={reply.authorAvatar} name={reply.authorName} size="small" />
                       <div className={styles.replyMeta}>
                         <span className={styles.replyAuthor}>{reply.authorName}</span>
                         <span className={styles.replyDate}>
