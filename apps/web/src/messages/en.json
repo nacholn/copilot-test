@@ -231,7 +231,7 @@
     "location": "Location",
     "locationPlaceholder": "City or 'general' for global",
     "members": "Members",
-    "memberCount": "{count} members",
+    "memberCount": "members",
     "admin": "Admin",
     "member": "Member",
     "joinGroup": "Join Group",
@@ -267,6 +267,6 @@
     "general": "General (Global)",
     "discoverGroups": "Discover Groups",
     "groupImages": "Group Images",
-    "unreadMessages": "{count} unread messages"
+    "unreadMessages": "unread messages"
   }
 }

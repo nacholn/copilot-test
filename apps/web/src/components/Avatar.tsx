@@ -6,7 +6,7 @@ import styles from './avatar.module.css';
 interface AvatarProps {
   src?: string | null;
   name?: string | null;
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | 'xlarge';
   className?: string;
 }
 

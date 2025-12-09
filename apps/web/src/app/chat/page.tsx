@@ -361,7 +361,7 @@ export default function Chat() {
                             <Avatar
                               src={message.senderAvatar}
                               name={message.senderName}
-                              size="tiny"
+                              size="small"
                             />
                             <span className={styles.senderName}>{message.senderName}</span>
                           </div>

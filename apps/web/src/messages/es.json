@@ -231,7 +231,7 @@
     "location": "Ubicación",
     "locationPlaceholder": "Ciudad o 'general' para global",
     "members": "Miembros",
-    "memberCount": "{count} miembros",
+    "memberCount": "miembros",
     "admin": "Administrador",
     "member": "Miembro",
     "joinGroup": "Unirse al Grupo",
@@ -267,6 +267,6 @@
     "general": "General (Global)",
     "discoverGroups": "Descubrir Grupos",
     "groupImages": "Imágenes del Grupo",
-    "unreadMessages": "{count} mensajes sin leer"
+    "unreadMessages": "mensajes sin leer"
   }
 }

@@ -159,7 +159,9 @@ export default function GroupDetail() {
             <div className={styles.groupInfo}>
               <h1 className={styles.groupName}>{group.name}</h1>
               <div className={styles.groupMeta}>
-                <span>👥 {t('groups.memberCount', { count: group.memberCount })}</span>
+                <span>
+                  👥 {group.memberCount} {t('groups.memberCount')}
+                </span>
                 {group.location && (
                   <span>
                     📍 {group.location === 'general' ? t('groups.general') : group.location}

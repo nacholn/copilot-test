@@ -89,7 +89,7 @@ export default function Groups() {
                     )}
                     <div className={styles.groupMeta}>
                       <span className={styles.memberCount}>
-                        👥 {t('groups.memberCount', { count: group.memberCount })}
+                        👥 {group.memberCount} {t('groups.memberCount')}
                       </span>
                       {group.location && (
                         <span className={styles.location}>

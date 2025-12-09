@@ -241,7 +241,7 @@ export default function Users() {
                     )}
                     <div className={styles.userDetails}>
                       <span className={styles.badge}>
-                        👥 {t('groups.memberCount', { count: group.memberCount })}
+                        👥 {group.memberCount} {t('groups.memberCount')}
                       </span>
                       {group.location && (
                         <span className={styles.location}>
