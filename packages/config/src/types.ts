@@ -170,7 +170,7 @@ export interface UpdateFriendRequestInput {
 }
 
 // Notification types
-export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system';
+export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply' | 'new_post';
 
 export interface Notification {
   id: string;
@@ -211,4 +211,72 @@ export interface UserStatus {
   status: UserStatusType;
   lastSeen: Date;
   updatedAt: Date;
+}
+
+// Post types
+export type PostVisibility = 'public' | 'friends';
+
+export interface Post {
+  id: string;
+  userId: string;
+  title: string;
+  content: string;
+  visibility: PostVisibility;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PostImage {
+  id: string;
+  postId: string;
+  imageUrl: string;
+  cloudinaryPublicId: string;
+  displayOrder: number;
+  createdAt: Date;
+}
+
+export interface PostReply {
+  id: string;
+  postId: string;
+  userId: string;
+  content: string;
+  createdAt: Date;
+}
+
+export interface PostView {
+  id: string;
+  postId: string;
+  userId: string;
+  lastReplyCountSeen: number;
+  viewedAt: Date;
+}
+
+export interface PostWithDetails extends Post {
+  authorName: string;
+  authorAvatar?: string;
+  images: PostImage[];
+  replyCount: number;
+  hasNewActivity?: boolean;
+}
+
+export interface PostReplyWithAuthor extends PostReply {
+  authorName: string;
+  authorAvatar?: string;
+}
+
+export interface CreatePostInput {
+  userId: string;
+  title: string;
+  content: string;
+  visibility: PostVisibility;
+  images?: Array<{
+    imageUrl: string;
+    cloudinaryPublicId: string;
+  }>;
+}
+
+export interface CreatePostReplyInput {
+  postId: string;
+  userId: string;
+  content: string;
 }

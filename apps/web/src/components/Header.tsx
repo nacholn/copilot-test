@@ -99,6 +99,9 @@ export function Header() {
               <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.chat')}
               </Link>
+              <Link href="/posts" className={styles.navLink} onClick={closeMenu}>
+                {t('navigation.posts')}
+              </Link>
               <Link
                 href="/notifications"
                 className={styles.navLinkNotifications}
