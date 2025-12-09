@@ -1,14 +1,31 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWebSocket } from '../../contexts/WebSocketContext';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Loader } from '../../components/Loader';
 import { Avatar } from '../../components/Avatar';
-import type { Conversation, Message } from '@cyclists/config';
+import type {
+  Conversation,
+  Message,
+  GroupConversation,
+  GroupMessageWithSender,
+} from '@cyclists/config';
 import styles from './chat.module.css';
+
+type ConversationType = 'friend' | 'group';
+
+interface UnifiedConversation {
+  id: string;
+  name: string;
+  avatar?: string;
+  lastMessageText?: string;
+  lastMessageTime?: Date;
+  unreadCount: number;
+  type: ConversationType;
+}
 
 export default function Chat() {
   const { user } = useAuth();
@@ -16,80 +33,119 @@ export default function Chat() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const friendIdFromUrl = searchParams.get('friendId');
+  const groupIdFromUrl = searchParams.get('groupId');
 
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [selectedFriendId, setSelectedFriendId] = useState<string | null>(friendIdFromUrl);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [conversations, setConversations] = useState<UnifiedConversation[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(friendIdFromUrl || groupIdFromUrl);
+  const [selectedType, setSelectedType] = useState<ConversationType>(
+    groupIdFromUrl ? 'group' : 'friend'
+  );
+  const [messages, setMessages] = useState<any[]>([]);
   const [messageIds, setMessageIds] = useState<Set<string>>(new Set());
   const [messageText, setMessageText] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  // Fetch conversations on mount
   useEffect(() => {
     if (user) {
-      fetchConversations();
+      fetchAllConversations();
     }
   }, [user]);
 
-  // Fetch messages when friend is selected
   useEffect(() => {
-    if (user && selectedFriendId) {
-      fetchMessages(selectedFriendId);
-      // Mark messages as read
-      markMessagesAsRead(selectedFriendId);
+    if (user && selectedId) {
+      fetchMessages();
     }
-  }, [user, selectedFriendId]);
+  }, [user, selectedId, selectedType]);
 
-  // Listen for new messages via WebSocket
   useEffect(() => {
     const handleNewMessage = (message: any) => {
-      // Only add message if it's for the current conversation and not a duplicate
-      if (
-        selectedFriendId &&
-        !messageIds.has(message.id) &&
-        ((message.senderId === selectedFriendId && message.receiverId === user?.id) ||
-          (message.senderId === user?.id && message.receiverId === selectedFriendId))
-      ) {
-        const newMessage: Message = {
-          id: message.id,
-          senderId: message.senderId,
-          receiverId: message.receiverId,
-          message: message.message,
-          isRead: message.senderId === user?.id,
-          createdAt: new Date(message.timestamp || message.createdAt),
-        };
-        
-        setMessages((prev) => [...prev, newMessage]);
-        setMessageIds((prev) => new Set(prev).add(message.id));
+      if (selectedType === 'friend') {
+        if (
+          selectedId &&
+          !messageIds.has(message.id) &&
+          ((message.senderId === selectedId && message.receiverId === user?.id) ||
+            (message.senderId === user?.id && message.receiverId === selectedId))
+        ) {
+          const newMessage: Message = {
+            id: message.id,
+            senderId: message.senderId,
+            receiverId: message.receiverId,
+            message: message.message,
+            isRead: message.senderId === user?.id,
+            createdAt: new Date(message.timestamp || message.createdAt),
+          };
 
-        // Mark as read if sender is the selected friend
-        if (message.senderId === selectedFriendId) {
-          markMessagesAsRead(selectedFriendId);
+          setMessages((prev) => [...prev, newMessage]);
+          setMessageIds((prev) => new Set(prev).add(message.id));
+
+          if (message.senderId === selectedId) {
+            markAsRead();
+          }
         }
       }
 
-      // Refresh conversations list to update unread counts
-      fetchConversations();
+      fetchAllConversations();
     };
 
     onNewMessage(handleNewMessage);
-
     return () => {
       offNewMessage(handleNewMessage);
     };
-  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage]);
+  }, [user, selectedId, selectedType, messageIds, onNewMessage, offNewMessage]);
 
-  const fetchConversations = async () => {
+  const fetchAllConversations = async () => {
+    if (!user) return;
+
     try {
       setLoading(true);
-      const response = await fetch(`/api/conversations?userId=${user?.id}`);
-      const data = await response.json();
+      const [friendsResp, groupsResp] = await Promise.all([
+        fetch(`/api/conversations?userId=${user.id}`),
+        fetch(`/api/group-conversations?userId=${user.id}`),
+      ]);
 
-      if (data.success) {
-        setConversations(data.data);
+      const friendsData = await friendsResp.json();
+      const groupsData = await groupsResp.json();
+
+      const unified: UnifiedConversation[] = [];
+
+      if (friendsData.success) {
+        friendsData.data.forEach((conv: Conversation) => {
+          unified.push({
+            id: conv.friendId,
+            name: conv.friendName,
+            avatar: conv.friendAvatar,
+            lastMessageText: conv.lastMessage?.message,
+            lastMessageTime: conv.lastMessage?.createdAt,
+            unreadCount: conv.unreadCount,
+            type: 'friend',
+          });
+        });
       }
+
+      if (groupsData.success) {
+        groupsData.data.forEach((conv: GroupConversation) => {
+          unified.push({
+            id: conv.groupId,
+            name: conv.groupName,
+            avatar: conv.groupAvatar,
+            lastMessageText: conv.lastMessage?.message,
+            lastMessageTime: conv.lastMessage?.createdAt,
+            unreadCount: conv.unreadCount,
+            type: 'group',
+          });
+        });
+      }
+
+      // Sort by last message time
+      unified.sort((a, b) => {
+        const timeA = a.lastMessageTime ? new Date(a.lastMessageTime).getTime() : 0;
+        const timeB = b.lastMessageTime ? new Date(b.lastMessageTime).getTime() : 0;
+        return timeB - timeA;
+      });
+
+      setConversations(unified);
     } catch (error) {
       console.error('Error fetching conversations:', error);
     } finally {
@@ -97,117 +153,112 @@ export default function Chat() {
     }
   };
 
-  const fetchMessages = async (friendId: string) => {
+  const fetchMessages = async () => {
+    if (!user || !selectedId) return;
+
     try {
-      const response = await fetch(
-        `/api/messages?userId=${user?.id}&friendId=${friendId}&limit=50`
-      );
+      let response;
+      if (selectedType === 'friend') {
+        response = await fetch(`/api/messages?userId=${user.id}&friendId=${selectedId}&limit=50`);
+      } else {
+        response = await fetch(`/api/groups/${selectedId}/messages?userId=${user.id}&limit=50`);
+      }
+
       const data = await response.json();
 
       if (data.success) {
-        // Reverse to show oldest first
         const reversedMessages = data.data.reverse();
         setMessages(reversedMessages);
-        // Build message ID set for fast lookup
-        setMessageIds(new Set(reversedMessages.map((m: Message) => m.id)));
+        setMessageIds(new Set(reversedMessages.map((m: any) => m.id)));
+        markAsRead();
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
   };
 
-  const markMessagesAsRead = async (friendId: string) => {
+  const markAsRead = async () => {
+    if (!user || !selectedId) return;
+
     try {
-      await fetch(`/api/messages?userId=${user?.id}&friendId=${friendId}`, {
-        method: 'PATCH',
-      });
-      // Refresh conversations to update unread counts
-      fetchConversations();
+      if (selectedType === 'friend') {
+        await fetch(`/api/messages?userId=${user.id}&friendId=${selectedId}`, {
+          method: 'PATCH',
+        });
+      } else {
+        await fetch(`/api/groups/${selectedId}/messages?userId=${user.id}`, {
+          method: 'PATCH',
+        });
+      }
+      fetchAllConversations();
     } catch (error) {
       console.error('Error marking messages as read:', error);
     }
   };
 
-  const handleMessageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessageText(e.target.value);
-
-    // Send typing indicator
-    if (selectedFriendId && e.target.value.trim()) {
-      sendTypingIndicator(selectedFriendId, true);
-
-      // Clear previous timeout
-      if (typingTimeout) {
-        clearTimeout(typingTimeout);
-      }
-
-      // Set new timeout to stop typing indicator after 2 seconds
-      const timeout = setTimeout(() => {
-        sendTypingIndicator(selectedFriendId, false);
-      }, 2000);
-
-      setTypingTimeout(timeout);
-    }
-  };
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!messageText.trim() || !selectedFriendId || !user) return;
+    if (!messageText.trim() || !selectedId || !user) return;
 
-    // Stop typing indicator
     if (typingTimeout) {
       clearTimeout(typingTimeout);
       setTypingTimeout(null);
     }
-    sendTypingIndicator(selectedFriendId, false);
+    if (selectedType === 'friend') {
+      sendTypingIndicator(selectedId, false);
+    }
 
     setSending(true);
     const messageToSend = messageText.trim();
-    setMessageText(''); // Clear input immediately
+    setMessageText('');
 
     try {
-      const response = await fetch('/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          senderId: user.id,
-          receiverId: selectedFriendId,
-          message: messageToSend,
-        }),
-      });
+      let response;
+      if (selectedType === 'friend') {
+        response = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            senderId: user.id,
+            receiverId: selectedId,
+            message: messageToSend,
+          }),
+        });
+      } else {
+        response = await fetch(`/api/groups/${selectedId}/messages`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            groupId: selectedId,
+            senderId: user.id,
+            message: messageToSend,
+          }),
+        });
+      }
 
       const data = await response.json();
 
-      if (data.success) {
-        // Message will be added via WebSocket, but add it optimistically for better UX
-        const optimisticMessage: Message = {
-          id: data.data.id,
-          senderId: user.id,
-          receiverId: selectedFriendId,
-          message: messageToSend,
-          isRead: false,
-          createdAt: new Date(),
-        };
-        
-        // Check if message not already in list (from WebSocket) using Set for O(1) lookup
-        if (!messageIds.has(data.data.id)) {
-          setMessages([...messages, optimisticMessage]);
-          setMessageIds((prev) => new Set(prev).add(data.data.id));
-        }
-        
-        fetchConversations(); // Update conversation list
+      if (data.success && !messageIds.has(data.data.id)) {
+        setMessages([...messages, data.data]);
+        setMessageIds((prev) => new Set(prev).add(data.data.id));
+        fetchAllConversations();
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      // Restore message text on error
       setMessageText(messageToSend);
     } finally {
       setSending(false);
     }
   };
 
-  const selectedConversation = conversations.find(
-    (c) => c.friendId === selectedFriendId
-  );
+  const handleSelectConversation = (id: string, type: ConversationType) => {
+    setSelectedId(id);
+    setSelectedType(type);
+    setMessages([]);
+    setMessageIds(new Set());
+  };
+
+  const selectedConversation = conversations.find((c) => c.id === selectedId);
 
   if (loading) {
     return (
@@ -226,37 +277,40 @@ export default function Chat() {
           {conversations.length === 0 ? (
             <div className={styles.noConversations}>
               <p>No conversations yet.</p>
-              <p>Add friends to start chatting!</p>
+              <p>Add friends or join groups to start chatting!</p>
             </div>
           ) : (
             <div className={styles.conversationsScroll}>
               {conversations.map((conversation) => (
                 <button
-                  key={conversation.friendId}
+                  key={`${conversation.type}-${conversation.id}`}
                   className={`${styles.conversationItem} ${
-                    selectedFriendId === conversation.friendId ? styles.active : ''
+                    selectedId === conversation.id && selectedType === conversation.type
+                      ? styles.active
+                      : ''
                   }`}
-                  onClick={() => setSelectedFriendId(conversation.friendId)}
+                  onClick={() => handleSelectConversation(conversation.id, conversation.type)}
                 >
                   <Avatar
-                    src={conversation.friendAvatar}
-                    name={conversation.friendName}
+                    src={conversation.avatar}
+                    name={conversation.name}
                     size="small"
                   />
                   <div className={styles.conversationInfo}>
                     <div className={styles.conversationHeader}>
-                      <h3>{conversation.friendName}</h3>
+                      <h3>{conversation.name}</h3>
+                      {conversation.type === 'group' && (
+                        <span className={styles.groupBadge}>👥</span>
+                      )}
                       {conversation.unreadCount > 0 && (
-                        <span className={styles.unreadBadge}>
-                          {conversation.unreadCount}
-                        </span>
+                        <span className={styles.unreadBadge}>{conversation.unreadCount}</span>
                       )}
                     </div>
-                    {conversation.lastMessage && (
+                    {conversation.lastMessageText && (
                       <p className={styles.lastMessage}>
-                        {conversation.lastMessage.message.length > 40
-                          ? conversation.lastMessage.message.substring(0, 40) + '...'
-                          : conversation.lastMessage.message}
+                        {conversation.lastMessageText.length > 40
+                          ? conversation.lastMessageText.substring(0, 40) + '...'
+                          : conversation.lastMessageText}
                       </p>
                     )}
                   </div>
@@ -268,57 +322,70 @@ export default function Chat() {
 
         {/* Chat Window */}
         <div className={styles.chatWindow}>
-          {selectedFriendId ? (
+          {selectedId ? (
             <>
-              {/* Chat Header */}
               <div className={styles.chatHeader}>
                 <Avatar
-                  src={selectedConversation?.friendAvatar}
-                  name={selectedConversation?.friendName || ''}
+                  src={selectedConversation?.avatar}
+                  name={selectedConversation?.name || ''}
                   size="small"
                 />
                 <div className={styles.chatHeaderInfo}>
-                  <h2>{selectedConversation?.friendName}</h2>
-                  {selectedFriendId && onlineUsers.has(selectedFriendId) && (
+                  <h2>{selectedConversation?.name}</h2>
+                  {selectedType === 'friend' && selectedId && onlineUsers.has(selectedId) && (
                     <span className={styles.onlineIndicator}>● Online</span>
                   )}
+                  {selectedType === 'group' && <span className={styles.groupTag}>Group Chat</span>}
                 </div>
               </div>
 
-              {/* Messages */}
               <div className={styles.messagesContainer}>
                 {messages.length === 0 ? (
                   <div className={styles.noMessages}>
                     <p>No messages yet. Say hi! 👋</p>
                   </div>
                 ) : (
-                  messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`${styles.message} ${
-                        message.senderId === user?.id ? styles.sent : styles.received
-                      }`}
-                    >
-                      <div className={styles.messageContent}>
-                        <p>{message.message}</p>
-                        <span className={styles.messageTime}>
-                          {new Date(message.createdAt).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </span>
+                  messages.map((message) => {
+                    const isSent =
+                      selectedType === 'friend'
+                        ? message.senderId === user?.id
+                        : message.senderId === user?.id;
+
+                    return (
+                      <div
+                        key={message.id}
+                        className={`${styles.message} ${isSent ? styles.sent : styles.received}`}
+                      >
+                        {selectedType === 'group' && !isSent && (
+                          <div className={styles.groupMessageHeader}>
+                            <Avatar
+                              src={message.senderAvatar}
+                              name={message.senderName}
+                              size="tiny"
+                            />
+                            <span className={styles.senderName}>{message.senderName}</span>
+                          </div>
+                        )}
+                        <div className={styles.messageContent}>
+                          <p>{message.message}</p>
+                          <span className={styles.messageTime}>
+                            {new Date(message.createdAt).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </div>
 
-              {/* Message Input */}
               <form onSubmit={handleSendMessage} className={styles.messageForm}>
                 <input
                   type="text"
                   value={messageText}
-                  onChange={handleMessageInputChange}
+                  onChange={(e) => setMessageText(e.target.value)}
                   placeholder="Type a message..."
                   className={styles.messageInput}
                   disabled={sending}
