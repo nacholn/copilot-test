@@ -170,7 +170,7 @@ export interface UpdateFriendRequestInput {
 }
 
 // Notification types
-export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply' | 'new_post';
+export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply' | 'new_post' | 'group_message' | 'group_invitation' | 'group_member_joined';
 
 export interface Notification {
   id: string;
@@ -279,4 +279,117 @@ export interface CreatePostReplyInput {
   postId: string;
   userId: string;
   content: string;
+}
+
+// Group types
+export type GroupType = 'location' | 'general';
+
+export interface Group {
+  id: string;
+  name: string;
+  description?: string;
+  type: GroupType;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
+  mainImage?: string;
+  cloudinaryPublicId?: string;
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GroupImage {
+  id: string;
+  groupId: string;
+  imageUrl: string;
+  cloudinaryPublicId: string;
+  displayOrder: number;
+  createdAt: Date;
+}
+
+export interface GroupMember {
+  id: string;
+  groupId: string;
+  userId: string;
+  joinedAt: Date;
+}
+
+export interface GroupMessage {
+  id: string;
+  groupId: string;
+  senderId: string;
+  message: string;
+  createdAt: Date;
+}
+
+export interface GroupMessageRead {
+  id: string;
+  messageId: string;
+  userId: string;
+  readAt: Date;
+}
+
+export interface GroupWithDetails extends Group {
+  memberCount: number;
+  unreadCount?: number;
+  isMember?: boolean;
+  lastMessage?: GroupMessage;
+  creatorName?: string;
+  creatorAvatar?: string;
+  images?: GroupImage[];
+}
+
+export interface GroupMessageWithSender extends GroupMessage {
+  senderName: string;
+  senderAvatar?: string;
+  isRead?: boolean;
+}
+
+export interface GroupConversation {
+  groupId: string;
+  groupName: string;
+  groupImage?: string;
+  lastMessage?: GroupMessage;
+  unreadCount: number;
+}
+
+export interface CreateGroupInput {
+  name: string;
+  description?: string;
+  type: GroupType;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
+  mainImage?: string;
+  cloudinaryPublicId?: string;
+  createdBy: string;
+}
+
+export interface UpdateGroupInput {
+  name?: string;
+  description?: string;
+  type?: GroupType;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
+  mainImage?: string;
+  cloudinaryPublicId?: string;
+}
+
+export interface SendGroupMessageInput {
+  groupId: string;
+  senderId: string;
+  message: string;
+}
+
+export interface JoinGroupInput {
+  groupId: string;
+  userId: string;
+}
+
+export interface GroupSearchParams {
+  query?: string;
+  type?: GroupType;
+  city?: string;
 }
