@@ -1,0 +1,141 @@
+.card {
+  display: block;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholderImage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholderEmoji {
+  font-size: 64px;
+}
+
+.typeBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.typeBadgeText {
+  color: #4a5568;
+}
+
+.content {
+  padding: 20px;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 12px 0;
+}
+
+.description {
+  font-size: 14px;
+  color: #718096;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.location {
+  font-size: 14px;
+  color: #4a5568;
+  margin: 0 0 12px 0;
+}
+
+.meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.members {
+  font-size: 14px;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.unread {
+  font-size: 12px;
+  color: #667eea;
+  font-weight: 600;
+  background: #edf2f7;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.creator {
+  font-size: 13px;
+  color: #718096;
+  margin: 0 0 16px 0;
+}
+
+.actionButton {
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.joinButton {
+  background: #667eea;
+  color: white;
+}
+
+.joinButton:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.leaveButton {
+  background: #edf2f7;
+  color: #4a5568;
+}
+
+.leaveButton:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

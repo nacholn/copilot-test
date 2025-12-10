@@ -1,0 +1,322 @@
+.main {
+  min-height: 100vh;
+  background: #f7fafc;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.backButton {
+  padding: 8px 16px;
+  background: white;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backButton:hover {
+  background: #f7fafc;
+}
+
+.groupHeader {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.groupImage,
+.groupImagePlaceholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.groupImagePlaceholder {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.groupImageEmoji {
+  font-size: 48px;
+}
+
+.groupInfo {
+  flex: 1;
+}
+
+.groupName {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 8px 0;
+}
+
+.groupMeta {
+  font-size: 14px;
+  color: #718096;
+  margin: 0 0 8px 0;
+}
+
+.creator {
+  font-size: 13px;
+  color: #a0aec0;
+  margin: 0;
+}
+
+.actionButton {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.joinButton {
+  background: #667eea;
+  color: white;
+}
+
+.joinButton:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.leaveButton {
+  background: #edf2f7;
+  color: #4a5568;
+}
+
+.leaveButton:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: #718096;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  color: #4a5568;
+}
+
+.activeTab {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+.notMember {
+  background: white;
+  border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  color: #718096;
+}
+
+.messagesContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  height: 500px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.noMessages {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  gap: 8px;
+}
+
+.message {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.message.sent {
+  flex-direction: row-reverse;
+}
+
+.messageContent {
+  max-width: 70%;
+  background: #f7fafc;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.message.sent .messageContent {
+  background: #667eea;
+  color: white;
+}
+
+.senderName {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 4px;
+}
+
+.messageText {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.messageTime {
+  font-size: 11px;
+  color: #a0aec0;
+}
+
+.message.sent .messageTime {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.messageForm {
+  display: flex;
+  gap: 12px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.messageInput {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.messageInput:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.sendButton {
+  padding: 12px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sendButton:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.sendButton:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}
+
+.infoContent {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.infoSection {
+  margin-bottom: 24px;
+}
+
+.infoSection:last-child {
+  margin-bottom: 0;
+}
+
+.infoTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 12px 0;
+}
+
+.infoText {
+  font-size: 14px;
+  color: #718096;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.galleryImage {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .groupHeader {
+    flex-direction: column;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+
+  .groupImage,
+  .groupImagePlaceholder {
+    width: 100%;
+    height: 200px;
+  }
+
+  .messageContent {
+    max-width: 85%;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
