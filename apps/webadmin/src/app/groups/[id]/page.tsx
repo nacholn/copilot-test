@@ -51,6 +51,7 @@ export default function GroupDetail() {
     if (groupId) {
       fetchGroupDetails();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId]);
 
   const handleAddMember = async (userId: string) => {
