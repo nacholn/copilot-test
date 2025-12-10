@@ -13,6 +13,12 @@ export async function GET() {
         g.id,
         g.name,
         g.description,
+        g.type,
+        g.main_image,
+        g.main_image_public_id,
+        g.city,
+        g.latitude,
+        g.longitude,
         g.created_at,
         g.updated_at,
         COUNT(gm.id) as member_count
@@ -26,6 +32,12 @@ export async function GET() {
       id: row.id,
       name: row.name,
       description: row.description,
+      type: row.type,
+      mainImage: row.main_image,
+      mainImagePublicId: row.main_image_public_id,
+      city: row.city,
+      latitude: row.latitude ? parseFloat(row.latitude) : undefined,
+      longitude: row.longitude ? parseFloat(row.longitude) : undefined,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
       memberCount: parseInt(row.member_count, 10),
@@ -65,6 +77,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!body.type) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Group type is required',
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate location-based groups must have city
+    if (body.type === 'location' && !body.city) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Location-based groups must have a city',
+        },
+        { status: 400 }
+      );
+    }
+
     // Check if group with same name already exists
     const existingGroup = await query('SELECT id FROM groups WHERE name = $1', [body.name]);
 
@@ -79,16 +112,42 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await query(
-      `INSERT INTO groups (name, description) 
-       VALUES ($1, $2) 
-       RETURNING id, name, description, created_at, updated_at`,
-      [body.name, body.description || null]
+      `INSERT INTO groups (name, description, type, main_image, main_image_public_id, city, latitude, longitude) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+       RETURNING id, name, description, type, main_image, main_image_public_id, city, latitude, longitude, created_at, updated_at`,
+      [
+        body.name,
+        body.description || null,
+        body.type,
+        body.mainImage || null,
+        body.mainImagePublicId || null,
+        body.city || null,
+        body.latitude || null,
+        body.longitude || null,
+      ]
     );
+
+    // Insert additional images if provided
+    if (body.images && body.images.length > 0) {
+      for (let i = 0; i < body.images.length; i++) {
+        const image = body.images[i];
+        await query(
+          'INSERT INTO group_images (group_id, image_url, cloudinary_public_id, display_order) VALUES ($1, $2, $3, $4)',
+          [result.rows[0].id, image.imageUrl, image.cloudinaryPublicId, i]
+        );
+      }
+    }
 
     const group: Group = {
       id: result.rows[0].id,
       name: result.rows[0].name,
       description: result.rows[0].description,
+      type: result.rows[0].type,
+      mainImage: result.rows[0].main_image,
+      mainImagePublicId: result.rows[0].main_image_public_id,
+      city: result.rows[0].city,
+      latitude: result.rows[0].latitude ? parseFloat(result.rows[0].latitude) : undefined,
+      longitude: result.rows[0].longitude ? parseFloat(result.rows[0].longitude) : undefined,
       createdAt: new Date(result.rows[0].created_at),
       updatedAt: new Date(result.rows[0].updated_at),
     };

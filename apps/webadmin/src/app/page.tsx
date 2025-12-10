@@ -36,14 +36,14 @@ export default function Home() {
     fetchGroups();
   }, []);
 
-  const handleCreateGroup = async (name: string, description?: string) => {
+  const handleCreateGroup = async (groupData: any) => {
     try {
       const response = await fetch('/api/groups', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, description }),
+        body: JSON.stringify(groupData),
       });
 
       const data = await response.json();

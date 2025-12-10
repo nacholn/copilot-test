@@ -282,12 +282,29 @@ export interface CreatePostReplyInput {
 }
 
 // Group types
+export type GroupType = 'location' | 'general';
+
 export interface Group {
   id: string;
   name: string;
   description?: string;
+  type: GroupType;
+  mainImage?: string;
+  mainImagePublicId?: string;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface GroupImage {
+  id: string;
+  groupId: string;
+  imageUrl: string;
+  cloudinaryPublicId: string;
+  displayOrder: number;
+  createdAt: Date;
 }
 
 export interface GroupMember {
@@ -308,14 +325,34 @@ export interface GroupMemberWithProfile extends GroupMember {
   userAvatar?: string;
 }
 
+export interface GroupWithImages extends Group {
+  images: GroupImage[];
+}
+
 export interface CreateGroupInput {
   name: string;
   description?: string;
+  type: GroupType;
+  mainImage?: string;
+  mainImagePublicId?: string;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
+  images?: Array<{
+    imageUrl: string;
+    cloudinaryPublicId: string;
+  }>;
 }
 
 export interface UpdateGroupInput {
   name?: string;
   description?: string;
+  type?: GroupType;
+  mainImage?: string;
+  mainImagePublicId?: string;
+  city?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface AddGroupMemberInput {

@@ -36,6 +36,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       id: result.rows[0].id,
       name: result.rows[0].name,
       description: result.rows[0].description,
+      type: result.rows[0].type,
+      mainImage: result.rows[0].main_image,
+      mainImagePublicId: result.rows[0].main_image_public_id,
+      city: result.rows[0].city,
+      latitude: result.rows[0].latitude ? parseFloat(result.rows[0].latitude) : undefined,
+      longitude: result.rows[0].longitude ? parseFloat(result.rows[0].longitude) : undefined,
       createdAt: new Date(result.rows[0].created_at),
       updatedAt: new Date(result.rows[0].updated_at),
     };
@@ -76,7 +82,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     const body: UpdateGroupInput = await request.json();
 
-    if (!body.name && !body.description) {
+    if (
+      !body.name &&
+      !body.description &&
+      body.type === undefined &&
+      body.mainImage === undefined &&
+      body.city === undefined &&
+      body.latitude === undefined &&
+      body.longitude === undefined
+    ) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
@@ -102,13 +116,49 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       paramCount++;
     }
 
+    if (body.type !== undefined) {
+      updateFields.push(`type = $${paramCount}`);
+      values.push(body.type);
+      paramCount++;
+    }
+
+    if (body.mainImage !== undefined) {
+      updateFields.push(`main_image = $${paramCount}`);
+      values.push(body.mainImage);
+      paramCount++;
+    }
+
+    if (body.mainImagePublicId !== undefined) {
+      updateFields.push(`main_image_public_id = $${paramCount}`);
+      values.push(body.mainImagePublicId);
+      paramCount++;
+    }
+
+    if (body.city !== undefined) {
+      updateFields.push(`city = $${paramCount}`);
+      values.push(body.city);
+      paramCount++;
+    }
+
+    if (body.latitude !== undefined) {
+      updateFields.push(`latitude = $${paramCount}`);
+      values.push(body.latitude);
+      paramCount++;
+    }
+
+    if (body.longitude !== undefined) {
+      updateFields.push(`longitude = $${paramCount}`);
+      values.push(body.longitude);
+      paramCount++;
+    }
+
     values.push(id);
 
     const result = await query(
       `UPDATE groups 
        SET ${updateFields.join(', ')} 
        WHERE id = $${paramCount} 
-       RETURNING id, name, description, created_at, updated_at`,
+       RETURNING id, name, description, type, main_image, main_image_public_id, city, latitude, longitude, created_at, updated_at`,
       values
     );
 
@@ -126,6 +176,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       id: result.rows[0].id,
       name: result.rows[0].name,
       description: result.rows[0].description,
+      type: result.rows[0].type,
+      mainImage: result.rows[0].main_image,
+      mainImagePublicId: result.rows[0].main_image_public_id,
+      city: result.rows[0].city,
+      latitude: result.rows[0].latitude ? parseFloat(result.rows[0].latitude) : undefined,
+      longitude: result.rows[0].longitude ? parseFloat(result.rows[0].longitude) : undefined,
       createdAt: new Date(result.rows[0].created_at),
       updatedAt: new Date(result.rows[0].updated_at),
     };
