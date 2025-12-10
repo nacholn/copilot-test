@@ -82,7 +82,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       );
     }
 
-    const body: { userId: string; role?: 'admin' | 'member' } = await request.json();
+    const body: Omit<AddGroupMemberInput, 'groupId'> & { userId: string } = await request.json();
 
     if (!body.userId) {
       return NextResponse.json<ApiResponse>(

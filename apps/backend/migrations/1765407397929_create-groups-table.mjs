@@ -58,7 +58,7 @@ export const up = (pgm) => {
     role: {
       type: 'varchar(50)',
       notNull: true,
-      default: "'member'",
+      default: 'member',
       check: "role IN ('admin', 'member')",
     },
     joined_at: {
