@@ -102,7 +102,7 @@ export default function Groups() {
   const handleLeaveGroup = async (groupId: string) => {
     if (!user) return;
     
-    if (!confirm(t('groups.leaveSuccess'))) return;
+    if (!confirm('Are you sure you want to leave this group?')) return;
 
     setActionLoading(groupId);
     try {
