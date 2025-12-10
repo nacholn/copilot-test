@@ -12,10 +12,10 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { groupId: string } }
+  context: { params: { groupId: string } }
 ) {
   try {
-    const { groupId } = params;
+    const { groupId } = context.params;
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
     const limit = parseInt(searchParams.get('limit') || '50');
@@ -121,10 +121,10 @@ export async function GET(
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { groupId: string } }
+  context: { params: { groupId: string } }
 ) {
   try {
-    const { groupId } = params;
+    const { groupId } = context.params;
     const body: { senderId: string; message: string } = await request.json();
 
     if (!body.senderId || !body.message) {
@@ -261,10 +261,10 @@ export async function POST(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { groupId: string } }
+  context: { params: { groupId: string } }
 ) {
   try {
-    const { groupId } = params;
+    const { groupId } = context.params;
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
 

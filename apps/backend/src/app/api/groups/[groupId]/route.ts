@@ -10,10 +10,10 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { groupId: string } }
+  context: { params: { groupId: string } }
 ) {
   try {
-    const { groupId } = params;
+    const { groupId } = context.params;
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
 
@@ -126,10 +126,10 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { groupId: string } }
+  context: { params: { groupId: string } }
 ) {
   try {
-    const { groupId } = params;
+    const { groupId } = context.params;
     const body: UpdateGroupInput & { userId: string } = await request.json();
 
     if (!body.userId) {
@@ -286,10 +286,10 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { groupId: string } }
+  context: { params: { groupId: string } }
 ) {
   try {
-    const { groupId } = params;
+    const { groupId } = context.params;
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
 
