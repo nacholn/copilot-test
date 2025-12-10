@@ -280,3 +280,46 @@ export interface CreatePostReplyInput {
   userId: string;
   content: string;
 }
+
+// Group types
+export interface Group {
+  id: string;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GroupMember {
+  id: string;
+  groupId: string;
+  userId: string;
+  role: 'admin' | 'member';
+  joinedAt: Date;
+}
+
+export interface GroupWithMemberCount extends Group {
+  memberCount: number;
+}
+
+export interface GroupMemberWithProfile extends GroupMember {
+  userName: string;
+  userEmail: string;
+  userAvatar?: string;
+}
+
+export interface CreateGroupInput {
+  name: string;
+  description?: string;
+}
+
+export interface UpdateGroupInput {
+  name?: string;
+  description?: string;
+}
+
+export interface AddGroupMemberInput {
+  groupId: string;
+  userId: string;
+  role?: 'admin' | 'member';
+}
