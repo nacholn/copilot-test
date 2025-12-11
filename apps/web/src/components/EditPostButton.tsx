@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Post } from '@cyclists/config';
+import type { Post, PostVisibility } from '@cyclists/config';
 import Swal from 'sweetalert2';
 import styles from './EditPostButton.module.css';
 
@@ -109,7 +109,12 @@ export function EditPostButton({ post, isOwner, userId }: EditPostButtonProps) {
                 <label className={styles.label}>Visibility</label>
                 <select
                   value={visibility}
-                  onChange={(e) => setVisibility(e.target.value as 'public' | 'friends')}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === 'public' || value === 'friends') {
+                      setVisibility(value as PostVisibility);
+                    }
+                  }}
                   className={styles.select}
                 >
                   <option value="public">Public</option>

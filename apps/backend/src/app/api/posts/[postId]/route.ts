@@ -136,6 +136,17 @@ export async function PATCH(
       );
     }
 
+    // userId is required for authorization
+    if (!userId) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'User ID is required for authorization',
+        },
+        { status: 400 }
+      );
+    }
+
     // Verify the post belongs to the user
     const ownerCheck = await query(
       'SELECT user_id FROM posts WHERE id = $1',
@@ -152,7 +163,7 @@ export async function PATCH(
       );
     }
 
-    if (userId && ownerCheck.rows[0].user_id !== userId) {
+    if (ownerCheck.rows[0].user_id !== userId) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,

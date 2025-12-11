@@ -296,7 +296,7 @@ export interface Group {
   name: string;
   description?: string;
   type: GroupType;
-  slug: string;
+  slug: string | null;
   metaDescription?: string;
   keywords?: string;
   mainImage?: string;
