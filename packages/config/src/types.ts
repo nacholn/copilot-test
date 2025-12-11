@@ -222,6 +222,9 @@ export interface Post {
   title: string;
   content: string;
   visibility: PostVisibility;
+  slug: string;
+  metaDescription?: string;
+  keywords?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -269,6 +272,9 @@ export interface CreatePostInput {
   title: string;
   content: string;
   visibility: PostVisibility;
+  slug?: string;
+  metaDescription?: string;
+  keywords?: string;
   images?: Array<{
     imageUrl: string;
     cloudinaryPublicId: string;
@@ -289,6 +295,9 @@ export interface Group {
   name: string;
   description?: string;
   type: GroupType;
+  slug: string;
+  metaDescription?: string;
+  keywords?: string;
   mainImage?: string;
   mainImagePublicId?: string;
   city?: string;
@@ -333,6 +342,9 @@ export interface CreateGroupInput {
   name: string;
   description?: string;
   type: GroupType;
+  slug?: string;
+  metaDescription?: string;
+  keywords?: string;
   mainImage?: string;
   mainImagePublicId?: string;
   city?: string;

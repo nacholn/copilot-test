@@ -3,6 +3,7 @@ import { query } from '@/lib/db';
 import { uploadImage } from '@/lib/cloudinary';
 import { createNotification } from '@/lib/notifications';
 import { emitNotification } from '@/lib/websocket';
+import { generateUniqueSlug } from '@/lib/slug';
 import type { ApiResponse, CreatePostInput, PostWithDetails } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -79,6 +80,9 @@ export async function GET(request: NextRequest) {
       title: row.title,
       content: row.content,
       visibility: row.visibility,
+      slug: row.slug,
+      metaDescription: row.meta_description,
+      keywords: row.keywords,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
       authorName: row.author_name,
@@ -122,6 +126,8 @@ export async function POST(request: NextRequest) {
     const title = formData.get('title') as string;
     const content = formData.get('content') as string;
     const visibility = formData.get('visibility') as 'public' | 'friends';
+    const metaDescription = formData.get('metaDescription') as string | null;
+    const keywords = formData.get('keywords') as string | null;
     const images = formData.getAll('images') as File[];
 
     if (!userId || !title || !content || !visibility) {
@@ -145,7 +151,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create post
+    // Create post first to get the ID for slug generation
     const postResult = await query(
       `INSERT INTO posts (user_id, title, content, visibility)
        VALUES ($1, $2, $3, $4)
@@ -154,6 +160,13 @@ export async function POST(request: NextRequest) {
     );
 
     const post = postResult.rows[0];
+
+    // Generate and update slug
+    const slug = generateUniqueSlug(title, post.id);
+    await query(
+      `UPDATE posts SET slug = $1, meta_description = $2, keywords = $3 WHERE id = $4`,
+      [slug, metaDescription, keywords, post.id]
+    );
 
     // Upload images to Cloudinary if provided
     if (images && images.length > 0) {
@@ -203,7 +216,7 @@ export async function POST(request: NextRequest) {
         actorId: userId,
         relatedId: post.id,
         relatedType: 'post',
-        actionUrl: `/posts/${post.id}`,
+        actionUrl: `/p/${slug}`,
       });
 
       // Emit via WebSocket for real-time notification
@@ -221,6 +234,9 @@ export async function POST(request: NextRequest) {
           title: post.title,
           content: post.content,
           visibility: post.visibility,
+          slug: slug,
+          metaDescription: metaDescription || undefined,
+          keywords: keywords || undefined,
           createdAt: new Date(post.created_at),
           updatedAt: new Date(post.updated_at),
         },

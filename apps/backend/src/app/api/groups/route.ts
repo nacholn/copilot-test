@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { generateUniqueSlug } from '@/lib/slug';
 import type { ApiResponse, Group, GroupWithMemberCount, CreateGroupInput } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -33,6 +34,9 @@ export async function GET() {
       name: row.name,
       description: row.description,
       type: row.type,
+      slug: row.slug,
+      metaDescription: row.meta_description,
+      keywords: row.keywords,
       mainImage: row.main_image,
       mainImagePublicId: row.main_image_public_id,
       city: row.city,
@@ -111,10 +115,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Create group first to get ID for slug generation
     const result = await query(
       `INSERT INTO groups (name, description, type, main_image, main_image_public_id, city, latitude, longitude) 
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
-       RETURNING id, name, description, type, main_image, main_image_public_id, city, latitude, longitude, created_at, updated_at`,
+       RETURNING *`,
       [
         body.name,
         body.description || null,
@@ -127,29 +132,42 @@ export async function POST(request: NextRequest) {
       ]
     );
 
+    const groupId = result.rows[0].id;
+
+    // Generate and update slug
+    const slug = generateUniqueSlug(body.name, groupId);
+    await query(
+      `UPDATE groups SET slug = $1, meta_description = $2, keywords = $3 WHERE id = $4`,
+      [slug, body.metaDescription, body.keywords, groupId]
+    );
+
     // Insert additional images if provided
     if (body.images && body.images.length > 0) {
       for (let i = 0; i < body.images.length; i++) {
         const image = body.images[i];
         await query(
           'INSERT INTO group_images (group_id, image_url, cloudinary_public_id, display_order) VALUES ($1, $2, $3, $4)',
-          [result.rows[0].id, image.imageUrl, image.cloudinaryPublicId, i]
+          [groupId, image.imageUrl, image.cloudinaryPublicId, i]
         );
       }
     }
 
+    const row = result.rows[0];
     const group: Group = {
-      id: result.rows[0].id,
-      name: result.rows[0].name,
-      description: result.rows[0].description,
-      type: result.rows[0].type,
-      mainImage: result.rows[0].main_image,
-      mainImagePublicId: result.rows[0].main_image_public_id,
-      city: result.rows[0].city,
-      latitude: result.rows[0].latitude ? parseFloat(result.rows[0].latitude) : undefined,
-      longitude: result.rows[0].longitude ? parseFloat(result.rows[0].longitude) : undefined,
-      createdAt: new Date(result.rows[0].created_at),
-      updatedAt: new Date(result.rows[0].updated_at),
+      id: row.id,
+      name: row.name,
+      description: row.description,
+      type: row.type,
+      slug: slug,
+      metaDescription: body.metaDescription,
+      keywords: body.keywords,
+      mainImage: row.main_image,
+      mainImagePublicId: row.main_image_public_id,
+      city: row.city,
+      latitude: row.latitude ? parseFloat(row.latitude) : undefined,
+      longitude: row.longitude ? parseFloat(row.longitude) : undefined,
+      createdAt: new Date(row.created_at),
+      updatedAt: new Date(row.updated_at),
     };
 
     return NextResponse.json<ApiResponse<Group>>(
