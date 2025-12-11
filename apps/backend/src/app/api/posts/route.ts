@@ -162,12 +162,18 @@ export async function POST(request: NextRequest) {
 
     // Generate slug and set publication_date for friends posts
     const slug = generateUniqueSlug(title, post.id);
-    const publicationDate = visibility === 'friends' ? 'CURRENT_TIMESTAMP' : 'NULL';
     
-    await query(
-      `UPDATE posts SET slug = $1, publication_date = ${publicationDate} WHERE id = $2`,
-      [slug, post.id]
-    );
+    if (visibility === 'friends') {
+      await query(
+        `UPDATE posts SET slug = $1, publication_date = CURRENT_TIMESTAMP WHERE id = $2`,
+        [slug, post.id]
+      );
+    } else {
+      await query(
+        `UPDATE posts SET slug = $1 WHERE id = $2`,
+        [slug, post.id]
+      );
+    }
 
     // Upload images to Cloudinary if provided
     if (images && images.length > 0) {

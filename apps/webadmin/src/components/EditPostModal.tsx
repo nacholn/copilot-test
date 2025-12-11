@@ -4,10 +4,16 @@ import { useState } from 'react';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from '../styles/common.module.css';
 
+interface PostUpdateInput {
+  metaDescription?: string | null;
+  keywords?: string | null;
+  publicationDate?: string | null;
+}
+
 interface EditPostModalProps {
   post: PostWithDetails;
   onClose: () => void;
-  onUpdate: (postId: string, updates: any) => Promise<{ success: boolean; error?: string }>;
+  onUpdate: (postId: string, updates: PostUpdateInput) => Promise<{ success: boolean; error?: string }>;
 }
 
 export function EditPostModal({ post, onClose, onUpdate }: EditPostModalProps) {
@@ -24,7 +30,7 @@ export function EditPostModal({ post, onClose, onUpdate }: EditPostModalProps) {
     setLoading(true);
     setError(null);
 
-    const updates: any = {};
+    const updates: PostUpdateInput = {};
 
     if (metaDescription !== (post.metaDescription || '')) {
       updates.metaDescription = metaDescription || null;
