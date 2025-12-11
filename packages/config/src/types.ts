@@ -360,3 +360,32 @@ export interface AddGroupMemberInput {
   userId: string;
   role?: 'admin' | 'member';
 }
+
+// Group Message types
+export interface GroupMessage {
+  id: string;
+  groupId: string;
+  senderId: string;
+  message: string;
+  createdAt: Date;
+}
+
+export interface GroupMessageWithSender extends GroupMessage {
+  senderName: string;
+  senderAvatar?: string;
+}
+
+export interface SendGroupMessageInput {
+  groupId: string;
+  senderId: string;
+  message: string;
+}
+
+export interface GroupConversation {
+  groupId: string;
+  groupName: string;
+  groupImage?: string;
+  lastMessage?: GroupMessageWithSender;
+  unreadCount: number;
+  memberCount: number;
+}

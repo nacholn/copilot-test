@@ -90,6 +90,9 @@ export function Header() {
               <Link href="/users" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.discover')}
               </Link>
+              <Link href="/groups" className={styles.navLink} onClick={closeMenu}>
+                {t('navigation.groups')}
+              </Link>
               <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.friends')}
               </Link>
