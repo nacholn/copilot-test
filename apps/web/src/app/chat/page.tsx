@@ -274,7 +274,7 @@ export default function Chat() {
   if (loading) {
     return (
       <AuthGuard>
-        <Loader fullScreen message="Loading chats..." />
+        <Loader fullScreen message={t('chat.loadingChats')} />
       </AuthGuard>
     );
   }
@@ -456,7 +456,7 @@ export default function Chat() {
                   type="text"
                   value={messageText}
                   onChange={handleMessageInputChange}
-                  placeholder="Type a message..."
+                  placeholder={t('chat.typePlaceholder')}
                   className={styles.messageInput}
                   disabled={sending}
                 />

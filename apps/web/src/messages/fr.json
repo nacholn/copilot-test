@@ -135,12 +135,16 @@
     "sent": "Envoyées",
     "noReceivedRequests": "Aucune demande d'ami en attente",
     "noSentRequests": "Aucune demande envoyée en attente",
+    "noPendingReceived": "Vous n'avez aucune demande d'ami en attente.",
+    "noPendingSent": "Vous n'avez envoyé aucune demande d'ami en attente.",
+    "findFriends": "Trouver des Amis",
     "accept": "Accepter",
     "reject": "Rejeter",
     "cancel": "Annuler"
   },
   "chat": {
     "title": "Chat",
+    "loadingChats": "Chargement des discussions...",
     "selectFriend": "Sélectionnez un ami pour commencer à discuter",
     "typePlaceholder": "Tapez un message...",
     "send": "Envoyer",

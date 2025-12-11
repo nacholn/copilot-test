@@ -135,12 +135,16 @@
     "sent": "Enviadas",
     "noReceivedRequests": "No hay solicitudes de amistad pendientes",
     "noSentRequests": "No hay solicitudes enviadas pendientes",
+    "noPendingReceived": "No tienes ninguna solicitud de amistad pendiente.",
+    "noPendingSent": "No has enviado ninguna solicitud de amistad pendiente.",
+    "findFriends": "Buscar Amigos",
     "accept": "Aceptar",
     "reject": "Rechazar",
     "cancel": "Cancelar"
   },
   "chat": {
     "title": "Chat",
+    "loadingChats": "Cargando chats...",
     "selectFriend": "Selecciona un amigo para comenzar a chatear",
     "typePlaceholder": "Escribe un mensaje...",
     "send": "Enviar",

@@ -135,12 +135,16 @@
     "sent": "Sent",
     "noReceivedRequests": "No pending friend requests",
     "noSentRequests": "No pending sent requests",
+    "noPendingReceived": "You don't have any pending friend requests.",
+    "noPendingSent": "You haven't sent any pending friend requests.",
+    "findFriends": "Find Friends",
     "accept": "Accept",
     "reject": "Reject",
     "cancel": "Cancel"
   },
   "chat": {
     "title": "Chat",
+    "loadingChats": "Loading chats...",
     "selectFriend": "Select a friend to start chatting",
     "typePlaceholder": "Type a message...",
     "send": "Send",
