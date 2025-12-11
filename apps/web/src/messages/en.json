@@ -106,7 +106,9 @@
     "updateProfile": "Update Profile"
   },
   "users": {
-    "title": "All Users",
+    "title": "Discover",
+    "usersTab": "Users",
+    "groupsTab": "Groups",
     "searchPlaceholder": "Search by name, email, city, or bio...",
     "allLevels": "All Levels",
     "allBikeTypes": "All Bike Types",
@@ -166,7 +168,7 @@
   },
   "navigation": {
     "discover": "Discover",
-    "groups": "Groups",
+    "groups": "My Groups",
     "friends": "Friends",
     "requests": "Requests",
     "chat": "Chat",

@@ -106,7 +106,9 @@
     "updateProfile": "Mettre à Jour le Profil"
   },
   "users": {
-    "title": "Tous les Utilisateurs",
+    "title": "Découvrir",
+    "usersTab": "Utilisateurs",
+    "groupsTab": "Groupes",
     "searchPlaceholder": "Rechercher par nom, e-mail, ville ou bio...",
     "allLevels": "Tous les Niveaux",
     "allBikeTypes": "Tous les Types de Vélo",
@@ -166,7 +168,7 @@
   },
   "navigation": {
     "discover": "Découvrir",
-    "groups": "Groupes",
+    "groups": "Mes Groupes",
     "friends": "Amis",
     "requests": "Demandes",
     "chat": "Chat",

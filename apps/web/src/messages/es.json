@@ -106,7 +106,9 @@
     "updateProfile": "Actualizar Perfil"
   },
   "users": {
-    "title": "Todos los Usuarios",
+    "title": "Descubrir",
+    "usersTab": "Usuarios",
+    "groupsTab": "Grupos",
     "searchPlaceholder": "Buscar por nombre, correo, ciudad o biografía...",
     "allLevels": "Todos los Niveles",
     "allBikeTypes": "Todos los Tipos de Bicicleta",
@@ -166,7 +168,7 @@
   },
   "navigation": {
     "discover": "Descubrir",
-    "groups": "Grupos",
+    "groups": "Mis Grupos",
     "friends": "Amigos",
     "requests": "Solicitudes",
     "chat": "Chat",
