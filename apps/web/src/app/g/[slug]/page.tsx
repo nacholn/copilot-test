@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
+import { generateGroupStructuredData } from '../../../utils/structuredData';
 import type { GroupWithMemberCount, GroupImage } from '@cyclists/config';
 import styles from './groupDetail.module.css';
 
@@ -72,6 +73,8 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
     );
   }
 
+  const structuredData = generateGroupStructuredData(group);
+
   return (
     <>
       <Head>
@@ -86,6 +89,10 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
         <meta name="twitter:title" content={group.name} />
         <meta name="twitter:description" content={group.metaDescription || group.description || `Join ${group.name} on Cyclists Social Network`} />
         {group.mainImage && <meta name="twitter:image" content={group.mainImage} />}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </Head>
       <main className={styles.main}>
         <article className={styles.article}>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
+import { generatePostStructuredData } from '../../../utils/structuredData';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from './postDetail.module.css';
 
@@ -72,6 +73,8 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
     );
   }
 
+  const structuredData = generatePostStructuredData(post);
+
   return (
     <>
       <Head>
@@ -90,6 +93,10 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
         {post.images && post.images.length > 0 && (
           <meta name="twitter:image" content={post.images[0].imageUrl} />
         )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </Head>
       <main className={styles.main}>
         <article className={styles.article}>
