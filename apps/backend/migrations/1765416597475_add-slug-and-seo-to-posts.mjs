@@ -40,11 +40,6 @@ export const up = (pgm) => {
     ) || '-' || SUBSTRING(CAST(id AS TEXT), 1, 8)
     WHERE slug IS NULL;
   `);
-
-  // Make slug not null after generating values
-  pgm.alterColumn('posts', 'slug', {
-    notNull: true,
-  });
 };
 
 /**
