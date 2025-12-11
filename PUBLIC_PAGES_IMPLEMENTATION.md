@@ -45,6 +45,19 @@ This implementation adds public-facing pages for posts and groups with comprehen
 - ✅ Semantic HTML structure
 - ✅ Mobile-responsive design
 - ✅ Alt text for images
+- ✅ **SEO fields only editable from webadmin** (not exposed in regular post creation)
+
+### 6. WebAdmin Post Management
+- ✅ Dedicated posts management page at `/posts`
+- ✅ Edit SEO fields (meta description, keywords) for any post
+- ✅ Set publication date for public posts
+- ✅ Filter posts by visibility (all/public/friends)
+- ✅ Navigation between Groups and Posts management
+
+### 7. Publication Date Feature
+- ✅ Optional `publication_date` field added to posts
+- ✅ For "friends" posts: auto-set to current date on creation
+- ✅ For "public" posts: must be set manually from webadmin
 
 ## 🚀 Getting Started
 
@@ -56,7 +69,9 @@ npm run migrate:up
 
 This will:
 - Add slug, meta_description, and keywords fields to posts and groups tables
+- Add publication_date field to posts table
 - Generate slugs for existing posts and groups
+- Auto-populate publication_date for existing friends posts
 - Create indexes for fast slug lookups
 
 ### 2. Start the Application
@@ -115,17 +130,31 @@ Search engines can understand your content better:
 
 ## 📝 Usage Examples
 
-### Creating a Post with SEO
+### Creating a Post (Regular Users)
 ```javascript
 const formData = new FormData();
 formData.append('userId', userId);
 formData.append('title', 'Amazing Mountain Trail');
 formData.append('content', 'Today I discovered...');
-formData.append('visibility', 'public');
-formData.append('metaDescription', 'Join me on an amazing mountain biking adventure...');
-formData.append('keywords', 'mountain biking, trails, adventure');
+formData.append('visibility', 'public'); // or 'friends'
 
+// Note: SEO fields NOT available in regular post creation
 // Slug will be auto-generated: amazing-mountain-trail-a1b2c3d4
+// For 'friends' posts, publication_date is auto-set to current date
+```
+
+### Managing Post SEO (WebAdmin Only)
+```javascript
+// Update SEO fields and publication date from webadmin
+await fetch(`${apiUrl}/api/webadmin/posts/${postId}`, {
+  method: 'PATCH',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    metaDescription: 'Join me on an amazing mountain biking adventure...',
+    keywords: 'mountain biking, trails, adventure',
+    publicationDate: '2024-12-11T00:00:00.000Z', // Required for public posts
+  }),
+});
 ```
 
 ### Creating a Group with SEO
