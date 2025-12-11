@@ -5,14 +5,22 @@ import type { ApiResponse, PostWithDetails } from '@cyclists/config';
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';
 
-// GET public posts (no authentication required)
+// GET all posts for webadmin
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');
+    const visibility = searchParams.get('visibility'); // Filter by visibility
 
-    // Get public posts with author info and reply count
+    let whereClause = '';
+    const params: any[] = [limit, offset];
+
+    if (visibility && (visibility === 'public' || visibility === 'friends')) {
+      whereClause = 'WHERE p.visibility = $3';
+      params.push(visibility);
+    }
+
     const result = await query(
       `
       SELECT 
@@ -23,11 +31,11 @@ export async function GET(request: NextRequest) {
         (SELECT image_url FROM post_images WHERE post_id = p.id ORDER BY display_order LIMIT 1) as first_image_url
       FROM posts p
       JOIN profiles prof ON p.user_id = prof.user_id
-      WHERE p.visibility = 'public'
+      ${whereClause}
       ORDER BY p.created_at DESC
       LIMIT $1 OFFSET $2
       `,
-      [limit, offset]
+      params
     );
 
     const posts: PostWithDetails[] = result.rows.map((row) => ({
@@ -67,7 +75,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('[Posts] Get public posts error:', error);
+    console.error('[WebAdmin] Get posts error:', error);
     return NextResponse.json<ApiResponse>(
       {
         success: false,

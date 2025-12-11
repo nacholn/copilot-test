@@ -68,6 +68,7 @@ export async function GET(
       slug: row.slug,
       metaDescription: row.meta_description,
       keywords: row.keywords,
+      publicationDate: row.publication_date ? new Date(row.publication_date) : undefined,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
       authorName: row.author_name,

@@ -83,6 +83,7 @@ export async function GET(request: NextRequest) {
       slug: row.slug,
       metaDescription: row.meta_description,
       keywords: row.keywords,
+      publicationDate: row.publication_date ? new Date(row.publication_date) : undefined,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
       authorName: row.author_name,
@@ -126,8 +127,6 @@ export async function POST(request: NextRequest) {
     const title = formData.get('title') as string;
     const content = formData.get('content') as string;
     const visibility = formData.get('visibility') as 'public' | 'friends';
-    const metaDescription = formData.get('metaDescription') as string | null;
-    const keywords = formData.get('keywords') as string | null;
     const images = formData.getAll('images') as File[];
 
     if (!userId || !title || !content || !visibility) {
@@ -161,11 +160,13 @@ export async function POST(request: NextRequest) {
 
     const post = postResult.rows[0];
 
-    // Generate and update slug
+    // Generate slug and set publication_date for friends posts
     const slug = generateUniqueSlug(title, post.id);
+    const publicationDate = visibility === 'friends' ? 'CURRENT_TIMESTAMP' : 'NULL';
+    
     await query(
-      `UPDATE posts SET slug = $1, meta_description = $2, keywords = $3 WHERE id = $4`,
-      [slug, metaDescription, keywords, post.id]
+      `UPDATE posts SET slug = $1, publication_date = ${publicationDate} WHERE id = $2`,
+      [slug, post.id]
     );
 
     // Upload images to Cloudinary if provided
@@ -235,8 +236,6 @@ export async function POST(request: NextRequest) {
           content: post.content,
           visibility: post.visibility,
           slug: slug,
-          metaDescription: metaDescription || undefined,
-          keywords: keywords || undefined,
           createdAt: new Date(post.created_at),
           updatedAt: new Date(post.updated_at),
         },

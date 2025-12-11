@@ -225,6 +225,7 @@ export interface Post {
   slug: string;
   metaDescription?: string;
   keywords?: string;
+  publicationDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
