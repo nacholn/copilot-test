@@ -448,7 +448,6 @@ export default function Chat() {
                     );
                   })
                 )}
-                )}
               </div>
 
               {/* Message Input */}
