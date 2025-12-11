@@ -175,7 +175,7 @@ export default function GroupDetail({ params }: { params: Promise<{ id: string }
           <div className={styles.container}>
             <p className={styles.error}>Group not found</p>
             <Link href="/groups" className={styles.backButton}>
-              {t('common.back')} to Groups
+              {t('common.back')}
             </Link>
           </div>
         </div>
@@ -277,7 +277,7 @@ export default function GroupDetail({ params }: { params: Promise<{ id: string }
           {/* Back Button */}
           <div className={styles.backSection}>
             <Link href="/groups" className={styles.backButton}>
-              {t('common.back')} to Groups
+              {t('common.back')}
             </Link>
           </div>
         </div>

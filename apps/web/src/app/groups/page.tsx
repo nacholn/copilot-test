@@ -195,7 +195,7 @@ export default function Groups() {
 
           <div className={styles.actions}>
             <Link href="/" className={styles.backButton}>
-              {t('common.back')} to Home
+              {t('common.back')}
             </Link>
           </div>
         </div>

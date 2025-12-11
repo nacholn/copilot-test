@@ -225,28 +225,20 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       );
     }
 
-    // Get all unread messages in the group
-    const unreadMessages = await query(
-      `SELECT gm.id 
+    // Mark all unread messages as read using a single query
+    await query(
+      `INSERT INTO group_message_reads (message_id, user_id)
+       SELECT gm.id, $2
        FROM group_messages gm
        WHERE gm.group_id = $1 
        AND gm.sender_id != $2
        AND NOT EXISTS (
          SELECT 1 FROM group_message_reads gmr 
          WHERE gmr.message_id = gm.id AND gmr.user_id = $2
-       )`,
+       )
+       ON CONFLICT (message_id, user_id) DO NOTHING`,
       [groupId, userId]
     );
-
-    // Mark each message as read
-    for (const message of unreadMessages.rows) {
-      await query(
-        `INSERT INTO group_message_reads (message_id, user_id)
-         VALUES ($1, $2)
-         ON CONFLICT (message_id, user_id) DO NOTHING`,
-        [message.id, userId]
-      );
-    }
 
     // Mark all group message notifications as read
     await query(
