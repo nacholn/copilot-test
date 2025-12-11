@@ -1,13 +1,52 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslations } from '../hooks/useTranslations';
+import { PublicPostCard } from '../components/PublicPostCard';
+import { PublicGroupCard } from '../components/PublicGroupCard';
+import type { PostWithDetails, GroupWithMemberCount } from '@cyclists/config';
 import styles from './page.module.css';
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
   const { t } = useTranslations();
+  const [latestPosts, setLatestPosts] = useState<PostWithDetails[]>([]);
+  const [popularGroups, setPopularGroups] = useState<GroupWithMemberCount[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPublicData() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        
+        // Fetch latest posts
+        const postsResponse = await fetch(`${apiUrl}/api/posts/public?limit=6`);
+        if (postsResponse.ok) {
+          const postsData = await postsResponse.json();
+          if (postsData.success) {
+            setLatestPosts(postsData.data);
+          }
+        }
+
+        // Fetch popular groups
+        const groupsResponse = await fetch(`${apiUrl}/api/groups/public?limit=6&orderBy=member_count`);
+        if (groupsResponse.ok) {
+          const groupsData = await groupsResponse.json();
+          if (groupsData.success) {
+            setPopularGroups(groupsData.data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching public data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPublicData();
+  }, []);
 
   // Show loading state while auth is being checked
   if (authLoading) {
@@ -134,6 +173,40 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Latest Posts Section */}
+      {!loading && latestPosts.length > 0 && (
+        <section className={styles.postsSection}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Latest Posts</h2>
+            <Link href="/posts" className={styles.seeAllLink}>
+              See all →
+            </Link>
+          </div>
+          <div className={styles.postsGrid}>
+            {latestPosts.map((post) => (
+              <PublicPostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Popular Groups Section */}
+      {!loading && popularGroups.length > 0 && (
+        <section className={styles.groupsSection}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Popular Groups</h2>
+            <Link href="/groups" className={styles.seeAllLink}>
+              See all →
+            </Link>
+          </div>
+          <div className={styles.groupsGrid}>
+            {popularGroups.map((group) => (
+              <PublicGroupCard key={group.id} group={group} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       {!user && (
