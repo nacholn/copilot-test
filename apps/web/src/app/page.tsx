@@ -175,38 +175,55 @@ export default function Home() {
       </section>
 
       {/* Latest Posts Section */}
-      {!loading && latestPosts.length > 0 && (
-        <section className={styles.postsSection}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Latest Posts</h2>
-            <Link href="/posts" className={styles.seeAllLink}>
-              See all →
-            </Link>
-          </div>
+      <section className={styles.postsSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Latest Posts</h2>
+          <Link href="/posts" className={styles.seeAllLink}>
+            See all →
+          </Link>
+        </div>
+        {loading ? (
+          <div className={styles.loadingState}>Loading latest posts...</div>
+        ) : latestPosts.length > 0 ? (
           <div className={styles.postsGrid}>
             {latestPosts.map((post) => (
               <PublicPostCard key={post.id} post={post} />
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <div className={styles.emptyState}>
+            <p>No public posts yet. Be the first to share your cycling adventure!</p>
+            {user && (
+              <Link href="/posts/create" className={styles.ctaButtonSmall}>
+                Create a Post
+              </Link>
+            )}
+          </div>
+        )}
+      </section>
 
       {/* Popular Groups Section */}
-      {!loading && popularGroups.length > 0 && (
-        <section className={styles.groupsSection}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Popular Groups</h2>
-            <Link href="/groups" className={styles.seeAllLink}>
-              See all →
-            </Link>
-          </div>
+      <section className={styles.groupsSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Popular Groups</h2>
+          <Link href="/groups" className={styles.seeAllLink}>
+            See all →
+          </Link>
+        </div>
+        {loading ? (
+          <div className={styles.loadingState}>Loading popular groups...</div>
+        ) : popularGroups.length > 0 ? (
           <div className={styles.groupsGrid}>
             {popularGroups.map((group) => (
               <PublicGroupCard key={group.id} group={group} />
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <div className={styles.emptyState}>
+            <p>No groups available yet. Join the community and create one!</p>
+          </div>
+        )}
+      </section>
 
       {/* CTA Section */}
       {!user && (

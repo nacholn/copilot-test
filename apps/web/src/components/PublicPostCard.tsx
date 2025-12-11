@@ -10,6 +10,11 @@ interface PublicPostCardProps {
 
 export function PublicPostCard({ post }: PublicPostCardProps) {
   const imageUrl = post.images && post.images.length > 0 ? post.images[0].imageUrl : null;
+  
+  // If no slug, don't render the card
+  if (!post.slug) {
+    return null;
+  }
 
   return (
     <Link href={`/p/${post.slug}`} className={styles.card}>

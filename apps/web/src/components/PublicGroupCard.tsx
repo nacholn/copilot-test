@@ -9,6 +9,11 @@ interface PublicGroupCardProps {
 }
 
 export function PublicGroupCard({ group }: PublicGroupCardProps) {
+  // If no slug, don't render the card
+  if (!group.slug) {
+    return null;
+  }
+  
   return (
     <Link href={`/g/${group.slug}`} className={styles.card}>
       {group.mainImage && (

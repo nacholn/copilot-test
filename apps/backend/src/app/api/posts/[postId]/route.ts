@@ -115,3 +115,146 @@ export async function GET(
     );
   }
 }
+
+// PATCH update post (title, content, visibility)
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { postId: string } }
+) {
+  try {
+    const postId = params.postId;
+    const body = await request.json();
+    const { title, content, visibility, userId } = body;
+
+    if (!postId) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Post ID is required',
+        },
+        { status: 400 }
+      );
+    }
+
+    // Verify the post belongs to the user
+    const ownerCheck = await query(
+      'SELECT user_id FROM posts WHERE id = $1',
+      [postId]
+    );
+
+    if (ownerCheck.rows.length === 0) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Post not found',
+        },
+        { status: 404 }
+      );
+    }
+
+    if (userId && ownerCheck.rows[0].user_id !== userId) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Not authorized to edit this post',
+        },
+        { status: 403 }
+      );
+    }
+
+    // Build dynamic update query
+    const updates: string[] = [];
+    const values: any[] = [];
+    let paramIndex = 1;
+
+    if (title !== undefined) {
+      updates.push(`title = $${paramIndex}`);
+      values.push(title);
+      paramIndex++;
+    }
+
+    if (content !== undefined) {
+      updates.push(`content = $${paramIndex}`);
+      values.push(content);
+      paramIndex++;
+    }
+
+    if (visibility !== undefined) {
+      if (visibility !== 'public' && visibility !== 'friends') {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'Invalid visibility value',
+          },
+          { status: 400 }
+        );
+      }
+      updates.push(`visibility = $${paramIndex}`);
+      values.push(visibility);
+      paramIndex++;
+    }
+
+    if (updates.length === 0) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'No fields to update',
+        },
+        { status: 400 }
+      );
+    }
+
+    // Add updated_at timestamp
+    updates.push('updated_at = CURRENT_TIMESTAMP');
+
+    // Add postId as the last parameter
+    values.push(postId);
+
+    const updateQuery = `
+      UPDATE posts 
+      SET ${updates.join(', ')}
+      WHERE id = $${paramIndex}
+      RETURNING *
+    `;
+
+    const result = await query(updateQuery, values);
+
+    if (result.rows.length === 0) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Failed to update post',
+        },
+        { status: 500 }
+      );
+    }
+
+    const post = result.rows[0];
+
+    return NextResponse.json<ApiResponse>(
+      {
+        success: true,
+        data: {
+          id: post.id,
+          userId: post.user_id,
+          title: post.title,
+          content: post.content,
+          visibility: post.visibility,
+          slug: post.slug,
+          createdAt: new Date(post.created_at),
+          updatedAt: new Date(post.updated_at),
+        },
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('[Posts] Update post error:', error);
+    return NextResponse.json<ApiResponse>(
+      {
+        success: false,
+        error: 'Failed to update post',
+      },
+      { status: 500 }
+    );
+  }
+}

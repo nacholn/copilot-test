@@ -38,7 +38,7 @@ export function PostList({ posts, onEdit }: PostListProps) {
                 <strong>Author:</strong> {post.authorName}
               </div>
               <div className={styles.metaItem}>
-                <strong>Slug:</strong> {post.slug}
+                <strong>Slug:</strong> {post.slug || <em>Not generated yet</em>}
               </div>
               <div className={styles.metaItem}>
                 <strong>Created:</strong> {new Date(post.createdAt).toLocaleDateString()}

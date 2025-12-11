@@ -222,7 +222,7 @@ export interface Post {
   title: string;
   content: string;
   visibility: PostVisibility;
-  slug: string;
+  slug: string | null;
   metaDescription?: string;
   keywords?: string;
   publicationDate?: Date;
