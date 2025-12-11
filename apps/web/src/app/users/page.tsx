@@ -10,7 +10,7 @@ import { Avatar } from '../../components/Avatar';
 import { Loader } from '../../components/Loader';
 import { FilterBikeTypeSelector } from '../../components/FilterBikeTypeSelector';
 import { FilterCyclingLevelSelector } from '../../components/FilterCyclingLevelSelector';
-import type { Profile, GroupWithMemberCount } from '@cyclists/config';
+import type { Profile, GroupWithMemberCount, GroupConversation } from '@cyclists/config';
 import styles from './users.module.css';
 
 type TabType = 'users' | 'groups';
@@ -93,7 +93,7 @@ export default function Users() {
 
         if (data.success && data.data.groupConversations) {
           const groupIds = new Set(
-            data.data.groupConversations.map((gc: any) => gc.groupId)
+            data.data.groupConversations.map((gc: GroupConversation) => gc.groupId)
           );
           setUserGroupIds(groupIds);
         }
