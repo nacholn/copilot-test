@@ -105,6 +105,9 @@ export function Header() {
               <Link href="/posts" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.posts')}
               </Link>
+              <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
+                {t('navigation.profile')}
+              </Link>
               <Link
                 href="/notifications"
                 className={styles.navLinkNotifications}
@@ -114,9 +117,6 @@ export function Header() {
                 {unreadNotificationCount > 0 && (
                   <span className={styles.notificationBadge}>{unreadNotificationCount}</span>
                 )}
-              </Link>
-              <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
-                {t('navigation.profile')}
               </Link>
               <button onClick={handleSignOut} className={styles.logoutButton}>
                 {t('navigation.logout')}

@@ -106,7 +106,9 @@
     "updateProfile": "Actualizar Perfil"
   },
   "users": {
-    "title": "Todos los Usuarios",
+    "title": "Descubrir",
+    "usersTab": "Usuarios",
+    "groupsTab": "Grupos",
     "searchPlaceholder": "Buscar por nombre, correo, ciudad o biografía...",
     "allLevels": "Todos los Niveles",
     "allBikeTypes": "Todos los Tipos de Bicicleta",
@@ -133,12 +135,16 @@
     "sent": "Enviadas",
     "noReceivedRequests": "No hay solicitudes de amistad pendientes",
     "noSentRequests": "No hay solicitudes enviadas pendientes",
+    "noPendingReceived": "No tienes ninguna solicitud de amistad pendiente.",
+    "noPendingSent": "No has enviado ninguna solicitud de amistad pendiente.",
+    "findFriends": "Buscar Amigos",
     "accept": "Aceptar",
     "reject": "Rechazar",
     "cancel": "Cancelar"
   },
   "chat": {
     "title": "Chat",
+    "loadingChats": "Cargando chats...",
     "selectFriend": "Selecciona un amigo para comenzar a chatear",
     "typePlaceholder": "Escribe un mensaje...",
     "send": "Enviar",
@@ -166,7 +172,7 @@
   },
   "navigation": {
     "discover": "Descubrir",
-    "groups": "Grupos",
+    "groups": "Mis Grupos",
     "friends": "Amigos",
     "requests": "Solicitudes",
     "chat": "Chat",

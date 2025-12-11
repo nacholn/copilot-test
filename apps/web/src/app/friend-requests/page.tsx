@@ -206,11 +206,11 @@ export default function FriendRequests() {
             <div className={styles.emptyState}>
               <p className={styles.emptyText}>
                 {activeTab === 'received' 
-                  ? "You don't have any pending friend requests."
-                  : "You haven't sent any pending friend requests."}
+                  ? t('friendRequests.noPendingReceived')
+                  : t('friendRequests.noPendingSent')}
               </p>
               <Link href="/users" className={styles.button}>
-                Find Friends
+                {t('friendRequests.findFriends')}
               </Link>
             </div>
           ) : (

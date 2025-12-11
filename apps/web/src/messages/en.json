@@ -106,7 +106,9 @@
     "updateProfile": "Update Profile"
   },
   "users": {
-    "title": "All Users",
+    "title": "Discover",
+    "usersTab": "Users",
+    "groupsTab": "Groups",
     "searchPlaceholder": "Search by name, email, city, or bio...",
     "allLevels": "All Levels",
     "allBikeTypes": "All Bike Types",
@@ -133,12 +135,16 @@
     "sent": "Sent",
     "noReceivedRequests": "No pending friend requests",
     "noSentRequests": "No pending sent requests",
+    "noPendingReceived": "You don't have any pending friend requests.",
+    "noPendingSent": "You haven't sent any pending friend requests.",
+    "findFriends": "Find Friends",
     "accept": "Accept",
     "reject": "Reject",
     "cancel": "Cancel"
   },
   "chat": {
     "title": "Chat",
+    "loadingChats": "Loading chats...",
     "selectFriend": "Select a friend to start chatting",
     "typePlaceholder": "Type a message...",
     "send": "Send",
@@ -166,7 +172,7 @@
   },
   "navigation": {
     "discover": "Discover",
-    "groups": "Groups",
+    "groups": "My Groups",
     "friends": "Friends",
     "requests": "Requests",
     "chat": "Chat",

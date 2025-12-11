@@ -106,7 +106,9 @@
     "updateProfile": "Mettre à Jour le Profil"
   },
   "users": {
-    "title": "Tous les Utilisateurs",
+    "title": "Découvrir",
+    "usersTab": "Utilisateurs",
+    "groupsTab": "Groupes",
     "searchPlaceholder": "Rechercher par nom, e-mail, ville ou bio...",
     "allLevels": "Tous les Niveaux",
     "allBikeTypes": "Tous les Types de Vélo",
@@ -133,12 +135,16 @@
     "sent": "Envoyées",
     "noReceivedRequests": "Aucune demande d'ami en attente",
     "noSentRequests": "Aucune demande envoyée en attente",
+    "noPendingReceived": "Vous n'avez aucune demande d'ami en attente.",
+    "noPendingSent": "Vous n'avez envoyé aucune demande d'ami en attente.",
+    "findFriends": "Trouver des Amis",
     "accept": "Accepter",
     "reject": "Rejeter",
     "cancel": "Annuler"
   },
   "chat": {
     "title": "Chat",
+    "loadingChats": "Chargement des discussions...",
     "selectFriend": "Sélectionnez un ami pour commencer à discuter",
     "typePlaceholder": "Tapez un message...",
     "send": "Envoyer",
@@ -166,7 +172,7 @@
   },
   "navigation": {
     "discover": "Découvrir",
-    "groups": "Groupes",
+    "groups": "Mes Groupes",
     "friends": "Amis",
     "requests": "Demandes",
     "chat": "Chat",
