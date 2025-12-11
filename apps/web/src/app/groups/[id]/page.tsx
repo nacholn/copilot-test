@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { use } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
@@ -13,9 +12,9 @@ import type { Group, GroupMemberWithProfile } from '@cyclists/config';
 import Swal from 'sweetalert2';
 import styles from './groupDetail.module.css';
 
-export default function GroupDetail({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = use(params);
-  const groupId = resolvedParams.id;
+export default function GroupDetail() {
+  const params = useParams();
+  const groupId = params.id as string;
   const { user } = useAuth();
   const { t } = useTranslations();
   const router = useRouter();
@@ -32,11 +31,11 @@ export default function GroupDetail({ params }: { params: Promise<{ id: string }
   const fetchGroupData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch group details
       const groupResponse = await fetch(`/api/groups/${groupId}`);
       const groupData = await groupResponse.json();
-      
+
       if (groupData.success) {
         setGroup(groupData.data);
       }
@@ -44,7 +43,7 @@ export default function GroupDetail({ params }: { params: Promise<{ id: string }
       // Fetch group members
       const membersResponse = await fetch(`/api/groups/${groupId}/members`);
       const membersData = await membersResponse.json();
-      
+
       if (membersData.success) {
         setMembers(membersData.data);
         // Check if current user is a member
@@ -210,10 +209,7 @@ export default function GroupDetail({ params }: { params: Promise<{ id: string }
           <div className={styles.actions}>
             {isMember ? (
               <>
-                <button
-                  onClick={handleChatClick}
-                  className={styles.primaryButton}
-                >
+                <button onClick={handleChatClick} className={styles.primaryButton}>
                   💬 {t('groups.messages')}
                 </button>
                 <button
@@ -257,11 +253,7 @@ export default function GroupDetail({ params }: { params: Promise<{ id: string }
                   href={`/users/${member.userId}`}
                   className={styles.memberCard}
                 >
-                  <Avatar
-                    src={member.userAvatar}
-                    name={member.userName}
-                    size="small"
-                  />
+                  <Avatar src={member.userAvatar} name={member.userName} size="small" />
                   <div className={styles.memberInfo}>
                     <h3>{member.userName}</h3>
                     <p>{member.userEmail}</p>
