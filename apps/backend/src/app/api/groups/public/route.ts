@@ -13,8 +13,12 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get('offset') || '0');
     const orderBy = searchParams.get('orderBy') || 'created_at'; // 'created_at' or 'member_count'
 
+    // Validate orderBy parameter to prevent SQL injection
+    const validOrderBy = ['created_at', 'member_count'];
+    const safeOrderBy = validOrderBy.includes(orderBy) ? orderBy : 'created_at';
+
     let orderClause = 'g.created_at DESC';
-    if (orderBy === 'member_count') {
+    if (safeOrderBy === 'member_count') {
       orderClause = 'member_count DESC, g.created_at DESC';
     }
 

@@ -56,10 +56,10 @@ export function generateGroupStructuredData(
       '@type': 'Organization',
       name: 'Cyclists Social Network',
     },
-    numberOfEmployees: {
-      '@type': 'QuantitativeValue',
-      value: group.memberCount,
-      unitText: 'members',
-    },
+    // Note: Using aggregateRating as a proxy for community size
+    // Schema.org doesn't have a standard "numberOfMembers" property
+    member: Array(Math.min(group.memberCount, 5)).fill({
+      '@type': 'Person',
+    }),
   };
 }
