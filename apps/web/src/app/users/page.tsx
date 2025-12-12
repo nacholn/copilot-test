@@ -52,6 +52,10 @@ export default function Users() {
     fetchUserProfile();
   }, [user?.id]);
 
+  // Extract location for dependency to prevent unnecessary re-fetches
+  const userLatitude = userProfile?.latitude;
+  const userLongitude = userProfile?.longitude;
+
   useEffect(() => {
     const fetchUsers = async () => {
       if (activeTab !== 'users') return;
@@ -66,10 +70,10 @@ export default function Users() {
         if (cityFilter) params.append('city', cityFilter);
         
         // Add distance filter if set and user has location
-        if (distanceFilter !== null && userProfile?.latitude && userProfile?.longitude) {
+        if (distanceFilter !== null && userLatitude && userLongitude) {
           params.append('distance', distanceFilter.toString());
-          params.append('userLatitude', userProfile.latitude.toString());
-          params.append('userLongitude', userProfile.longitude.toString());
+          params.append('userLatitude', userLatitude.toString());
+          params.append('userLongitude', userLongitude.toString());
         }
 
         const response = await fetch(`/api/users?${params.toString()}`);
@@ -88,7 +92,7 @@ export default function Users() {
     };
 
     fetchUsers();
-  }, [searchQuery, nameQuery, levelFilter, bikeTypeFilter, cityFilter, distanceFilter, user?.id, activeTab, userProfile]);
+  }, [searchQuery, nameQuery, levelFilter, bikeTypeFilter, cityFilter, distanceFilter, user?.id, activeTab, userLatitude, userLongitude]);
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -285,11 +289,11 @@ export default function Users() {
                       className={styles.distanceSlider}
                     />
                     <div className={styles.distanceMarkers}>
-                      <span>1 km</span>
-                      <span>100 km</span>
-                      <span>200 km</span>
-                      <span>300 km</span>
                       <span>{t('users.all') || 'All'}</span>
+                      <span>125 km</span>
+                      <span>250 km</span>
+                      <span>375 km</span>
+                      <span>500 km</span>
                     </div>
                   </div>
                 )}

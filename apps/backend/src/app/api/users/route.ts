@@ -70,16 +70,19 @@ export async function GET(request: NextRequest) {
       
       if (!isNaN(distanceNum) && !isNaN(userLat) && !isNaN(userLng) && distanceNum > 0) {
         // Haversine formula for calculating distance
+        // LEAST(1, ...) prevents domain errors from floating-point precision issues in acos()
         // Add condition to filter profiles within distance
         conditions.push(`
           latitude IS NOT NULL AND longitude IS NOT NULL AND
           (
             6371 * acos(
-              cos(radians($${paramCount})) * 
-              cos(radians(latitude)) * 
-              cos(radians(longitude) - radians($${paramCount + 1})) + 
-              sin(radians($${paramCount})) * 
-              sin(radians(latitude))
+              LEAST(1, 
+                cos(radians($${paramCount})) * 
+                cos(radians(latitude)) * 
+                cos(radians(longitude) - radians($${paramCount + 1})) + 
+                sin(radians($${paramCount})) * 
+                sin(radians(latitude))
+              )
             )
           ) <= $${paramCount + 2}
         `);
