@@ -160,7 +160,7 @@ export default function Register() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: user.email,
-          password: 'oauth', // Placeholder for OAuth users
+          isOAuth: true,
           profile: {
             email: user.email,
             name: profileData.name,

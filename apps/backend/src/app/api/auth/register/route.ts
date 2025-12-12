@@ -7,7 +7,7 @@ import type { RegisterInput, ApiResponse } from '@cyclists/config';
 export async function POST(request: NextRequest) {
   try {
     const body: RegisterInput = await request.json();
-    const { email, password, profile } = body;
+    const { email, password, isOAuth, profile } = body;
 
     // Validate required fields
     if (!email || !profile.email || !profile.name || !profile.level || !profile.bikeType || !profile.city) {
@@ -23,8 +23,8 @@ export async function POST(request: NextRequest) {
     const supabase = createSupabaseClient();
     let userId: string;
 
-    // Check if this is an OAuth user (password is 'oauth') or regular signup
-    if (password === 'oauth') {
+    // Check if this is an OAuth user or regular signup
+    if (isOAuth) {
       // OAuth user - get current session
       const { data: { session } } = await supabase.auth.getSession();
       if (!session || !session.user) {
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json<ApiResponse>(
           {
             success: false,
-            error: 'Password is required',
+            error: 'Password is required for email/password registration',
           },
           { status: 400 }
         );

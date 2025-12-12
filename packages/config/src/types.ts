@@ -58,7 +58,8 @@ export interface UpdateProfileInput {
 // Auth types
 export interface RegisterInput {
   email: string;
-  password: string;
+  password?: string;
+  isOAuth?: boolean;
   profile: Omit<CreateProfileInput, 'userId'>;
 }
 
