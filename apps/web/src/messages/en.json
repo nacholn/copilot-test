@@ -15,7 +15,8 @@
     "yes": "Yes",
     "no": "No",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "or": "or"
   },
   "languages": {
     "en": "English",
@@ -74,13 +75,27 @@
     "bikeType": "Bike Type",
     "city": "City",
     "dateOfBirth": "Date of Birth (Optional)",
+    "bio": "Bio (Optional)",
+    "bioPlaceholder": "Tell us about yourself and your cycling experiences...",
     "createAccount": "Create Account",
     "creatingAccount": "Creating Account...",
     "alreadyHaveAccount": "Already have an account?",
     "signInLink": "Sign in",
     "passwordsNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
     "registrationFailed": "Registration failed",
-    "errorOccurred": "An error occurred. Please try again."
+    "errorOccurred": "An error occurred. Please try again.",
+    "notAuthenticated": "You must be logged in to continue",
+    "step1Description": "Choose how you want to sign up",
+    "step2Description": "Complete your cycling profile",
+    "step3Description": "Review your information before completing",
+    "verifyEmailMessage": "We've sent a verification email. Please verify your email before continuing with registration.",
+    "signUpWithEmail": "Sign Up with Email",
+    "signUpWithGoogle": "Continue with Google",
+    "profileDetailsTitle": "Profile Details",
+    "continueToSummary": "Continue to Summary",
+    "summaryTitle": "Registration Summary",
+    "completeRegistration": "Complete Registration"
   },
   "profile": {
     "title": "Your Profile",

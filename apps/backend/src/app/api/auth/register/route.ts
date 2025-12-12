@@ -10,31 +10,60 @@ export async function POST(request: NextRequest) {
     const { email, password, profile } = body;
 
     // Validate required fields
-    if (!email || !password || !profile.email || !profile.name || !profile.level || !profile.bikeType || !profile.city) {
+    if (!email || !profile.email || !profile.name || !profile.level || !profile.bikeType || !profile.city) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
-          error: 'Missing required fields: email, password, name, level, bikeType, city',
+          error: 'Missing required fields: email, name, level, bikeType, city',
         },
         { status: 400 }
       );
     }
 
-    // Create user in Supabase
     const supabase = createSupabaseClient();
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    let userId: string;
 
-    if (authError || !authData.user) {
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          error: authError?.message || 'Failed to create user',
-        },
-        { status: 400 }
-      );
+    // Check if this is an OAuth user (password is 'oauth') or regular signup
+    if (password === 'oauth') {
+      // OAuth user - get current session
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session || !session.user) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'No active session. Please sign in again.',
+          },
+          { status: 401 }
+        );
+      }
+      userId = session.user.id;
+    } else {
+      // Regular email/password signup
+      if (!password) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'Password is required',
+          },
+          { status: 400 }
+        );
+      }
+
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (authError || !authData.user) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: authError?.message || 'Failed to create user',
+          },
+          { status: 400 }
+        );
+      }
+      userId = authData.user.id;
     }
 
     // Create profile in PostgreSQL
@@ -45,7 +74,7 @@ export async function POST(request: NextRequest) {
     `;
 
     const values = [
-      authData.user.id,
+      userId,
       profile.email,
       profile.name,
       profile.level,
@@ -65,7 +94,6 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         data: {
-          user: authData.user,
           profile: transformedProfile,
         },
       },

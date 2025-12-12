@@ -15,7 +15,8 @@
     "yes": "Oui",
     "no": "Non",
     "error": "Erreur",
-    "success": "Succès"
+    "success": "Succès",
+    "or": "ou"
   },
   "languages": {
     "en": "Anglais",
@@ -74,13 +75,27 @@
     "bikeType": "Type de Vélo",
     "city": "Ville",
     "dateOfBirth": "Date de Naissance (Optionnel)",
+    "bio": "Biographie (Optionnel)",
+    "bioPlaceholder": "Parlez-nous de vous et de vos expériences cyclistes...",
     "createAccount": "Créer un Compte",
     "creatingAccount": "Création du Compte...",
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "signInLink": "Se connecter",
     "passwordsNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
     "registrationFailed": "Échec de l'inscription",
-    "errorOccurred": "Une erreur s'est produite. Veuillez réessayer."
+    "errorOccurred": "Une erreur s'est produite. Veuillez réessayer.",
+    "notAuthenticated": "Vous devez être connecté pour continuer",
+    "step1Description": "Choisissez comment vous souhaitez vous inscrire",
+    "step2Description": "Complétez votre profil de cycliste",
+    "step3Description": "Vérifiez vos informations avant de finaliser",
+    "verifyEmailMessage": "Nous avons envoyé un e-mail de vérification. Veuillez vérifier votre e-mail avant de continuer l'inscription.",
+    "signUpWithEmail": "S'inscrire avec E-mail",
+    "signUpWithGoogle": "Continuer avec Google",
+    "profileDetailsTitle": "Détails du Profil",
+    "continueToSummary": "Continuer au Résumé",
+    "summaryTitle": "Résumé de l'Inscription",
+    "completeRegistration": "Terminer l'Inscription"
   },
   "profile": {
     "title": "Votre Profil",
