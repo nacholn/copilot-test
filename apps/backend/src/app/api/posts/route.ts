@@ -203,6 +203,17 @@ export async function POST(request: NextRequest) {
     );
     const authorName = authorResult.rows[0]?.name || 'Someone';
 
+    // Update last_post_created_at for interaction score tracking
+    try {
+      await query(
+        'UPDATE profiles SET last_post_created_at = CURRENT_TIMESTAMP WHERE user_id = $1',
+        [userId]
+      );
+    } catch (updateError) {
+      console.error('Error updating last_post_created_at:', updateError);
+      // Don't fail the post creation if this update fails
+    }
+
     // Send notifications to friends based on post visibility
     // For both public and friends-only posts, notify the creator's friends
     const friendsResult = await query(

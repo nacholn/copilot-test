@@ -24,11 +24,37 @@ export default function Users() {
   const [userGroupIds, setUserGroupIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [nameQuery, setNameQuery] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
   const [bikeTypeFilter, setBikeTypeFilter] = useState('');
   const [cityFilter, setCityFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [showMyGroups, setShowMyGroups] = useState(false);
+  const [distanceFilter, setDistanceFilter] = useState<number | null>(null);
+  const [userProfile, setUserProfile] = useState<Profile | null>(null);
+
+  // Fetch current user's profile to get location
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user?.id) return;
+      
+      try {
+        const response = await fetch(`/api/profile?userId=${user.id}`);
+        const data = await response.json();
+        if (data.success && data.data) {
+          setUserProfile(data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [user?.id]);
+
+  // Extract location for dependency to prevent unnecessary re-fetches
+  const userLatitude = userProfile?.latitude;
+  const userLongitude = userProfile?.longitude;
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -38,9 +64,17 @@ export default function Users() {
         setLoading(true);
         const params = new URLSearchParams();
         if (searchQuery) params.append('query', searchQuery);
+        if (nameQuery) params.append('name', nameQuery);
         if (levelFilter) params.append('level', levelFilter);
         if (bikeTypeFilter) params.append('bikeType', bikeTypeFilter);
         if (cityFilter) params.append('city', cityFilter);
+        
+        // Add distance filter if set and user has location
+        if (distanceFilter !== null && userLatitude && userLongitude) {
+          params.append('distance', distanceFilter.toString());
+          params.append('userLatitude', userLatitude.toString());
+          params.append('userLongitude', userLongitude.toString());
+        }
 
         const response = await fetch(`/api/users?${params.toString()}`);
         const data = await response.json();
@@ -58,7 +92,7 @@ export default function Users() {
     };
 
     fetchUsers();
-  }, [searchQuery, levelFilter, bikeTypeFilter, cityFilter, user?.id, activeTab]);
+  }, [searchQuery, nameQuery, levelFilter, bikeTypeFilter, cityFilter, distanceFilter, user?.id, activeTab, userLatitude, userLongitude]);
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -113,11 +147,27 @@ export default function Users() {
     setActiveTab(tab);
     // Reset filters when switching tabs
     setSearchQuery('');
+    setNameQuery('');
     setLevelFilter('');
     setBikeTypeFilter('');
     setCityFilter('');
     setTypeFilter('');
     setShowMyGroups(false);
+    setDistanceFilter(null);
+  };
+
+  const handleDistanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (value === 0) {
+      setDistanceFilter(null); // "All" distances
+    } else {
+      setDistanceFilter(value);
+    }
+  };
+
+  const getDistanceLabel = () => {
+    if (distanceFilter === null) return t('users.allDistances') || 'All distances';
+    return `${distanceFilter} km`;
   };
 
   const filteredGroups = groups.filter((group) => {
@@ -172,6 +222,13 @@ export default function Users() {
               <div className={styles.filters}>
                 <input
                   type="text"
+                  placeholder={t('users.searchByName') || 'Search by name...'}
+                  value={nameQuery}
+                  onChange={(e) => setNameQuery(e.target.value)}
+                  className={styles.searchInput}
+                />
+                <input
+                  type="text"
                   placeholder={t('users.searchPlaceholder')}
                   value={searchQuery}
                   onChange={handleSearchChange}
@@ -203,15 +260,43 @@ export default function Users() {
                   <button
                     onClick={() => {
                       setSearchQuery('');
+                      setNameQuery('');
                       setLevelFilter('');
                       setBikeTypeFilter('');
                       setCityFilter('');
+                      setDistanceFilter(null);
                     }}
                     className={styles.clearButton}
                   >
                     {t('common.cancel')}
                   </button>
                 </div>
+
+                {/* Distance Filter Slider */}
+                {userProfile?.latitude && userProfile?.longitude && (
+                  <div className={styles.distanceFilter}>
+                    <label htmlFor="distance-slider" className={styles.distanceLabel}>
+                      {t('users.distanceFilter') || 'Distance'}: <strong>{getDistanceLabel()}</strong>
+                    </label>
+                    <input
+                      id="distance-slider"
+                      type="range"
+                      min="0"
+                      max="500"
+                      step="1"
+                      value={distanceFilter ?? 0}
+                      onChange={handleDistanceChange}
+                      className={styles.distanceSlider}
+                    />
+                    <div className={styles.distanceMarkers}>
+                      <span>{t('users.all') || 'All'}</span>
+                      <span>125 km</span>
+                      <span>250 km</span>
+                      <span>375 km</span>
+                      <span>500 km</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {loading ? (

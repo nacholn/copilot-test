@@ -11,9 +11,13 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const searchQuery = searchParams.get('query') || '';
+    const nameQuery = searchParams.get('name') || '';
     const level = searchParams.get('level') || '';
     const bikeType = searchParams.get('bikeType') || '';
     const city = searchParams.get('city') || '';
+    const distance = searchParams.get('distance');
+    const userLatitude = searchParams.get('userLatitude');
+    const userLongitude = searchParams.get('userLongitude');
 
     // Build dynamic query
     const conditions: string[] = [];
@@ -29,6 +33,13 @@ export async function GET(request: NextRequest) {
         bio ILIKE $${paramCount}
       )`);
       values.push(`%${searchQuery}%`);
+      paramCount++;
+    }
+
+    // Search by name specifically
+    if (nameQuery) {
+      conditions.push(`name ILIKE $${paramCount}`);
+      values.push(`%${nameQuery}%`);
       paramCount++;
     }
 
@@ -50,11 +61,43 @@ export async function GET(request: NextRequest) {
       paramCount++;
     }
 
+    // Distance filter using Haversine formula
+    // Only applies if distance is provided and user location is available
+    if (distance && userLatitude && userLongitude) {
+      const distanceNum = parseFloat(distance);
+      const userLat = parseFloat(userLatitude);
+      const userLng = parseFloat(userLongitude);
+      
+      if (!isNaN(distanceNum) && !isNaN(userLat) && !isNaN(userLng) && distanceNum > 0) {
+        // Haversine formula for calculating distance
+        // LEAST(1, ...) prevents domain errors from floating-point precision issues in acos()
+        // Add condition to filter profiles within distance
+        conditions.push(`
+          latitude IS NOT NULL AND longitude IS NOT NULL AND
+          (
+            6371 * acos(
+              LEAST(1, 
+                cos(radians($${paramCount})) * 
+                cos(radians(latitude)) * 
+                cos(radians(longitude) - radians($${paramCount + 1})) + 
+                sin(radians($${paramCount})) * 
+                sin(radians(latitude))
+              )
+            )
+          ) <= $${paramCount + 2}
+        `);
+        values.push(userLat, userLng, distanceNum);
+        paramCount += 3;
+      }
+    }
+
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    
+    // Order by interaction score (highest first), then by created_at
     const sqlQuery = `
       SELECT * FROM profiles 
       ${whereClause}
-      ORDER BY created_at DESC
+      ORDER BY interaction_score DESC, created_at DESC
     `;
 
     const result = await query(sqlQuery, values);
