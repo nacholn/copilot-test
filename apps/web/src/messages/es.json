@@ -110,11 +110,15 @@
     "usersTab": "Usuarios",
     "groupsTab": "Grupos",
     "searchPlaceholder": "Buscar por nombre, correo, ciudad o biografía...",
+    "searchByName": "Buscar por nombre...",
     "allLevels": "Todos los Niveles",
     "allBikeTypes": "Todos los Tipos de Bicicleta",
     "filterByCity": "Filtrar por ciudad",
     "noUsersFound": "No se encontraron usuarios",
-    "viewProfile": "Ver Perfil"
+    "viewProfile": "Ver Perfil",
+    "distanceFilter": "Distancia",
+    "allDistances": "Todas",
+    "all": "Todas"
   },
   "friends": {
     "title": "Mis Amigos",
