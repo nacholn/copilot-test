@@ -164,6 +164,15 @@
   gap: 8px;
 }
 
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
 .modalContent {
   background: white;
   padding: 30px;

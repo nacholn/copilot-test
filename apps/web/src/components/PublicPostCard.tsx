@@ -11,13 +11,11 @@ interface PublicPostCardProps {
 export function PublicPostCard({ post }: PublicPostCardProps) {
   const imageUrl = post.images && post.images.length > 0 ? post.images[0].imageUrl : null;
   
-  // If no slug, don't render the card
-  if (!post.slug) {
-    return null;
-  }
+  // Use slug if available, otherwise fallback to ID-based URL
+  const postUrl = post.slug ? `/p/${post.slug}` : `/posts/${post.id}`;
 
   return (
-    <Link href={`/p/${post.slug}`} className={styles.card}>
+    <Link href={postUrl} className={styles.card}>
       {imageUrl && (
         <div className={styles.imageContainer}>
           <img src={imageUrl} alt={post.title} className={styles.image} />

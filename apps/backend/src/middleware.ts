@@ -38,10 +38,14 @@ function setCorsHeaders(res: NextResponse, req: NextRequest) {
 export function middleware(req: NextRequest) {
   // Only apply CORS for API routes
   if (req.nextUrl.pathname.startsWith('/api')) {
-    // Handle preflight
+    // Handle preflight OPTIONS request - return 200 with CORS headers
     if (req.method === 'OPTIONS') {
-      const res = NextResponse.next();
-      return setCorsHeaders(res, req);
+      const res = new NextResponse(null, { status: 200 });
+      res.headers.set('Access-Control-Allow-Origin', '*');
+      res.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+      res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.headers.set('Access-Control-Max-Age', '86400');
+      return res;
     }
 
     const res = NextResponse.next();

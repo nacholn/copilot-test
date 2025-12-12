@@ -140,7 +140,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -377,6 +378,16 @@
   padding: 3rem 2rem;
   color: #666;
   font-size: 1.125rem;
+}
+
+.errorState {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
 .emptyState p {

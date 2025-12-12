@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
-import type { ApiResponse, PostWithDetails } from '@cyclists/config';
+import type { ApiResponse, PostWithDetails, PostImage } from '@cyclists/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';
@@ -14,21 +14,21 @@ export async function GET(request: NextRequest) {
     const visibility = searchParams.get('visibility'); // Filter by visibility
 
     let whereClause = '';
-    const params: any[] = [limit, offset];
+    const params: unknown[] = [limit, offset];
 
     if (visibility && (visibility === 'public' || visibility === 'friends')) {
       whereClause = 'WHERE p.visibility = $3';
       params.push(visibility);
     }
 
+    // Fetch posts
     const result = await query(
       `
       SELECT 
         p.*,
         prof.name as author_name,
         prof.avatar as author_avatar,
-        (SELECT COUNT(*) FROM post_replies WHERE post_id = p.id) as reply_count,
-        (SELECT image_url FROM post_images WHERE post_id = p.id ORDER BY display_order LIMIT 1) as first_image_url
+        (SELECT COUNT(*) FROM post_replies WHERE post_id = p.id) as reply_count
       FROM posts p
       JOIN profiles prof ON p.user_id = prof.user_id
       ${whereClause}
@@ -37,6 +37,44 @@ export async function GET(request: NextRequest) {
       `,
       params
     );
+
+    // Fetch all images for these posts
+    const postIds = result.rows.map((row) => row.id);
+    let imagesMap: Record<string, PostImage[]> = {};
+
+    if (postIds.length > 0) {
+      const imagesResult = await query(
+        `
+        SELECT 
+          id,
+          post_id,
+          image_url,
+          cloudinary_public_id,
+          display_order,
+          created_at
+        FROM post_images 
+        WHERE post_id = ANY($1)
+        ORDER BY post_id, display_order
+        `,
+        [postIds]
+      );
+
+      // Group images by post_id
+      imagesResult.rows.forEach((img) => {
+        const postId = img.post_id;
+        if (!imagesMap[postId]) {
+          imagesMap[postId] = [];
+        }
+        imagesMap[postId].push({
+          id: img.id,
+          postId: img.post_id,
+          imageUrl: img.image_url,
+          cloudinaryPublicId: img.cloudinary_public_id,
+          displayOrder: img.display_order,
+          createdAt: new Date(img.created_at),
+        });
+      });
+    }
 
     const posts: PostWithDetails[] = result.rows.map((row) => ({
       id: row.id,
@@ -52,18 +90,7 @@ export async function GET(request: NextRequest) {
       updatedAt: new Date(row.updated_at),
       authorName: row.author_name,
       authorAvatar: row.author_avatar,
-      images: row.first_image_url
-        ? [
-            {
-              id: 'preview',
-              postId: row.id,
-              imageUrl: row.first_image_url,
-              cloudinaryPublicId: '',
-              displayOrder: 0,
-              createdAt: new Date(row.created_at),
-            },
-          ]
-        : [],
+      images: imagesMap[row.id] || [],
       replyCount: parseInt(row.reply_count || '0'),
     }));
 
@@ -76,10 +103,11 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     console.error('[WebAdmin] Get posts error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json<ApiResponse>(
       {
         success: false,
-        error: 'Failed to fetch posts',
+        error: `Failed to fetch posts: ${errorMessage}`,
       },
       { status: 500 }
     );

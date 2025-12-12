@@ -31,12 +31,14 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         { status: 404 }
       );
     }
-
     const group: Group = {
       id: result.rows[0].id,
       name: result.rows[0].name,
       description: result.rows[0].description,
       type: result.rows[0].type,
+      slug: result.rows[0].slug,
+      metaDescription: result.rows[0].meta_description,
+      keywords: result.rows[0].keywords,
       mainImage: result.rows[0].main_image,
       mainImagePublicId: result.rows[0].main_image_public_id,
       city: result.rows[0].city,
@@ -81,11 +83,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     const body: UpdateGroupInput = await request.json();
-
     if (
       !body.name &&
       !body.description &&
       body.type === undefined &&
+      body.slug === undefined &&
+      body.metaDescription === undefined &&
+      body.keywords === undefined &&
       body.mainImage === undefined &&
       body.city === undefined &&
       body.latitude === undefined &&
@@ -98,6 +102,37 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         },
         { status: 400 }
       );
+    }
+
+    // If slug is being updated, check for uniqueness
+    if (body.slug !== undefined) {
+      const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+      if (body.slug && !slugRegex.test(body.slug)) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'Slug must contain only lowercase letters, numbers, and hyphens',
+          },
+          { status: 400 }
+        );
+      }
+
+      if (body.slug) {
+        const existingSlug = await query('SELECT id FROM groups WHERE slug = $1 AND id != $2', [
+          body.slug,
+          id,
+        ]);
+
+        if (existingSlug.rows.length > 0) {
+          return NextResponse.json<ApiResponse>(
+            {
+              success: false,
+              error: 'A group with this slug already exists. Please choose a different slug.',
+            },
+            { status: 409 }
+          );
+        }
+      }
     }
 
     const updateFields: string[] = [];
@@ -115,10 +150,27 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       values.push(body.description);
       paramCount++;
     }
-
     if (body.type !== undefined) {
       updateFields.push(`type = $${paramCount}`);
       values.push(body.type);
+      paramCount++;
+    }
+
+    if (body.slug !== undefined) {
+      updateFields.push(`slug = $${paramCount}`);
+      values.push(body.slug);
+      paramCount++;
+    }
+
+    if (body.metaDescription !== undefined) {
+      updateFields.push(`meta_description = $${paramCount}`);
+      values.push(body.metaDescription);
+      paramCount++;
+    }
+
+    if (body.keywords !== undefined) {
+      updateFields.push(`keywords = $${paramCount}`);
+      values.push(body.keywords);
       paramCount++;
     }
 
@@ -153,12 +205,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     values.push(id);
-
     const result = await query(
       `UPDATE groups 
        SET ${updateFields.join(', ')} 
        WHERE id = $${paramCount} 
-       RETURNING id, name, description, type, main_image, main_image_public_id, city, latitude, longitude, created_at, updated_at`,
+       RETURNING id, name, description, type, slug, meta_description, keywords, main_image, main_image_public_id, city, latitude, longitude, created_at, updated_at`,
       values
     );
 
@@ -177,6 +228,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       name: result.rows[0].name,
       description: result.rows[0].description,
       type: result.rows[0].type,
+      slug: result.rows[0].slug,
+      metaDescription: result.rows[0].meta_description,
+      keywords: result.rows[0].keywords,
       mainImage: result.rows[0].main_image,
       mainImagePublicId: result.rows[0].main_image_public_id,
       city: result.rows[0].city,
@@ -206,7 +260,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 }
 
 // DELETE a group
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await params;
 

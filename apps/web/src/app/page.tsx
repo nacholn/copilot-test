@@ -15,31 +15,44 @@ export default function Home() {
   const [latestPosts, setLatestPosts] = useState<PostWithDetails[]>([]);
   const [popularGroups, setPopularGroups] = useState<GroupWithMemberCount[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchPublicData() {
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-        
+
         // Fetch latest posts
         const postsResponse = await fetch(`${apiUrl}/api/posts/public?limit=6`);
         if (postsResponse.ok) {
           const postsData = await postsResponse.json();
           if (postsData.success) {
             setLatestPosts(postsData.data);
+          } else {
+            console.error('[Home] Posts API error:', postsData.error);
           }
+        } else {
+          console.error('[Home] Posts fetch failed:', postsResponse.status);
         }
 
         // Fetch popular groups
-        const groupsResponse = await fetch(`${apiUrl}/api/groups/public?limit=6&orderBy=member_count`);
+        const groupsResponse = await fetch(
+          `${apiUrl}/api/groups/public?limit=6&orderBy=member_count`
+        );
+        console.log('[Home] Groups response status:', groupsResponse.status);
         if (groupsResponse.ok) {
           const groupsData = await groupsResponse.json();
           if (groupsData.success) {
             setPopularGroups(groupsData.data);
+          } else {
+            console.error('[Home] Groups API error:', groupsData.error);
           }
+        } else {
+          console.error('[Home] Groups fetch failed:', groupsResponse.status);
         }
       } catch (error) {
         console.error('Error fetching public data:', error);
+        setError(error instanceof Error ? error.message : 'Failed to fetch data');
       } finally {
         setLoading(false);
       }
@@ -63,12 +76,8 @@ export default function Home() {
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>
-            {t('home.heroTitle')}
-          </h1>
-          <p className={styles.heroDescription}>
-            {t('home.heroDescription')}
-          </p>
+          <h1 className={styles.heroTitle}>{t('home.heroTitle')}</h1>
+          <p className={styles.heroDescription}>{t('home.heroDescription')}</p>
           <div className={styles.heroActions}>
             {user ? (
               <>
@@ -97,7 +106,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
       <section className={styles.features}>
         <h2 className={styles.sectionTitle}>{t('home.featuresTitle')}</h2>
@@ -105,27 +113,20 @@ export default function Home() {
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>🗺️</div>
             <h3 className={styles.featureTitle}>{t('home.discoverRoutes')}</h3>
-            <p className={styles.featureDescription}>
-              {t('home.discoverRoutesDesc')}
-            </p>
+            <p className={styles.featureDescription}>{t('home.discoverRoutesDesc')}</p>
           </div>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>👥</div>
             <h3 className={styles.featureTitle}>{t('home.connect')}</h3>
-            <p className={styles.featureDescription}>
-              {t('home.connectDesc')}
-            </p>
+            <p className={styles.featureDescription}>{t('home.connectDesc')}</p>
           </div>
           <div className={styles.featureCard}>
             <div className={styles.featureIcon}>📊</div>
             <h3 className={styles.featureTitle}>{t('home.trackProgress')}</h3>
-            <p className={styles.featureDescription}>
-              {t('home.trackProgressDesc')}
-            </p>
+            <p className={styles.featureDescription}>{t('home.trackProgressDesc')}</p>
           </div>
         </div>
       </section>
-
       {/* Community Section */}
       <section className={styles.community}>
         <div className={styles.communityContent}>
@@ -146,7 +147,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Types of Cycling */}
       <section className={styles.cyclingTypes}>
         <h2 className={styles.sectionTitle}>{t('home.allTypesTitle')}</h2>
@@ -172,8 +172,7 @@ export default function Home() {
             <p>{t('home.eBikingDesc')}</p>
           </div>
         </div>
-      </section>
-
+      </section>{' '}
       {/* Latest Posts Section */}
       <section className={styles.postsSection}>
         <div className={styles.sectionHeader}>
@@ -182,6 +181,11 @@ export default function Home() {
             See all →
           </Link>
         </div>
+        {error && (
+          <div className={styles.errorState}>
+            <p>Error loading data: {error}</p>
+          </div>
+        )}
         {loading ? (
           <div className={styles.loadingState}>Loading latest posts...</div>
         ) : latestPosts.length > 0 ? (
@@ -201,7 +205,6 @@ export default function Home() {
           </div>
         )}
       </section>
-
       {/* Popular Groups Section */}
       <section className={styles.groupsSection}>
         <div className={styles.sectionHeader}>
@@ -224,14 +227,11 @@ export default function Home() {
           </div>
         )}
       </section>
-
       {/* CTA Section */}
       {!user && (
         <section className={styles.cta}>
           <h2 className={styles.ctaTitle}>{t('home.ctaTitle')}</h2>
-          <p className={styles.ctaDescription}>
-            {t('home.ctaDescription')}
-          </p>
+          <p className={styles.ctaDescription}>{t('home.ctaDescription')}</p>
           <Link href="/register" className={styles.ctaButton}>
             {t('home.getStartedFree')}
           </Link>

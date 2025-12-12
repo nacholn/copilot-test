@@ -15,6 +15,9 @@ export async function GET() {
         g.name,
         g.description,
         g.type,
+        g.slug,
+        g.meta_description,
+        g.keywords,
         g.main_image,
         g.main_image_public_id,
         g.city,
@@ -136,10 +139,12 @@ export async function POST(request: NextRequest) {
 
     // Generate and update slug
     const slug = generateUniqueSlug(body.name, groupId);
-    await query(
-      `UPDATE groups SET slug = $1, meta_description = $2, keywords = $3 WHERE id = $4`,
-      [slug, body.metaDescription, body.keywords, groupId]
-    );
+    await query(`UPDATE groups SET slug = $1, meta_description = $2, keywords = $3 WHERE id = $4`, [
+      slug,
+      body.metaDescription,
+      body.keywords,
+      groupId,
+    ]);
 
     // Insert additional images if provided
     if (body.images && body.images.length > 0) {

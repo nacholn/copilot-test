@@ -21,17 +21,16 @@ export async function GET(request: NextRequest) {
     if (safeOrderBy === 'member_count') {
       orderClause = 'member_count DESC, g.created_at DESC';
     }
-
     const result = await query(
       `
       SELECT 
         g.id,
         g.name,
         g.description,
-        g.type,
-        g.slug,
-        g.meta_description,
-        g.keywords,
+        COALESCE(g.type, 'general') as type,
+        COALESCE(g.slug, '') as slug,
+        COALESCE(g.meta_description, '') as meta_description,
+        COALESCE(g.keywords, '') as keywords,
         g.main_image,
         g.main_image_public_id,
         g.city,
@@ -43,11 +42,12 @@ export async function GET(request: NextRequest) {
       FROM groups g
       LEFT JOIN group_members gm ON g.id = gm.group_id
       GROUP BY g.id
-      ORDER BY ${orderClause}
-      LIMIT $1 OFFSET $2
+      ORDER BY ${orderClause}      LIMIT $1 OFFSET $2
       `,
       [limit, offset]
     );
+
+    console.log('[Groups] Public groups query returned', result.rows.length, 'rows');
 
     const groups: GroupWithMemberCount[] = result.rows.map((row) => ({
       id: row.id,
