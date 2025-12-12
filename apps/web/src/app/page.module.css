@@ -140,7 +140,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -338,6 +339,78 @@
   box-shadow: 0 6px 32px rgba(0, 0, 0, 0.3);
 }
 
+/* Posts Section */
+.postsSection,
+.groupsSection {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.seeAllLink {
+  color: var(--tinder-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.seeAllLink:hover {
+  color: var(--tinder-secondary);
+}
+
+.postsGrid,
+.groupsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.loadingState,
+.emptyState {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+  font-size: 1.125rem;
+}
+
+.errorState {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.emptyState p {
+  margin-bottom: 1.5rem;
+}
+
+.ctaButtonSmall {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  background: var(--tinder-primary);
+  color: white;
+  border-radius: 24px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ctaButtonSmall:hover {
+  background: var(--tinder-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(254, 60, 114, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 968px) {
   .hero {
@@ -432,5 +505,21 @@
 
   .ctaButton {
     width: 100%;
+  }
+
+  .postsSection,
+  .groupsSection {
+    padding: 2rem 1rem;
+  }
+
+  .postsGrid,
+  .groupsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
   }
 }

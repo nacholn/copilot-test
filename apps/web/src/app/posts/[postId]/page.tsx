@@ -8,6 +8,7 @@ import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
 import { Avatar } from '../../../components/Avatar';
 import { Loader } from '../../../components/Loader';
+import { EditPostButton } from '../../../components/EditPostButton';
 import type { Post, PostImage, PostReplyWithAuthor } from '@cyclists/config';
 import Swal from 'sweetalert2';
 import styles from './post-detail.module.css';
@@ -172,6 +173,7 @@ export default function PostDetail() {
                   </p>
                 </div>
               </div>
+              <EditPostButton post={post} isOwner={post.userId === user?.id} userId={user?.id} />
             </div>
 
             <h1 className={styles.postTitle}>{post.title}</h1>

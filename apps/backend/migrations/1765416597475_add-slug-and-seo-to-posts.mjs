@@ -1,0 +1,56 @@
+/**
+ * @type {import('node-pg-migrate').ColumnDefinitions | undefined}
+ */
+export const shorthands = undefined;
+
+/**
+ * @param pgm {import('node-pg-migrate').MigrationBuilder}
+ * @param run {() => void | undefined}
+ * @returns {Promise<void> | void}
+ */
+export const up = (pgm) => {
+  // Add slug field for SEO-friendly URLs
+  pgm.addColumns('posts', {
+    slug: {
+      type: 'varchar(255)',
+      unique: true,
+      comment: 'SEO-friendly URL slug',
+    },
+    meta_description: {
+      type: 'varchar(500)',
+      comment: 'Meta description for SEO',
+    },
+    keywords: {
+      type: 'text',
+      comment: 'SEO keywords (comma-separated)',
+    },
+  });
+
+  // Create index on slug for fast lookups
+  pgm.createIndex('posts', 'slug', { name: 'idx_posts_slug' });
+
+  // Generate slugs for existing posts based on title
+  pgm.sql(`
+    UPDATE posts
+    SET slug = LOWER(
+      REGEXP_REPLACE(
+        REGEXP_REPLACE(title, '[^a-zA-Z0-9\\s-]', '', 'g'),
+        '\\s+', '-', 'g'
+      )
+    ) || '-' || SUBSTRING(CAST(id AS TEXT), 1, 8)
+    WHERE slug IS NULL;
+  `);
+};
+
+/**
+ * @param pgm {import('node-pg-migrate').MigrationBuilder}
+ * @param run {() => void | undefined}
+ * @returns {Promise<void> | void}
+ */
+export const down = (pgm) => {
+  // Drop index
+  pgm.dropIndex('posts', 'slug', { name: 'idx_posts_slug', ifExists: true });
+
+  // Drop columns
+  pgm.dropColumns('posts', ['slug', 'meta_description', 'keywords']);
+};

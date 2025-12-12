@@ -3,6 +3,7 @@ import { query } from '@/lib/db';
 import { uploadImage } from '@/lib/cloudinary';
 import { createNotification } from '@/lib/notifications';
 import { emitNotification } from '@/lib/websocket';
+import { generateUniqueSlug } from '@/lib/slug';
 import type { ApiResponse, CreatePostInput, PostWithDetails } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -79,6 +80,10 @@ export async function GET(request: NextRequest) {
       title: row.title,
       content: row.content,
       visibility: row.visibility,
+      slug: row.slug,
+      metaDescription: row.meta_description,
+      keywords: row.keywords,
+      publicationDate: row.publication_date ? new Date(row.publication_date) : undefined,
       createdAt: new Date(row.created_at),
       updatedAt: new Date(row.updated_at),
       authorName: row.author_name,
@@ -145,7 +150,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create post
+    // Create post first to get the ID for slug generation
     const postResult = await query(
       `INSERT INTO posts (user_id, title, content, visibility)
        VALUES ($1, $2, $3, $4)
@@ -154,6 +159,21 @@ export async function POST(request: NextRequest) {
     );
 
     const post = postResult.rows[0];
+
+    // Generate slug and set publication_date for friends posts
+    const slug = generateUniqueSlug(title, post.id);
+    
+    if (visibility === 'friends') {
+      await query(
+        `UPDATE posts SET slug = $1, publication_date = CURRENT_TIMESTAMP WHERE id = $2`,
+        [slug, post.id]
+      );
+    } else {
+      await query(
+        `UPDATE posts SET slug = $1 WHERE id = $2`,
+        [slug, post.id]
+      );
+    }
 
     // Upload images to Cloudinary if provided
     if (images && images.length > 0) {
@@ -203,7 +223,7 @@ export async function POST(request: NextRequest) {
         actorId: userId,
         relatedId: post.id,
         relatedType: 'post',
-        actionUrl: `/posts/${post.id}`,
+        actionUrl: `/p/${slug}`,
       });
 
       // Emit via WebSocket for real-time notification
@@ -221,6 +241,7 @@ export async function POST(request: NextRequest) {
           title: post.title,
           content: post.content,
           visibility: post.visibility,
+          slug: slug,
           createdAt: new Date(post.created_at),
           updatedAt: new Date(post.updated_at),
         },

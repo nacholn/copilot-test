@@ -1,3 +1,5 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
 import type { GroupWithMemberCount } from '@cyclists/config';
 import styles from '../styles/common.module.css';
@@ -88,9 +90,15 @@ export function GroupList({ groups, onDelete }: GroupListProps) {
               </td>
               <td>{group.city || '-'}</td>
               <td>{group.memberCount}</td>
-              <td>{new Date(group.createdAt).toLocaleDateString()}</td>
+              <td>{new Date(group.createdAt).toLocaleDateString()}</td>{' '}
               <td>
                 <div className={styles.actions}>
+                  <button
+                    className={`${styles.button} ${styles.buttonSmall} ${styles.buttonSecondary}`}
+                    onClick={() => router.push(`/groups/${group.id}/edit`)}
+                  >
+                    Edit
+                  </button>
                   <button
                     className={`${styles.button} ${styles.buttonSmall} ${styles.buttonPrimary}`}
                     onClick={() => router.push(`/groups/${group.id}`)}

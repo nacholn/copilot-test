@@ -170,7 +170,13 @@ export interface UpdateFriendRequestInput {
 }
 
 // Notification types
-export type NotificationType = 'friend_request' | 'friend_request_accepted' | 'message' | 'system' | 'post_reply' | 'new_post';
+export type NotificationType =
+  | 'friend_request'
+  | 'friend_request_accepted'
+  | 'message'
+  | 'system'
+  | 'post_reply'
+  | 'new_post';
 
 export interface Notification {
   id: string;
@@ -222,6 +228,10 @@ export interface Post {
   title: string;
   content: string;
   visibility: PostVisibility;
+  slug: string | null;
+  metaDescription?: string;
+  keywords?: string;
+  publicationDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -269,6 +279,9 @@ export interface CreatePostInput {
   title: string;
   content: string;
   visibility: PostVisibility;
+  slug?: string;
+  metaDescription?: string;
+  keywords?: string;
   images?: Array<{
     imageUrl: string;
     cloudinaryPublicId: string;
@@ -289,6 +302,9 @@ export interface Group {
   name: string;
   description?: string;
   type: GroupType;
+  slug: string | null;
+  metaDescription?: string;
+  keywords?: string;
   mainImage?: string;
   mainImagePublicId?: string;
   city?: string;
@@ -333,6 +349,9 @@ export interface CreateGroupInput {
   name: string;
   description?: string;
   type: GroupType;
+  slug?: string;
+  metaDescription?: string;
+  keywords?: string;
   mainImage?: string;
   mainImagePublicId?: string;
   city?: string;
@@ -348,6 +367,9 @@ export interface UpdateGroupInput {
   name?: string;
   description?: string;
   type?: GroupType;
+  slug?: string;
+  metaDescription?: string;
+  keywords?: string;
   mainImage?: string;
   mainImagePublicId?: string;
   city?: string;
