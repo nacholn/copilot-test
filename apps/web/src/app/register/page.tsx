@@ -319,7 +319,7 @@ export default function Register() {
   if (step === 2) {
     return (
       <main className={styles.main}>
-        <div className={styles.container}>
+        <div className={styles.containerSmall}>
           <h1 className={styles.title}>{t('register.profileDetailsTitle')}</h1>
           <p style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#666' }}>
             {t('register.step2Description')}
@@ -400,7 +400,7 @@ export default function Register() {
   // Step 3: Summary
   return (
     <main className={styles.main}>
-      <div className={styles.container}>
+      <div className={styles.containerSmall}>
         <h1 className={styles.title}>{t('register.summaryTitle')}</h1>
         <p style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#666' }}>
           {t('register.step3Description')}
