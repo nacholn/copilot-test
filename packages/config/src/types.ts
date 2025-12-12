@@ -19,6 +19,11 @@ export interface Profile {
   dateOfBirth?: Date;
   avatar?: string;
   bio?: string;
+  lastLoginAt?: Date;
+  lastMessageSentAt?: Date;
+  lastPostCreatedAt?: Date;
+  lastFriendAcceptedAt?: Date;
+  interactionScore: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -98,9 +103,13 @@ export interface AddFriendInput {
 // User listing types
 export interface UserSearchParams {
   query?: string;
+  name?: string;
   level?: Profile['level'];
   bikeType?: Profile['bikeType'];
   city?: string;
+  distance?: number; // in kilometers, requires userLatitude and userLongitude
+  userLatitude?: number;
+  userLongitude?: number;
 }
 
 // Profile Image types

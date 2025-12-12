@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseClient } from '@cyclists/config';
+import { query } from '@/lib/db';
 import type { LoginInput, ApiResponse } from '@cyclists/config';
 
 export async function POST(request: NextRequest) {
@@ -31,6 +32,17 @@ export async function POST(request: NextRequest) {
         },
         { status: 401 }
       );
+    }
+
+    // Update last_login_at for interaction score tracking
+    try {
+      await query(
+        'UPDATE profiles SET last_login_at = CURRENT_TIMESTAMP WHERE user_id = $1',
+        [data.user.id]
+      );
+    } catch (updateError) {
+      console.error('Error updating last_login_at:', updateError);
+      // Don't fail the login if this update fails
     }
 
     return NextResponse.json<ApiResponse>(

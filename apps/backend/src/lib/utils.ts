@@ -45,6 +45,11 @@ export function transformProfile(profile: Record<string, any>) {
     dateOfBirth: profile.date_of_birth,
     avatar: profile.avatar,
     bio: profile.bio,
+    lastLoginAt: profile.last_login_at,
+    lastMessageSentAt: profile.last_message_sent_at,
+    lastPostCreatedAt: profile.last_post_created_at,
+    lastFriendAcceptedAt: profile.last_friend_accepted_at,
+    interactionScore: profile.interaction_score ? parseFloat(profile.interaction_score) : 0,
     createdAt: profile.created_at,
     updatedAt: profile.updated_at,
   };

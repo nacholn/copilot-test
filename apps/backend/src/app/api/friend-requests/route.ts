@@ -316,6 +316,17 @@ export async function PATCH(request: NextRequest) {
         console.log('[Friend Requests] Friendship already existed, skipped duplicate creation');
       }
 
+      // Update last_friend_accepted_at for interaction score tracking (for the addressee who accepted)
+      try {
+        await query(
+          'UPDATE profiles SET last_friend_accepted_at = CURRENT_TIMESTAMP WHERE user_id = $1',
+          [friendRequest.addressee_id]
+        );
+      } catch (updateError) {
+        console.error('Error updating last_friend_accepted_at:', updateError);
+        // Don't fail the acceptance if this update fails
+      }
+
       // Create notification for the requester
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
       const notification = await createNotification({

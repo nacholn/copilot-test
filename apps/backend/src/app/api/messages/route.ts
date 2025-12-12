@@ -129,6 +129,17 @@ export async function POST(request: NextRequest) {
       createdAt: new Date(result.rows[0].created_at),
     };
 
+    // Update last_message_sent_at for interaction score tracking
+    try {
+      await query(
+        'UPDATE profiles SET last_message_sent_at = CURRENT_TIMESTAMP WHERE user_id = $1',
+        [body.senderId]
+      );
+    } catch (updateError) {
+      console.error('Error updating last_message_sent_at:', updateError);
+      // Don't fail the message send if this update fails
+    }
+
     // Emit message via WebSocket
     emitMessage(body.receiverId, {
       id: message.id,
