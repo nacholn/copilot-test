@@ -173,7 +173,7 @@ export default function GroupDetail() {
         <div className={styles.main}>
           <div className={styles.container}>
             <p className={styles.error}>Group not found</p>
-            <Link href="/groups" className={styles.backButton}>
+            <Link href="/my-groups" className={styles.backButton}>
               {t('common.back')}
             </Link>
           </div>
@@ -204,7 +204,6 @@ export default function GroupDetail() {
               </div>
             </div>
           </div>
-
           {/* Action Buttons */}
           <div className={styles.actions}>
             {isMember ? (
@@ -230,7 +229,6 @@ export default function GroupDetail() {
               </button>
             )}
           </div>
-
           {/* Group Description */}
           {group.description && (
             <div className={styles.section}>
@@ -240,7 +238,6 @@ export default function GroupDetail() {
               </div>
             </div>
           )}
-
           {/* Members List */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>
@@ -264,11 +261,10 @@ export default function GroupDetail() {
                 </Link>
               ))}
             </div>
-          </div>
-
+          </div>{' '}
           {/* Back Button */}
           <div className={styles.backSection}>
-            <Link href="/groups" className={styles.backButton}>
+            <Link href="/my-groups" className={styles.backButton}>
               {t('common.back')}
             </Link>
           </div>

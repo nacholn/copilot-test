@@ -206,12 +206,44 @@ All pages are fully responsive:
 - Check the main `README.md` for general setup instructions
 - Review the migration files for database schema changes
 
+### 7. Public Posts and Groups Listing Pages (NEW)
+
+**Added December 2024**
+
+#### Public Posts Page (`/public-posts`)
+- ✅ Displays all public posts in a paginated list
+- ✅ "Load More" button for fetching additional posts (12 per page)
+- ✅ No authentication required
+- ✅ Responsive grid layout
+- ✅ Loading states and error handling
+- ✅ Empty state with call-to-action
+- ✅ Each post shows title, excerpt, author, images, and reply count
+
+#### Public Groups Page (`/public-groups`)
+- ✅ Displays all groups in a paginated list
+- ✅ "Load More" button for fetching additional groups (12 per page)
+- ✅ Filter options: "Most Popular" (by member count) and "Most Recent" (by date)
+- ✅ No authentication required
+- ✅ Responsive grid layout
+- ✅ Shows group type, city, member count
+- ✅ Empty state with call-to-action
+
+#### Updated Home Page Links
+- ✅ "See all" link for posts now points to `/public-posts` (instead of `/posts`)
+- ✅ "See all" link for groups now points to `/public-groups` (instead of `/groups`)
+- ✅ This allows visitors to browse all content before logging in
+
+**Rationale**: These pages allow non-authenticated users to explore the full catalog of posts and groups, improving discovery and encouraging sign-ups. The "Load More" button provides better UX than infinite scroll, giving users control over when to load more content.
+
 ## 🎉 Success!
 
 All requirements from the issue have been implemented:
 - ✅ Friendly URLs for posts and groups
 - ✅ Public presentation of latest posts and popular groups
 - ✅ Public detail pages with full information
+- ✅ **Public listing pages for all posts and groups** (NEW)
+- ✅ **Pagination with "Load More" functionality** (NEW)
+- ✅ **Home page links to public pages** (NEW)
 - ✅ Login redirects for unauthenticated actions
 - ✅ SEO optimization (meta tags, structured data)
 - ✅ Beautiful UX with card layouts

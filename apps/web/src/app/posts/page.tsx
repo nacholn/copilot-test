@@ -1,132 +1,197 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
-import { AuthGuard } from '../../components/AuthGuard';
-import { Avatar } from '../../components/Avatar';
+import { PublicPostCard } from '../../components/PublicPostCard';
 import { Loader } from '../../components/Loader';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from './posts.module.css';
 
-export default function Posts() {
-  const { user } = useAuth();
+const POSTS_PER_PAGE = 12;
+
+export default function PublicPosts() {
   const { t } = useTranslations();
   const [posts, setPosts] = useState<PostWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showAll, setShowAll] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
 
-  useEffect(() => {
-    if (user) {
-      fetchPosts();
-    }
-  }, [user, showAll]);
-
-  const fetchPosts = async () => {
-    if (!user) return;
-
-    setLoading(true);
+  const fetchPosts = useCallback(async (currentOffset: number, append: boolean = false) => {
     try {
-      const response = await fetch(`/api/posts?userId=${user.id}&showAll=${showAll}`);
+      if (append) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(
+        `${apiUrl}/api/posts/public?limit=${POSTS_PER_PAGE}&offset=${currentOffset}`
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+
       const data = await response.json();
 
       if (data.success) {
-        setPosts(data.data);
+        const newPosts = data.data;
+
+        if (append) {
+          setPosts((prev) => [...prev, ...newPosts]);
+        } else {
+          setPosts(newPosts);
+        }
+
+        // If we received fewer posts than requested, we've reached the end
+        setHasMore(newPosts.length === POSTS_PER_PAGE);
+      } else {
+        setError(data.error || 'Failed to fetch posts');
       }
-    } catch (error) {
-      console.error('Error fetching posts:', error);
+    } catch (err) {
+      console.error('Error fetching posts:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch posts');
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
+  }, []);
+
+  useEffect(() => {
+    fetchPosts(0, false);
+  }, [fetchPosts]);
+
+  const handleLoadMore = () => {
+    const newOffset = offset + POSTS_PER_PAGE;
+    setOffset(newOffset);
+    fetchPosts(newOffset, true);
   };
 
-  const toggleFilter = () => {
-    setShowAll(!showAll);
-  };
-
-  return (
-    <AuthGuard>
+  if (loading) {
+    return (
       <main className={styles.main}>
         <div className={styles.container}>
-          <div className={styles.header}>
-            <h1 className={styles.title}>{t('posts.title')}</h1>
-            <div className={styles.actions}>
-              <button onClick={toggleFilter} className={styles.filterButton}>
-                {showAll ? t('posts.showUnread') : t('posts.showAll')}
-              </button>
-              <Link href="/posts/create" className={styles.createButton}>
-                {t('posts.createPost')}
-              </Link>
-            </div>
+          <div className={styles.loaderContainer}>
+            <Loader size="large" message="Loading posts..." />
           </div>
-
-          {loading ? (
-            <div className={styles.loaderContainer}>
-              <Loader />
-            </div>
-          ) : posts.length === 0 ? (
-            <div className={styles.emptyState}>
-              <p className={styles.emptyText}>
-                {showAll ? t('posts.noPosts') : t('posts.noUnreadPosts')}
-              </p>
-              <Link href="/posts/create" className={styles.createButtonLarge}>
-                {t('posts.startCreating')}
-              </Link>
-            </div>
-          ) : (
-            <div className={styles.postsList}>
-              {posts.map((post) => (
-                <Link
-                  key={post.id}
-                  href={`/posts/${post.id}`}
-                  className={styles.postCard}
-                >
-                  {post.images.length > 0 && (
-                    <div className={styles.postImage}>
-                      <img src={post.images[0].imageUrl} alt={post.title} />
-                      {post.images.length > 1 && (
-                        <div className={styles.imageCount}>
-                          +{post.images.length - 1} {post.images.length === 2 ? t('posts.image') : t('posts.images')}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  <div className={styles.postContent}>
-                    <div className={styles.postHeader}>
-                      <div className={styles.authorInfo}>
-                        <Avatar src={post.authorAvatar} name={post.authorName} size="small" />
-                        <span className={styles.authorName}>{post.authorName}</span>
-                      </div>
-                      {post.hasNewActivity && (
-                        <span className={styles.newBadge}>{t('posts.newBadge')}</span>
-                      )}
-                    </div>
-                    <h2 className={styles.postTitle}>{post.title}</h2>
-                    <p className={styles.postExcerpt}>
-                      {post.content.length > 150
-                        ? `${post.content.substring(0, 150)}...`
-                        : post.content}
-                    </p>
-                    <div className={styles.postMeta}>
-                      <span className={styles.visibility}>
-                        {post.visibility === 'public' ? '🌍' : '👥'}{' '}
-                        {post.visibility === 'public' ? t('posts.public') : t('posts.friends')}
-                      </span>
-                      <span className={styles.replyCount}>
-                        💬 {post.replyCount} {post.replyCount === 1 ? t('posts.reply') : t('posts.replies')}
-                      </span>
-                      <span className={styles.postDate}>
-                        {new Date(post.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
       </main>
-    </AuthGuard>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <div className={styles.errorState}>
+            <h1>Error</h1>
+            <p>{error}</p>
+            <Link href="/" className={styles.backButton}>
+              ← Back to Home
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className={styles.main}>
+      {/* Hero Section */}
+      <div className={styles.hero}>
+        <div className={styles.heroContent}>
+          <div className={styles.heroIcon}>📝</div>
+          <h1 className={styles.heroTitle}>Cycling Stories & Adventures</h1>
+          <p className={styles.heroSubtitle}>
+            Join a community of cyclists and connect with riders near you. Discover inspiring
+            routes, share your journeys, and find your next adventure.
+          </p>
+          <div className={styles.heroStats}>
+            <div className={styles.stat}>
+              <span className={styles.statIcon}>🚴</span>
+              <span className={styles.statText}>Active Community</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statIcon}>🌍</span>
+              <span className={styles.statText}>Riders Worldwide</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statIcon}>📍</span>
+              <span className={styles.statText}>Local Connections</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Latest Posts</h2>
+          <p className={styles.sectionSubtitle}>Fresh stories from the cycling community</p>
+        </div>
+
+        {posts.length === 0 ? (
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>🚲</div>
+            <h2>No posts yet</h2>
+            <p>Be the first to share your cycling adventure!</p>
+            <Link href="/register" className={styles.ctaButton}>
+              Join the Community
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className={styles.postsGrid}>
+              {posts.map((post) => (
+                <PublicPostCard key={post.id} post={post} />
+              ))}
+            </div>
+            {hasMore && (
+              <div className={styles.loadMoreContainer}>
+                <button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  className={styles.loadMoreButton}
+                >
+                  {loadingMore ? (
+                    <>
+                      <Loader size="small" />
+                      <span>Loading...</span>
+                    </>
+                  ) : (
+                    'Load More Posts'
+                  )}
+                </button>
+              </div>
+            )}{' '}
+            {!hasMore && posts.length > 0 && (
+              <div className={styles.endMessage}>
+                <p>You&apos;ve reached the end! ✨</p>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Community CTA Section */}
+        <div className={styles.communityCta}>
+          <div className={styles.ctaContent}>
+            <h3>Ready to share your story?</h3>
+            <p>Join thousands of cyclists sharing their adventures, tips, and favorite routes.</p>
+            <Link href="/register" className={styles.ctaButtonLarge}>
+              Get Started Free
+            </Link>
+          </div>
+        </div>
+
+        <div className={styles.actions}>
+          <Link href="/" className={styles.backButton}>
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+    </main>
   );
 }

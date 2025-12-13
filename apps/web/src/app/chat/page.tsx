@@ -4,15 +4,22 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWebSocket } from '../../contexts/WebSocketContext';
+import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Loader } from '../../components/Loader';
 import { Avatar } from '../../components/Avatar';
-import type { Conversation, GroupConversation, Message, GroupMessageWithSender } from '@cyclists/config';
+import type {
+  Conversation,
+  GroupConversation,
+  Message,
+  GroupMessageWithSender,
+} from '@cyclists/config';
 import styles from './chat.module.css';
 
 export default function Chat() {
   const { user } = useAuth();
   const { onNewMessage, offNewMessage, sendTypingIndicator, onlineUsers } = useWebSocket();
+  const { t } = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
   const friendIdFromUrl = searchParams.get('friendId');
@@ -41,13 +48,27 @@ export default function Chat() {
     if (user && selectedFriendId) {
       fetchMessages(selectedFriendId);
       markMessagesAsRead(selectedFriendId);
-      setSelectedGroupId(null); // Clear group selection
     } else if (user && selectedGroupId) {
       fetchGroupMessages(selectedGroupId);
       markGroupMessagesAsRead(selectedGroupId);
-      setSelectedFriendId(null); // Clear friend selection
     }
   }, [user, selectedFriendId, selectedGroupId]);
+
+  // Handler for selecting a friend conversation
+  const handleSelectFriend = (friendId: string) => {
+    setSelectedFriendId(friendId);
+    setSelectedGroupId(null);
+    setMessages([]);
+    setMessageIds(new Set());
+  };
+
+  // Handler for selecting a group conversation
+  const handleSelectGroup = (groupId: string) => {
+    setSelectedGroupId(groupId);
+    setSelectedFriendId(null);
+    setMessages([]);
+    setMessageIds(new Set());
+  };
 
   // Listen for new messages via WebSocket
   useEffect(() => {
@@ -67,7 +88,7 @@ export default function Chat() {
           isRead: message.senderId === user?.id,
           createdAt: new Date(message.timestamp || message.createdAt),
         };
-        
+
         setMessages((prev) => [...prev, newMessage]);
         setMessageIds((prev) => new Set(prev).add(message.id));
 
@@ -227,12 +248,12 @@ export default function Chat() {
             isRead: false,
             createdAt: new Date(),
           };
-          
+
           if (!messageIds.has(data.data.id)) {
             setMessages([...messages, optimisticMessage]);
             setMessageIds((prev) => new Set(prev).add(data.data.id));
           }
-          
+
           fetchConversations();
         }
       } else if (selectedGroupId) {
@@ -263,13 +284,9 @@ export default function Chat() {
     }
   };
 
-  const selectedConversation = conversations.find(
-    (c) => c.friendId === selectedFriendId
-  );
-  
-  const selectedGroupConversation = groupConversations.find(
-    (gc) => gc.groupId === selectedGroupId
-  );
+  const selectedConversation = conversations.find((c) => c.friendId === selectedFriendId);
+
+  const selectedGroupConversation = groupConversations.find((gc) => gc.groupId === selectedGroupId);
 
   if (loading) {
     return (
@@ -299,7 +316,7 @@ export default function Chat() {
                   className={`${styles.conversationItem} ${
                     selectedFriendId === conversation.friendId ? styles.active : ''
                   }`}
-                  onClick={() => setSelectedFriendId(conversation.friendId)}
+                  onClick={() => handleSelectFriend(conversation.friendId)}
                 >
                   <Avatar
                     src={conversation.friendAvatar}
@@ -310,9 +327,7 @@ export default function Chat() {
                     <div className={styles.conversationHeader}>
                       <h3>{conversation.friendName}</h3>
                       {conversation.unreadCount > 0 && (
-                        <span className={styles.unreadBadge}>
-                          {conversation.unreadCount}
-                        </span>
+                        <span className={styles.unreadBadge}>{conversation.unreadCount}</span>
                       )}
                     </div>
                     {conversation.lastMessage && (
@@ -325,7 +340,7 @@ export default function Chat() {
                   </div>
                 </button>
               ))}
-              
+
               {/* Group conversations */}
               {groupConversations.map((groupConversation) => (
                 <button
@@ -333,7 +348,7 @@ export default function Chat() {
                   className={`${styles.conversationItem} ${styles.groupItem} ${
                     selectedGroupId === groupConversation.groupId ? styles.active : ''
                   }`}
-                  onClick={() => setSelectedGroupId(groupConversation.groupId)}
+                  onClick={() => handleSelectGroup(groupConversation.groupId)}
                 >
                   {groupConversation.groupImage ? (
                     <Avatar
@@ -348,9 +363,7 @@ export default function Chat() {
                     <div className={styles.conversationHeader}>
                       <h3>{groupConversation.groupName}</h3>
                       {groupConversation.unreadCount > 0 && (
-                        <span className={styles.unreadBadge}>
-                          {groupConversation.unreadCount}
-                        </span>
+                        <span className={styles.unreadBadge}>{groupConversation.unreadCount}</span>
                       )}
                     </div>
                     {groupConversation.lastMessage && (
@@ -361,9 +374,7 @@ export default function Chat() {
                           : groupConversation.lastMessage.message}
                       </p>
                     )}
-                    <p className={styles.memberCount}>
-                      {groupConversation.memberCount} members
-                    </p>
+                    <p className={styles.memberCount}>{groupConversation.memberCount} members</p>
                   </div>
                 </button>
               ))}
@@ -416,35 +427,37 @@ export default function Chat() {
               <div className={styles.messagesContainer}>
                 {messages.length === 0 ? (
                   <div className={styles.noMessages}>
-                    <p>No messages yet. {selectedGroupId ? 'Start the conversation!' : 'Say hi! 👋'}</p>
+                    <p>
+                      No messages yet. {selectedGroupId ? 'Start the conversation!' : 'Say hi! 👋'}
+                    </p>
                   </div>
                 ) : (
                   messages.map((message) => {
                     const isGroupMessage = 'senderName' in message;
                     const isSentByMe = message.senderId === user?.id;
-                    
+
                     return (
-                    <div
-                      key={message.id}
-                      className={`${styles.message} ${
-                        isSentByMe ? styles.sent : styles.received
-                      }`}
-                    >
-                      <div className={styles.messageContent}>
-                        {isGroupMessage && !isSentByMe && (
-                          <p className={styles.senderName}>
-                            {(message as GroupMessageWithSender).senderName}
-                          </p>
-                        )}
-                        <p>{message.message}</p>
-                        <span className={styles.messageTime}>
-                          {new Date(message.createdAt).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </span>
+                      <div
+                        key={message.id}
+                        className={`${styles.message} ${
+                          isSentByMe ? styles.sent : styles.received
+                        }`}
+                      >
+                        <div className={styles.messageContent}>
+                          {isGroupMessage && !isSentByMe && (
+                            <p className={styles.senderName}>
+                              {(message as GroupMessageWithSender).senderName}
+                            </p>
+                          )}
+                          <p>{message.message}</p>
+                          <span className={styles.messageTime}>
+                            {new Date(message.createdAt).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                          </span>
+                        </div>
                       </div>
-                    </div>
                     );
                   })
                 )}

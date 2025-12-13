@@ -75,6 +75,9 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
   // Check if user is authenticated and handle step progression
   useEffect(() => {
     const checkUserStatus = async () => {
+      // Only run this logic when the modal is actually open
+      if (!isOpen) return;
+
       if (user && !authLoading && mode === 'register') {
         try {
           // Check if profile exists
@@ -105,7 +108,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
     };
 
     checkUserStatus();
-  }, [user, authLoading, mode, router, onClose]); // Poll for email verification when waiting
+  }, [user, authLoading, mode, router, onClose, isOpen]); // Poll for email verification when waiting
   useEffect(() => {
     let interval: NodeJS.Timeout;
 

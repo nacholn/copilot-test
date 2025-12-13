@@ -24,7 +24,7 @@ export default function PostDetail() {
   const { t } = useTranslations();
   const params = useParams();
   const postId = params.postId as string;
-  
+
   const [post, setPost] = useState<PostDetails | null>(null);
   const [replies, setReplies] = useState<PostReplyWithAuthor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -143,7 +143,7 @@ export default function PostDetail() {
           <div className={styles.container}>
             <div className={styles.errorState}>
               <h2>Post not found</h2>
-              <Link href="/posts" className={styles.backButton}>
+              <Link href="/my-posts" className={styles.backButton}>
                 {t('posts.backToPosts')}
               </Link>
             </div>
@@ -157,7 +157,7 @@ export default function PostDetail() {
     <AuthGuard>
       <main className={styles.main}>
         <div className={styles.container}>
-          <Link href="/posts" className={styles.backLink}>
+          <Link href="/my-posts" className={styles.backLink}>
             ← {t('posts.backToPosts')}
           </Link>
 
@@ -169,7 +169,9 @@ export default function PostDetail() {
                   <h2 className={styles.authorName}>{post.authorName}</h2>
                   <p className={styles.postDate}>
                     {new Date(post.createdAt).toLocaleDateString()} •{' '}
-                    {post.visibility === 'public' ? '🌍 ' + t('posts.public') : '👥 ' + t('posts.friends')}
+                    {post.visibility === 'public'
+                      ? '🌍 ' + t('posts.public')
+                      : '👥 ' + t('posts.friends')}
                   </p>
                 </div>
               </div>
