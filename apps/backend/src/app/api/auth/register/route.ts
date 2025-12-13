@@ -7,34 +7,90 @@ import type { RegisterInput, ApiResponse } from '@cyclists/config';
 export async function POST(request: NextRequest) {
   try {
     const body: RegisterInput = await request.json();
-    const { email, password, profile } = body;
+    const { email, password, isOAuth, profile } = body;
 
     // Validate required fields
-    if (!email || !password || !profile.email || !profile.name || !profile.level || !profile.bikeType || !profile.city) {
+    if (
+      !email ||
+      !profile.email ||
+      !profile.name ||
+      !profile.level ||
+      !profile.bikeType ||
+      !profile.city
+    ) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
-          error: 'Missing required fields: email, password, name, level, bikeType, city',
+          error: 'Missing required fields: email, name, level, bikeType, city',
         },
         { status: 400 }
       );
     }
 
-    // Create user in Supabase
     const supabase = createSupabaseClient();
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    let userId: string;
 
-    if (authError || !authData.user) {
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          error: authError?.message || 'Failed to create user',
-        },
-        { status: 400 }
-      );
+    // Check if this is an OAuth user or regular signup
+    if (isOAuth) {
+      // OAuth user - get user from Authorization header
+      const authHeader = request.headers.get('Authorization');
+
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'No active session. Please sign in again.',
+          },
+          { status: 401 }
+        );
+      }
+
+      const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+
+      // Verify the token and get user
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser(token);
+
+      if (userError || !user) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'Invalid session. Please sign in again.',
+          },
+          { status: 401 }
+        );
+      }
+
+      userId = user.id;
+    } else {
+      // Regular email/password signup
+      if (!password) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'Password is required for email/password registration',
+          },
+          { status: 400 }
+        );
+      }
+
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (authError || !authData.user) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: authError?.message || 'Failed to create user',
+          },
+          { status: 400 }
+        );
+      }
+      userId = authData.user.id;
     }
 
     // Create profile in PostgreSQL
@@ -45,7 +101,7 @@ export async function POST(request: NextRequest) {
     `;
 
     const values = [
-      authData.user.id,
+      userId,
       profile.email,
       profile.name,
       profile.level,
@@ -65,7 +121,6 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         data: {
-          user: authData.user,
           profile: transformedProfile,
         },
       },

@@ -15,7 +15,8 @@
     "yes": "Oui",
     "no": "Non",
     "error": "Erreur",
-    "success": "Succès"
+    "success": "Succès",
+    "or": "ou"
   },
   "languages": {
     "en": "Anglais",
@@ -74,13 +75,27 @@
     "bikeType": "Type de Vélo",
     "city": "Ville",
     "dateOfBirth": "Date de Naissance (Optionnel)",
+    "bio": "Biographie (Optionnel)",
+    "bioPlaceholder": "Parlez-nous de vous et de vos expériences cyclistes...",
     "createAccount": "Créer un Compte",
     "creatingAccount": "Création du Compte...",
     "alreadyHaveAccount": "Vous avez déjà un compte ?",
     "signInLink": "Se connecter",
     "passwordsNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
     "registrationFailed": "Échec de l'inscription",
-    "errorOccurred": "Une erreur s'est produite. Veuillez réessayer."
+    "errorOccurred": "Une erreur s'est produite. Veuillez réessayer.",
+    "notAuthenticated": "Vous devez être connecté pour continuer",
+    "step1Description": "Choisissez comment vous souhaitez vous inscrire",
+    "step2Description": "Complétez votre profil de cycliste",
+    "step3Description": "Vérifiez vos informations avant de finaliser",
+    "verifyEmailMessage": "Nous avons envoyé un e-mail de vérification. Veuillez vérifier votre e-mail avant de continuer l'inscription.",
+    "signUpWithEmail": "S'inscrire avec E-mail",
+    "signUpWithGoogle": "Continuer avec Google",
+    "profileDetailsTitle": "Détails du Profil",
+    "continueToSummary": "Continuer au Résumé",
+    "summaryTitle": "Résumé de l'Inscription",
+    "completeRegistration": "Terminer l'Inscription"
   },
   "profile": {
     "title": "Votre Profil",
@@ -182,6 +197,22 @@
     "login": "Connexion",
     "signUp": "S'inscrire"
   },
+  "authModal": {
+    "stepAuth": "Compte",
+    "stepProfile": "Profil",
+    "stepSummary": "Résumé",
+    "verifyEmailTitle": "Vérifiez Votre Email",
+    "verifyEmailText": "Nous avons envoyé un email de vérification à:",
+    "checkingVerification": "Vérification du statut...",
+    "autoCheckingEvery5Seconds": "Vérification automatique toutes les 5 secondes",
+    "checkManually": "Vérifier le Statut de Vérification",
+    "emailNotVerifiedYet": "Email pas encore vérifié. Veuillez vérifier votre boîte de réception et cliquer sur le lien de vérification.",
+    "verificationCheckFailed": "Échec de la vérification du statut. Veuillez réessayer.",
+    "resendEmail": "Renvoyer l'Email de Vérification",
+    "resendFailed": "Échec de l'envoi de l'email",
+    "continueWithGoogle": "Continuer avec Google",
+    "nameRequired": "Le nom est obligatoire"
+  },
   "imageUpload": {
     "clickToUpload": "Cliquez pour télécharger ou faites glisser une image",
     "fileFormat": "PNG, JPG, GIF jusqu'à 10MB",
@@ -256,5 +287,10 @@
     "searchGroups": "Rechercher des groupes...",
     "locationGroups": "Groupes Basés sur la Localisation",
     "generalGroups": "Groupes d'Intérêt Général"
+  },
+  "emailVerified": {
+    "title": "E-mail Vérifié !",
+    "message": "Votre e-mail a été vérifié avec succès.",
+    "closeTabHint": "Fermez cet onglet et retournez à votre fenêtre d'origine pour continuer l'inscription."
   }
 }

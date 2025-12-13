@@ -15,7 +15,8 @@
     "yes": "Sí",
     "no": "No",
     "error": "Error",
-    "success": "Éxito"
+    "success": "Éxito",
+    "or": "o"
   },
   "languages": {
     "en": "Inglés",
@@ -74,13 +75,27 @@
     "bikeType": "Tipo de Bicicleta",
     "city": "Ciudad",
     "dateOfBirth": "Fecha de Nacimiento (Opcional)",
+    "bio": "Biografía (Opcional)",
+    "bioPlaceholder": "Cuéntanos sobre ti y tus experiencias en ciclismo...",
     "createAccount": "Crear Cuenta",
     "creatingAccount": "Creando Cuenta...",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "signInLink": "Iniciar sesión",
     "passwordsNotMatch": "Las contraseñas no coinciden",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
     "registrationFailed": "Error al registrarse",
-    "errorOccurred": "Ocurrió un error. Por favor, intenta de nuevo."
+    "errorOccurred": "Ocurrió un error. Por favor, intenta de nuevo.",
+    "notAuthenticated": "Debes iniciar sesión para continuar",
+    "step1Description": "Elige cómo quieres registrarte",
+    "step2Description": "Completa tu perfil de ciclista",
+    "step3Description": "Revisa tu información antes de finalizar",
+    "verifyEmailMessage": "Hemos enviado un correo de verificación. Por favor, verifica tu correo antes de continuar con el registro.",
+    "signUpWithEmail": "Registrarse con Correo",
+    "signUpWithGoogle": "Continuar con Google",
+    "profileDetailsTitle": "Detalles del Perfil",
+    "continueToSummary": "Continuar al Resumen",
+    "summaryTitle": "Resumen de Registro",
+    "completeRegistration": "Completar Registro"
   },
   "profile": {
     "title": "Tu Perfil",
@@ -186,6 +201,22 @@
     "login": "Iniciar Sesión",
     "signUp": "Registrarse"
   },
+  "authModal": {
+    "stepAuth": "Cuenta",
+    "stepProfile": "Perfil",
+    "stepSummary": "Resumen",
+    "verifyEmailTitle": "Verifica Tu Email",
+    "verifyEmailText": "Hemos enviado un email de verificación a:",
+    "checkingVerification": "Verificando estado...",
+    "autoCheckingEvery5Seconds": "Comprobando automáticamente cada 5 segundos",
+    "checkManually": "Comprobar Estado de Verificación",
+    "emailNotVerifiedYet": "Email aún no verificado. Por favor revisa tu bandeja de entrada y haz clic en el enlace de verificación.",
+    "verificationCheckFailed": "Error al comprobar el estado de verificación. Por favor intenta de nuevo.",
+    "resendEmail": "Reenviar Email de Verificación",
+    "resendFailed": "Error al reenviar email",
+    "continueWithGoogle": "Continuar con Google",
+    "nameRequired": "El nombre es obligatorio"
+  },
   "imageUpload": {
     "clickToUpload": "Haz clic para subir o arrastra y suelta una imagen",
     "fileFormat": "PNG, JPG, GIF hasta 10MB",
@@ -260,5 +291,10 @@
     "searchGroups": "Buscar grupos...",
     "locationGroups": "Grupos Basados en Ubicación",
     "generalGroups": "Grupos de Interés General"
+  },
+  "emailVerified": {
+    "title": "¡Correo Verificado!",
+    "message": "Tu correo electrónico ha sido verificado exitosamente.",
+    "closeTabHint": "Cierra esta pestaña y vuelve a tu ventana original para continuar con el registro."
   }
 }

@@ -15,7 +15,8 @@
     "yes": "Yes",
     "no": "No",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "or": "or"
   },
   "languages": {
     "en": "English",
@@ -74,13 +75,27 @@
     "bikeType": "Bike Type",
     "city": "City",
     "dateOfBirth": "Date of Birth (Optional)",
+    "bio": "Bio (Optional)",
+    "bioPlaceholder": "Tell us about yourself and your cycling experiences...",
     "createAccount": "Create Account",
     "creatingAccount": "Creating Account...",
     "alreadyHaveAccount": "Already have an account?",
     "signInLink": "Sign in",
     "passwordsNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
     "registrationFailed": "Registration failed",
-    "errorOccurred": "An error occurred. Please try again."
+    "errorOccurred": "An error occurred. Please try again.",
+    "notAuthenticated": "You must be logged in to continue",
+    "step1Description": "Choose how you want to sign up",
+    "step2Description": "Complete your cycling profile",
+    "step3Description": "Review your information before completing",
+    "verifyEmailMessage": "We've sent a verification email. Please verify your email before continuing with registration.",
+    "signUpWithEmail": "Sign Up with Email",
+    "signUpWithGoogle": "Continue with Google",
+    "profileDetailsTitle": "Profile Details",
+    "continueToSummary": "Continue to Summary",
+    "summaryTitle": "Registration Summary",
+    "completeRegistration": "Complete Registration"
   },
   "profile": {
     "title": "Your Profile",
@@ -186,6 +201,22 @@
     "login": "Login",
     "signUp": "Sign Up"
   },
+  "authModal": {
+    "stepAuth": "Account",
+    "stepProfile": "Profile",
+    "stepSummary": "Summary",
+    "verifyEmailTitle": "Verify Your Email",
+    "verifyEmailText": "We've sent a verification email to:",
+    "checkingVerification": "Checking verification status...",
+    "autoCheckingEvery5Seconds": "Automatically checking every 5 seconds",
+    "checkManually": "Check Verification Status",
+    "emailNotVerifiedYet": "Email not verified yet. Please check your inbox and click the verification link.",
+    "verificationCheckFailed": "Failed to check verification status. Please try again.",
+    "resendEmail": "Resend Verification Email",
+    "resendFailed": "Failed to resend email",
+    "continueWithGoogle": "Continue with Google",
+    "nameRequired": "Name is required"
+  },
   "imageUpload": {
     "clickToUpload": "Click to upload or drag and drop an image",
     "fileFormat": "PNG, JPG, GIF up to 10MB",
@@ -260,5 +291,10 @@
     "searchGroups": "Search groups...",
     "locationGroups": "Location-based Groups",
     "generalGroups": "General Interest Groups"
+  },
+  "emailVerified": {
+    "title": "Email Verified!",
+    "message": "Your email has been successfully verified.",
+    "closeTabHint": "Close this tab and return to your original window to continue with registration."
   }
 }

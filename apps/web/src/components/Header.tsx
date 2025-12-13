@@ -7,8 +7,11 @@ import { useWebSocket } from '../contexts/WebSocketContext';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from '../hooks/useTranslations';
 import { LanguageSelector } from './LanguageSelector';
+import { AuthModal } from './AuthModal';
 import Swal from 'sweetalert2';
 import styles from './header.module.css';
+
+type AuthModalMode = 'login' | 'register';
 
 export function Header() {
   const { user, signOut } = useAuth();
@@ -16,6 +19,18 @@ export function Header() {
   const router = useRouter();
   const { t } = useTranslations();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<AuthModalMode>('login');
+
+  const openAuthModal = (mode: AuthModalMode) => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+    closeMenu();
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
 
   const handleSignOut = async () => {
     const result = await Swal.fire({
@@ -124,18 +139,21 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link href="/login" className={styles.loginButton} onClick={closeMenu}>
+              <button className={styles.loginButton} onClick={() => openAuthModal('login')}>
                 {t('navigation.login')}
-              </Link>
-              <Link href="/register" className={styles.signupButton} onClick={closeMenu}>
+              </button>
+              <button className={styles.signupButton} onClick={() => openAuthModal('register')}>
                 {t('navigation.signUp')}
-              </Link>
+              </button>
             </>
           )}
         </nav>
         {/* Overlay for mobile menu */}
         {isMenuOpen && <div className={styles.overlay} onClick={closeMenu}></div>}
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} initialMode={authModalMode} />
     </header>
   );
 }
