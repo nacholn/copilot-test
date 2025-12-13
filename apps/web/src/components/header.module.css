@@ -104,7 +104,7 @@
   position: absolute;
   top: 0.25rem;
   right: 0.5rem;
-  background: #FE3C72;
+  background: #fe3c72;
   color: white;
   font-size: 0.625rem;
   font-weight: 700;
@@ -124,6 +124,9 @@
   border-radius: 24px;
   transition: all 0.2s ease;
   border: 2px solid var(--tinder-primary);
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .loginButton:hover {
@@ -142,6 +145,9 @@
   border-radius: 24px;
   transition: all 0.2s ease;
   box-shadow: 0 2px 12px rgba(254, 60, 114, 0.3);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .signupButton:hover {

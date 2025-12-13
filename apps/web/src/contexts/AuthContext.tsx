@@ -80,6 +80,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          // Redirect directly to email-verified page (public route without AuthProvider)
+          emailRedirectTo: `${window.location.origin}/email-verified`,
+        },
       });
 
       if (error) {

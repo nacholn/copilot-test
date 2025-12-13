@@ -10,7 +10,14 @@ export async function POST(request: NextRequest) {
     const { email, password, isOAuth, profile } = body;
 
     // Validate required fields
-    if (!email || !profile.email || !profile.name || !profile.level || !profile.bikeType || !profile.city) {
+    if (
+      !email ||
+      !profile.email ||
+      !profile.name ||
+      !profile.level ||
+      !profile.bikeType ||
+      !profile.city
+    ) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
@@ -25,9 +32,10 @@ export async function POST(request: NextRequest) {
 
     // Check if this is an OAuth user or regular signup
     if (isOAuth) {
-      // OAuth user - get current session
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session || !session.user) {
+      // OAuth user - get user from Authorization header
+      const authHeader = request.headers.get('Authorization');
+
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return NextResponse.json<ApiResponse>(
           {
             success: false,
@@ -36,7 +44,26 @@ export async function POST(request: NextRequest) {
           { status: 401 }
         );
       }
-      userId = session.user.id;
+
+      const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+
+      // Verify the token and get user
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser(token);
+
+      if (userError || !user) {
+        return NextResponse.json<ApiResponse>(
+          {
+            success: false,
+            error: 'Invalid session. Please sign in again.',
+          },
+          { status: 401 }
+        );
+      }
+
+      userId = user.id;
     } else {
       // Regular email/password signup
       if (!password) {

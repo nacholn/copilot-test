@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../../styles/common.module.css';
+import registerStyles from './register.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { LocationPicker } from '../../components/LocationPicker';
 import { BikeTypeSelector, type BikeType } from '../../components/BikeTypeSelector';
 import { CyclingLevelSelector, type CyclingLevel } from '../../components/CyclingLevelSelector';
+import { getSupabaseClient } from '@cyclists/config';
 
 type RegistrationStep = 1 | 2 | 3;
 
@@ -22,16 +24,41 @@ interface ProfileData {
   bio: string;
 }
 
+// Google Icon Component
+function GoogleIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M19.8055 10.2292C19.8055 9.55149 19.7501 8.8695 19.6323 8.20184H10.2002V12.0492H15.6014C15.3776 13.2908 14.6539 14.3891 13.6048 15.0871V17.5866H16.826C18.7174 15.8449 19.8055 13.2725 19.8055 10.2292Z"
+        fill="#4285F4"
+      />
+      <path
+        d="M10.2002 20.0006C12.9506 20.0006 15.2721 19.1151 16.8295 17.5865L13.6083 15.087C12.7087 15.697 11.5469 16.0509 10.2037 16.0509C7.54359 16.0509 5.28263 14.2923 4.48991 11.9097H1.1709V14.4821C2.76156 17.6465 6.31281 20.0006 10.2002 20.0006Z"
+        fill="#34A853"
+      />
+      <path
+        d="M4.48648 11.9098C4.0488 10.6682 4.0488 9.33224 4.48648 8.09058V5.51819H1.17095C-0.195568 8.23912 -0.195568 11.7613 1.17095 14.4822L4.48648 11.9098Z"
+        fill="#FBBC04"
+      />
+      <path
+        d="M10.2002 3.94936C11.6247 3.92711 13.0003 4.47199 14.0393 5.45762L16.8916 2.60534C15.1858 0.990725 12.9336 0.0782441 10.2002 0.104522C6.31281 0.104522 2.76156 2.45865 1.1709 5.6231L4.48643 8.19549C5.27572 5.80945 7.54012 3.94936 10.2002 3.94936Z"
+        fill="#EA4335"
+      />
+    </svg>
+  );
+}
+
 export default function Register() {
   const router = useRouter();
   const { user, signUp, signInWithGoogle, loading: authLoading } = useAuth();
   const { t } = useTranslations();
-  
+
   const [step, setStep] = useState<RegistrationStep>(1);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [emailVerified, setEmailVerified] = useState(false);
+  const [awaitingEmailVerification, setAwaitingEmailVerification] = useState(false);
+  const [checkingVerification, setCheckingVerification] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData>({
     name: '',
     level: 'beginner' as CyclingLevel,
@@ -55,17 +82,18 @@ export default function Register() {
           // Check if profile exists
           const response = await fetch(`/api/profile?userId=${user.id}`);
           const data = await response.json();
-          
+
           if (data.success && data.data) {
             // Profile exists, redirect to profile page
             router.push('/profile');
           } else {
             // No profile, check if email is verified
             if (user.email_confirmed_at) {
-              setEmailVerified(true);
+              setAwaitingEmailVerification(false);
               setEmail(user.email || '');
               setStep(2); // Go to profile details step
             } else {
+              setAwaitingEmailVerification(true);
               setStep(1); // Stay on auth step
             }
           }
@@ -79,6 +107,62 @@ export default function Register() {
 
     checkUserProfile();
   }, [user, authLoading, router]);
+
+  // Poll for email verification when waiting
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (awaitingEmailVerification && email) {
+      const checkVerification = async () => {
+        setCheckingVerification(true);
+        try {
+          // Call backend API to check verification status
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+          const response = await fetch(`${apiUrl}/api/auth/check-verification`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+          });
+
+          const data = await response.json();
+
+          if (data.success && data.verified) {
+            // Email is verified, now sign in the user
+            const supabase = getSupabaseClient();
+
+            // Try to sign in - this will create a session for the verified user
+            const { error: signInError } = await supabase.auth.signInWithPassword({
+              email,
+              password,
+            });
+
+            if (!signInError) {
+              setAwaitingEmailVerification(false);
+              setPassword(''); // Clear password from state
+              setConfirmPassword('');
+              setStep(2);
+            }
+          }
+        } catch (err) {
+          console.error('Error checking verification:', err);
+        } finally {
+          setCheckingVerification(false);
+        }
+      };
+
+      // Check immediately on mount
+      checkVerification();
+
+      // Then poll every 5 seconds
+      interval = setInterval(checkVerification, 5000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [awaitingEmailVerification, email, password]);
 
   // Show loading state while checking
   if (authLoading || checkingProfile) {
@@ -115,9 +199,8 @@ export default function Register() {
         return;
       }
 
-      // Show message about email verification
-      setError('');
-      setStep(1); // Stay on step 1 to show verification message
+      // Show email verification message
+      setAwaitingEmailVerification(true);
     } catch (err) {
       setError(t('register.errorOccurred'));
     } finally {
@@ -142,6 +225,70 @@ export default function Register() {
     }
   };
 
+  const handleResendVerification = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const supabase = getSupabaseClient();
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+
+      if (error) {
+        setError(error.message || t('authModal.resendFailed'));
+      }
+    } catch (err) {
+      setError(t('register.errorOccurred'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleManualVerificationCheck = async () => {
+    setCheckingVerification(true);
+    setError('');
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/auth/check-verification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.verified) {
+        // Email is verified, now sign in the user
+        const supabase = getSupabaseClient();
+
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (!signInError) {
+          setAwaitingEmailVerification(false);
+          setPassword('');
+          setConfirmPassword('');
+          setStep(2);
+        } else {
+          setError(t('authModal.verificationCheckFailed'));
+        }
+      } else {
+        setError(t('authModal.emailNotVerifiedYet'));
+      }
+    } catch (err) {
+      setError(t('authModal.verificationCheckFailed'));
+    } finally {
+      setCheckingVerification(false);
+    }
+  };
+
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -151,13 +298,43 @@ export default function Register() {
       return;
     }
 
+    if (!profileData.name.trim()) {
+      setError(t('authModal.nameRequired'));
+      return;
+    }
+
+    // Move to summary step
+    setStep(3);
+  };
+
+  const handleFinalizeRegistration = async () => {
+    if (!user) {
+      setError(t('register.notAuthenticated'));
+      return;
+    }
+
     setLoading(true);
+    setError('');
 
     try {
+      // Get current session for authorization
+      const supabase = getSupabaseClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session?.access_token) {
+        setError(t('register.notAuthenticated'));
+        return;
+      }
+
       // Create profile
       const response = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
         body: JSON.stringify({
           email: user.email,
           isOAuth: true,
@@ -182,8 +359,8 @@ export default function Register() {
         return;
       }
 
-      // Move to summary step
-      setStep(3);
+      // Success - redirect to profile
+      router.push('/profile');
     } catch (err) {
       setError(t('register.errorOccurred'));
     } finally {
@@ -191,32 +368,89 @@ export default function Register() {
     }
   };
 
-  const handleFinalizeRegistration = () => {
-    router.push('/profile');
-  };
+  // Render step indicator
+  const renderStepIndicator = () => (
+    <div className={registerStyles.stepIndicator}>
+      <div className={`${registerStyles.step} ${step >= 1 ? registerStyles.stepActive : ''}`}>
+        <span className={registerStyles.stepNumber}>1</span>
+        <span className={registerStyles.stepLabel}>{t('authModal.stepAuth')}</span>
+      </div>
+      <div className={registerStyles.stepLine} />
+      <div className={`${registerStyles.step} ${step >= 2 ? registerStyles.stepActive : ''}`}>
+        <span className={registerStyles.stepNumber}>2</span>
+        <span className={registerStyles.stepLabel}>{t('authModal.stepProfile')}</span>
+      </div>
+      <div className={registerStyles.stepLine} />
+      <div className={`${registerStyles.step} ${step >= 3 ? registerStyles.stepActive : ''}`}>
+        <span className={registerStyles.stepNumber}>3</span>
+        <span className={registerStyles.stepLabel}>{t('authModal.stepSummary')}</span>
+      </div>
+    </div>
+  );
 
   // Step 1: Authentication
   if (step === 1) {
+    // Email verification waiting state
+    if (awaitingEmailVerification) {
+      return (
+        <main className={styles.main}>
+          <div className={styles.containerSmall}>
+            {renderStepIndicator()}
+            <div className={registerStyles.verificationContainer}>
+              <div className={registerStyles.verificationIcon}>📧</div>
+              <h2 className={registerStyles.verificationTitle}>
+                {t('authModal.verifyEmailTitle')}
+              </h2>
+              <p className={registerStyles.verificationText}>{t('authModal.verifyEmailText')}</p>
+              <p className={registerStyles.verificationEmail}>{email}</p>
+
+              <div className={registerStyles.pollingInfo}>
+                <span className={registerStyles.pulsingDot} />
+                <span>{t('authModal.autoCheckingEvery5Seconds')}</span>
+              </div>
+
+              {checkingVerification && (
+                <div className={registerStyles.checkingStatus}>
+                  <span className={registerStyles.spinner} />
+                  {t('authModal.checkingVerification')}
+                </div>
+              )}
+
+              <div className={registerStyles.verificationButtons}>
+                <button
+                  type="button"
+                  onClick={handleManualVerificationCheck}
+                  disabled={checkingVerification}
+                  className={styles.submitButton}
+                >
+                  {checkingVerification
+                    ? t('authModal.checkingVerification')
+                    : t('authModal.checkManually')}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleResendVerification}
+                  disabled={loading}
+                  className={registerStyles.secondaryButton}
+                >
+                  {loading ? t('common.loading') : t('authModal.resendEmail')}
+                </button>
+              </div>
+
+              {error && <div className={styles.error}>{error}</div>}
+            </div>
+          </div>
+        </main>
+      );
+    }
+
     return (
       <main className={styles.main}>
         <div className={styles.containerSmall}>
+          {renderStepIndicator()}
           <h1 className={styles.title}>{t('register.title')}</h1>
-          <p style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#666' }}>
-            {t('register.step1Description')}
-          </p>
-
-          {user && !emailVerified && (
-            <div style={{ 
-              padding: '1rem', 
-              backgroundColor: '#fff3cd', 
-              border: '1px solid #ffc107',
-              borderRadius: '8px',
-              marginBottom: '1rem',
-              color: '#856404'
-            }}>
-              {t('register.verifyEmailMessage')}
-            </div>
-          )}
+          <p className={registerStyles.description}>{t('register.step1Description')}</p>
 
           {error && <div className={styles.error}>{error}</div>}
 
@@ -228,7 +462,7 @@ export default function Register() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={!!user}
+                autoComplete="email"
               />
             </div>
 
@@ -240,7 +474,7 @@ export default function Register() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={!!user}
+                autoComplete="new-password"
               />
             </div>
 
@@ -251,59 +485,26 @@ export default function Register() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={!!user}
+                autoComplete="new-password"
               />
             </div>
 
-            <button type="submit" disabled={loading || !!user} className={styles.submitButton}>
+            <button type="submit" disabled={loading} className={styles.submitButton}>
               {loading ? t('register.creatingAccount') : t('register.signUpWithEmail')}
             </button>
           </form>
 
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            margin: '1.5rem 0',
-            color: '#999'
-          }}>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#e0e0e0' }}></div>
-            <span style={{ padding: '0 1rem' }}>{t('common.or')}</span>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#e0e0e0' }}></div>
+          <div className={registerStyles.divider}>
+            <span>{t('common.or')}</span>
           </div>
 
           <button
             type="button"
             onClick={handleGoogleSignIn}
-            disabled={loading || !!user}
-            style={{
-              width: '100%',
-              padding: '0.875rem',
-              border: '2px solid #e0e0e0',
-              borderRadius: '8px',
-              backgroundColor: 'white',
-              color: '#333',
-              fontSize: '1rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f5f5f5';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-            }}
+            disabled={loading}
+            className={registerStyles.googleButton}
           >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M19.8055 10.2292C19.8055 9.55149 19.7501 8.8695 19.6323 8.20184H10.2002V12.0492H15.6014C15.3776 13.2908 14.6539 14.3891 13.6048 15.0871V17.5866H16.826C18.7174 15.8449 19.8055 13.2725 19.8055 10.2292Z" fill="#4285F4"/>
-              <path d="M10.2002 20.0006C12.9506 20.0006 15.2721 19.1151 16.8295 17.5865L13.6083 15.087C12.7087 15.697 11.5469 16.0509 10.2037 16.0509C7.54359 16.0509 5.28263 14.2923 4.48991 11.9097H1.1709V14.4821C2.76156 17.6465 6.31281 20.0006 10.2002 20.0006Z" fill="#34A853"/>
-              <path d="M4.48648 11.9098C4.0488 10.6682 4.0488 9.33224 4.48648 8.09058V5.51819H1.17095C-0.195568 8.23912 -0.195568 11.7613 1.17095 14.4822L4.48648 11.9098Z" fill="#FBBC04"/>
-              <path d="M10.2002 3.94936C11.6247 3.92711 13.0003 4.47199 14.0393 5.45762L16.8916 2.60534C15.1858 0.990725 12.9336 0.0782441 10.2002 0.104522C6.31281 0.104522 2.76156 2.45865 1.1709 5.6231L4.48643 8.19549C5.27572 5.80945 7.54012 3.94936 10.2002 3.94936Z" fill="#EA4335"/>
-            </svg>
+            <GoogleIcon />
             {t('register.signUpWithGoogle')}
           </button>
 
@@ -320,16 +521,15 @@ export default function Register() {
     return (
       <main className={styles.main}>
         <div className={styles.containerSmall}>
+          {renderStepIndicator()}
           <h1 className={styles.title}>{t('register.profileDetailsTitle')}</h1>
-          <p style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#666' }}>
-            {t('register.step2Description')}
-          </p>
+          <p className={registerStyles.description}>{t('register.step2Description')}</p>
 
           {error && <div className={styles.error}>{error}</div>}
 
           <form onSubmit={handleProfileSubmit} className={styles.form}>
             <div className={styles.field}>
-              <label>{t('register.name')}</label>
+              <label>{t('register.name')} *</label>
               <input
                 type="text"
                 required
@@ -384,12 +584,16 @@ export default function Register() {
                 value={profileData.bio}
                 onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
                 placeholder={t('register.bioPlaceholder')}
-                rows={4}
+                rows={3}
               />
             </div>
 
             <button type="submit" disabled={loading} className={styles.submitButton}>
-              {loading ? t('common.loading') : t('register.continueToSummary')}
+              {t('register.continueToSummary')}
+            </button>
+
+            <button type="button" onClick={() => setStep(1)} className={registerStyles.backButton}>
+              {t('common.back')}
             </button>
           </form>
         </div>
@@ -401,66 +605,59 @@ export default function Register() {
   return (
     <main className={styles.main}>
       <div className={styles.containerSmall}>
+        {renderStepIndicator()}
         <h1 className={styles.title}>{t('register.summaryTitle')}</h1>
-        <p style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#666' }}>
-          {t('register.step3Description')}
-        </p>
+        <p className={registerStyles.description}>{t('register.step3Description')}</p>
 
-        <div style={{ 
-          backgroundColor: '#f5f5f5', 
-          padding: '1.5rem', 
-          borderRadius: '8px',
-          marginBottom: '1.5rem'
-        }}>
-          <div style={{ marginBottom: '1rem' }}>
-            <strong>{t('register.email')}:</strong> {email}
+        {error && <div className={styles.error}>{error}</div>}
+
+        <div className={registerStyles.summaryCard}>
+          <div className={registerStyles.summaryItem}>
+            <strong>{t('register.email')}:</strong>
+            <span>{user?.email || email}</span>
           </div>
-          <div style={{ marginBottom: '1rem' }}>
-            <strong>{t('register.name')}:</strong> {profileData.name}
+          <div className={registerStyles.summaryItem}>
+            <strong>{t('register.name')}:</strong>
+            <span>{profileData.name}</span>
           </div>
-          <div style={{ marginBottom: '1rem' }}>
-            <strong>{t('register.cyclingLevel')}:</strong> {t(`cyclingLevel.${profileData.level}`)}
+          <div className={registerStyles.summaryItem}>
+            <strong>{t('register.cyclingLevel')}:</strong>
+            <span>{t(`levels.${profileData.level}`)}</span>
           </div>
-          <div style={{ marginBottom: '1rem' }}>
-            <strong>{t('register.bikeType')}:</strong> {t(`bikeType.${profileData.bikeType}`)}
+          <div className={registerStyles.summaryItem}>
+            <strong>{t('register.bikeType')}:</strong>
+            <span>{t(`bikeTypes.${profileData.bikeType}`)}</span>
           </div>
-          <div style={{ marginBottom: '1rem' }}>
-            <strong>{t('register.city')}:</strong> {profileData.city}
-          </div>
+          {profileData.city && (
+            <div className={registerStyles.summaryItem}>
+              <strong>{t('register.city')}:</strong>
+              <span>{profileData.city}</span>
+            </div>
+          )}
           {profileData.dateOfBirth && (
-            <div style={{ marginBottom: '1rem' }}>
-              <strong>{t('register.dateOfBirth')}:</strong> {profileData.dateOfBirth}
+            <div className={registerStyles.summaryItem}>
+              <strong>{t('register.dateOfBirth')}:</strong>
+              <span>{profileData.dateOfBirth}</span>
             </div>
           )}
           {profileData.bio && (
-            <div>
-              <strong>{t('register.bio')}:</strong> {profileData.bio}
+            <div className={registerStyles.summaryItem}>
+              <strong>{t('register.bio')}:</strong>
+              <span>{profileData.bio}</span>
             </div>
           )}
         </div>
 
         <button
+          type="button"
           onClick={handleFinalizeRegistration}
+          disabled={loading}
           className={styles.submitButton}
         >
-          {t('register.completeRegistration')}
+          {loading ? t('common.loading') : t('register.completeRegistration')}
         </button>
 
-        <button
-          onClick={() => setStep(2)}
-          style={{
-            width: '100%',
-            padding: '0.875rem',
-            border: '2px solid #e0e0e0',
-            borderRadius: '8px',
-            backgroundColor: 'white',
-            color: '#333',
-            fontSize: '1rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            marginTop: '1rem',
-          }}
-        >
+        <button type="button" onClick={() => setStep(2)} className={registerStyles.backButton}>
           {t('common.back')}
         </button>
       </div>

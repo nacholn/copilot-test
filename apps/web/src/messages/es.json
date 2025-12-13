@@ -201,6 +201,22 @@
     "login": "Iniciar Sesión",
     "signUp": "Registrarse"
   },
+  "authModal": {
+    "stepAuth": "Cuenta",
+    "stepProfile": "Perfil",
+    "stepSummary": "Resumen",
+    "verifyEmailTitle": "Verifica Tu Email",
+    "verifyEmailText": "Hemos enviado un email de verificación a:",
+    "checkingVerification": "Verificando estado...",
+    "autoCheckingEvery5Seconds": "Comprobando automáticamente cada 5 segundos",
+    "checkManually": "Comprobar Estado de Verificación",
+    "emailNotVerifiedYet": "Email aún no verificado. Por favor revisa tu bandeja de entrada y haz clic en el enlace de verificación.",
+    "verificationCheckFailed": "Error al comprobar el estado de verificación. Por favor intenta de nuevo.",
+    "resendEmail": "Reenviar Email de Verificación",
+    "resendFailed": "Error al reenviar email",
+    "continueWithGoogle": "Continuar con Google",
+    "nameRequired": "El nombre es obligatorio"
+  },
   "imageUpload": {
     "clickToUpload": "Haz clic para subir o arrastra y suelta una imagen",
     "fileFormat": "PNG, JPG, GIF hasta 10MB",
@@ -275,5 +291,10 @@
     "searchGroups": "Buscar grupos...",
     "locationGroups": "Grupos Basados en Ubicación",
     "generalGroups": "Grupos de Interés General"
+  },
+  "emailVerified": {
+    "title": "¡Correo Verificado!",
+    "message": "Tu correo electrónico ha sido verificado exitosamente.",
+    "closeTabHint": "Cierra esta pestaña y vuelve a tu ventana original para continuar con el registro."
   }
 }
