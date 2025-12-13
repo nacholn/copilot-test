@@ -105,7 +105,7 @@ export function Header() {
               <Link href="/users" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.discover')}
               </Link>
-              <Link href="/groups" className={styles.navLink} onClick={closeMenu}>
+              <Link href="/my-groups" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.groups')}
               </Link>
               <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
@@ -117,7 +117,7 @@ export function Header() {
               <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.chat')}
               </Link>
-              <Link href="/posts" className={styles.navLink} onClick={closeMenu}>
+              <Link href="/my-posts" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.posts')}
               </Link>
               <Link href="/profile" className={styles.navLink} onClick={closeMenu}>

@@ -23,7 +23,7 @@ export default function CreatePost() {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    
+
     if (files.length + images.length > 5) {
       Swal.fire({
         title: t('common.error'),
@@ -105,7 +105,7 @@ export default function CreatePost() {
           timer: 2000,
           showConfirmButton: false,
         });
-        router.push('/posts');
+        router.push('/my-posts');
       } else {
         throw new Error(data.error || 'Failed to create post');
       }
@@ -127,7 +127,7 @@ export default function CreatePost() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <Link href="/posts" className={styles.backButton}>
+            <Link href="/my-posts" className={styles.backButton}>
               ← {t('posts.backToPosts')}
             </Link>
             <h1 className={styles.title}>{t('posts.createPost')}</h1>
@@ -149,7 +149,6 @@ export default function CreatePost() {
                 maxLength={500}
               />
             </div>
-
             <div className={styles.formGroup}>
               <label htmlFor="content" className={styles.label}>
                 {t('posts.postContent')} *
@@ -164,7 +163,6 @@ export default function CreatePost() {
                 rows={8}
               />
             </div>
-
             <div className={styles.formGroup}>
               <label htmlFor="visibility" className={styles.label}>
                 {t('posts.visibility')} *
@@ -179,11 +177,8 @@ export default function CreatePost() {
                 <option value="friends">{t('posts.friends')}</option>
               </select>
             </div>
-
             <div className={styles.formGroup}>
-              <label className={styles.label}>
-                {t('posts.selectImages')}
-              </label>
+              <label className={styles.label}>{t('posts.selectImages')}</label>
               <div className={styles.imageUploadArea}>
                 <input
                   type="file"
@@ -217,10 +212,9 @@ export default function CreatePost() {
                   ))}
                 </div>
               )}
-            </div>
-
+            </div>{' '}
             <div className={styles.formActions}>
-              <Link href="/posts" className={styles.cancelButton}>
+              <Link href="/my-posts" className={styles.cancelButton}>
                 {t('common.cancel')}
               </Link>
               <button

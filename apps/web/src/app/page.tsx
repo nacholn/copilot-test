@@ -177,7 +177,7 @@ export default function Home() {
       <section className={styles.postsSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Latest Posts</h2>
-          <Link href="/public-posts" className={styles.seeAllLink}>
+          <Link href="/posts" className={styles.seeAllLink}>
             See all →
           </Link>
         </div>
@@ -209,7 +209,7 @@ export default function Home() {
       <section className={styles.groupsSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Popular Groups</h2>
-          <Link href="/public-groups" className={styles.seeAllLink}>
+          <Link href="/groups" className={styles.seeAllLink}>
             See all →
           </Link>
         </div>

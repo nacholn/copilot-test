@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
 import { Avatar } from '../../components/Avatar';
 import type { FriendRequestWithProfile } from '@cyclists/config';
@@ -11,6 +12,7 @@ import styles from './friend-requests.module.css';
 
 export default function FriendRequests() {
   const { user } = useAuth();
+  const { t } = useTranslations();
   const [receivedRequests, setReceivedRequests] = useState<FriendRequestWithProfile[]>([]);
   const [sentRequests, setSentRequests] = useState<FriendRequestWithProfile[]>([]);
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
@@ -27,16 +29,20 @@ export default function FriendRequests() {
 
     try {
       setLoading(true);
-      
+
       // Fetch received requests
-      const receivedResponse = await fetch(`/api/friend-requests?userId=${user.id}&type=received&status=pending`);
+      const receivedResponse = await fetch(
+        `/api/friend-requests?userId=${user.id}&type=received&status=pending`
+      );
       const receivedData = await receivedResponse.json();
       if (receivedData.success) {
         setReceivedRequests(receivedData.data);
       }
 
       // Fetch sent requests
-      const sentResponse = await fetch(`/api/friend-requests?userId=${user.id}&type=sent&status=pending`);
+      const sentResponse = await fetch(
+        `/api/friend-requests?userId=${user.id}&type=sent&status=pending`
+      );
       const sentData = await sentResponse.json();
       if (sentData.success) {
         setSentRequests(sentData.data);
@@ -64,7 +70,7 @@ export default function FriendRequests() {
       if (data.success) {
         // Remove from list
         setReceivedRequests(receivedRequests.filter((req) => req.id !== requestId));
-        
+
         Swal.fire({
           title: 'Accepted!',
           text: 'Friend request accepted. You are now friends!',
@@ -138,7 +144,7 @@ export default function FriendRequests() {
       if (data.success) {
         // Remove from list
         setReceivedRequests(receivedRequests.filter((req) => req.id !== requestId));
-        
+
         Swal.fire({
           title: 'Rejected',
           text: 'Friend request rejected.',
@@ -177,7 +183,12 @@ export default function FriendRequests() {
     }
   };
 
-  const requests = activeTab === 'received' ? receivedRequests : sentRequests;
+  const requests = useMemo(() => {
+    console.log('activeTab changed:', activeTab);
+    console.log('receivedRequests:', receivedRequests);
+    console.log('sentRequests:', sentRequests);
+    return activeTab === 'received' ? receivedRequests : sentRequests;
+  }, [activeTab, receivedRequests, sentRequests]);
 
   return (
     <AuthGuard>
@@ -205,7 +216,7 @@ export default function FriendRequests() {
           ) : requests.length === 0 ? (
             <div className={styles.emptyState}>
               <p className={styles.emptyText}>
-                {activeTab === 'received' 
+                {activeTab === 'received'
                   ? t('friendRequests.noPendingReceived')
                   : t('friendRequests.noPendingSent')}
               </p>
@@ -214,45 +225,50 @@ export default function FriendRequests() {
               </Link>
             </div>
           ) : (
-            <div className={styles.requestsList}>
-              {requests.map((request) => (
-                <div key={request.id} className={styles.requestCard}>
-                  <Link 
-                    href={`/users/${activeTab === 'received' ? request.requesterId : request.addresseeId}`} 
-                    className={styles.requestLink}
-                  >
-                    <Avatar src={request.requesterAvatar} name={request.requesterName} size="large" />
-                    <div className={styles.requestInfo}>
-                      <h3>{request.requesterName}</h3>
-                      <p className={styles.requestEmail}>{request.requesterEmail}</p>
-                      <span className={styles.requestTime}>
-                        {new Date(request.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </Link>
-                  {activeTab === 'received' && (
-                    <div className={styles.requestActions}>
-                      <button
-                        onClick={() => handleAcceptRequest(request.id)}
-                        className={styles.acceptButton}
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() => handleRejectRequest(request.id)}
-                        className={styles.rejectButton}
-                      >
-                        Reject
-                      </button>
-                    </div>
-                  )}
-                  {activeTab === 'sent' && (
-                    <div className={styles.pendingBadge}>
-                      Pending
-                    </div>
-                  )}
-                </div>
-              ))}
+            <div className={styles.requestsList} key={activeTab}>
+              {requests.map((request) => {
+                // For received requests, show requester info; for sent requests, show addressee info
+                const displayName =
+                  activeTab === 'received' ? request.requesterName : request.addresseeName;
+                const displayAvatar =
+                  activeTab === 'received' ? request.requesterAvatar : request.addresseeAvatar;
+                const displayEmail =
+                  activeTab === 'received' ? request.requesterEmail : request.addresseeEmail;
+                const profileId =
+                  activeTab === 'received' ? request.requesterId : request.addresseeId;
+
+                return (
+                  <div key={request.id} className={styles.requestCard}>
+                    <Link href={`/users/${profileId}`} className={styles.requestLink}>
+                      <Avatar src={displayAvatar} name={displayName} size="large" />
+                      <div className={styles.requestInfo}>
+                        <h3>{displayName}</h3>
+                        <p className={styles.requestEmail}>{displayEmail}</p>
+                        <span className={styles.requestTime}>
+                          {new Date(request.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </Link>
+                    {activeTab === 'received' && (
+                      <div className={styles.requestActions}>
+                        <button
+                          onClick={() => handleAcceptRequest(request.id)}
+                          className={styles.acceptButton}
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() => handleRejectRequest(request.id)}
+                          className={styles.rejectButton}
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    )}
+                    {activeTab === 'sent' && <div className={styles.pendingBadge}>Pending</div>}
+                  </div>
+                );
+              })}
             </div>
           )}
 

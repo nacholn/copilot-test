@@ -1,205 +1,221 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
-import { AuthGuard } from '../../components/AuthGuard';
-import { Avatar } from '../../components/Avatar';
+import { PublicGroupCard } from '../../components/PublicGroupCard';
 import { Loader } from '../../components/Loader';
 import type { GroupWithMemberCount } from '@cyclists/config';
 import styles from './groups.module.css';
 
-export default function Groups() {
-  const { user } = useAuth();
+const GROUPS_PER_PAGE = 12;
+
+export default function PublicGroups() {
   const { t } = useTranslations();
   const [groups, setGroups] = useState<GroupWithMemberCount[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
-  const [cityFilter, setCityFilter] = useState('');
-  const [showMyGroups, setShowMyGroups] = useState(false);
-  const [userGroupIds, setUserGroupIds] = useState<Set<string>>(new Set());
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [orderBy, setOrderBy] = useState<'created_at' | 'member_count'>('member_count');
 
-  useEffect(() => {
-    const fetchGroups = async () => {
+  const fetchGroups = useCallback(
+    async (currentOffset: number, append: boolean = false, currentOrderBy: string = orderBy) => {
       try {
-        setLoading(true);
-        const response = await fetch(`/api/groups`);
+        if (append) {
+          setLoadingMore(true);
+        } else {
+          setLoading(true);
+        }
+
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        const response = await fetch(
+          `${apiUrl}/api/groups/public?limit=${GROUPS_PER_PAGE}&offset=${currentOffset}&orderBy=${currentOrderBy}`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch groups');
+        }
+
         const data = await response.json();
 
         if (data.success) {
-          setGroups(data.data);
+          const newGroups = data.data;
+
+          if (append) {
+            setGroups((prev) => [...prev, ...newGroups]);
+          } else {
+            setGroups(newGroups);
+          }
+
+          // If we received fewer groups than requested, we've reached the end
+          setHasMore(newGroups.length === GROUPS_PER_PAGE);
+        } else {
+          setError(data.error || 'Failed to fetch groups');
         }
-      } catch (error) {
-        console.error('Error fetching groups:', error);
+      } catch (err) {
+        console.error('Error fetching groups:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch groups');
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
-    };
+    },
+    [orderBy]
+  );
 
-    fetchGroups();
-  }, []);
-
-  // Fetch user's group memberships
   useEffect(() => {
-    const fetchUserGroups = async () => {
-      if (!user) return;
+    setOffset(0);
+    fetchGroups(0, false, orderBy);
+  }, [orderBy, fetchGroups]);
 
-      try {
-        const response = await fetch(`/api/conversations?userId=${user.id}`);
-        const data = await response.json();
-
-        if (data.success && data.data.groupConversations) {
-          const groupIds = new Set(
-            data.data.groupConversations.map((gc: any) => gc.groupId)
-          );
-          setUserGroupIds(groupIds);
-        }
-      } catch (error) {
-        console.error('Error fetching user groups:', error);
-      }
-    };
-
-    fetchUserGroups();
-  }, [user]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+  const handleLoadMore = () => {
+    const newOffset = offset + GROUPS_PER_PAGE;
+    setOffset(newOffset);
+    fetchGroups(newOffset, true);
   };
 
-  const filteredGroups = groups.filter((group) => {
-    // Filter by search query
-    if (searchQuery && !group.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
+  const handleOrderChange = (newOrder: 'created_at' | 'member_count') => {
+    setOrderBy(newOrder);
+    setOffset(0);
+  };
 
-    // Filter by type
-    if (typeFilter && group.type !== typeFilter) {
-      return false;
-    }
-
-    // Filter by city
-    if (cityFilter && (!group.city || !group.city.toLowerCase().includes(cityFilter.toLowerCase()))) {
-      return false;
-    }
-
-    // Filter by my groups
-    if (showMyGroups && !userGroupIds.has(group.id)) {
-      return false;
-    }
-
-    return true;
-  });
-
-  return (
-    <AuthGuard>
+  if (loading) {
+    return (
       <main className={styles.main}>
         <div className={styles.container}>
-          <h1 className={styles.title}>{t('groups.title')}</h1>
-
-          <div className={styles.filters}>
-            <input
-              type="text"
-              placeholder={t('groups.searchGroups')}
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className={styles.searchInput}
-            />
-
-            <div className={styles.filterRow}>
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className={styles.select}
-              >
-                <option value="">{t('groups.allGroups')}</option>
-                <option value="location">{t('groups.location')}</option>
-                <option value="general">{t('groups.general')}</option>
-              </select>
-
-              <input
-                type="text"
-                placeholder={t('groups.filterByCity')}
-                value={cityFilter}
-                onChange={(e) => setCityFilter(e.target.value)}
-                className={styles.cityInput}
-              />
-
-              <button
-                className={`${styles.toggleButton} ${showMyGroups ? styles.active : ''}`}
-                onClick={() => setShowMyGroups(!showMyGroups)}
-              >
-                {t('groups.myGroups')}
-              </button>
-
-              <button
-                onClick={() => {
-                  setSearchQuery('');
-                  setTypeFilter('');
-                  setCityFilter('');
-                  setShowMyGroups(false);
-                }}
-                className={styles.clearButton}
-              >
-                {t('common.cancel')}
-              </button>
-            </div>
+          <div className={styles.loaderContainer}>
+            <Loader size="large" message="Loading groups..." />
           </div>
+        </div>
+      </main>
+    );
+  }
 
-          {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
-              <Loader size="large" message={t('common.loading')} />
-            </div>
-          ) : filteredGroups.length === 0 ? (
-            <p className={styles.noResults}>{t('groups.noGroups')}</p>
-          ) : (
-            <div className={styles.groupList}>
-              {filteredGroups.map((group) => (
-                <Link key={group.id} href={`/groups/${group.id}`} className={styles.groupCard}>
-                  <div className={styles.groupImage}>
-                    {group.mainImage ? (
-                      <img src={group.mainImage} alt={group.name} />
-                    ) : (
-                      <div className={styles.groupImagePlaceholder}>👥</div>
-                    )}
-                  </div>
-                  <div className={styles.groupInfo}>
-                    <div className={styles.groupHeader}>
-                      <h3>{group.name}</h3>
-                      {userGroupIds.has(group.id) && (
-                        <span className={styles.memberBadge}>✓ {t('groups.joined')}</span>
-                      )}
-                    </div>
-                    {group.description && (
-                      <p className={styles.groupDescription}>
-                        {group.description.length > 100
-                          ? group.description.substring(0, 100) + '...'
-                          : group.description}
-                      </p>
-                    )}
-                    <div className={styles.groupDetails}>
-                      <span className={styles.badge}>{t(`groups.${group.type}`)}</span>
-                      {group.city && (
-                        <span className={styles.location}>📍 {group.city}</span>
-                      )}
-                      <span className={styles.memberCount}>
-                        {group.memberCount} {group.memberCount === 1 ? t('groups.member') : t('groups.members')}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-
-          <div className={styles.actions}>
+  if (error) {
+    return (
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <div className={styles.errorState}>
+            <h1>Error</h1>
+            <p>{error}</p>
             <Link href="/" className={styles.backButton}>
-              {t('common.back')}
+              ← Back to Home
             </Link>
           </div>
         </div>
       </main>
-    </AuthGuard>
+    );
+  }
+  return (
+    <main className={styles.main}>
+      {/* Hero Section */}
+      <div className={styles.hero}>
+        <div className={styles.heroContent}>
+          <div className={styles.heroIcon}>👥</div>
+          <h1 className={styles.heroTitle}>Cycling Groups & Communities</h1>
+          <p className={styles.heroSubtitle}>
+            Join a community of cyclists and connect with riders near you. Find your tribe, share
+            routes, and discover new adventures together.
+          </p>
+          <div className={styles.heroStats}>
+            <div className={styles.stat}>
+              <span className={styles.statIcon}>🚴</span>
+              <span className={styles.statText}>Active Groups</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statIcon}>🤝</span>
+              <span className={styles.statText}>Friendly Riders</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statIcon}>📍</span>
+              <span className={styles.statText}>Local Meetups</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Discover Groups</h2>
+          <p className={styles.sectionSubtitle}>Find the perfect cycling community for you</p>
+        </div>
+        <div className={styles.filters}>
+          <div className={styles.filterButtons}>
+            <button
+              className={`${styles.filterButton} ${orderBy === 'member_count' ? styles.active : ''}`}
+              onClick={() => handleOrderChange('member_count')}
+            >
+              🔥 Most Popular
+            </button>
+            <button
+              className={`${styles.filterButton} ${orderBy === 'created_at' ? styles.active : ''}`}
+              onClick={() => handleOrderChange('created_at')}
+            >
+              ✨ Most Recent
+            </button>
+          </div>
+        </div>{' '}
+        {groups.length === 0 ? (
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>🚲</div>
+            <h2>No groups yet</h2>
+            <p>Be the first to create a cycling group!</p>
+            <Link href="/register" className={styles.ctaButton}>
+              Join the Community
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className={styles.groupsGrid}>
+              {groups.map((group) => (
+                <PublicGroupCard key={group.id} group={group} />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className={styles.loadMoreContainer}>
+                <button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  className={styles.loadMoreButton}
+                >
+                  {loadingMore ? (
+                    <>
+                      <Loader size="small" />
+                      <span>Loading...</span>
+                    </>
+                  ) : (
+                    'Load More Groups'
+                  )}
+                </button>
+              </div>
+            )}
+
+            {!hasMore && groups.length > 0 && (
+              <div className={styles.endMessage}>
+                <p>You&apos;ve seen all groups! ✨</p>
+              </div>
+            )}
+          </>
+        )}
+        {/* Community CTA Section */}
+        <div className={styles.communityCta}>
+          <div className={styles.ctaContent}>
+            <h3>Ready to ride together?</h3>
+            <p>Create your own group or join existing ones to connect with fellow cyclists.</p>
+            <Link href="/register" className={styles.ctaButtonLarge}>
+              Get Started Free
+            </Link>
+          </div>
+        </div>
+        <div className={styles.actions}>
+          <Link href="/" className={styles.backButton}>
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+    </main>
   );
 }
