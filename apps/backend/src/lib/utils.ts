@@ -45,6 +45,7 @@ export function transformProfile(profile: Record<string, any>) {
     dateOfBirth: profile.date_of_birth,
     avatar: profile.avatar,
     bio: profile.bio,
+    isAdmin: profile.is_admin || false,
     lastLoginAt: profile.last_login_at,
     lastMessageSentAt: profile.last_message_sent_at,
     lastPostCreatedAt: profile.last_post_created_at,
