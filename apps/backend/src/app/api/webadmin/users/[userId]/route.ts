@@ -283,22 +283,7 @@ export async function DELETE(
       [userId]
     );
 
-    // Delete user from Supabase
-    const supabase = getSupabaseAdmin();
-    const { error: supabaseError } = await supabase.auth.admin.deleteUser(userId);
-
-    if (supabaseError) {
-      console.error('[WebAdmin] Error deleting user from Supabase:', supabaseError);
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          error: 'Failed to delete user from authentication system',
-        },
-        { status: 500 }
-      );
-    }
-
-    // Delete profile from database (cascade will handle related data)
+    // Delete profile from database first (cascade will handle related data)
     const result = await query('DELETE FROM profiles WHERE user_id = $1 RETURNING id', [userId]);
 
     if (result.rows.length === 0) {
@@ -309,6 +294,16 @@ export async function DELETE(
         },
         { status: 404 }
       );
+    }
+
+    // Delete user from Supabase after database deletion succeeds
+    const supabase = getSupabaseAdmin();
+    const { error: supabaseError } = await supabase.auth.admin.deleteUser(userId);
+
+    if (supabaseError) {
+      console.error('[WebAdmin] Error deleting user from Supabase:', supabaseError);
+      // Note: Database deletion already succeeded, so we just log the error
+      // The user profile is removed but Supabase user still exists
     }
 
     // Delete all images from Cloudinary in parallel
