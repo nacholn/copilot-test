@@ -1,10 +1,11 @@
 import type { Profile } from '@cyclists/config';
 import styles from '../styles/common.module.css';
+import { DeleteButton } from './DeleteButton';
 
 interface UserListProps {
   users: Profile[];
   onEdit: (user: Profile) => void;
-  onDelete: (userId: string) => void;
+  onDelete: (userId: string) => Promise<void>;
 }
 
 export function UserList({ users, onEdit, onDelete }: UserListProps) {
@@ -97,13 +98,12 @@ export function UserList({ users, onEdit, onDelete }: UserListProps) {
                     >
                       Edit
                     </button>
-                    <button
-                      onClick={() => onDelete(user.userId)}
-                      className={`${styles.button} ${styles.buttonDanger}`}
+                    <DeleteButton
+                      onDelete={() => onDelete(user.userId)}
+                      itemName="user"
+                      confirmMessage="Are you sure you want to delete this user? This will also delete their Supabase account and all their images from Cloudinary."
                       style={{ padding: '6px 12px', fontSize: '13px' }}
-                    >
-                      Delete
-                    </button>
+                    />
                   </div>
                 </td>
               </tr>

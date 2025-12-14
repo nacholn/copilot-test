@@ -71,26 +71,17 @@ export default function UsersPage() {
     }
   };
 
-  const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Are you sure you want to delete this user? This will also delete their Supabase account and all their images from Cloudinary.')) {
-      return;
-    }
+  const handleDeleteUser = async (userId: string): Promise<void> => {
+    const response = await fetch(`/api/webadmin/users/${userId}`, {
+      method: 'DELETE',
+    });
 
-    try {
-      const response = await fetch(`/api/webadmin/users/${userId}`, {
-        method: 'DELETE',
-      });
+    const data = await response.json();
 
-      const data = await response.json();
-
-      if (data.success) {
-        fetchUsers();
-      } else {
-        alert(data.error || 'Failed to delete user');
-      }
-    } catch (err) {
-      console.error('Error deleting user:', err);
-      alert('Failed to delete user');
+    if (data.success) {
+      await fetchUsers();
+    } else {
+      throw new Error(data.error || 'Failed to delete user');
     }
   };
 

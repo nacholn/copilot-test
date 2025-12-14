@@ -3,10 +3,11 @@
 import { useRouter } from 'next/navigation';
 import type { GroupWithMemberCount } from '@cyclists/config';
 import styles from '../styles/common.module.css';
+import { DeleteButton } from './DeleteButton';
 
 interface GroupListProps {
   groups: GroupWithMemberCount[];
-  onDelete: (groupId: string) => void;
+  onDelete: (groupId: string) => Promise<void>;
 }
 
 export function GroupList({ groups, onDelete }: GroupListProps) {
@@ -105,12 +106,12 @@ export function GroupList({ groups, onDelete }: GroupListProps) {
                   >
                     Manage
                   </button>
-                  <button
+                  <DeleteButton
+                    onDelete={() => onDelete(group.id)}
+                    itemName="group"
+                    confirmMessage="Are you sure you want to delete this group? This will also delete all group images from Cloudinary."
                     className={`${styles.button} ${styles.buttonSmall} ${styles.buttonDanger}`}
-                    onClick={() => onDelete(group.id)}
-                  >
-                    Delete
-                  </button>
+                  />
                 </div>
               </td>
             </tr>

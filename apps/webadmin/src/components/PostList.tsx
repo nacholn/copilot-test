@@ -4,10 +4,11 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from '../styles/common.module.css';
+import { DeleteButton } from './DeleteButton';
 
 interface PostListProps {
   posts: PostWithDetails[];
-  onDelete?: (postId: string) => void;
+  onDelete?: (postId: string) => Promise<void>;
 }
 
 export function PostList({ posts, onDelete }: PostListProps) {
@@ -236,12 +237,13 @@ export function PostList({ posts, onDelete }: PostListProps) {
                 Edit Post
               </button>
               {onDelete && (
-                <button
-                  className={`${styles.button} ${styles.buttonDanger}`}
-                  onClick={() => onDelete(post.id)}
+                <DeleteButton
+                  onDelete={() => onDelete(post.id)}
+                  itemName="post"
+                  confirmMessage="Are you sure you want to delete this post? This will also delete all post images from Cloudinary."
                 >
                   Delete Post
-                </button>
+                </DeleteButton>
               )}
             </div>
           </div>

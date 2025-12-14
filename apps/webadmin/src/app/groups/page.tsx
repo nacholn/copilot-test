@@ -61,26 +61,17 @@ export default function GroupsPage() {
     }
   };
 
-  const handleDeleteGroup = async (groupId: string) => {
-    if (!confirm('Are you sure you want to delete this group? This will also delete all group images from Cloudinary.')) {
-      return;
-    }
+  const handleDeleteGroup = async (groupId: string): Promise<void> => {
+    const response = await fetch(`/api/groups/${groupId}`, {
+      method: 'DELETE',
+    });
 
-    try {
-      const response = await fetch(`/api/groups/${groupId}`, {
-        method: 'DELETE',
-      });
+    const data = await response.json();
 
-      const data = await response.json();
-
-      if (data.success) {
-        fetchGroups();
-      } else {
-        alert(data.error || 'Failed to delete group');
-      }
-    } catch (err) {
-      console.error('Error deleting group:', err);
-      alert('Failed to delete group');
+    if (data.success) {
+      await fetchGroups();
+    } else {
+      throw new Error(data.error || 'Failed to delete group');
     }
   };
 
