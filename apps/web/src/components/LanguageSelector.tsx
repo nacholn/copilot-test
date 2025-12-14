@@ -71,7 +71,9 @@ export function LanguageSelector() {
   }, []);
 
   return (
-    <div className={styles.languageSelector} ref={dropdownRef}>      <div
+    <div className={styles.languageSelector} ref={dropdownRef}>
+      {' '}
+      <div
         className={`${styles.dropdown} ${isOpen ? styles.open : ''}`}
         onClick={toggleDropdown}
         onKeyDown={handleKeyDown}
@@ -80,7 +82,9 @@ export function LanguageSelector() {
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={`Current language: ${currentLanguage.name}. Click to change language.`}
-      >        <div className={styles.selected}>
+      >
+        {' '}
+        <div className={styles.selected}>
           <Image
             src={getFlagUrl(currentLanguage.flag)}
             alt={currentLanguage.name}
@@ -93,7 +97,6 @@ export function LanguageSelector() {
             ▼
           </span>
         </div>
-
         {isOpen && (
           <div className={styles.dropdownMenu} role="listbox">
             {languages.map((language) => (
@@ -107,7 +110,8 @@ export function LanguageSelector() {
                 tabIndex={0}
                 role="option"
                 aria-selected={language.code === locale}
-                aria-label={`Select ${language.name}`}              >
+                aria-label={`Select ${language.name}`}
+              >
                 <Image
                   src={getFlagUrl(language.flag)}
                   alt={language.name}
