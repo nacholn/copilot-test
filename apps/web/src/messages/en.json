@@ -16,7 +16,12 @@
     "no": "No",
     "error": "Error",
     "success": "Success",
-    "or": "or"
+    "or": "or",
+    "signOutTitle": "Sign Out?",
+    "signOutText": "Are you sure you want to sign out?",
+    "yesSignOut": "Yes, sign out",
+    "signedOutTitle": "Signed Out!",
+    "signedOutText": "You have been successfully signed out."
   },
   "languages": {
     "en": "English",
@@ -191,15 +196,21 @@
   },
   "navigation": {
     "discover": "Discover",
-    "groups": "My Groups",
+    "groups": "Groups",
+    "myGroups": "My Groups",
     "friends": "Friends",
     "requests": "Requests",
     "chat": "Chat",
     "posts": "Posts",
+    "myPosts": "My Posts",
+    "myContent": "My Content",
     "profile": "Profile",
+    "account": "Account",
     "logout": "Logout",
     "login": "Login",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "publicGroups": "Groups",
+    "publicPosts": "Posts"
   },
   "authModal": {
     "stepAuth": "Account",
@@ -257,7 +268,24 @@
     "sendReply": "Send",
     "noReplies": "No replies yet",
     "beFirst": "Be the first to reply!",
-    "replyPlaceholder": "Share your thoughts..."
+    "replyPlaceholder": "Share your thoughts...",
+    "publicPageTitle": "Cycling Stories & Adventures",
+    "publicPageSubtitle": "Join a community of cyclists and connect with riders near you. Discover inspiring routes, share your journeys, and find your next adventure.",
+    "activeCommunity": "Active Community",
+    "ridersWorldwide": "Riders Worldwide",
+    "localConnections": "Local Connections",
+    "latestPosts": "Latest Posts",
+    "freshStories": "Fresh stories from the cycling community",
+    "noPostsYet": "No posts yet",
+    "beFirstToShare": "Be the first to share your cycling adventure!",
+    "joinCommunity": "Join the Community",
+    "loadMorePosts": "Load More Posts",
+    "reachedEnd": "You've reached the end! ✨",
+    "readyToShare": "Ready to share your story?",
+    "joinThousands": "Join thousands of cyclists sharing their adventures, tips, and favorite routes.",
+    "backToHome": "Back to Home",
+    "loadingPosts": "Loading posts...",
+    "seeAll": "See all"
   },
   "groups": {
     "title": "Groups",
@@ -290,7 +318,23 @@
     "filterByCity": "Filter by City",
     "searchGroups": "Search groups...",
     "locationGroups": "Location-based Groups",
-    "generalGroups": "General Interest Groups"
+    "generalGroups": "General Interest Groups",
+    "publicPageTitle": "Cycling Groups & Communities",
+    "publicPageSubtitle": "Join a community of cyclists and connect with riders near you. Find your tribe, share routes, and discover new adventures together.",
+    "activeGroups": "Active Groups",
+    "friendlyRiders": "Friendly Riders",
+    "localMeetups": "Local Meetups",
+    "discoverGroupsTitle": "Discover Groups",
+    "perfectCommunity": "Find the perfect cycling community for you",
+    "mostPopular": "Most Popular",
+    "mostRecent": "Most Recent",
+    "noGroupsYet": "No groups yet",
+    "beFirstToCreate": "Be the first to create a cycling group!",
+    "loadMoreGroups": "Load More Groups",
+    "seenAllGroups": "You've seen all groups! ✨",
+    "readyToRide": "Ready to ride together?",
+    "createOrJoin": "Create your own group or join existing ones to connect with fellow cyclists.",
+    "loadingGroups": "Loading groups..."
   },
   "emailVerified": {
     "title": "Email Verified!",

@@ -76,7 +76,7 @@ export default function PublicPosts() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.loaderContainer}>
-            <Loader size="large" message="Loading posts..." />
+            <Loader size="large" message={t('posts.loadingPosts')} />
           </div>
         </div>
       </main>
@@ -88,10 +88,10 @@ export default function PublicPosts() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.errorState}>
-            <h1>Error</h1>
+            <h1>{t('common.error')}</h1>
             <p>{error}</p>
             <Link href="/" className={styles.backButton}>
-              ← Back to Home
+              ← {t('posts.backToHome')}
             </Link>
           </div>
         </div>
@@ -105,23 +105,20 @@ export default function PublicPosts() {
       <div className={styles.hero}>
         <div className={styles.heroContent}>
           <div className={styles.heroIcon}>📝</div>
-          <h1 className={styles.heroTitle}>Cycling Stories & Adventures</h1>
-          <p className={styles.heroSubtitle}>
-            Join a community of cyclists and connect with riders near you. Discover inspiring
-            routes, share your journeys, and find your next adventure.
-          </p>
+          <h1 className={styles.heroTitle}>{t('posts.publicPageTitle')}</h1>
+          <p className={styles.heroSubtitle}>{t('posts.publicPageSubtitle')}</p>
           <div className={styles.heroStats}>
             <div className={styles.stat}>
               <span className={styles.statIcon}>🚴</span>
-              <span className={styles.statText}>Active Community</span>
+              <span className={styles.statText}>{t('posts.activeCommunity')}</span>
             </div>
             <div className={styles.stat}>
               <span className={styles.statIcon}>🌍</span>
-              <span className={styles.statText}>Riders Worldwide</span>
+              <span className={styles.statText}>{t('posts.ridersWorldwide')}</span>
             </div>
             <div className={styles.stat}>
               <span className={styles.statIcon}>📍</span>
-              <span className={styles.statText}>Local Connections</span>
+              <span className={styles.statText}>{t('posts.localConnections')}</span>
             </div>
           </div>
         </div>
@@ -129,17 +126,17 @@ export default function PublicPosts() {
 
       <div className={styles.container}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Latest Posts</h2>
-          <p className={styles.sectionSubtitle}>Fresh stories from the cycling community</p>
+          <h2 className={styles.sectionTitle}>{t('posts.latestPosts')}</h2>
+          <p className={styles.sectionSubtitle}>{t('posts.freshStories')}</p>
         </div>
 
         {posts.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>🚲</div>
-            <h2>No posts yet</h2>
-            <p>Be the first to share your cycling adventure!</p>
+            <h2>{t('posts.noPostsYet')}</h2>
+            <p>{t('posts.beFirstToShare')}</p>
             <Link href="/register" className={styles.ctaButton}>
-              Join the Community
+              {t('posts.joinCommunity')}
             </Link>
           </div>
         ) : (
@@ -159,17 +156,17 @@ export default function PublicPosts() {
                   {loadingMore ? (
                     <>
                       <Loader size="small" />
-                      <span>Loading...</span>
+                      <span>{t('common.loading')}</span>
                     </>
                   ) : (
-                    'Load More Posts'
+                    t('posts.loadMorePosts')
                   )}
                 </button>
               </div>
             )}{' '}
             {!hasMore && posts.length > 0 && (
               <div className={styles.endMessage}>
-                <p>You&apos;ve reached the end! ✨</p>
+                <p>{t('posts.reachedEnd')}</p>
               </div>
             )}
           </>
@@ -178,17 +175,17 @@ export default function PublicPosts() {
         {/* Community CTA Section */}
         <div className={styles.communityCta}>
           <div className={styles.ctaContent}>
-            <h3>Ready to share your story?</h3>
-            <p>Join thousands of cyclists sharing their adventures, tips, and favorite routes.</p>
+            <h3>{t('posts.readyToShare')}</h3>
+            <p>{t('posts.joinThousands')}</p>
             <Link href="/register" className={styles.ctaButtonLarge}>
-              Get Started Free
+              {t('home.getStartedFree')}
             </Link>
           </div>
         </div>
 
         <div className={styles.actions}>
           <Link href="/" className={styles.backButton}>
-            ← Back to Home
+            ← {t('posts.backToHome')}
           </Link>
         </div>
       </div>

@@ -86,7 +86,7 @@ export default function PublicGroups() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.loaderContainer}>
-            <Loader size="large" message="Loading groups..." />
+            <Loader size="large" message={t('groups.loadingGroups')} />
           </div>
         </div>
       </main>
@@ -98,10 +98,10 @@ export default function PublicGroups() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.errorState}>
-            <h1>Error</h1>
+            <h1>{t('common.error')}</h1>
             <p>{error}</p>
             <Link href="/" className={styles.backButton}>
-              ← Back to Home
+              ← {t('posts.backToHome')}
             </Link>
           </div>
         </div>
@@ -114,23 +114,20 @@ export default function PublicGroups() {
       <div className={styles.hero}>
         <div className={styles.heroContent}>
           <div className={styles.heroIcon}>👥</div>
-          <h1 className={styles.heroTitle}>Cycling Groups & Communities</h1>
-          <p className={styles.heroSubtitle}>
-            Join a community of cyclists and connect with riders near you. Find your tribe, share
-            routes, and discover new adventures together.
-          </p>
+          <h1 className={styles.heroTitle}>{t('groups.publicPageTitle')}</h1>
+          <p className={styles.heroSubtitle}>{t('groups.publicPageSubtitle')}</p>
           <div className={styles.heroStats}>
             <div className={styles.stat}>
               <span className={styles.statIcon}>🚴</span>
-              <span className={styles.statText}>Active Groups</span>
+              <span className={styles.statText}>{t('groups.activeGroups')}</span>
             </div>
             <div className={styles.stat}>
               <span className={styles.statIcon}>🤝</span>
-              <span className={styles.statText}>Friendly Riders</span>
+              <span className={styles.statText}>{t('groups.friendlyRiders')}</span>
             </div>
             <div className={styles.stat}>
               <span className={styles.statIcon}>📍</span>
-              <span className={styles.statText}>Local Meetups</span>
+              <span className={styles.statText}>{t('groups.localMeetups')}</span>
             </div>
           </div>
         </div>
@@ -138,8 +135,8 @@ export default function PublicGroups() {
 
       <div className={styles.container}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Discover Groups</h2>
-          <p className={styles.sectionSubtitle}>Find the perfect cycling community for you</p>
+          <h2 className={styles.sectionTitle}>{t('groups.discoverGroupsTitle')}</h2>
+          <p className={styles.sectionSubtitle}>{t('groups.perfectCommunity')}</p>
         </div>
         <div className={styles.filters}>
           <div className={styles.filterButtons}>
@@ -147,23 +144,23 @@ export default function PublicGroups() {
               className={`${styles.filterButton} ${orderBy === 'member_count' ? styles.active : ''}`}
               onClick={() => handleOrderChange('member_count')}
             >
-              🔥 Most Popular
+              🔥 {t('groups.mostPopular')}
             </button>
             <button
               className={`${styles.filterButton} ${orderBy === 'created_at' ? styles.active : ''}`}
               onClick={() => handleOrderChange('created_at')}
             >
-              ✨ Most Recent
+              ✨ {t('groups.mostRecent')}
             </button>
           </div>
         </div>{' '}
         {groups.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>🚲</div>
-            <h2>No groups yet</h2>
-            <p>Be the first to create a cycling group!</p>
+            <h2>{t('groups.noGroupsYet')}</h2>
+            <p>{t('groups.beFirstToCreate')}</p>
             <Link href="/register" className={styles.ctaButton}>
-              Join the Community
+              {t('posts.joinCommunity')}
             </Link>
           </div>
         ) : (
@@ -184,10 +181,10 @@ export default function PublicGroups() {
                   {loadingMore ? (
                     <>
                       <Loader size="small" />
-                      <span>Loading...</span>
+                      <span>{t('common.loading')}</span>
                     </>
                   ) : (
-                    'Load More Groups'
+                    t('groups.loadMoreGroups')
                   )}
                 </button>
               </div>
@@ -195,7 +192,7 @@ export default function PublicGroups() {
 
             {!hasMore && groups.length > 0 && (
               <div className={styles.endMessage}>
-                <p>You&apos;ve seen all groups! ✨</p>
+                <p>{t('groups.seenAllGroups')}</p>
               </div>
             )}
           </>
@@ -203,16 +200,16 @@ export default function PublicGroups() {
         {/* Community CTA Section */}
         <div className={styles.communityCta}>
           <div className={styles.ctaContent}>
-            <h3>Ready to ride together?</h3>
-            <p>Create your own group or join existing ones to connect with fellow cyclists.</p>
+            <h3>{t('groups.readyToRide')}</h3>
+            <p>{t('groups.createOrJoin')}</p>
             <Link href="/register" className={styles.ctaButtonLarge}>
-              Get Started Free
+              {t('home.getStartedFree')}
             </Link>
           </div>
         </div>
         <div className={styles.actions}>
           <Link href="/" className={styles.backButton}>
-            ← Back to Home
+            ← {t('posts.backToHome')}
           </Link>
         </div>
       </div>
