@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
-          error: 'Access denied. Admin privileges required.',
+          error: 'Access denied',
         },
         { status: 403 }
       );
