@@ -18,7 +18,7 @@ export default function Groups() {
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [cityFilter, setCityFilter] = useState('');
-  const [showMyGroups, setShowMyGroups] = useState(false);
+  const [showMyGroups, setShowMyGroups] = useState(true);
   const [userGroupIds, setUserGroupIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -138,7 +138,7 @@ export default function Groups() {
                   setSearchQuery('');
                   setTypeFilter('');
                   setCityFilter('');
-                  setShowMyGroups(false);
+                  setShowMyGroups(true);
                 }}
                 className={styles.clearButton}
               >
@@ -156,7 +156,7 @@ export default function Groups() {
           ) : (
             <div className={styles.groupList}>
               {filteredGroups.map((group) => (
-                <Link key={group.id} href={`/groups/${group.id}`} className={styles.groupCard}>
+                <Link key={group.id} href={`/my-groups/${group.id}`} className={styles.groupCard}>
                   <div className={styles.groupImage}>
                     {group.mainImage ? (
                       <img src={group.mainImage} alt={group.name} />

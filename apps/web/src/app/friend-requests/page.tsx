@@ -273,7 +273,7 @@ export default function FriendRequests() {
           )}
 
           <div className={styles.actions}>
-            <Link href="/friends" className={styles.button}>
+            <Link href="/my-friends" className={styles.button}>
               {t('friendRequests.viewFriends')}
             </Link>
             <Link href="/" className={styles.button}>
