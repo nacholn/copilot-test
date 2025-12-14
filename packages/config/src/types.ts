@@ -19,6 +19,7 @@ export interface Profile {
   dateOfBirth?: Date;
   avatar?: string;
   bio?: string;
+  isAdmin: boolean;
   lastLoginAt?: Date;
   lastMessageSentAt?: Date;
   lastPostCreatedAt?: Date;
@@ -40,6 +41,7 @@ export interface CreateProfileInput {
   dateOfBirth?: Date;
   avatar?: string;
   bio?: string;
+  isAdmin?: boolean;
 }
 
 export interface UpdateProfileInput {
@@ -53,6 +55,7 @@ export interface UpdateProfileInput {
   dateOfBirth?: Date;
   avatar?: string;
   bio?: string;
+  isAdmin?: boolean;
 }
 
 // Auth types

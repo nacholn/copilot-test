@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { deleteImage } from '@/lib/cloudinary';
 import type { ApiResponse, Group, UpdateGroupInput } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -277,9 +278,10 @@ export async function DELETE(
       );
     }
 
-    const result = await query('DELETE FROM groups WHERE id = $1 RETURNING id', [id]);
+    // Get group data including main image
+    const groupResult = await query('SELECT main_image_public_id FROM groups WHERE id = $1', [id]);
 
-    if (result.rows.length === 0) {
+    if (groupResult.rows.length === 0) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
@@ -287,6 +289,40 @@ export async function DELETE(
         },
         { status: 404 }
       );
+    }
+
+    // Get all images for this group to delete from Cloudinary
+    const imagesResult = await query(
+      'SELECT cloudinary_public_id FROM group_images WHERE group_id = $1',
+      [id]
+    );
+
+    // Delete the group (cascade will handle group_images, group_members, etc.)
+    const result = await query('DELETE FROM groups WHERE id = $1 RETURNING id', [id]);
+
+    // Delete main image from Cloudinary if it exists
+    const mainImagePublicId = groupResult.rows[0].main_image_public_id;
+    if (mainImagePublicId) {
+      try {
+        await deleteImage(mainImagePublicId);
+      } catch (error) {
+        console.error(`Error deleting main image ${mainImagePublicId} from Cloudinary:`, error);
+      }
+    }
+
+    // Delete all gallery images from Cloudinary
+    for (const row of imagesResult.rows) {
+      if (row.cloudinary_public_id) {
+        try {
+          await deleteImage(row.cloudinary_public_id);
+        } catch (error) {
+          console.error(
+            `Error deleting image ${row.cloudinary_public_id} from Cloudinary:`,
+            error
+          );
+          // Continue with other deletions even if one fails
+        }
+      }
     }
 
     return NextResponse.json<ApiResponse>(

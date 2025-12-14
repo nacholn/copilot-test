@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { deleteImage } from '@/lib/cloudinary';
 import type { ApiResponse, PostWithDetails, PostImage } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -275,6 +276,77 @@ export async function PATCH(request: NextRequest, { params }: { params: { postId
       {
         success: false,
         error: 'Failed to update post',
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE a post
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ postId: string }> }
+) {
+  try {
+    const { postId } = await params;
+
+    if (!postId) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Post ID is required',
+        },
+        { status: 400 }
+      );
+    }
+
+    // Get all images for this post to delete from Cloudinary
+    const imagesResult = await query(
+      'SELECT cloudinary_public_id FROM post_images WHERE post_id = $1',
+      [postId]
+    );
+
+    // Delete the post (cascade will handle post_images and post_replies)
+    const result = await query('DELETE FROM posts WHERE id = $1 RETURNING id', [postId]);
+
+    if (result.rows.length === 0) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Post not found',
+        },
+        { status: 404 }
+      );
+    }
+
+    // Delete all images from Cloudinary
+    for (const row of imagesResult.rows) {
+      if (row.cloudinary_public_id) {
+        try {
+          await deleteImage(row.cloudinary_public_id);
+        } catch (error) {
+          console.error(
+            `[WebAdmin] Error deleting image ${row.cloudinary_public_id} from Cloudinary:`,
+            error
+          );
+          // Continue with other deletions even if one fails
+        }
+      }
+    }
+
+    return NextResponse.json<ApiResponse>(
+      {
+        success: true,
+        data: { id: postId },
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('[WebAdmin] Delete post error:', error);
+    return NextResponse.json<ApiResponse>(
+      {
+        success: false,
+        error: 'Internal server error',
       },
       { status: 500 }
     );
