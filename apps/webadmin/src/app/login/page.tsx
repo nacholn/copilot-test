@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { isAuthenticated } from '../../lib/auth';
 import styles from '../../styles/common.module.css';
 
 export default function LoginPage() {
@@ -10,6 +11,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Check if already authenticated
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.push('/');
+    }
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
