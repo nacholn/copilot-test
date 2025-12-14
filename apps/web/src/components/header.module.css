@@ -83,6 +83,16 @@
   color: var(--tinder-primary);
 }
 
+.navLinkActive {
+  background: var(--tinder-primary);
+  color: white;
+}
+
+.navLinkActive:hover {
+  background: var(--tinder-secondary);
+  color: white;
+}
+
 .navLinkNotifications {
   text-decoration: none;
   color: var(--tinder-text);
