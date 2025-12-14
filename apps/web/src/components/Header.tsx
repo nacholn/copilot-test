@@ -108,8 +108,14 @@ export function Header() {
               <Link href="/my-groups" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.myGroups')}
               </Link>
+              <Link href="/groups" className={styles.navLink} onClick={closeMenu}>
+                {t('navigation.publicGroups')}
+              </Link>
               <Link href="/my-posts" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.myPosts')}
+              </Link>
+              <Link href="/posts" className={styles.navLink} onClick={closeMenu}>
+                {t('navigation.publicPosts')}
               </Link>
               <Link href="/my-friends" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.friends')}
