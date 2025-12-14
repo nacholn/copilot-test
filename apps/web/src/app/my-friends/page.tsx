@@ -112,7 +112,12 @@ export default function Friends() {
     <AuthGuard>
       <main className={styles.main}>
         <div className={styles.container}>
-          <h1 className={styles.title}>{t('friends.title')}</h1>
+          <div className={styles.headerSection}>
+            <h1 className={styles.title}>{t('friends.title')}</h1>
+            <Link href="/friend-requests" className={styles.requestsLink}>
+              {t('friendRequests.title')}
+            </Link>
+          </div>
 
           {loading ? (
             <p>{t('common.loading')}</p>

@@ -176,18 +176,18 @@ export default function Home() {
       {/* Latest Posts Section */}
       <section className={styles.postsSection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Latest Posts</h2>
+          <h2 className={styles.sectionTitle}>{t('posts.latestPosts')}</h2>
           <Link href="/posts" className={styles.seeAllLink}>
-            See all →
+            {t('posts.seeAll')} →
           </Link>
         </div>
         {error && (
           <div className={styles.errorState}>
-            <p>Error loading data: {error}</p>
+            <p>{t('common.error')}: {error}</p>
           </div>
         )}
         {loading ? (
-          <div className={styles.loadingState}>Loading latest posts...</div>
+          <div className={styles.loadingState}>{t('posts.loadingPosts')}</div>
         ) : latestPosts.length > 0 ? (
           <div className={styles.postsGrid}>
             {latestPosts.map((post) => (
@@ -196,10 +196,10 @@ export default function Home() {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <p>No public posts yet. Be the first to share your cycling adventure!</p>
+            <p>{t('posts.noPostsYet')}. {t('posts.beFirstToShare')}</p>
             {user && (
               <Link href="/posts/create" className={styles.ctaButtonSmall}>
-                Create a Post
+                {t('posts.createPost')}
               </Link>
             )}
           </div>
@@ -208,13 +208,13 @@ export default function Home() {
       {/* Popular Groups Section */}
       <section className={styles.groupsSection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Popular Groups</h2>
+          <h2 className={styles.sectionTitle}>{t('groups.title')}</h2>
           <Link href="/groups" className={styles.seeAllLink}>
-            See all →
+            {t('posts.seeAll')} →
           </Link>
         </div>
         {loading ? (
-          <div className={styles.loadingState}>Loading popular groups...</div>
+          <div className={styles.loadingState}>{t('groups.loadingGroups')}</div>
         ) : popularGroups.length > 0 ? (
           <div className={styles.groupsGrid}>
             {popularGroups.map((group) => (
@@ -223,7 +223,7 @@ export default function Home() {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <p>No groups available yet. Join the community and create one!</p>
+            <p>{t('groups.noGroupsYet')}. {t('posts.joinCommunity')}!</p>
           </div>
         )}
       </section>

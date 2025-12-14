@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
 import { useWebSocket } from '../contexts/WebSocketContext';
 import { useRouter } from 'next/navigation';
@@ -17,10 +18,21 @@ export function Header() {
   const { user, signOut } = useAuth();
   const { unreadNotificationCount } = useWebSocket();
   const router = useRouter();
+  const pathname = usePathname();
   const { t } = useTranslations();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<AuthModalMode>('login');
+
+  const isActive = (path: string) => {
+    if (path === '/users') {
+      return pathname === '/users';
+    }
+    if (path === '/') {
+      return pathname === '/';
+    }
+    return pathname?.startsWith(path);
+  };
 
   const openAuthModal = (mode: AuthModalMode) => {
     setAuthModalMode(mode);
@@ -34,14 +46,14 @@ export function Header() {
 
   const handleSignOut = async () => {
     const result = await Swal.fire({
-      title: 'Sign Out?',
-      text: 'Are you sure you want to sign out?',
+      title: t('common.signOutTitle'),
+      text: t('common.signOutText'),
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#FE3C72',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Yes, sign out',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: t('common.yesSignOut'),
+      cancelButtonText: t('common.cancel'),
       customClass: {
         popup: styles.swalPopup,
         title: styles.swalTitle,
@@ -56,8 +68,8 @@ export function Header() {
       router.push('/');
 
       Swal.fire({
-        title: 'Signed Out!',
-        text: 'You have been successfully signed out.',
+        title: t('common.signedOutTitle'),
+        text: t('common.signedOutText'),
         icon: 'success',
         timer: 2000,
         showConfirmButton: false,
@@ -102,30 +114,51 @@ export function Header() {
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           {user ? (
             <>
-              <Link href="/users" className={styles.navLink} onClick={closeMenu}>
+              <Link 
+                href="/users" 
+                className={`${styles.navLink} ${isActive('/users') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
                 {t('navigation.discover')}
               </Link>
-              <Link href="/my-groups" className={styles.navLink} onClick={closeMenu}>
-                {t('navigation.groups')}
+              <Link 
+                href="/my-groups" 
+                className={`${styles.navLink} ${isActive('/my-groups') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
+                {t('navigation.myGroups')}
               </Link>
-              <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
+              <Link 
+                href="/my-posts" 
+                className={`${styles.navLink} ${isActive('/my-posts') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
+                {t('navigation.myPosts')}
+              </Link>
+              <Link 
+                href="/posts" 
+                className={`${styles.navLink} ${isActive('/posts') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
+                {t('navigation.publicPosts')}
+              </Link>
+              <Link 
+                href="/my-friends" 
+                className={`${styles.navLink} ${isActive('/my-friends') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
                 {t('navigation.friends')}
               </Link>
-              <Link href="/friend-requests" className={styles.navLink} onClick={closeMenu}>
-                {t('navigation.requests')}
-              </Link>
-              <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
+              <Link 
+                href="/chat" 
+                className={`${styles.navLink} ${isActive('/chat') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
                 {t('navigation.chat')}
-              </Link>
-              <Link href="/my-posts" className={styles.navLink} onClick={closeMenu}>
-                {t('navigation.posts')}
-              </Link>
-              <Link href="/profile" className={styles.navLink} onClick={closeMenu}>
-                {t('navigation.profile')}
               </Link>
               <Link
                 href="/notifications"
-                className={styles.navLinkNotifications}
+                className={`${styles.navLinkNotifications} ${isActive('/notifications') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
                 <span>🔔</span>
@@ -133,12 +166,33 @@ export function Header() {
                   <span className={styles.notificationBadge}>{unreadNotificationCount}</span>
                 )}
               </Link>
+              <Link 
+                href="/profile" 
+                className={`${styles.navLink} ${isActive('/profile') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
+                {t('navigation.profile')}
+              </Link>
               <button onClick={handleSignOut} className={styles.logoutButton}>
                 {t('navigation.logout')}
               </button>
             </>
           ) : (
             <>
+              <Link 
+                href="/groups" 
+                className={`${styles.navLink} ${isActive('/groups') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
+                {t('navigation.publicGroups')}
+              </Link>
+              <Link 
+                href="/posts" 
+                className={`${styles.navLink} ${isActive('/posts') ? styles.navLinkActive : ''}`}
+                onClick={closeMenu}
+              >
+                {t('navigation.publicPosts')}
+              </Link>
               <button className={styles.loginButton} onClick={() => openAuthModal('login')}>
                 {t('navigation.login')}
               </button>

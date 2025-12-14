@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './language-selector.module.css';
 
@@ -12,10 +13,15 @@ interface Language {
   flag: string;
 }
 
+// Using local flag images from public/images
+const getFlagUrl = (countryCode: string): string => {
+  return `/images/${countryCode.toLowerCase()}.png`;
+};
+
 const languages: Language[] = [
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'en', name: 'English', flag: 'gb' },
+  { code: 'es', name: 'Español', flag: 'es' },
+  { code: 'fr', name: 'Français', flag: 'fr' },
 ];
 
 export function LanguageSelector() {
@@ -66,6 +72,7 @@ export function LanguageSelector() {
 
   return (
     <div className={styles.languageSelector} ref={dropdownRef}>
+      {' '}
       <div
         className={`${styles.dropdown} ${isOpen ? styles.open : ''}`}
         onClick={toggleDropdown}
@@ -76,16 +83,20 @@ export function LanguageSelector() {
         aria-expanded={isOpen}
         aria-label={`Current language: ${currentLanguage.name}. Click to change language.`}
       >
+        {' '}
         <div className={styles.selected}>
-          <span className={styles.flagIcon} aria-hidden="true">
-            {currentLanguage.flag}
-          </span>
-          <span className={styles.languageName}>{currentLanguage.name}</span>
+          <Image
+            src={getFlagUrl(currentLanguage.flag)}
+            alt={currentLanguage.name}
+            width={24}
+            height={18}
+            className={styles.flagImage}
+            unoptimized
+          />
           <span className={`${styles.arrow} ${isOpen ? styles.arrowUp : ''}`} aria-hidden="true">
             ▼
           </span>
         </div>
-
         {isOpen && (
           <div className={styles.dropdownMenu} role="listbox">
             {languages.map((language) => (
@@ -101,9 +112,14 @@ export function LanguageSelector() {
                 aria-selected={language.code === locale}
                 aria-label={`Select ${language.name}`}
               >
-                <span className={styles.flagIcon} aria-hidden="true">
-                  {language.flag}
-                </span>
+                <Image
+                  src={getFlagUrl(language.flag)}
+                  alt={language.name}
+                  width={24}
+                  height={18}
+                  className={styles.flagImage}
+                  unoptimized
+                />
                 <span className={styles.languageName}>{language.name}</span>
               </div>
             ))}
