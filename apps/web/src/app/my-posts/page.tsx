@@ -55,7 +55,7 @@ export default function Posts() {
               <button onClick={toggleFilter} className={styles.filterButton}>
                 {showAll ? t('posts.showUnread') : t('posts.showAll')}
               </button>
-              <Link href="/posts/create" className={styles.createButton}>
+              <Link href="/my-posts/create" className={styles.createButton}>
                 {t('posts.createPost')}
               </Link>
             </div>
@@ -70,7 +70,7 @@ export default function Posts() {
               <p className={styles.emptyText}>
                 {showAll ? t('posts.noPosts') : t('posts.noUnreadPosts')}
               </p>
-              <Link href="/posts/create" className={styles.createButtonLarge}>
+              <Link href="/my-posts/create" className={styles.createButtonLarge}>
                 {t('posts.startCreating')}
               </Link>
             </div>
@@ -79,7 +79,7 @@ export default function Posts() {
               {posts.map((post) => (
                 <Link
                   key={post.id}
-                  href={`/posts/${post.id}`}
+                  href={`/my-posts/${post.id}`}
                   className={styles.postCard}
                 >
                   {post.images.length > 0 && (

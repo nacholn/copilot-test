@@ -111,7 +111,7 @@ export function Header() {
               <Link href="/my-posts" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.myPosts')}
               </Link>
-              <Link href="/friends" className={styles.navLink} onClick={closeMenu}>
+              <Link href="/my-friends" className={styles.navLink} onClick={closeMenu}>
                 {t('navigation.friends')}
               </Link>
               <Link href="/chat" className={styles.navLink} onClick={closeMenu}>
