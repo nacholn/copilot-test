@@ -36,6 +36,20 @@ export default function PostsManagement() {
     fetchPosts();
   }, [fetchPosts]);
 
+  const handleDeletePost = async (postId: string): Promise<void> => {
+    const response = await fetch(`/api/webadmin/posts/${postId}`, {
+      method: 'DELETE',
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      await fetchPosts();
+    } else {
+      throw new Error(data.error || 'Failed to delete post');
+    }
+  };
+
   return (
     <>
       <div className={styles.header}>
@@ -65,7 +79,7 @@ export default function PostsManagement() {
         {loading ? (
           <div className={styles.loading}>Loading posts...</div>
         ) : (
-          <PostList posts={posts} />
+          <PostList posts={posts} onDelete={handleDeletePost} />
         )}
       </div>
     </>
