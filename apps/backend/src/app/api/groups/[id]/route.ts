@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
+import { deleteImage } from '@/lib/cloudinary';
 import type { ApiResponse, Group, UpdateGroupInput } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -277,9 +278,10 @@ export async function DELETE(
       );
     }
 
-    const result = await query('DELETE FROM groups WHERE id = $1 RETURNING id', [id]);
+    // Get group data including main image
+    const groupResult = await query('SELECT main_image_public_id FROM groups WHERE id = $1', [id]);
 
-    if (result.rows.length === 0) {
+    if (groupResult.rows.length === 0) {
       return NextResponse.json<ApiResponse>(
         {
           success: false,
@@ -287,6 +289,37 @@ export async function DELETE(
         },
         { status: 404 }
       );
+    }
+
+    // Get all images for this group to delete from Cloudinary
+    const imagesResult = await query(
+      'SELECT cloudinary_public_id FROM group_images WHERE group_id = $1',
+      [id]
+    );
+
+    // Delete the group (cascade will handle group_images, group_members, etc.)
+    const result = await query('DELETE FROM groups WHERE id = $1 RETURNING id', [id]);
+
+    // Delete all images from Cloudinary in parallel
+    const mainImagePublicId = groupResult.rows[0].main_image_public_id;
+    const galleryPublicIds = imagesResult.rows
+      .map((row) => row.cloudinary_public_id)
+      .filter(Boolean);
+    
+    const allPublicIds = [
+      mainImagePublicId,
+      ...galleryPublicIds,
+    ].filter(Boolean);
+
+    if (allPublicIds.length > 0) {
+      const deletePromises = allPublicIds.map((publicId) =>
+        deleteImage(publicId).catch((error) => {
+          console.error(`Error deleting image ${publicId} from Cloudinary:`, error);
+          return null;
+        })
+      );
+
+      await Promise.allSettled(deletePromises);
     }
 
     return NextResponse.json<ApiResponse>(

@@ -7,9 +7,10 @@ import styles from '../styles/common.module.css';
 
 interface PostListProps {
   posts: PostWithDetails[];
+  onDelete?: (postId: string) => void;
 }
 
-export function PostList({ posts }: PostListProps) {
+export function PostList({ posts, onDelete }: PostListProps) {
   const router = useRouter();
 
   if (posts.length === 0) {
@@ -227,12 +228,22 @@ export function PostList({ posts }: PostListProps) {
           </div>
 
           <div className={styles.cardFooter}>
-            <button
-              className={`${styles.button} ${styles.buttonSecondary}`}
-              onClick={() => router.push(`/posts/${post.id}/edit`)}
-            >
-              Edit Post
-            </button>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                className={`${styles.button} ${styles.buttonSecondary}`}
+                onClick={() => router.push(`/posts/${post.id}/edit`)}
+              >
+                Edit Post
+              </button>
+              {onDelete && (
+                <button
+                  className={`${styles.button} ${styles.buttonDanger}`}
+                  onClick={() => onDelete(post.id)}
+                >
+                  Delete Post
+                </button>
+              )}
+            </div>
           </div>
         </div>
       ))}

@@ -36,6 +36,29 @@ export default function PostsManagement() {
     fetchPosts();
   }, [fetchPosts]);
 
+  const handleDeletePost = async (postId: string) => {
+    if (!confirm('Are you sure you want to delete this post? This will also delete all post images from Cloudinary.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/webadmin/posts/${postId}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        fetchPosts();
+      } else {
+        alert(data.error || 'Failed to delete post');
+      }
+    } catch (err) {
+      console.error('Error deleting post:', err);
+      alert('Failed to delete post');
+    }
+  };
+
   return (
     <>
       <div className={styles.header}>
@@ -65,7 +88,7 @@ export default function PostsManagement() {
         {loading ? (
           <div className={styles.loading}>Loading posts...</div>
         ) : (
-          <PostList posts={posts} />
+          <PostList posts={posts} onDelete={handleDeletePost} />
         )}
       </div>
     </>
