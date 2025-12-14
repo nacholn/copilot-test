@@ -164,7 +164,22 @@
     "findFriends": "Buscar Amigos",
     "accept": "Aceptar",
     "reject": "Rechazar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "loadingRequests": "Cargando solicitudes de amistad...",
+    "acceptedTitle": "¡Aceptada!",
+    "acceptedText": "Solicitud de amistad aceptada. ¡Ahora son amigos!",
+    "failedToAccept": "Error al aceptar la solicitud de amistad",
+    "failedToAcceptTryAgain": "Error al aceptar la solicitud de amistad. Por favor, intenta de nuevo.",
+    "rejectTitle": "¿Rechazar Solicitud de Amistad?",
+    "rejectText": "¿Estás seguro de que quieres rechazar esta solicitud de amistad?",
+    "yesReject": "Sí, rechazar",
+    "rejectedTitle": "Rechazada",
+    "rejectedText": "Solicitud de amistad rechazada.",
+    "failedToReject": "Error al rechazar la solicitud de amistad",
+    "failedToRejectTryAgain": "Error al rechazar la solicitud de amistad. Por favor, intenta de nuevo.",
+    "pending": "Pendiente",
+    "viewFriends": "Ver Amigos",
+    "backToHome": "Volver al Inicio"
   },
   "chat": {
     "title": "Chat",

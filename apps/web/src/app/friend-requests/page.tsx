@@ -72,8 +72,8 @@ export default function FriendRequests() {
         setReceivedRequests(receivedRequests.filter((req) => req.id !== requestId));
 
         Swal.fire({
-          title: 'Accepted!',
-          text: 'Friend request accepted. You are now friends!',
+          title: t('friendRequests.acceptedTitle'),
+          text: t('friendRequests.acceptedText'),
           icon: 'success',
           timer: 2000,
           showConfirmButton: false,
@@ -84,8 +84,8 @@ export default function FriendRequests() {
         });
       } else {
         Swal.fire({
-          title: 'Error',
-          text: data.error || 'Failed to accept friend request',
+          title: t('common.error'),
+          text: data.error || t('friendRequests.failedToAccept'),
           icon: 'error',
           confirmButtonColor: '#FE3C72',
           customClass: {
@@ -97,8 +97,8 @@ export default function FriendRequests() {
     } catch (error) {
       console.error('Error accepting friend request:', error);
       Swal.fire({
-        title: 'Error',
-        text: 'Failed to accept friend request. Please try again.',
+        title: t('common.error'),
+        text: t('friendRequests.failedToAcceptTryAgain'),
         icon: 'error',
         confirmButtonColor: '#FE3C72',
         customClass: {
@@ -111,14 +111,14 @@ export default function FriendRequests() {
 
   const handleRejectRequest = async (requestId: string) => {
     const result = await Swal.fire({
-      title: 'Reject Friend Request?',
-      text: 'Are you sure you want to reject this friend request?',
+      title: t('friendRequests.rejectTitle'),
+      text: t('friendRequests.rejectText'),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#FE3C72',
       cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Yes, reject',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: t('friendRequests.yesReject'),
+      cancelButtonText: t('common.cancel'),
       customClass: {
         popup: 'swal-popup',
         title: 'swal-title',
@@ -146,8 +146,8 @@ export default function FriendRequests() {
         setReceivedRequests(receivedRequests.filter((req) => req.id !== requestId));
 
         Swal.fire({
-          title: 'Rejected',
-          text: 'Friend request rejected.',
+          title: t('friendRequests.rejectedTitle'),
+          text: t('friendRequests.rejectedText'),
           icon: 'info',
           timer: 2000,
           showConfirmButton: false,
@@ -158,8 +158,8 @@ export default function FriendRequests() {
         });
       } else {
         Swal.fire({
-          title: 'Error',
-          text: data.error || 'Failed to reject friend request',
+          title: t('common.error'),
+          text: data.error || t('friendRequests.failedToReject'),
           icon: 'error',
           confirmButtonColor: '#FE3C72',
           customClass: {
@@ -171,8 +171,8 @@ export default function FriendRequests() {
     } catch (error) {
       console.error('Error rejecting friend request:', error);
       Swal.fire({
-        title: 'Error',
-        text: 'Failed to reject friend request. Please try again.',
+        title: t('common.error'),
+        text: t('friendRequests.failedToRejectTryAgain'),
         icon: 'error',
         confirmButtonColor: '#FE3C72',
         customClass: {
@@ -194,25 +194,25 @@ export default function FriendRequests() {
     <AuthGuard>
       <main className={styles.main}>
         <div className={styles.container}>
-          <h1 className={styles.title}>Friend Requests</h1>
+          <h1 className={styles.title}>{t('friendRequests.title')}</h1>
 
           <div className={styles.tabs}>
             <button
               className={`${styles.tab} ${activeTab === 'received' ? styles.active : ''}`}
               onClick={() => setActiveTab('received')}
             >
-              Received ({receivedRequests.length})
+              {t('friendRequests.received')} ({receivedRequests.length})
             </button>
             <button
               className={`${styles.tab} ${activeTab === 'sent' ? styles.active : ''}`}
               onClick={() => setActiveTab('sent')}
             >
-              Sent ({sentRequests.length})
+              {t('friendRequests.sent')} ({sentRequests.length})
             </button>
           </div>
 
           {loading ? (
-            <p>Loading friend requests...</p>
+            <p>{t('friendRequests.loadingRequests')}</p>
           ) : requests.length === 0 ? (
             <div className={styles.emptyState}>
               <p className={styles.emptyText}>
@@ -255,17 +255,17 @@ export default function FriendRequests() {
                           onClick={() => handleAcceptRequest(request.id)}
                           className={styles.acceptButton}
                         >
-                          Accept
+                          {t('friendRequests.accept')}
                         </button>
                         <button
                           onClick={() => handleRejectRequest(request.id)}
                           className={styles.rejectButton}
                         >
-                          Reject
+                          {t('friendRequests.reject')}
                         </button>
                       </div>
                     )}
-                    {activeTab === 'sent' && <div className={styles.pendingBadge}>Pending</div>}
+                    {activeTab === 'sent' && <div className={styles.pendingBadge}>{t('friendRequests.pending')}</div>}
                   </div>
                 );
               })}
@@ -274,10 +274,10 @@ export default function FriendRequests() {
 
           <div className={styles.actions}>
             <Link href="/friends" className={styles.button}>
-              View Friends
+              {t('friendRequests.viewFriends')}
             </Link>
             <Link href="/" className={styles.button}>
-              Back to Home
+              {t('friendRequests.backToHome')}
             </Link>
           </div>
         </div>

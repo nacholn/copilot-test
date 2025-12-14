@@ -164,7 +164,22 @@
     "findFriends": "Find Friends",
     "accept": "Accept",
     "reject": "Reject",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loadingRequests": "Loading friend requests...",
+    "acceptedTitle": "Accepted!",
+    "acceptedText": "Friend request accepted. You are now friends!",
+    "failedToAccept": "Failed to accept friend request",
+    "failedToAcceptTryAgain": "Failed to accept friend request. Please try again.",
+    "rejectTitle": "Reject Friend Request?",
+    "rejectText": "Are you sure you want to reject this friend request?",
+    "yesReject": "Yes, reject",
+    "rejectedTitle": "Rejected",
+    "rejectedText": "Friend request rejected.",
+    "failedToReject": "Failed to reject friend request",
+    "failedToRejectTryAgain": "Failed to reject friend request. Please try again.",
+    "pending": "Pending",
+    "viewFriends": "View Friends",
+    "backToHome": "Back to Home"
   },
   "chat": {
     "title": "Chat",

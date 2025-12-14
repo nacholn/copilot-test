@@ -160,7 +160,22 @@
     "findFriends": "Trouver des Amis",
     "accept": "Accepter",
     "reject": "Rejeter",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "loadingRequests": "Chargement des demandes d'amis...",
+    "acceptedTitle": "Acceptée!",
+    "acceptedText": "Demande d'ami acceptée. Vous êtes maintenant amis!",
+    "failedToAccept": "Échec de l'acceptation de la demande d'ami",
+    "failedToAcceptTryAgain": "Échec de l'acceptation de la demande d'ami. Veuillez réessayer.",
+    "rejectTitle": "Rejeter la Demande d'Ami?",
+    "rejectText": "Êtes-vous sûr de vouloir rejeter cette demande d'ami?",
+    "yesReject": "Oui, rejeter",
+    "rejectedTitle": "Rejetée",
+    "rejectedText": "Demande d'ami rejetée.",
+    "failedToReject": "Échec du rejet de la demande d'ami",
+    "failedToRejectTryAgain": "Échec du rejet de la demande d'ami. Veuillez réessayer.",
+    "pending": "En Attente",
+    "viewFriends": "Voir les Amis",
+    "backToHome": "Retour à l'Accueil"
   },
   "chat": {
     "title": "Chat",
