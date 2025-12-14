@@ -11,8 +11,7 @@ const withPWA = require('next-pwa')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cyclists/config', '@cyclists/ui'],
-  images: {
+  transpilePackages: ['@cyclists/config', '@cyclists/ui'],  images: {
     remotePatterns: [
       {
         protocol: 'https',
