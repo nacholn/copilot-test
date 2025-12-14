@@ -319,19 +319,23 @@ export async function DELETE(
       );
     }
 
-    // Delete all images from Cloudinary
-    for (const row of imagesResult.rows) {
-      if (row.cloudinary_public_id) {
-        try {
-          await deleteImage(row.cloudinary_public_id);
-        } catch (error) {
+    // Delete all images from Cloudinary in parallel
+    const publicIds = imagesResult.rows
+      .map((row) => row.cloudinary_public_id)
+      .filter(Boolean);
+
+    if (publicIds.length > 0) {
+      const deletePromises = publicIds.map((publicId) =>
+        deleteImage(publicId).catch((error) => {
           console.error(
-            `[WebAdmin] Error deleting image ${row.cloudinary_public_id} from Cloudinary:`,
+            `[WebAdmin] Error deleting image ${publicId} from Cloudinary:`,
             error
           );
-          // Continue with other deletions even if one fails
-        }
-      }
+          return null;
+        })
+      );
+
+      await Promise.allSettled(deletePromises);
     }
 
     return NextResponse.json<ApiResponse>(

@@ -300,29 +300,26 @@ export async function DELETE(
     // Delete the group (cascade will handle group_images, group_members, etc.)
     const result = await query('DELETE FROM groups WHERE id = $1 RETURNING id', [id]);
 
-    // Delete main image from Cloudinary if it exists
+    // Delete all images from Cloudinary in parallel
     const mainImagePublicId = groupResult.rows[0].main_image_public_id;
-    if (mainImagePublicId) {
-      try {
-        await deleteImage(mainImagePublicId);
-      } catch (error) {
-        console.error(`Error deleting main image ${mainImagePublicId} from Cloudinary:`, error);
-      }
-    }
+    const galleryPublicIds = imagesResult.rows
+      .map((row) => row.cloudinary_public_id)
+      .filter(Boolean);
+    
+    const allPublicIds = [
+      mainImagePublicId,
+      ...galleryPublicIds,
+    ].filter(Boolean);
 
-    // Delete all gallery images from Cloudinary
-    for (const row of imagesResult.rows) {
-      if (row.cloudinary_public_id) {
-        try {
-          await deleteImage(row.cloudinary_public_id);
-        } catch (error) {
-          console.error(
-            `Error deleting image ${row.cloudinary_public_id} from Cloudinary:`,
-            error
-          );
-          // Continue with other deletions even if one fails
-        }
-      }
+    if (allPublicIds.length > 0) {
+      const deletePromises = allPublicIds.map((publicId) =>
+        deleteImage(publicId).catch((error) => {
+          console.error(`Error deleting image ${publicId} from Cloudinary:`, error);
+          return null;
+        })
+      );
+
+      await Promise.allSettled(deletePromises);
     }
 
     return NextResponse.json<ApiResponse>(

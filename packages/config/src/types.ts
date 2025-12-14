@@ -19,7 +19,7 @@ export interface Profile {
   dateOfBirth?: Date;
   avatar?: string;
   bio?: string;
-  isAdmin: boolean;
+  isAdmin?: boolean;
   lastLoginAt?: Date;
   lastMessageSentAt?: Date;
   lastPostCreatedAt?: Date;

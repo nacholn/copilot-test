@@ -311,21 +311,22 @@ export async function DELETE(
       );
     }
 
-    // Delete all images from Cloudinary
+    // Delete all images from Cloudinary in parallel
     const allImages = [
       ...profileImagesResult.rows.map((row) => row.cloudinary_public_id),
       ...postImagesResult.rows.map((row) => row.cloudinary_public_id),
-    ];
+    ].filter(Boolean);
 
-    for (const publicId of allImages) {
-      if (publicId) {
-        try {
-          await deleteImage(publicId);
-        } catch (error) {
+    if (allImages.length > 0) {
+      const deletePromises = allImages.map((publicId) =>
+        deleteImage(publicId).catch((error) => {
           console.error(`[WebAdmin] Error deleting image ${publicId} from Cloudinary:`, error);
-          // Continue with other deletions even if one fails
-        }
-      }
+          // Return null to continue with other deletions
+          return null;
+        })
+      );
+
+      await Promise.allSettled(deletePromises);
     }
 
     return NextResponse.json<ApiResponse>(
