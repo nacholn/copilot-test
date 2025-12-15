@@ -288,6 +288,11 @@
   font-size: 1.125rem;
 }
 
+/* Back button - hidden on desktop by default, shown on mobile via media query */
+.backButton {
+  display: none;
+}
+
 /* Mobile Responsive - WhatsApp-like behavior */
 @media (max-width: 768px) {
   .chatContainer {
@@ -415,9 +420,4 @@
   font-size: 0.875rem;
   color: var(--tinder-text);
   font-weight: normal;
-}
-
-/* Back button - hidden on desktop */
-.backButton {
-  display: none;
 }
