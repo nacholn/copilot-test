@@ -29,7 +29,7 @@ Create a script to generate VAPID keys (run once):
 
 ```bash
 cd apps/backend
-node -e "const webpush = require('web-push'); const vapidKeys = webpush.generateVAPIDKeys(); console.log('Public Key:', vapidKeys.publicKey); console.log('Private Key:', vapidKeys.privateKey);"
+node -e "const webPush = require('web-push'); const vapidKeys = webPush.generateVAPIDKeys(); console.log('Public Key:', vapidKeys.publicKey); console.log('Private Key:', vapidKeys.privateKey);"
 ```
 
 **Save these keys securely!** You'll need them for configuration.
@@ -58,10 +58,10 @@ NEXT_PUBLIC_VAPID_PUBLIC_KEY=your_generated_public_key_here
 Create `apps/backend/src/lib/push-notifications.ts`:
 
 ```typescript
-import webpush from 'web-push';
+import webPush from 'web-push';
 
 // Configure web-push with VAPID details
-webpush.setVapidDetails(
+webPush.setVapidDetails(
   process.env.VAPID_SUBJECT || 'mailto:admin@cyclists.com',
   process.env.VAPID_PUBLIC_KEY || '',
   process.env.VAPID_PRIVATE_KEY || ''
@@ -97,7 +97,7 @@ export async function sendPushNotification(
   try {
     const pushPayload = JSON.stringify(payload);
     
-    await webpush.sendNotification(subscription, pushPayload, {
+    await webPush.sendNotification(subscription, pushPayload, {
       TTL: 86400, // 24 hours
     });
     
@@ -131,7 +131,7 @@ export async function sendPushNotificationToMany(
   await Promise.all(promises);
 }
 
-export { webpush };
+export { webPush };
 ```
 
 ### Step 5: Create Database Migration for Push Subscriptions
