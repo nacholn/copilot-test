@@ -99,8 +99,8 @@ Implemented browser push notifications that point to the notifications page:
 8. `/apps/web/src/components/PWAUpdatePrompt.module.css` - Update modal styles
 9. `/apps/web/src/components/PWAInstallPrompt.tsx` - Install prompt component
 10. `/apps/web/src/components/PWAInstallPrompt.module.css` - Install prompt styles
-11. `/apps/web/src/components/NotificationPermission.tsx` - Permission request component
-12. `/apps/web/src/components/NotificationPermission.module.css` - Permission request styles
+11. `/apps/web/src/components/WebPushNotificationPermission.tsx` - Permission request component
+12. `/apps/web/src/components/WebPushNotificationPermission.module.css` - Permission request styles
 13. `/PWA_FEATURES.md` - Comprehensive PWA documentation
 
 ### Modified Files

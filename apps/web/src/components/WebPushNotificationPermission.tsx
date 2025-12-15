@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import styles from './NotificationPermission.module.css';
+import styles from './WebPushNotificationPermission.module.css';
 
-export function NotificationPermission() {
+export function WebPushNotificationPermission() {
   const { user } = useAuth();
   const [showPrompt, setShowPrompt] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>('default');

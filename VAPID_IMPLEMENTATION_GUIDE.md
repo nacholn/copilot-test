@@ -310,7 +310,7 @@ export async function GET(request: NextRequest) {
 
 ### Step 7: Update Frontend to Subscribe to Push
 
-Update `apps/web/src/components/NotificationPermission.tsx`:
+Update `apps/web/src/components/WebPushNotificationPermission.tsx`:
 
 ```typescript
 // Add this helper function

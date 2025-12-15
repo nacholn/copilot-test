@@ -46,7 +46,7 @@ This document describes the Progressive Web App (PWA) features implemented in th
 
 ### 5. Notification Permission Request
 
-- **Component**: `/apps/web/src/components/NotificationPermission.tsx`
+- **Component**: `/apps/web/src/components/WebPushNotificationPermission.tsx`
 - **Features**:
   - Smart prompt that appears 3 seconds after user login
   - Non-intrusive banner at bottom-right corner

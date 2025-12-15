@@ -4,7 +4,7 @@ import { LanguageProvider } from '../contexts/LanguageContext';
 import { WebSocketProvider } from '../contexts/WebSocketContext';
 import { Header } from '../components/Header';
 import { PWAUpdatePrompt } from '../components/PWAUpdatePrompt';
-import { NotificationPermission } from '../components/NotificationPermission';
+import { WebPushNotificationPermission } from '../components/WebPushNotificationPermission';
 import { PWAInstallPrompt } from '../components/PWAInstallPrompt';
 
 export const metadata = {
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
               <PWAUpdatePrompt />
               <PWAInstallPrompt />
-              <NotificationPermission />
+              <WebPushNotificationPermission />
             </WebSocketProvider>
           </AuthProvider>
         </LanguageProvider>
