@@ -727,7 +727,7 @@
 
   /* Show filters when toggled */
   .filters.showFilters {
-    max-height: 1000px;
+    max-height: none;
     opacity: 1;
     padding: 1.25rem;
     margin-bottom: 1.5rem;
