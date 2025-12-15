@@ -170,6 +170,9 @@ export interface FriendRequestWithProfile extends FriendRequest {
   requesterName: string;
   requesterAvatar?: string;
   requesterEmail: string;
+  addresseeName: string;
+  addresseeAvatar?: string;
+  addresseeEmail: string;
 }
 
 export interface SendFriendRequestInput {

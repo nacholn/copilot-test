@@ -127,7 +127,7 @@ export default function Users() {
         const data = await response.json();
 
         if (data.success && data.data.groupConversations) {
-          const groupIds = new Set(
+          const groupIds = new Set<string>(
             data.data.groupConversations.map((gc: GroupConversation) => gc.groupId)
           );
           setUserGroupIds(groupIds);

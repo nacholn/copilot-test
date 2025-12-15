@@ -83,8 +83,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
           badge: '/icon-192x192.png',
           tag: notification.type || 'notification',
           requireInteraction: false,
-          vibrate: [200, 100, 200],
-        });
+        } as NotificationOptions);
 
         // When notification is clicked, navigate to notifications page
         browserNotification.onclick = () => {
@@ -112,8 +111,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
           badge: '/icon-192x192.png',
           tag: 'new-message',
           requireInteraction: false,
-          vibrate: [200, 100, 200],
-        });
+        } as NotificationOptions);
 
         // When notification is clicked, navigate to chat or notifications
         browserNotification.onclick = () => {

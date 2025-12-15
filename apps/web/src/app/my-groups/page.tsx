@@ -52,8 +52,8 @@ export default function Groups() {
         const data = await response.json();
 
         if (data.success && data.data.groupConversations) {
-          const groupIds = new Set(
-            data.data.groupConversations.map((gc: any) => gc.groupId)
+          const groupIds = new Set<string>(
+            data.data.groupConversations.map((gc: any) => gc.groupId as string)
           );
           setUserGroupIds(groupIds);
         }
