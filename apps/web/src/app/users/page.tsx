@@ -32,6 +32,7 @@ export default function Users() {
   const [showMyGroups, setShowMyGroups] = useState(false);
   const [distanceFilter, setDistanceFilter] = useState<number | null>(null);
   const [userProfile, setUserProfile] = useState<Profile | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Fetch current user's profile to get location
   useEffect(() => {
@@ -219,7 +220,15 @@ export default function Users() {
           {/* Users Tab Content */}
           {activeTab === 'users' && (
             <>
-              <div className={styles.filters}>
+              {/* Filter Toggle Button for Mobile */}
+              <button 
+                className={styles.filterToggle}
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                {showFilters ? '✕ Hide Filters' : '🔍 Show Filters'}
+              </button>
+
+              <div className={`${styles.filters} ${showFilters ? styles.showFilters : ''}`}>
                 <input
                   type="text"
                   placeholder={t('users.searchByName') || 'Search by name...'}
@@ -330,7 +339,15 @@ export default function Users() {
           {/* Groups Tab Content */}
           {activeTab === 'groups' && (
             <>
-              <div className={styles.filters}>
+              {/* Filter Toggle Button for Mobile */}
+              <button 
+                className={styles.filterToggle}
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                {showFilters ? '✕ Hide Filters' : '🔍 Show Filters'}
+              </button>
+
+              <div className={`${styles.filters} ${showFilters ? styles.showFilters : ''}`}>
                 <input
                   type="text"
                   placeholder={t('groups.searchGroups')}

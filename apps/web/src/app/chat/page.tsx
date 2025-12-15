@@ -300,7 +300,7 @@ export default function Chat() {
     <AuthGuard>
       <div className={styles.chatContainer}>
         {/* Conversations List */}
-        <div className={styles.conversationsList}>
+        <div className={`${styles.conversationsList} ${(selectedFriendId || selectedGroupId) ? styles.hideOnMobile : ''}`}>
           <h2 className={styles.conversationsTitle}>Messages</h2>
           {conversations.length === 0 && groupConversations.length === 0 ? (
             <div className={styles.noConversations}>
@@ -383,11 +383,22 @@ export default function Chat() {
         </div>
 
         {/* Chat Window */}
-        <div className={styles.chatWindow}>
+        <div className={`${styles.chatWindow} ${(selectedFriendId || selectedGroupId) ? styles.showOnMobile : ''}`}>
           {selectedFriendId || selectedGroupId ? (
             <>
               {/* Chat Header */}
               <div className={styles.chatHeader}>
+                {/* Back button for mobile */}
+                <button 
+                  className={styles.backButton}
+                  onClick={() => {
+                    setSelectedFriendId(null);
+                    setSelectedGroupId(null);
+                  }}
+                  aria-label="Back to conversations"
+                >
+                  ←
+                </button>
                 {selectedFriendId ? (
                   <>
                     <Avatar
