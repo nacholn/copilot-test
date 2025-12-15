@@ -29,7 +29,7 @@ export default function Chat() {
   const [groupConversations, setGroupConversations] = useState<GroupConversation[]>([]);
   const [selectedFriendId, setSelectedFriendId] = useState<string | null>(friendIdFromUrl);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(groupIdFromUrl);
-  const [messages, setMessages] = useState<Message[] | GroupMessageWithSender[]>([]);
+  const [messages, setMessages] = useState<(Message | GroupMessageWithSender)[]>([]);
   const [messageIds, setMessageIds] = useState<Set<string>>(new Set());
   const [messageText, setMessageText] = useState('');
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ export default function Chat() {
     if (user) {
       fetchConversations();
     }
-  }, [user]);
+  }, [user, fetchConversations]);
 
   // Fetch messages when friend or group is selected
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function Chat() {
       fetchGroupMessages(selectedGroupId);
       markGroupMessagesAsRead(selectedGroupId);
     }
-  }, [user, selectedFriendId, selectedGroupId]);
+  }, [user, selectedFriendId, selectedGroupId, fetchMessages, markMessagesAsRead, fetchGroupMessages, markGroupMessagesAsRead]);
 
   // Handler for selecting a friend conversation
   const handleSelectFriend = (friendId: string) => {
@@ -107,9 +107,9 @@ export default function Chat() {
     return () => {
       offNewMessage(handleNewMessage);
     };
-  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage]);
+  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage, fetchConversations, markMessagesAsRead]);
 
-  const fetchConversations = async () => {
+  const fetchConversations = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/conversations?userId=${user?.id}`);
@@ -124,9 +124,9 @@ export default function Chat() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id]);
 
-  const fetchMessages = async (friendId: string) => {
+  const fetchMessages = useCallback(async (friendId: string) => {
     try {
       const response = await fetch(
         `/api/messages?userId=${user?.id}&friendId=${friendId}&limit=50`
@@ -143,9 +143,9 @@ export default function Chat() {
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
-  };
+  }, [user?.id]);
 
-  const markMessagesAsRead = async (friendId: string) => {
+  const markMessagesAsRead = useCallback(async (friendId: string) => {
     try {
       await fetch(`/api/messages?userId=${user?.id}&friendId=${friendId}`, {
         method: 'PATCH',
@@ -155,9 +155,9 @@ export default function Chat() {
     } catch (error) {
       console.error('Error marking messages as read:', error);
     }
-  };
+  }, [user?.id, fetchConversations]);
 
-  const fetchGroupMessages = async (groupId: string) => {
+  const fetchGroupMessages = useCallback(async (groupId: string) => {
     try {
       const response = await fetch(`/api/groups/${groupId}/messages?limit=50`);
       const data = await response.json();
@@ -172,9 +172,9 @@ export default function Chat() {
     } catch (error) {
       console.error('Error fetching group messages:', error);
     }
-  };
+  }, []);
 
-  const markGroupMessagesAsRead = async (groupId: string) => {
+  const markGroupMessagesAsRead = useCallback(async (groupId: string) => {
     try {
       await fetch(`/api/groups/${groupId}/messages?userId=${user?.id}`, {
         method: 'PATCH',
@@ -184,7 +184,7 @@ export default function Chat() {
     } catch (error) {
       console.error('Error marking group messages as read:', error);
     }
-  };
+  }, [user?.id, fetchConversations]);
 
   const handleMessageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessageText(e.target.value);

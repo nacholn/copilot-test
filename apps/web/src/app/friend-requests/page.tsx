@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
@@ -18,13 +18,7 @@ export default function FriendRequests() {
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      fetchFriendRequests();
-    }
-  }, [user]);
-
-  const fetchFriendRequests = async () => {
+  const fetchFriendRequests = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -52,7 +46,13 @@ export default function FriendRequests() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      fetchFriendRequests();
+    }
+  }, [user, fetchFriendRequests]);
 
   const handleAcceptRequest = async (requestId: string) => {
     try {
