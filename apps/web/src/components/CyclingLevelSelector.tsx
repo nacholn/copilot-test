@@ -63,10 +63,9 @@ export function CyclingLevelSelector({
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
-        aria-label="Select cycling level"
+        aria-label={`Select cycling level${required ? ' (required)' : ''}`}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-required={required}
       >
         <div className={styles.selected}>
           <span className={styles.icon}>{currentLevel.icon}</span>

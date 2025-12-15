@@ -154,6 +154,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       clearInterval(heartbeatInterval);
       newSocket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   // Fetch initial notifications
@@ -161,6 +162,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     if (user) {
       fetchNotifications();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const fetchNotifications = async () => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -30,15 +30,7 @@ export default function UserProfile() {
   const [actionLoading, setActionLoading] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
 
-  useEffect(() => {
-    if (userId) {
-      fetchUserProfile();
-      checkFriendship();
-      checkFriendRequests();
-    }
-  }, [userId]);
-
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     try {
       const response = await fetch(`/api/users/${userId}`);
       const data = await response.json();
@@ -53,9 +45,9 @@ export default function UserProfile() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
-  const checkFriendship = async () => {
+  const checkFriendship = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -72,9 +64,9 @@ export default function UserProfile() {
     } catch (error) {
       console.error('Error checking friendship:', error);
     }
-  };
+  }, [user, userId]);
 
-  const checkFriendRequests = async () => {
+  const checkFriendRequests = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -102,7 +94,15 @@ export default function UserProfile() {
     } catch (error) {
       console.error('Error checking friend requests:', error);
     }
-  };
+  }, [user, userId]);
+
+  useEffect(() => {
+    if (userId) {
+      fetchUserProfile();
+      checkFriendship();
+      checkFriendRequests();
+    }
+  }, [userId, fetchUserProfile, checkFriendship, checkFriendRequests]);
 
   const handleSendFriendRequest = async () => {
     if (!user) return;

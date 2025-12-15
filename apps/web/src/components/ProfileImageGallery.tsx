@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ProfileImage } from '@cyclists/config';
 import { useTranslations } from '../hooks/useTranslations';
@@ -20,11 +20,7 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
   const [uploading, setUploading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<ProfileImage | null>(null);
 
-  useEffect(() => {
-    fetchImages();
-  }, [userId]);
-
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     try {
       const response = await fetch(`/api/profile/images?userId=${userId}`);
       const data = await response.json();
@@ -37,7 +33,11 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    fetchImages();
+  }, [userId, fetchImages]);
 
   const handleFileSelect = async (file: File, isPrimary: boolean = false) => {
     if (!file.type.startsWith('image/')) {

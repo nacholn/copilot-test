@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -32,15 +32,7 @@ export default function PostDetail() {
   const [sendingReply, setSendingReply] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
 
-  useEffect(() => {
-    if (user && postId) {
-      fetchPost();
-      fetchReplies();
-      markAsViewed();
-    }
-  }, [user, postId]);
-
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     try {
       const response = await fetch(`/api/posts/${postId}?userId=${user!.id}`);
       const data = await response.json();
@@ -53,9 +45,9 @@ export default function PostDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [postId, user]);
 
-  const fetchReplies = async () => {
+  const fetchReplies = useCallback(async () => {
     try {
       const response = await fetch(`/api/posts/${postId}/replies`);
       const data = await response.json();
@@ -66,9 +58,9 @@ export default function PostDetail() {
     } catch (error) {
       console.error('Error fetching replies:', error);
     }
-  };
+  }, [postId]);
 
-  const markAsViewed = async () => {
+  const markAsViewed = useCallback(async () => {
     try {
       await fetch(`/api/posts/${postId}/view`, {
         method: 'POST',
@@ -80,7 +72,15 @@ export default function PostDetail() {
     } catch (error) {
       console.error('Error marking post as viewed:', error);
     }
-  };
+  }, [postId, user]);
+
+  useEffect(() => {
+    if (user && postId) {
+      fetchPost();
+      fetchReplies();
+      markAsViewed();
+    }
+  }, [user, postId, fetchPost, fetchReplies, markAsViewed]);
 
   const handleSendReply = async (e: React.FormEvent) => {
     e.preventDefault();

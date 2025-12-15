@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -24,11 +24,7 @@ export default function GroupDetail() {
   const [isMember, setIsMember] = useState(false);
   const [processing, setProcessing] = useState(false);
 
-  useEffect(() => {
-    fetchGroupData();
-  }, [groupId]);
-
-  const fetchGroupData = async () => {
+  const fetchGroupData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -59,7 +55,11 @@ export default function GroupDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [groupId, user]);
+
+  useEffect(() => {
+    fetchGroupData();
+  }, [groupId, fetchGroupData]);
 
   const handleJoinGroup = async () => {
     if (!user) return;

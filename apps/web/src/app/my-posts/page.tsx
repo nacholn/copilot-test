@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
@@ -17,13 +17,7 @@ export default function Posts() {
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      fetchPosts();
-    }
-  }, [user, showAll]);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     if (!user) return;
 
     setLoading(true);
@@ -39,7 +33,13 @@ export default function Posts() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, showAll]);
+
+  useEffect(() => {
+    if (user) {
+      fetchPosts();
+    }
+  }, [user, showAll, fetchPosts]);
 
   const toggleFilter = () => {
     setShowAll(!showAll);
