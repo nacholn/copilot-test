@@ -36,79 +36,7 @@ export default function Chat() {
   const [sending, setSending] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  // Fetch conversations on mount
-  useEffect(() => {
-    if (user) {
-      fetchConversations();
-    }
-  }, [user, fetchConversations]);
-
-  // Fetch messages when friend or group is selected
-  useEffect(() => {
-    if (user && selectedFriendId) {
-      fetchMessages(selectedFriendId);
-      markMessagesAsRead(selectedFriendId);
-    } else if (user && selectedGroupId) {
-      fetchGroupMessages(selectedGroupId);
-      markGroupMessagesAsRead(selectedGroupId);
-    }
-  }, [user, selectedFriendId, selectedGroupId, fetchMessages, markMessagesAsRead, fetchGroupMessages, markGroupMessagesAsRead]);
-
-  // Handler for selecting a friend conversation
-  const handleSelectFriend = (friendId: string) => {
-    setSelectedFriendId(friendId);
-    setSelectedGroupId(null);
-    setMessages([]);
-    setMessageIds(new Set());
-  };
-
-  // Handler for selecting a group conversation
-  const handleSelectGroup = (groupId: string) => {
-    setSelectedGroupId(groupId);
-    setSelectedFriendId(null);
-    setMessages([]);
-    setMessageIds(new Set());
-  };
-
-  // Listen for new messages via WebSocket
-  useEffect(() => {
-    const handleNewMessage = (message: any) => {
-      // Only add message if it's for the current conversation and not a duplicate
-      if (
-        selectedFriendId &&
-        !messageIds.has(message.id) &&
-        ((message.senderId === selectedFriendId && message.receiverId === user?.id) ||
-          (message.senderId === user?.id && message.receiverId === selectedFriendId))
-      ) {
-        const newMessage: Message = {
-          id: message.id,
-          senderId: message.senderId,
-          receiverId: message.receiverId,
-          message: message.message,
-          isRead: message.senderId === user?.id,
-          createdAt: new Date(message.timestamp || message.createdAt),
-        };
-
-        setMessages((prev) => [...prev, newMessage]);
-        setMessageIds((prev) => new Set(prev).add(message.id));
-
-        // Mark as read if sender is the selected friend
-        if (message.senderId === selectedFriendId) {
-          markMessagesAsRead(selectedFriendId);
-        }
-      }
-
-      // Refresh conversations list to update unread counts
-      fetchConversations();
-    };
-
-    onNewMessage(handleNewMessage);
-
-    return () => {
-      offNewMessage(handleNewMessage);
-    };
-  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage, fetchConversations, markMessagesAsRead]);
-
+  // Define all callbacks before using them in useEffect
   const fetchConversations = useCallback(async () => {
     try {
       setLoading(true);
@@ -185,6 +113,79 @@ export default function Chat() {
       console.error('Error marking group messages as read:', error);
     }
   }, [user?.id, fetchConversations]);
+
+  // Fetch conversations on mount
+  useEffect(() => {
+    if (user) {
+      fetchConversations();
+    }
+  }, [user, fetchConversations]);
+
+  // Fetch messages when friend or group is selected
+  useEffect(() => {
+    if (user && selectedFriendId) {
+      fetchMessages(selectedFriendId);
+      markMessagesAsRead(selectedFriendId);
+    } else if (user && selectedGroupId) {
+      fetchGroupMessages(selectedGroupId);
+      markGroupMessagesAsRead(selectedGroupId);
+    }
+  }, [user, selectedFriendId, selectedGroupId, fetchMessages, markMessagesAsRead, fetchGroupMessages, markGroupMessagesAsRead]);
+
+  // Handler for selecting a friend conversation
+  const handleSelectFriend = (friendId: string) => {
+    setSelectedFriendId(friendId);
+    setSelectedGroupId(null);
+    setMessages([]);
+    setMessageIds(new Set());
+  };
+
+  // Handler for selecting a group conversation
+  const handleSelectGroup = (groupId: string) => {
+    setSelectedGroupId(groupId);
+    setSelectedFriendId(null);
+    setMessages([]);
+    setMessageIds(new Set());
+  };
+
+  // Listen for new messages via WebSocket
+  useEffect(() => {
+    const handleNewMessage = (message: any) => {
+      // Only add message if it's for the current conversation and not a duplicate
+      if (
+        selectedFriendId &&
+        !messageIds.has(message.id) &&
+        ((message.senderId === selectedFriendId && message.receiverId === user?.id) ||
+          (message.senderId === user?.id && message.receiverId === selectedFriendId))
+      ) {
+        const newMessage: Message = {
+          id: message.id,
+          senderId: message.senderId,
+          receiverId: message.receiverId,
+          message: message.message,
+          isRead: message.senderId === user?.id,
+          createdAt: new Date(message.timestamp || message.createdAt),
+        };
+
+        setMessages((prev) => [...prev, newMessage]);
+        setMessageIds((prev) => new Set(prev).add(message.id));
+
+        // Mark as read if sender is the selected friend
+        if (message.senderId === selectedFriendId) {
+          markMessagesAsRead(selectedFriendId);
+        }
+      }
+
+      // Refresh conversations list to update unread counts
+      fetchConversations();
+    };
+
+    onNewMessage(handleNewMessage);
+
+    return () => {
+      offNewMessage(handleNewMessage);
+    };
+  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage, fetchConversations, markMessagesAsRead]);
 
   const handleMessageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessageText(e.target.value);

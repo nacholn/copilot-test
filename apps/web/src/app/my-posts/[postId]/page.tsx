@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
@@ -183,9 +184,12 @@ export default function PostDetail() {
             {post.images && post.images.length > 0 && (
               <div className={styles.imagesSection}>
                 <div className={styles.mainImage}>
-                  <img
+                  <Image
                     src={post.images[selectedImage]?.imageUrl}
                     alt={`${post.title} - Image ${selectedImage + 1}`}
+                    fill
+                    style={{ objectFit: 'contain' }}
+                    sizes="(max-width: 768px) 100vw, 800px"
                   />
                 </div>
                 {post.images.length > 1 && (
@@ -198,7 +202,7 @@ export default function PostDetail() {
                           index === selectedImage ? styles.thumbnailActive : ''
                         }`}
                       >
-                        <img src={image.imageUrl} alt={`Thumbnail ${index + 1}`} />
+                        <Image src={image.imageUrl} alt={`Thumbnail ${index + 1}`} fill style={{ objectFit: 'cover' }} sizes="100px" />
                       </button>
                     ))}
                   </div>

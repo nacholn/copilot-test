@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
@@ -391,7 +392,7 @@ export default function Users() {
                     <Link key={group.id} href={`/groups/${group.id}`} className={styles.groupCard}>
                       <div className={styles.groupImage}>
                         {group.mainImage ? (
-                          <img src={group.mainImage} alt={group.name} />
+                          <Image src={group.mainImage} alt={group.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" />
                         ) : (
                           <div className={styles.groupImagePlaceholder}>👥</div>
                         )}

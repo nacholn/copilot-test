@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
+import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
@@ -189,7 +190,9 @@ export default function GroupDetail() {
           {/* Group Header */}
           <div className={styles.groupHeader}>
             {group.mainImage ? (
-              <img src={group.mainImage} alt={group.name} className={styles.groupImage} />
+              <div style={{ position: 'relative', width: '200px', height: '200px' }}>
+                <Image src={group.mainImage} alt={group.name} fill style={{ objectFit: 'cover' }} className={styles.groupImage} sizes="200px" />
+              </div>
             ) : (
               <div className={styles.groupImagePlaceholder}>👥</div>
             )}

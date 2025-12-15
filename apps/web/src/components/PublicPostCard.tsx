@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from './PublicPostCard.module.css';
 
@@ -18,7 +19,7 @@ export function PublicPostCard({ post }: PublicPostCardProps) {
     <Link href={postUrl} className={styles.card}>
       {imageUrl && (
         <div className={styles.imageContainer}>
-          <img src={imageUrl} alt={post.title} className={styles.image} />
+          <Image src={imageUrl} alt={post.title} fill className={styles.image} style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 400px" />
         </div>
       )}
       <div className={styles.content}>
@@ -31,10 +32,13 @@ export function PublicPostCard({ post }: PublicPostCardProps) {
         <div className={styles.meta}>
           <span className={styles.author}>
             {post.authorAvatar && (
-              <img
+              <Image
                 src={post.authorAvatar}
                 alt={post.authorName}
+                width={24}
+                height={24}
                 className={styles.authorAvatar}
+                style={{ objectFit: 'cover' }}
               />
             )}
             {post.authorName}
