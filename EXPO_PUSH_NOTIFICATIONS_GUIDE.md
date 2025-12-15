@@ -472,6 +472,102 @@ https://expo.dev/notifications
 
 Enter your Expo push token and send a test notification!
 
+## iOS and Android Configuration Requirements
+
+### Short Answer: It Depends on Your Build Type
+
+**Using Expo Go or Development Builds:**
+- ✅ **No Firebase configuration needed**
+- ✅ **No Apple Developer account needed**
+- Expo handles everything automatically
+- Perfect for development and testing
+
+**Using EAS Build (Production Standalone Apps):**
+- **iOS:** ✅ Requires Apple Developer account ($99/year)
+- **Android:** ⚠️ Firebase/FCM optional (Expo handles it, but you can configure for advanced features)
+
+### Detailed Breakdown
+
+#### For iOS Production Apps
+
+**Requirements:**
+1. **Apple Developer Account** ($99/year)
+   - Required to build and distribute iOS apps
+   - Required for APNs (Apple Push Notification service)
+   
+2. **APNs Certificate/Key**
+   - Expo automatically handles APNs setup with EAS Build
+   - You don't need to manually create certificates
+   - EAS Build manages the provisioning profiles and push certificates
+
+**Steps:**
+1. Sign up for Apple Developer Program: https://developer.apple.com/programs/
+2. Run `eas build --platform ios`
+3. EAS will guide you through the setup
+4. Expo automatically configures APNs for you
+
+**You DON'T need to:**
+- Manually create push certificates
+- Download .p8 files
+- Configure APNs manually
+- Use Xcode for push notification setup
+
+#### For Android Production Apps
+
+**Requirements:**
+1. **No Google Play Developer account required** for push notifications
+   - Only needed for Play Store distribution ($25 one-time fee)
+   
+2. **No Firebase/FCM configuration required** by default
+   - Expo uses its own FCM credentials automatically
+   - Push notifications work out of the box with EAS Build
+
+**Optional Firebase Configuration:**
+- If you want to use your own FCM project (for analytics, custom features, etc.)
+- Add `google-services.json` to your project
+- Configure in `app.json`:
+
+```json
+{
+  "android": {
+    "googleServicesFile": "./google-services.json"
+  }
+}
+```
+
+**Steps for basic setup:**
+1. Run `eas build --platform android`
+2. Push notifications work automatically
+3. No Firebase setup needed unless you want custom configuration
+
+### Expo Go vs Standalone Apps
+
+#### Development with Expo Go
+```
+✅ Push notifications work immediately
+✅ No Apple Developer account needed
+✅ No Firebase configuration needed
+✅ Use for testing during development
+```
+
+**How it works:**
+- Expo Go has built-in push notification credentials
+- You get an Expo Push Token
+- Send notifications via Expo's push service
+- Perfect for development
+
+#### Production Standalone Apps (EAS Build)
+```
+iOS: Requires Apple Developer account ($99/year)
+Android: No additional accounts needed (Play Store is optional)
+```
+
+**How it works:**
+- Your own app bundle
+- Expo still manages push infrastructure
+- More control and customization
+- Required for App Store/Play Store distribution
+
 ## Production Considerations
 
 ### For Web PWA:
@@ -483,8 +579,63 @@ Enter your Expo push token and send a test notification!
 ### For Expo Mobile:
 - Need Expo project ID
 - For production: Build standalone app with EAS Build
-- For iOS: Need Apple Developer account and APNs certificate
-- For Android: Automatic through Expo/FCM
+- **iOS:** Apple Developer account required ($99/year), APNs managed by Expo
+- **Android:** No Firebase setup required by default, FCM managed by Expo
+- **Both:** Push notifications work automatically through Expo Push Service
+
+## Configuration Comparison Table
+
+| Configuration | Expo Go (Dev) | EAS Build iOS | EAS Build Android | Web PWA |
+|--------------|---------------|---------------|-------------------|---------|
+| Apple Developer | ❌ Not needed | ✅ Required ($99/year) | ❌ Not needed | ❌ Not needed |
+| Firebase/FCM Setup | ❌ Not needed | ❌ Not needed | ❌ Not needed (optional) | ❌ Not needed |
+| VAPID Keys | ❌ Not needed | ❌ Not needed | ❌ Not needed | ✅ Required |
+| APNs Certificate | ❌ Auto-handled | ✅ Auto by EAS | ❌ Not applicable | ❌ Not needed |
+| Google Play Account | ❌ Not needed | ❌ Not needed | ❌ Not needed* | ❌ Not needed |
+| Push Service | Expo Push | Expo Push | Expo Push | Browser Push |
+| Setup Complexity | ⭐ Very Easy | ⭐⭐ Easy | ⭐ Very Easy | ⭐⭐⭐ Moderate |
+
+*Only needed for Play Store distribution, not for push notifications
+
+## Frequently Asked Questions
+
+### Do I need Firebase for Android push notifications?
+
+**No.** Expo manages FCM credentials automatically. You only need Firebase if:
+- You want to use Firebase Analytics
+- You need Firebase Realtime Database or Firestore
+- You want custom FCM configuration
+
+### Do I need an Apple Developer account for testing?
+
+**No.** Use Expo Go for testing. You only need an Apple Developer account when:
+- Building a standalone app with EAS Build
+- Submitting to the App Store
+- Testing on devices without Expo Go
+
+### Can I use my own Firebase project?
+
+**Yes.** You can optionally configure your own Firebase project:
+1. Create a Firebase project
+2. Download `google-services.json`
+3. Add to your Expo project
+4. Configure in `app.json`
+
+But this is **not required** for push notifications to work.
+
+### What's the easiest way to get started?
+
+1. **Development:** Use Expo Go - zero configuration needed
+2. **Production iOS:** Get Apple Developer account, use EAS Build
+3. **Production Android:** Just use EAS Build - no extra accounts needed
+
+### Do push notifications cost money?
+
+- **Expo Push Service:** Free (Expo manages infrastructure)
+- **Apple Developer:** $99/year (required for iOS production apps)
+- **Google Play:** $25 one-time (optional, only for Play Store)
+- **Firebase:** Free tier sufficient for most apps
+- **Web Push (VAPID):** Free (no external service fees)
 
 ## Summary
 
@@ -493,10 +644,20 @@ Enter your Expo push token and send a test notification!
 - **Web PWA**: Use VAPID with `web-push` library
 - **Expo Mobile**: Use Expo Push Notification Service with `expo-notifications`
 
+**Configuration Requirements:**
+- **Development (Expo Go):** Nothing needed - works immediately! 🎉
+- **iOS Production:** Apple Developer account ($99/year), APNs managed by Expo
+- **Android Production:** No Firebase/FCM setup needed, managed by Expo
+- **Web PWA:** VAPID keys (free, self-managed)
+
 **Best practice for your app:**
 - Implement **both** systems
 - Store both types of tokens in separate database tables
 - When sending notifications, send to both web subscribers (VAPID) and mobile users (Expo)
 - This ensures all users receive notifications regardless of platform
 
-The good news is that the backend notification logic can be unified - you just call both push services when sending a notification!
+The good news is that:
+- Expo handles most complexity automatically
+- No Firebase configuration needed for basic push notifications
+- Backend notification logic can be unified - just call both push services!
+- Development testing requires zero configuration
