@@ -77,7 +77,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       
       // Show browser notification if permission granted
       if ('Notification' in window && Notification.permission === 'granted') {
-        const browserNotification = new window.Notification(notification.title, {
+        const browserNotification = new Notification(notification.title, {
           body: notification.message,
           icon: '/icon-192x192.png',
           badge: '/icon-192x192.png',
@@ -106,7 +106,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
         const senderName = message.senderName || message.sender?.name || 'Someone';
         const messagePreview = message.content?.substring(0, 50) || 'New message';
         
-        const browserNotification = new window.Notification(`New message from ${senderName}`, {
+        const browserNotification = new Notification(`New message from ${senderName}`, {
           body: messagePreview + (message.content?.length > 50 ? '...' : ''),
           icon: '/icon-192x192.png',
           badge: '/icon-192x192.png',

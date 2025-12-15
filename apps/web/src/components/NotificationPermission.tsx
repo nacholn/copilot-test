@@ -57,12 +57,17 @@ export function NotificationPermission() {
         }
 
         // Show a test notification
-        new Notification('Notifications Enabled! 🎉', {
+        const welcomeNotification = new Notification('Notifications Enabled! 🎉', {
           body: 'You will now receive updates about messages and friend requests.',
           icon: '/icon-192x192.png',
           badge: '/icon-192x192.png',
           tag: 'notification-enabled',
         });
+
+        // Close notification when clicked
+        welcomeNotification.onclick = () => {
+          welcomeNotification.close();
+        };
       } else {
         console.log('Notification permission denied');
       }
