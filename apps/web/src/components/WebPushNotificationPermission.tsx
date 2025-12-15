@@ -44,16 +44,7 @@ export function WebPushNotificationPermission() {
         
         // Register for push notifications if service worker is available
         if ('serviceWorker' in navigator && 'PushManager' in window) {
-          const registration = await navigator.serviceWorker.ready;
-          
-          // Check if already subscribed
-          const existingSubscription = await registration.pushManager.getSubscription();
-          
-          if (!existingSubscription) {
-            // Subscribe to push notifications
-            // Note: In production, you'd need to get the VAPID public key from your backend
-            console.log('Push notification subscription available');
-          }
+          await subscribeToPushNotifications();
         }
 
         // Show a test notification
@@ -80,6 +71,68 @@ export function WebPushNotificationPermission() {
     setShowPrompt(false);
     // Store in localStorage to not show again for a while
     localStorage.setItem('notificationPromptDismissed', Date.now().toString());
+  };
+
+  // Helper function to convert VAPID key
+  const urlBase64ToUint8Array = (base64String: string) => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
+  // Subscribe to push notifications
+  const subscribeToPushNotifications = async () => {
+    if (!user?.id) return;
+
+    try {
+      const registration = await navigator.serviceWorker.ready;
+
+      // Check if already subscribed
+      let subscription = await registration.pushManager.getSubscription();
+
+      if (!subscription) {
+        // Get VAPID public key from environment
+        const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+
+        if (!vapidPublicKey) {
+          console.error('VAPID public key not configured');
+          return;
+        }
+
+        // Subscribe to push
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
+        });
+      }
+
+      // Send subscription to backend
+      const response = await fetch('/api/push-subscriptions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          subscription: subscription.toJSON(),
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Push subscription saved successfully');
+      } else {
+        console.error('Failed to save push subscription');
+      }
+    } catch (error) {
+      console.error('Error subscribing to push:', error);
+    }
   };
 
   // Don't show if permission already granted or denied, or if no user

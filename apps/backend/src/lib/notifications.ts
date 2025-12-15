@@ -5,6 +5,7 @@ import type {
   CreateNotificationInput,
   NotificationType 
 } from '@cyclists/config';
+import { sendWebPushNotificationToUser } from './web-push-notifications';
 
 /**
  * Create a new notification
@@ -35,7 +36,7 @@ export async function createNotification(
     }
 
     const row = result.rows[0];
-    return {
+    const notification = {
       id: row.id,
       userId: row.user_id,
       type: row.type as NotificationType,
@@ -49,6 +50,23 @@ export async function createNotification(
       actionUrl: row.action_url,
       createdAt: new Date(row.created_at),
     };
+
+    // Send web push notification asynchronously
+    sendWebPushNotificationToUser(input.userId, {
+      title: input.title,
+      body: input.message,
+      icon: '/icon-192x192.png',
+      badge: '/icon-192x192.png',
+      data: {
+        url: input.actionUrl || '/notifications',
+        type: input.type,
+      },
+      tag: input.type,
+    }).catch(err => {
+      console.error('[Notifications] Failed to send web push:', err);
+    });
+
+    return notification;
   } catch (error) {
     console.error('[Notifications] Create error:', error);
     return null;
