@@ -396,8 +396,9 @@ export default function Chat() {
                     setSelectedGroupId(null);
                   }}
                   aria-label="Back to conversations"
+                  title="Back to conversations"
                 >
-                  ←
+                  <span aria-hidden="true">←</span>
                 </button>
                 {selectedFriendId ? (
                   <>

@@ -224,6 +224,8 @@ export default function Users() {
               <button 
                 className={styles.filterToggle}
                 onClick={() => setShowFilters(!showFilters)}
+                aria-label={showFilters ? 'Hide filters' : 'Show filters'}
+                aria-expanded={showFilters}
               >
                 {showFilters ? '✕ Hide Filters' : '🔍 Show Filters'}
               </button>
@@ -343,6 +345,8 @@ export default function Users() {
               <button 
                 className={styles.filterToggle}
                 onClick={() => setShowFilters(!showFilters)}
+                aria-label={showFilters ? 'Hide filters' : 'Show filters'}
+                aria-expanded={showFilters}
               >
                 {showFilters ? '✕ Hide Filters' : '🔍 Show Filters'}
               </button>
