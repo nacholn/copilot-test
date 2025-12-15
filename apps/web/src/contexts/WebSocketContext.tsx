@@ -77,10 +77,21 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       
       // Show browser notification if permission granted
       if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification(notification.title, {
+        const browserNotification = new window.Notification(notification.title, {
           body: notification.message,
           icon: '/icon-192x192.png',
+          badge: '/icon-192x192.png',
+          tag: notification.type || 'notification',
+          requireInteraction: false,
+          vibrate: [200, 100, 200],
         });
+
+        // When notification is clicked, navigate to notifications page
+        browserNotification.onclick = () => {
+          window.focus();
+          window.location.href = notification.actionUrl || '/notifications';
+          browserNotification.close();
+        };
       }
     });
 
@@ -89,6 +100,30 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       console.log('[WebSocket] New message received:', message);
       // Call all registered callbacks - Set.forEach is more efficient
       messageCallbacks.forEach((callback) => callback(message));
+      
+      // Show browser notification for new messages if permission granted
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const senderName = message.senderName || message.sender?.name || 'Someone';
+        const messagePreview = message.content?.substring(0, 50) || 'New message';
+        
+        const browserNotification = new window.Notification(`New message from ${senderName}`, {
+          body: messagePreview + (message.content?.length > 50 ? '...' : ''),
+          icon: '/icon-192x192.png',
+          badge: '/icon-192x192.png',
+          tag: 'new-message',
+          requireInteraction: false,
+          vibrate: [200, 100, 200],
+        });
+
+        // When notification is clicked, navigate to chat or notifications
+        browserNotification.onclick = () => {
+          window.focus();
+          // Try to navigate to the specific chat, fallback to notifications
+          const chatUrl = message.senderId ? `/chat?userId=${message.senderId}` : '/notifications';
+          window.location.href = chatUrl;
+          browserNotification.close();
+        };
+      }
     });
 
     // Handle user status changes
