@@ -38,7 +38,7 @@ export default function Users() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!user?.id) return;
-      
+
       try {
         const response = await fetch(`/api/profile?userId=${user.id}`);
         const data = await response.json();
@@ -60,7 +60,7 @@ export default function Users() {
   useEffect(() => {
     const fetchUsers = async () => {
       if (activeTab !== 'users') return;
-      
+
       try {
         setLoading(true);
         const params = new URLSearchParams();
@@ -69,7 +69,7 @@ export default function Users() {
         if (levelFilter) params.append('level', levelFilter);
         if (bikeTypeFilter) params.append('bikeType', bikeTypeFilter);
         if (cityFilter) params.append('city', cityFilter);
-        
+
         // Add distance filter if set and user has location
         if (distanceFilter !== null && userLatitude && userLongitude) {
           params.append('distance', distanceFilter.toString());
@@ -93,12 +93,23 @@ export default function Users() {
     };
 
     fetchUsers();
-  }, [searchQuery, nameQuery, levelFilter, bikeTypeFilter, cityFilter, distanceFilter, user?.id, activeTab, userLatitude, userLongitude]);
+  }, [
+    searchQuery,
+    nameQuery,
+    levelFilter,
+    bikeTypeFilter,
+    cityFilter,
+    distanceFilter,
+    user?.id,
+    activeTab,
+    userLatitude,
+    userLongitude,
+  ]);
 
   useEffect(() => {
     const fetchGroups = async () => {
       if (activeTab !== 'groups') return;
-      
+
       try {
         setLoading(true);
         const response = await fetch(`/api/groups`);
@@ -127,10 +138,10 @@ export default function Users() {
         const data = await response.json();
 
         if (data.success && data.data.groupConversations) {
-          const groupIds = new Set(
-            data.data.groupConversations.map((gc: GroupConversation) => gc.groupId)
-          );
-          setUserGroupIds(groupIds);
+          const groupIds: string[] = data.data.groupConversations
+            .map((gc: GroupConversation) => String(gc.groupId))
+            .filter((id: string) => id.length > 0);
+          setUserGroupIds(new Set<string>(groupIds));
         }
       } catch (error) {
         console.error('Error fetching user groups:', error);
@@ -183,7 +194,10 @@ export default function Users() {
     }
 
     // Filter by city
-    if (cityFilter && (!group.city || !group.city.toLowerCase().includes(cityFilter.toLowerCase()))) {
+    if (
+      cityFilter &&
+      (!group.city || !group.city.toLowerCase().includes(cityFilter.toLowerCase()))
+    ) {
       return false;
     }
 
@@ -277,7 +291,8 @@ export default function Users() {
                 {userProfile?.latitude && userProfile?.longitude && (
                   <div className={styles.distanceFilter}>
                     <label htmlFor="distance-slider" className={styles.distanceLabel}>
-                      {t('users.distanceFilter') || 'Distance'}: <strong>{getDistanceLabel()}</strong>
+                      {t('users.distanceFilter') || 'Distance'}:{' '}
+                      <strong>{getDistanceLabel()}</strong>
                     </label>
                     <input
                       id="distance-slider"
@@ -309,7 +324,11 @@ export default function Users() {
               ) : (
                 <div className={styles.userList}>
                   {users.map((user) => (
-                    <Link key={user.userId} href={`/users/${user.userId}`} className={styles.userCard}>
+                    <Link
+                      key={user.userId}
+                      href={`/users/${user.userId}`}
+                      className={styles.userCard}
+                    >
                       <Avatar src={user.avatar} name={user.name} size="medium" />
                       <div className={styles.userInfo}>
                         <h3>{user.name}</h3>
@@ -319,7 +338,9 @@ export default function Users() {
                           <span className={styles.badge}>{user.bikeType}</span>
                           <span className={styles.location}>📍 {user.city}</span>
                         </div>
-                        {user.bio && <p className={styles.userBio}>{user.bio.substring(0, 100)}...</p>}
+                        {user.bio && (
+                          <p className={styles.userBio}>{user.bio.substring(0, 100)}...</p>
+                        )}
                       </div>
                     </Link>
                   ))}
@@ -392,7 +413,13 @@ export default function Users() {
                     <Link key={group.id} href={`/groups/${group.id}`} className={styles.groupCard}>
                       <div className={styles.groupImage}>
                         {group.mainImage ? (
-                          <Image src={group.mainImage} alt={group.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" />
+                          <Image
+                            src={group.mainImage}
+                            alt={group.name}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                            sizes="(max-width: 768px) 100vw, 300px"
+                          />
                         ) : (
                           <div className={styles.groupImagePlaceholder}>👥</div>
                         )}
@@ -413,11 +440,10 @@ export default function Users() {
                         )}
                         <div className={styles.groupDetails}>
                           <span className={styles.badge}>{t(`groups.${group.type}`)}</span>
-                          {group.city && (
-                            <span className={styles.location}>📍 {group.city}</span>
-                          )}
+                          {group.city && <span className={styles.location}>📍 {group.city}</span>}
                           <span className={styles.memberCount}>
-                            {group.memberCount} {group.memberCount === 1 ? t('groups.member') : t('groups.members')}
+                            {group.memberCount}{' '}
+                            {group.memberCount === 1 ? t('groups.member') : t('groups.members')}
                           </span>
                         </div>
                       </div>

@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { createNotification } from '@/lib/notifications';
-import { sendEmail, getFriendRequestEmailTemplate, getFriendRequestAcceptedEmailTemplate } from '@/lib/email';
+import {
+  sendEmail,
+  getFriendRequestEmailTemplate,
+  getFriendRequestAcceptedEmailTemplate,
+} from '@/lib/email';
 import { emitNotification } from '@/lib/websocket';
-import type { 
-  ApiResponse, 
-  SendFriendRequestInput, 
+import type {
+  ApiResponse,
+  SendFriendRequestInput,
   UpdateFriendRequestInput,
-  FriendRequestWithProfile 
+  FriendRequestWithProfile,
 } from '@cyclists/config';
 
 // Mark route as dynamic
@@ -49,16 +53,19 @@ export async function GET(request: NextRequest) {
     }
 
     const userField = type === 'sent' ? 'requester_id' : 'addressee_id';
-    const profileJoinField = type === 'sent' ? 'addressee_id' : 'requester_id';
 
     const result = await query(
       `SELECT 
          fr.*,
-         p.name as requester_name,
-         p.avatar as requester_avatar,
-         p.email as requester_email
+         requester.name as requester_name,
+         requester.avatar as requester_avatar,
+         requester.email as requester_email,
+         addressee.name as addressee_name,
+         addressee.avatar as addressee_avatar,
+         addressee.email as addressee_email
        FROM friend_requests fr
-       JOIN profiles p ON fr.${profileJoinField} = p.user_id
+       JOIN profiles requester ON fr.requester_id = requester.user_id
+       JOIN profiles addressee ON fr.addressee_id = addressee.user_id
        WHERE fr.${userField} = $1 AND fr.status = $2
        ORDER BY fr.created_at DESC`,
       [userId, status]
@@ -74,6 +81,9 @@ export async function GET(request: NextRequest) {
       requesterName: row.requester_name,
       requesterAvatar: row.requester_avatar,
       requesterEmail: row.requester_email,
+      addresseeName: row.addressee_name,
+      addresseeAvatar: row.addressee_avatar,
+      addresseeEmail: row.addressee_email,
     }));
 
     return NextResponse.json<ApiResponse>(

@@ -265,7 +265,9 @@ export default function FriendRequests() {
                         </button>
                       </div>
                     )}
-                    {activeTab === 'sent' && <div className={styles.pendingBadge}>{t('friendRequests.pending')}</div>}
+                    {activeTab === 'sent' && (
+                      <div className={styles.pendingBadge}>{t('friendRequests.pending')}</div>
+                    )}
                   </div>
                 );
               })}

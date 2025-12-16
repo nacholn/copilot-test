@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWebSocket } from '../../contexts/WebSocketContext';
@@ -16,7 +16,7 @@ import type {
 } from '@cyclists/config';
 import styles from './chat.module.css';
 
-export default function Chat() {
+function ChatInner() {
   const { user } = useAuth();
   const { onNewMessage, offNewMessage, sendTypingIndicator, onlineUsers } = useWebSocket();
   const { t } = useTranslations();
@@ -491,5 +491,13 @@ export default function Chat() {
         </div>
       </div>
     </AuthGuard>
+  );
+}
+
+export default function Chat() {
+  return (
+    <Suspense>
+      <ChatInner />
+    </Suspense>
   );
 }

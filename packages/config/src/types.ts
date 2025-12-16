@@ -168,8 +168,11 @@ export interface FriendRequest {
 
 export interface FriendRequestWithProfile extends FriendRequest {
   requesterName: string;
-  requesterAvatar?: string;
   requesterEmail: string;
+  addresseeName: string;
+  addresseeEmail: string;
+  requesterAvatar?: string;
+  addresseeAvatar?: string;
 }
 
 export interface SendFriendRequestInput {

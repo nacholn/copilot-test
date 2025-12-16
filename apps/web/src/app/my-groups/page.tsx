@@ -52,10 +52,10 @@ export default function Groups() {
         const data = await response.json();
 
         if (data.success && data.data.groupConversations) {
-          const groupIds = new Set(
-            data.data.groupConversations.map((gc: any) => gc.groupId)
-          );
-          setUserGroupIds(groupIds);
+          const groupIds: string[] = data.data.groupConversations
+            .map((gc: any) => String(gc.groupId))
+            .filter((id: string) => id.length > 0);
+          setUserGroupIds(new Set<string>(groupIds));
         }
       } catch (error) {
         console.error('Error fetching user groups:', error);
@@ -81,7 +81,10 @@ export default function Groups() {
     }
 
     // Filter by city
-    if (cityFilter && (!group.city || !group.city.toLowerCase().includes(cityFilter.toLowerCase()))) {
+    if (
+      cityFilter &&
+      (!group.city || !group.city.toLowerCase().includes(cityFilter.toLowerCase()))
+    ) {
       return false;
     }
 
@@ -160,7 +163,13 @@ export default function Groups() {
                 <Link key={group.id} href={`/my-groups/${group.id}`} className={styles.groupCard}>
                   <div className={styles.groupImage}>
                     {group.mainImage ? (
-                      <Image src={group.mainImage} alt={group.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" />
+                      <Image
+                        src={group.mainImage}
+                        alt={group.name}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        sizes="(max-width: 768px) 100vw, 300px"
+                      />
                     ) : (
                       <div className={styles.groupImagePlaceholder}>👥</div>
                     )}
@@ -181,11 +190,10 @@ export default function Groups() {
                     )}
                     <div className={styles.groupDetails}>
                       <span className={styles.badge}>{t(`groups.${group.type}`)}</span>
-                      {group.city && (
-                        <span className={styles.location}>📍 {group.city}</span>
-                      )}
+                      {group.city && <span className={styles.location}>📍 {group.city}</span>}
                       <span className={styles.memberCount}>
-                        {group.memberCount} {group.memberCount === 1 ? t('groups.member') : t('groups.members')}
+                        {group.memberCount}{' '}
+                        {group.memberCount === 1 ? t('groups.member') : t('groups.members')}
                       </span>
                     </div>
                   </div>

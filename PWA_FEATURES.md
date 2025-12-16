@@ -41,7 +41,7 @@ This document describes the Progressive Web App (PWA) features implemented in th
   - Browser notifications for new messages
   - Browser notifications for all notification types
   - Clicking notification navigates to relevant page (chat or notifications)
-  - Rich notification with icon, badge, and vibration
+  - Rich notification with icon and badge
   - Automatic notification display when message arrives
 
 ### 5. Notification Permission Request
@@ -90,6 +90,7 @@ This document describes the Progressive Web App (PWA) features implemented in th
 ### Testing PWA Features Locally
 
 1. **Build the app**:
+
    ```bash
    cd apps/web
    npm run build
@@ -163,7 +164,7 @@ runtimeCaching: [
     },
   },
   // ... more caching strategies
-]
+];
 ```
 
 ### Update Detection
@@ -188,7 +189,7 @@ const notification = new Notification(title, {
   icon: '/icon-192x192.png',
   badge: '/icon-192x192.png',
   tag: 'message',
-  vibrate: [200, 100, 200],
+  // vibrate: [200, 100, 200], // Removed, not supported in NotificationOptions
 });
 
 notification.onclick = () => {
@@ -206,7 +207,7 @@ notification.onclick = () => {
 4. **Offline First**: Cache static assets aggressively
 5. **Network First for API**: Always try network for dynamic data
 6. **Fallback Strategy**: Graceful degradation to offline page
-7. **Rich Notifications**: Icons, badges, vibration for better UX
+7. **Rich Notifications**: Icons, badges for better UX
 8. **Deep Linking**: Notifications navigate to relevant pages
 
 ## Future Enhancements
@@ -254,6 +255,7 @@ Potential improvements for future versions:
 ## Conclusion
 
 The Cyclists Social Network is now a full-featured Progressive Web App with:
+
 - ✅ Installable on desktop and mobile
 - ✅ Offline support with graceful fallbacks
 - ✅ Smart caching for performance
