@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import Image from 'next/image';
 import styles from './image-upload.module.css';
 
 interface ImageUploadProps {
@@ -45,7 +44,8 @@ export function ImageUpload({
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
-      });      const data = await response.json();
+      });
+      const data = await response.json();
 
       if (data.success) {
         onImageChange(data.data.url, data.data.publicId);
@@ -89,7 +89,7 @@ export function ImageUpload({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-    
+
     const file = e.dataTransfer.files[0];
     if (file) {
       handleFileSelect(file);
@@ -115,7 +115,7 @@ export function ImageUpload({
           console.warn('Failed to delete image from Cloudinary, but continuing with removal');
         }
       }
-      
+
       onImageChange(null);
     } catch (error) {
       console.error('Error removing image:', error);
@@ -152,13 +152,7 @@ export function ImageUpload({
           </div>
         ) : currentImage ? (
           <div className={styles.imagePreview}>
-            <Image
-              src={currentImage}
-              alt="Uploaded image"
-              fill
-              className={styles.image}
-              style={{ objectFit: 'cover' }}
-            />
+            <img src={currentImage} alt="Uploaded image" className={styles.image} />
             <div className={styles.imageOverlay}>
               <button
                 type="button"
@@ -185,12 +179,8 @@ export function ImageUpload({
         ) : (
           <div className={styles.dropzoneContent}>
             <div className={styles.uploadIcon}>📸</div>
-            <p className={styles.uploadText}>
-              Click to upload or drag and drop an image
-            </p>
-            <p className={styles.uploadHint}>
-              PNG, JPG, GIF up to 10MB
-            </p>
+            <p className={styles.uploadText}>Click to upload or drag and drop an image</p>
+            <p className={styles.uploadHint}>PNG, JPG, GIF up to 10MB</p>
           </div>
         )}
       </div>

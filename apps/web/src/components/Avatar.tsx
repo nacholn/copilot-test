@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import styles from './avatar.module.css';
 
 interface AvatarProps {
@@ -49,7 +48,7 @@ export function Avatar({ src, name, size = 'medium', className }: AvatarProps) {
     <div className={`${styles.avatar} ${styles[size]} ${className || ''}`}>
       {' '}
       {src ? (
-        <Image src={src} alt={safeName} className={styles.image} width={48} height={48} />
+        <img src={src} alt={safeName} className={styles.image} />
       ) : (
         <div className={styles.initials} style={{ backgroundColor }}>
           {initials}

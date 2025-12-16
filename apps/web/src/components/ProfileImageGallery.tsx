@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { ProfileImage } from '@cyclists/config';
 import { useTranslations } from '../hooks/useTranslations';
 import { Loader } from './Loader';
@@ -13,7 +12,11 @@ interface ProfileImageGalleryProps {
   onImageUpdate?: () => void;
 }
 
-export function ProfileImageGallery({ userId, editable = false, onImageUpdate }: ProfileImageGalleryProps) {
+export function ProfileImageGallery({
+  userId,
+  editable = false,
+  onImageUpdate,
+}: ProfileImageGalleryProps) {
   const { t } = useTranslations();
   const [images, setImages] = useState<ProfileImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -131,8 +134,8 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
     );
   }
 
-  const primaryImage = images.find(img => img.isPrimary);
-  const secondaryImages = images.filter(img => !img.isPrimary);
+  const primaryImage = images.find((img) => img.isPrimary);
+  const secondaryImages = images.filter((img) => !img.isPrimary);
 
   return (
     <div className={styles.gallery}>
@@ -142,12 +145,10 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
         {primaryImage ? (
           <div className={styles.primaryImageContainer}>
             <div className={styles.imageWrapper}>
-              <Image
+              <img
                 src={primaryImage.imageUrl}
                 alt="Primary profile image"
-                fill
                 className={styles.image}
-                style={{ objectFit: 'cover' }}
               />
               {editable && (
                 <div className={styles.imageOverlay}>
@@ -192,12 +193,10 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
           {secondaryImages.map((img) => (
             <div key={img.id} className={styles.secondaryImageContainer}>
               <div className={styles.imageWrapper}>
-                <Image
+                <img
                   src={img.imageUrl}
                   alt="Profile image"
-                  fill
                   className={styles.image}
-                  style={{ objectFit: 'cover' }}
                   onClick={() => setSelectedImage(img)}
                 />
                 {editable && (
@@ -221,7 +220,7 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
               </div>
             </div>
           ))}
-          
+
           {editable && (
             <div className={styles.uploadZone}>
               <input
@@ -241,7 +240,7 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
             </div>
           )}
         </div>
-        
+
         {!editable && secondaryImages.length === 0 && (
           <p className={styles.noImages}>{t('profile.noSecondaryImages')}</p>
         )}
@@ -251,20 +250,10 @@ export function ProfileImageGallery({ userId, editable = false, onImageUpdate }:
       {selectedImage && (
         <div className={styles.modal} onClick={() => setSelectedImage(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button
-              className={styles.modalClose}
-              onClick={() => setSelectedImage(null)}
-            >
+            <button className={styles.modalClose} onClick={() => setSelectedImage(null)}>
               ×
             </button>
-            <Image
-              src={selectedImage.imageUrl}
-              alt="Full size image"
-              width={800}
-              height={800}
-              className={styles.modalImage}
-              style={{ objectFit: 'contain' }}
-            />
+            <img src={selectedImage.imageUrl} alt="Full size image" className={styles.modalImage} />
           </div>
         </div>
       )}

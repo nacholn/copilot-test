@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import { useLanguage } from '../contexts/LanguageContext';
 import styles from './language-selector.module.css';
 
@@ -85,13 +84,10 @@ export function LanguageSelector() {
       >
         {' '}
         <div className={styles.selected}>
-          <Image
+          <img
             src={getFlagUrl(currentLanguage.flag)}
             alt={currentLanguage.name}
-            width={24}
-            height={18}
             className={styles.flagImage}
-            unoptimized
           />
           <span className={`${styles.arrow} ${isOpen ? styles.arrowUp : ''}`} aria-hidden="true">
             ▼
@@ -112,13 +108,10 @@ export function LanguageSelector() {
                 aria-selected={language.code === locale}
                 aria-label={`Select ${language.name}`}
               >
-                <Image
+                <img
                   src={getFlagUrl(language.flag)}
                   alt={language.name}
-                  width={24}
-                  height={18}
                   className={styles.flagImage}
-                  unoptimized
                 />
                 <span className={styles.languageName}>{language.name}</span>
               </div>
