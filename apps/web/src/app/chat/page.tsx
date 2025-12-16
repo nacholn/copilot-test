@@ -16,9 +16,7 @@ import type {
 } from '@cyclists/config';
 import styles from './chat.module.css';
 
-// Next.js 14+ metadata/viewport API migration
-// Remove themeColor/viewport from metadata and export viewport separately
-
+// Chat page uses white theme color for better readability
 export const viewport = {
   themeColor: '#ffffff',
   width: 'device-width',

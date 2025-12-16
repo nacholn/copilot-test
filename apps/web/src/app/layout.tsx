@@ -6,6 +6,7 @@ import { Header } from '../components/Header';
 import { PWAUpdatePrompt } from '../components/PWAUpdatePrompt';
 import { WebPushNotificationPermission } from '../components/WebPushNotificationPermission';
 import { PWAInstallPrompt } from '../components/PWAInstallPrompt';
+import { defaultViewport } from '../config/viewport';
 
 export const metadata = {
   title: 'Cyclists Social Network',
@@ -18,13 +19,7 @@ export const metadata = {
   },
 };
 
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  themeColor: '#FE3C72',
-};
+export const viewport = defaultViewport;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
