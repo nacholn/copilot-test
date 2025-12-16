@@ -8,6 +8,7 @@ export function WebPushNotificationPermission() {
   const { user } = useAuth();
   const [showPrompt, setShowPrompt] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>('default');
+  const [isDismissedRecently, setIsDismissedRecently] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !('Notification' in window)) {
@@ -16,6 +17,13 @@ export function WebPushNotificationPermission() {
 
     // Check current permission status
     setPermission(Notification.permission);
+
+    // Check if user dismissed recently (within last 7 days)
+    const dismissedAt = localStorage.getItem('notificationPromptDismissed');
+    if (dismissedAt) {
+      const daysSinceDismissed = (Date.now() - parseInt(dismissedAt)) / (1000 * 60 * 60 * 24);
+      setIsDismissedRecently(daysSinceDismissed < 7);
+    }
 
     // Show prompt if user is logged in and permission is default
     if (user && Notification.permission === 'default') {
@@ -135,18 +143,9 @@ export function WebPushNotificationPermission() {
     }
   };
 
-  // Don't show if permission already granted or denied, or if no user
-  if (!user || !showPrompt || permission !== 'default') {
+  // Don't show if permission already granted or denied, or if no user, or if dismissed recently
+  if (!user || !showPrompt || permission !== 'default' || isDismissedRecently) {
     return null;
-  }
-
-  // Check if user dismissed recently (within last 7 days)
-  const dismissedAt = localStorage.getItem('notificationPromptDismissed');
-  if (dismissedAt) {
-    const daysSinceDismissed = (Date.now() - parseInt(dismissedAt)) / (1000 * 60 * 60 * 24);
-    if (daysSinceDismissed < 7) {
-      return null;
-    }
   }
 
   return (

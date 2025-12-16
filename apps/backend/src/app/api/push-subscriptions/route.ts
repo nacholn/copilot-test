@@ -4,6 +4,10 @@ import { query } from '../../../lib/db';
 /**
  * POST /api/push-subscriptions
  * Subscribe to push notifications
+ * 
+ * TODO: Add authentication middleware to verify that the authenticated user
+ * matches the userId being subscribed. This prevents users from subscribing
+ * push notifications for other users.
  */
 export async function POST(request: NextRequest) {
   try {

@@ -47,20 +47,23 @@ export async function sendWebPushNotification(
     });
     
     console.log('Push notification sent successfully');
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error sending push notification:', error);
     
-    // Handle subscription expiration
-    if (error.statusCode === 410 || error.statusCode === 404) {
-      console.log('Subscription expired or not found, removing from database');
-      // Remove expired subscription
-      try {
-        await query(
-          'DELETE FROM push_subscriptions WHERE endpoint = $1',
-          [subscription.endpoint]
-        );
-      } catch (dbError) {
-        console.error('Error removing expired subscription:', dbError);
+    // Handle subscription expiration - check if error has statusCode property
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      const statusCode = (error as { statusCode?: number }).statusCode;
+      if (statusCode === 410 || statusCode === 404) {
+        console.log('Subscription expired or not found, removing from database');
+        // Remove expired subscription
+        try {
+          await query(
+            'DELETE FROM push_subscriptions WHERE endpoint = $1',
+            [subscription.endpoint]
+          );
+        } catch (dbError) {
+          console.error('Error removing expired subscription:', dbError);
+        }
       }
     }
     
