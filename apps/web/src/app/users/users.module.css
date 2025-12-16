@@ -676,3 +676,75 @@
     font-size: 1.625rem;
   }
 }
+
+/* Filter Toggle Button - Hidden on desktop */
+.filterToggle {
+  display: none;
+}
+
+/* Mobile-specific filter behavior */
+@media (max-width: 768px) {
+  /* Show the filter toggle button on mobile */
+  .filterToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    margin-bottom: 0.75rem;
+    background: white;
+    color: var(--tinder-primary);
+    border: 2px solid var(--tinder-primary);
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--tinder-shadow);
+  }
+
+  .filterToggle:hover {
+    background: var(--tinder-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--tinder-shadow-hover);
+  }
+
+  .filterToggle:active {
+    transform: scale(0.98);
+  }
+
+  /* Hide filters by default on mobile */
+  .filters {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    margin-bottom: 0;
+    transition: all 0.4s ease;
+  }
+
+  /* Show filters when toggled */
+  .filters.showFilters {
+    max-height: none;
+    opacity: 1;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Make filter row wrap better on mobile */
+  .filterRow {
+    flex-direction: column;
+  }
+
+  .select,
+  .cityInput {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .clearButton {
+    width: 100%;
+  }
+}
