@@ -191,6 +191,7 @@
     "noNotifications": "Pas encore de notifications",
     "noNotificationsSubtext": "Lorsque quelqu'un vous envoie une demande d'ami ou un message, vous le verrez ici.",
     "markAllRead": "Tout marquer comme lu",
+    "backToHome": "Retour à l'Accueil",
     "timeAgo": {
       "minutesAgo": "il y a {count}m",
       "hoursAgo": "il y a {count}h",

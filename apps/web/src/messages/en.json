@@ -195,6 +195,7 @@
     "noNotifications": "No notifications yet",
     "noNotificationsSubtext": "When someone sends you a friend request or message, you'll see it here.",
     "markAllRead": "Mark all as read",
+    "backToHome": "Back to Home",
     "timeAgo": {
       "minutesAgo": "{count}m ago",
       "hoursAgo": "{count}h ago",

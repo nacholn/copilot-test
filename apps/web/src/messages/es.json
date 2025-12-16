@@ -195,6 +195,7 @@
     "noNotifications": "Aún no hay notificaciones",
     "noNotificationsSubtext": "Cuando alguien te envíe una solicitud de amistad o mensaje, lo verás aquí.",
     "markAllRead": "Marcar todas como leídas",
+    "backToHome": "Volver al Inicio",
     "timeAgo": {
       "minutesAgo": "hace {count}m",
       "hoursAgo": "hace {count}h",

@@ -72,7 +72,7 @@ export default function Notifications() {
               <p className={styles.emptyText}>{t('notifications.noNotifications')}</p>
               <p className={styles.emptySubtext}>{t('notifications.noNotificationsSubtext')}</p>
               <Link href="/" className={styles.button}>
-                {t('common.back')}
+                {t('notifications.backToHome')}
               </Link>
             </div>
           ) : (
