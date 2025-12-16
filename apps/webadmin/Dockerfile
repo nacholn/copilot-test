@@ -57,7 +57,6 @@ RUN adduser --system --uid 1001 nextjs
 
 # Copy built Next.js application
 COPY --from=builder --chown=nextjs:nodejs /app/apps/webadmin/.next ./apps/webadmin/.next
-COPY --from=builder --chown=nextjs:nodejs /app/apps/webadmin/public ./apps/webadmin/public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/webadmin/package*.json ./apps/webadmin/
 COPY --from=builder --chown=nextjs:nodejs /app/apps/webadmin/next.config.js ./apps/webadmin/
 

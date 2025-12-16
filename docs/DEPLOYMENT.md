@@ -34,7 +34,7 @@ This guide provides comprehensive instructions for deploying the Cyclists Social
 2. **Docker Compose** (version 2.0 or newer)
    ```bash
    sudo apt-get update
-   sudo apt-get install docker-compose-plugin
+   sudo apt-get install docker compose-plugin
    ```
 
 3. **Git** (for cloning the repository)
@@ -211,14 +211,14 @@ touch traefik-certificates/acme.json
 chmod 600 traefik-certificates/acme.json
 
 # 3. Build images
-docker-compose -f docker-compose.prod.yml build --no-cache
+docker compose -f docker compose.prod.yml build --no-cache
 
 # 4. Start services
-docker-compose -f docker-compose.prod.yml up -d
+docker compose -f docker compose.prod.yml up -d
 
 # 5. Run migrations (wait for PostgreSQL to be ready first)
 sleep 10
-docker-compose -f docker-compose.prod.yml exec backend npm run migrate:up
+docker compose -f docker compose.prod.yml exec backend npm run migrate:up
 
 # 6. Clean up
 docker system prune -f
@@ -268,22 +268,22 @@ After successful deployment, your services will be available at:
 
 ```bash
 # All services
-docker-compose -f docker-compose.prod.yml logs -f
+docker compose -f docker compose.prod.yml logs -f
 
 # Specific service
-docker-compose -f docker-compose.prod.yml logs -f backend
-docker-compose -f docker-compose.prod.yml logs -f web
-docker-compose -f docker-compose.prod.yml logs -f traefik
+docker compose -f docker compose.prod.yml logs -f backend
+docker compose -f docker compose.prod.yml logs -f web
+docker compose -f docker compose.prod.yml logs -f traefik
 
 # Last 100 lines
-docker-compose -f docker-compose.prod.yml logs --tail=100 backend
+docker compose -f docker compose.prod.yml logs --tail=100 backend
 ```
 
 ### Check Service Status
 
 ```bash
 # View running containers
-docker-compose -f docker-compose.prod.yml ps
+docker compose -f docker compose.prod.yml ps
 
 # Check container health
 docker ps
@@ -293,21 +293,21 @@ docker ps
 
 ```bash
 # Restart all services
-docker-compose -f docker-compose.prod.yml restart
+docker compose -f docker compose.prod.yml restart
 
 # Restart specific service
-docker-compose -f docker-compose.prod.yml restart backend
-docker-compose -f docker-compose.prod.yml restart web
+docker compose -f docker compose.prod.yml restart backend
+docker compose -f docker compose.prod.yml restart web
 ```
 
 ### Stop Services
 
 ```bash
 # Stop all services (keeps data)
-docker-compose -f docker-compose.prod.yml down
+docker compose -f docker compose.prod.yml down
 
 # Stop and remove volumes (WARNING: deletes all data)
-docker-compose -f docker-compose.prod.yml down -v
+docker compose -f docker compose.prod.yml down -v
 ```
 
 ### Update Application
@@ -326,10 +326,10 @@ git pull origin main
 
 ```bash
 # Backup database
-docker-compose -f docker-compose.prod.yml exec postgres pg_dump -U cyclists_user cyclists_db > backup-$(date +%Y%m%d-%H%M%S).sql
+docker compose -f docker compose.prod.yml exec postgres pg_dump -U cyclists_user cyclists_db > backup-$(date +%Y%m%d-%H%M%S).sql
 
 # Restore database
-docker-compose -f docker-compose.prod.yml exec -T postgres psql -U cyclists_user cyclists_db < backup-20240101-120000.sql
+docker compose -f docker compose.prod.yml exec -T postgres psql -U cyclists_user cyclists_db < backup-20240101-120000.sql
 ```
 
 ### View Resource Usage
@@ -363,7 +363,7 @@ Check certificate status:
 
 ```bash
 # View Traefik logs
-docker-compose -f docker-compose.prod.yml logs traefik | grep -i certificate
+docker compose -f docker compose.prod.yml logs traefik | grep -i certificate
 
 # Check acme.json file
 sudo cat traefik-certificates/acme.json | jq
@@ -391,21 +391,21 @@ If certificates fail to generate:
 
 3. **Check Traefik Logs**:
    ```bash
-   docker-compose -f docker-compose.prod.yml logs traefik
+   docker compose -f docker compose.prod.yml logs traefik
    ```
 
 4. **Reset Certificates** (if needed):
    ```bash
-   docker-compose -f docker-compose.prod.yml down
+   docker compose -f docker compose.prod.yml down
    sudo rm traefik-certificates/acme.json
    touch traefik-certificates/acme.json
    chmod 600 traefik-certificates/acme.json
-   docker-compose -f docker-compose.prod.yml up -d
+   docker compose -f docker compose.prod.yml up -d
    ```
 
 5. **Let's Encrypt Rate Limits**: Let's Encrypt has rate limits (50 certificates per domain per week). For testing, use Let's Encrypt staging:
    
-   Modify `docker-compose.prod.yml`:
+   Modify `docker compose.prod.yml`:
    ```yaml
    - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
    ```
@@ -421,13 +421,13 @@ If certificates fail to generate:
 **Solutions**:
 ```bash
 # Check logs
-docker-compose -f docker-compose.prod.yml logs
+docker compose -f docker compose.prod.yml logs
 
 # Check specific service
-docker-compose -f docker-compose.prod.yml logs backend
+docker compose -f docker compose.prod.yml logs backend
 
 # Verify environment variables
-docker-compose -f docker-compose.prod.yml config
+docker compose -f docker compose.prod.yml config
 ```
 
 #### 2. Database Connection Errors
@@ -437,10 +437,10 @@ docker-compose -f docker-compose.prod.yml config
 **Solutions**:
 ```bash
 # Check if PostgreSQL is running
-docker-compose -f docker-compose.prod.yml ps postgres
+docker compose -f docker compose.prod.yml ps postgres
 
 # Check PostgreSQL logs
-docker-compose -f docker-compose.prod.yml logs postgres
+docker compose -f docker compose.prod.yml logs postgres
 
 # Verify DATABASE_URL format
 echo $DATABASE_URL
@@ -453,13 +453,13 @@ echo $DATABASE_URL
 **Solutions**:
 ```bash
 # Check if backend service is running
-docker-compose -f docker-compose.prod.yml ps
+docker compose -f docker compose.prod.yml ps
 
 # Check backend logs
-docker-compose -f docker-compose.prod.yml logs backend
+docker compose -f docker compose.prod.yml logs backend
 
 # Verify Traefik routing
-docker-compose -f docker-compose.prod.yml logs traefik | grep -i router
+docker compose -f docker compose.prod.yml logs traefik | grep -i router
 ```
 
 #### 4. SSL Certificate Errors
@@ -508,27 +508,27 @@ sudo swapon /swapfile
 
 Enable debug mode for more verbose logging:
 
-1. Add to `docker-compose.prod.yml` under Traefik command:
+1. Add to `docker compose.prod.yml` under Traefik command:
    ```yaml
    - "--log.level=DEBUG"
    ```
 
 2. Restart Traefik:
    ```bash
-   docker-compose -f docker-compose.prod.yml restart traefik
+   docker compose -f docker compose.prod.yml restart traefik
    ```
 
 ### Access Container Shell
 
 ```bash
 # Backend container
-docker-compose -f docker-compose.prod.yml exec backend sh
+docker compose -f docker compose.prod.yml exec backend sh
 
 # Database container
-docker-compose -f docker-compose.prod.yml exec postgres sh
+docker compose -f docker compose.prod.yml exec postgres sh
 
 # Web container
-docker-compose -f docker-compose.prod.yml exec web sh
+docker compose -f docker compose.prod.yml exec web sh
 ```
 
 ## Security Best Practices

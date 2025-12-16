@@ -36,7 +36,7 @@ fi
 # Build Docker images
 echo ""
 echo "🏗️  Building Docker images (this may take several minutes)..."
-docker-compose -f docker-compose.prod.yml build --no-cache
+docker compose -f docker-compose.prod.yml build --no-cache
 
 # Check if build was successful
 if [ $? -eq 0 ]; then
@@ -49,12 +49,12 @@ fi
 # Stop existing containers
 echo ""
 echo "🛑 Stopping existing containers..."
-docker-compose -f docker-compose.prod.yml down
+docker compose -f docker-compose.prod.yml down
 
 # Start services
 echo ""
 echo "🚀 Starting services..."
-docker-compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml up -d
 
 # Wait for PostgreSQL to be ready
 echo ""
@@ -64,7 +64,7 @@ sleep 10
 # Run database migrations
 echo ""
 echo "📊 Running database migrations..."
-docker-compose -f docker-compose.prod.yml exec -T backend npm run migrate:up
+docker compose -f docker-compose.prod.yml exec -T backend npm run migrate:up
 
 # Check migration status
 if [ $? -eq 0 ]; then
@@ -91,10 +91,10 @@ echo "  🚀 API:            https://api.${DOMAIN}"
 echo "  📊 Traefik:        https://traefik.${DOMAIN}"
 echo ""
 echo "Useful commands:"
-echo "  View logs:         docker-compose -f docker-compose.prod.yml logs -f"
-echo "  Check status:      docker-compose -f docker-compose.prod.yml ps"
-echo "  Stop services:     docker-compose -f docker-compose.prod.yml down"
-echo "  Restart services:  docker-compose -f docker-compose.prod.yml restart"
+echo "  View logs:         docker compose -f docker-compose.prod.yml logs -f"
+echo "  Check status:      docker compose -f docker-compose.prod.yml ps"
+echo "  Stop services:     docker compose -f docker-compose.prod.yml down"
+echo "  Restart services:  docker compose -f docker-compose.prod.yml restart"
 echo ""
 echo "Note: SSL certificates may take a few minutes to generate."
 echo "      If you see certificate errors, wait a moment and refresh."
