@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { generatePostStructuredData } from '../../../utils/structuredData';
 import type { PostWithDetails } from '@cyclists/config';
@@ -22,7 +21,7 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
       try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
         const response = await fetch(`${apiUrl}/api/posts/slug/${params.slug}`);
-        
+
         if (!response.ok) {
           throw new Error('Post not found');
         }
@@ -83,14 +82,20 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
         <meta name="description" content={post.metaDescription || post.content.substring(0, 160)} />
         {post.keywords && <meta name="keywords" content={post.keywords} />}
         <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.metaDescription || post.content.substring(0, 160)} />
+        <meta
+          property="og:description"
+          content={post.metaDescription || post.content.substring(0, 160)}
+        />
         <meta property="og:type" content="article" />
         {post.images && post.images.length > 0 && (
           <meta property="og:image" content={post.images[0].imageUrl} />
         )}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.metaDescription || post.content.substring(0, 160)} />
+        <meta
+          name="twitter:description"
+          content={post.metaDescription || post.content.substring(0, 160)}
+        />
         {post.images && post.images.length > 0 && (
           <meta name="twitter:image" content={post.images[0].imageUrl} />
         )}
@@ -103,74 +108,65 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
         <article className={styles.article}>
           <header className={styles.header}>
             <h1 className={styles.title}>{post.title}</h1>
-          <div className={styles.meta}>
-            <div className={styles.author}>
-              {post.authorAvatar && (
-                <Image
-                  src={post.authorAvatar}
-                  alt={post.authorName}
-                  width={40}
-                  height={40}
-                  className={styles.authorAvatar}
-                  style={{ objectFit: 'cover' }}
-                />
-              )}
-              <span className={styles.authorName}>{post.authorName}</span>
+            <div className={styles.meta}>
+              {' '}
+              <div className={styles.author}>
+                {post.authorAvatar && (
+                  <img
+                    src={post.authorAvatar}
+                    alt={post.authorName}
+                    className={styles.authorAvatar}
+                  />
+                )}
+                <span className={styles.authorName}>{post.authorName}</span>
+              </div>
+              <time className={styles.date}>
+                {new Date(post.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
             </div>
-            <time className={styles.date}>
-              {new Date(post.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
-          </div>
-        </header>
-
-        {post.images && post.images.length > 0 && (
-          <div className={styles.images}>
-            {post.images.map((image) => (
-              <div key={image.id} className={styles.image}>
-                <Image
+          </header>{' '}
+          {post.images && post.images.length > 0 && (
+            <div className={styles.images}>
+              {post.images.map((image) => (
+                <img
+                  key={image.id}
                   src={image.imageUrl}
                   alt={post.title}
-                  fill
-                  style={{ objectFit: 'contain' }}
-                  sizes="(max-width: 768px) 100vw, 800px"
+                  className={styles.image}
                 />
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className={styles.content}>
-          <p className={styles.text}>{post.content}</p>
-        </div>
-
-        <div className={styles.actions}>
-          <div className={styles.stats}>
-            <span className={styles.replyCount}>
-              💬 {post.replyCount} {post.replyCount === 1 ? 'Reply' : 'Replies'}
-            </span>
-          </div>
-          <button onClick={handleReply} className={styles.replyButton}>
-            {user ? 'Reply to this post' : 'Login to reply'}
-          </button>
-        </div>
-
-        {!user && (
-          <div className={styles.loginPrompt}>
-            <p>Want to join the conversation?</p>
-            <div className={styles.loginActions}>
-              <Link href={`/login?redirect=/p/${params.slug}`} className={styles.loginButton}>
-                Sign In
-              </Link>
-              <Link href="/register" className={styles.registerButton}>
-                Create Account
-              </Link>
+              ))}
             </div>
+          )}
+          <div className={styles.content}>
+            <p className={styles.text}>{post.content}</p>
           </div>
-        )}
+          <div className={styles.actions}>
+            <div className={styles.stats}>
+              <span className={styles.replyCount}>
+                💬 {post.replyCount} {post.replyCount === 1 ? 'Reply' : 'Replies'}
+              </span>
+            </div>
+            <button onClick={handleReply} className={styles.replyButton}>
+              {user ? 'Reply to this post' : 'Login to reply'}
+            </button>
+          </div>
+          {!user && (
+            <div className={styles.loginPrompt}>
+              <p>Want to join the conversation?</p>
+              <div className={styles.loginActions}>
+                <Link href={`/login?redirect=/p/${params.slug}`} className={styles.loginButton}>
+                  Sign In
+                </Link>
+                <Link href="/register" className={styles.registerButton}>
+                  Create Account
+                </Link>
+              </div>
+            </div>
+          )}
         </article>
       </main>
     </>

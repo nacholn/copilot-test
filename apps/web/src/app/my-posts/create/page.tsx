@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
@@ -195,13 +194,16 @@ export default function CreatePost() {
                   <span>{t('imageUpload.clickToUpload')}</span>
                   <span className={styles.uploadHint}>{t('posts.maxImages')}</span>
                 </label>
-              </div>
-
+              </div>{' '}
               {imagePreviews.length > 0 && (
                 <div className={styles.imagePreviews}>
                   {imagePreviews.map((preview, index) => (
                     <div key={index} className={styles.imagePreview}>
-                      <Image src={preview} alt={`Preview ${index + 1}`} fill style={{ objectFit: 'cover' }} sizes="200px" />
+                      <img
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        className={styles.previewImg}
+                      />
                       <button
                         type="button"
                         onClick={() => removeImage(index)}

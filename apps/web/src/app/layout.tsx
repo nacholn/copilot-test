@@ -10,7 +10,8 @@ import { defaultViewport } from '../config/viewport';
 
 export const metadata = {
   title: 'Cyclists Social Network',
-  description: 'Connect with cyclists around the world. Share routes, find cycling partners, and join the community.',
+  description:
+    'Connect with cyclists around the world. Share routes, find cycling partners, and join the community.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
@@ -26,9 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/icon-192x192.png" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
-        <meta name="theme-color" content="#FE3C72" />
+        <link rel="icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="theme-color" content="#007bff" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Cyclists" />

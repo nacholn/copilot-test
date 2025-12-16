@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
@@ -78,17 +77,19 @@ export default function Posts() {
           ) : (
             <div className={styles.postsList}>
               {posts.map((post) => (
-                <Link
-                  key={post.id}
-                  href={`/my-posts/${post.id}`}
-                  className={styles.postCard}
-                >
+                <Link key={post.id} href={`/my-posts/${post.id}`} className={styles.postCard}>
+                  {' '}
                   {post.images.length > 0 && (
                     <div className={styles.postImage}>
-                      <Image src={post.images[0].imageUrl} alt={post.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" />
+                      <img
+                        src={post.images[0].imageUrl}
+                        alt={post.title}
+                        className={styles.postImg}
+                      />
                       {post.images.length > 1 && (
                         <div className={styles.imageCount}>
-                          +{post.images.length - 1} {post.images.length === 2 ? t('posts.image') : t('posts.images')}
+                          +{post.images.length - 1}{' '}
+                          {post.images.length === 2 ? t('posts.image') : t('posts.images')}
                         </div>
                       )}
                     </div>
@@ -115,7 +116,8 @@ export default function Posts() {
                         {post.visibility === 'public' ? t('posts.public') : t('posts.friends')}
                       </span>
                       <span className={styles.replyCount}>
-                        💬 {post.replyCount} {post.replyCount === 1 ? t('posts.reply') : t('posts.replies')}
+                        💬 {post.replyCount}{' '}
+                        {post.replyCount === 1 ? t('posts.reply') : t('posts.replies')}
                       </span>
                       <span className={styles.postDate}>
                         {new Date(post.createdAt).toLocaleDateString()}
