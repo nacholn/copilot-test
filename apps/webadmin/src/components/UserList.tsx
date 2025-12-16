@@ -14,32 +14,39 @@ interface UserListProps {
 export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush }: UserListProps) {
   const [pushTokenCounts, setPushTokenCounts] = useState<Record<string, number>>({});
 
-  // Fetch push token counts for all users
+  // Fetch push token counts for all users using batch endpoint
   useEffect(() => {
     const fetchPushTokenCounts = async () => {
-      const counts: Record<string, number> = {};
-      await Promise.all(
-        users.map(async (user) => {
-          try {
-            const response = await fetch(`/api/push-subscriptions?userId=${user.userId}`);
-            const data = await response.json();
-            if (data.success && data.data) {
-              counts[user.userId] = data.data.length;
-            } else {
-              counts[user.userId] = 0;
-            }
-          } catch (error) {
-            console.error('Error fetching push token count for user:', user.userId, error);
-            counts[user.userId] = 0;
-          }
-        })
-      );
-      setPushTokenCounts(counts);
+      if (users.length === 0) return;
+
+      try {
+        const userIds = users.map((user) => user.userId).join(',');
+        const response = await fetch(`/api/webadmin/push-token-counts?userIds=${encodeURIComponent(userIds)}`);
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          setPushTokenCounts(data.data);
+        } else {
+          console.error('Error fetching push token counts:', data.error);
+          // Initialize all counts to 0 on error
+          const emptyCounts: Record<string, number> = {};
+          users.forEach((user) => {
+            emptyCounts[user.userId] = 0;
+          });
+          setPushTokenCounts(emptyCounts);
+        }
+      } catch (error) {
+        console.error('Error fetching push token counts:', error);
+        // Initialize all counts to 0 on error
+        const emptyCounts: Record<string, number> = {};
+        users.forEach((user) => {
+          emptyCounts[user.userId] = 0;
+        });
+        setPushTokenCounts(emptyCounts);
+      }
     };
 
-    if (users.length > 0) {
-      fetchPushTokenCounts();
-    }
+    fetchPushTokenCounts();
   }, [users]);
 
   const formatDate = (date?: Date) => {
@@ -124,7 +131,7 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
                       fontWeight: '600',
                     }}
                   >
-                    {user.interactionScore || 0}
+                    {user.interactionScore}
                   </span>
                 </td>
                 <td style={{ padding: '10px 8px', whiteSpace: 'nowrap' }}>
