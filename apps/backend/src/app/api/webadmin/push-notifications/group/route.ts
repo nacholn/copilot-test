@@ -113,11 +113,10 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('[WebAdmin] Send group push notification error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json<ApiResponse>(
       {
         success: false,
-        error: `Failed to send notification: ${errorMessage}`,
+        error: 'Failed to send notification',
       },
       { status: 500 }
     );

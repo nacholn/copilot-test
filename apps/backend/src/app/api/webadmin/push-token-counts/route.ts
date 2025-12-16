@@ -37,6 +37,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Validate all userIds are valid UUIDs
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const invalidIds = userIds.filter((id) => !uuidRegex.test(id));
+    if (invalidIds.length > 0) {
+      return NextResponse.json<ApiResponse>(
+        {
+          success: false,
+          error: 'Invalid user ID format',
+        },
+        { status: 400 }
+      );
+    }
+
     // Query to count push subscriptions for each user
     const result = await query(
       `SELECT user_id, COUNT(*) as count 

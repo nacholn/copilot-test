@@ -22,20 +22,12 @@ export function PushTokensModal({ user, onClose }: PushTokensModalProps) {
     const fetchTokens = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/push-subscriptions?userId=${user.userId}`);
+        // Use webadmin-specific endpoint for detailed subscription info
+        const response = await fetch(`/api/webadmin/push-subscriptions?userId=${user.userId}`);
         const data = await response.json();
 
-        if (data.success) {
-          // Fetch detailed info from backend if available
-          const detailResponse = await fetch(`/api/webadmin/push-subscriptions?userId=${user.userId}`);
-          const detailData = await detailResponse.json();
-          
-          if (detailData.success && detailData.data) {
-            setTokens(detailData.data);
-          } else {
-            // Fallback to basic data
-            setTokens(data.data || []);
-          }
+        if (data.success && data.data) {
+          setTokens(data.data);
           setError(null);
         } else {
           setError(data.error || 'Failed to fetch push tokens');

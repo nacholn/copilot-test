@@ -16,6 +16,14 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
 
   // Fetch push token counts for all users using batch endpoint
   useEffect(() => {
+    const initializeEmptyCounts = () => {
+      const emptyCounts: Record<string, number> = {};
+      users.forEach((user) => {
+        emptyCounts[user.userId] = 0;
+      });
+      return emptyCounts;
+    };
+
     const fetchPushTokenCounts = async () => {
       if (users.length === 0) return;
 
@@ -27,22 +35,12 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
         if (data.success && data.data) {
           setPushTokenCounts(data.data);
         } else {
-          console.error('Error fetching push token counts:', data.error);
-          // Initialize all counts to 0 on error
-          const emptyCounts: Record<string, number> = {};
-          users.forEach((user) => {
-            emptyCounts[user.userId] = 0;
-          });
-          setPushTokenCounts(emptyCounts);
+          console.error('Error fetching push token counts:', data.error || 'Unknown error');
+          setPushTokenCounts(initializeEmptyCounts());
         }
       } catch (error) {
-        console.error('Error fetching push token counts:', error);
-        // Initialize all counts to 0 on error
-        const emptyCounts: Record<string, number> = {};
-        users.forEach((user) => {
-          emptyCounts[user.userId] = 0;
-        });
-        setPushTokenCounts(emptyCounts);
+        console.error('Error fetching push token counts:', error instanceof Error ? error.message : String(error));
+        setPushTokenCounts(initializeEmptyCounts());
       }
     };
 
