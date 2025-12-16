@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTranslations } from '../../../hooks/useTranslations';
 import { generateGroupStructuredData } from '../../../utils/structuredData';
 import type { GroupWithMemberCount, GroupImage } from '@cyclists/config';
 import styles from './groupDetail.module.css';
@@ -12,6 +13,7 @@ import styles from './groupDetail.module.css';
 export default function PublicGroupDetail({ params }: { params: { slug: string } }) {
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslations();
   const [group, setGroup] = useState<(GroupWithMemberCount & { images?: GroupImage[] }) | null>(
     null
   );
@@ -56,7 +58,7 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
   if (loading) {
     return (
       <main className={styles.main}>
-        <div className={styles.loading}>Loading...</div>
+        <div className={styles.loading}>{t('common.loading')}</div>
       </main>
     );
   }

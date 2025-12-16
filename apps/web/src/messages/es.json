@@ -193,7 +193,22 @@
   "notifications": {
     "title": "Notificaciones",
     "noNotifications": "Aún no hay notificaciones",
-    "markAllRead": "Marcar todas como leídas"
+    "noNotificationsSubtext": "Cuando alguien te envíe una solicitud de amistad o mensaje, lo verás aquí.",
+    "markAllRead": "Marcar todas como leídas",
+    "timeAgo": {
+      "minutesAgo": "hace {count}m",
+      "hoursAgo": "hace {count}h",
+      "daysAgo": "hace {count}d"
+    },
+    "types": {
+      "friendRequest": "Nueva Solicitud de Amistad",
+      "friendRequestAccepted": "Solicitud de Amistad Aceptada",
+      "message": "Nuevo Mensaje",
+      "groupMessage": "Nuevo mensaje en {groupName}",
+      "newPost": "Nueva publicación de amigo",
+      "newPublicPost": "Nueva publicación pública",
+      "postReply": "Nueva respuesta en publicación"
+    }
   },
   "levels": {
     "beginner": "Principiante",

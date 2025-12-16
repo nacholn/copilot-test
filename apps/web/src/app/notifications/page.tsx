@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWebSocket } from '../../contexts/WebSocketContext';
+import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/auth/AuthGuard';
 import { Avatar } from '../../components/profile/Avatar';
 import styles from './notifications.module.css';
@@ -11,6 +12,7 @@ import styles from './notifications.module.css';
 export default function Notifications() {
   const { user } = useAuth();
   const { notifications, unreadNotificationCount, markNotificationAsRead, markAllNotificationsAsRead } = useWebSocket();
+  const { t } = useTranslations();
 
   const handleNotificationClick = (notificationId: string, actionUrl?: string) => {
     markNotificationAsRead(notificationId);
@@ -42,11 +44,11 @@ export default function Notifications() {
 
     if (diffInHours < 1) {
       const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-      return `${diffInMinutes}m ago`;
+      return t('notifications.timeAgo.minutesAgo').replace('{count}', diffInMinutes.toString());
     } else if (diffInHours < 24) {
-      return `${Math.floor(diffInHours)}h ago`;
+      return t('notifications.timeAgo.hoursAgo').replace('{count}', Math.floor(diffInHours).toString());
     } else if (diffInDays < 7) {
-      return `${Math.floor(diffInDays)}d ago`;
+      return t('notifications.timeAgo.daysAgo').replace('{count}', Math.floor(diffInDays).toString());
     } else {
       return new Date(date).toLocaleDateString();
     }
@@ -57,20 +59,20 @@ export default function Notifications() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <h1 className={styles.title}>Notifications</h1>
+            <h1 className={styles.title}>{t('notifications.title')}</h1>
             {unreadNotificationCount > 0 && (
               <button onClick={markAllNotificationsAsRead} className={styles.markAllButton}>
-                Mark all as read
+                {t('notifications.markAllRead')}
               </button>
             )}
           </div>
 
           {notifications.length === 0 ? (
             <div className={styles.emptyState}>
-              <p className={styles.emptyText}>No notifications yet.</p>
-              <p className={styles.emptySubtext}>When someone sends you a friend request or message, you&apos;ll see it here.</p>
+              <p className={styles.emptyText}>{t('notifications.noNotifications')}</p>
+              <p className={styles.emptySubtext}>{t('notifications.noNotificationsSubtext')}</p>
               <Link href="/" className={styles.button}>
-                Back to Home
+                {t('common.back')}
               </Link>
             </div>
           ) : (

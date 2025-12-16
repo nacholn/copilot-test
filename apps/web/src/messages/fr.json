@@ -189,7 +189,22 @@
   "notifications": {
     "title": "Notifications",
     "noNotifications": "Pas encore de notifications",
-    "markAllRead": "Tout marquer comme lu"
+    "noNotificationsSubtext": "Lorsque quelqu'un vous envoie une demande d'ami ou un message, vous le verrez ici.",
+    "markAllRead": "Tout marquer comme lu",
+    "timeAgo": {
+      "minutesAgo": "il y a {count}m",
+      "hoursAgo": "il y a {count}h",
+      "daysAgo": "il y a {count}j"
+    },
+    "types": {
+      "friendRequest": "Nouvelle Demande d'Ami",
+      "friendRequestAccepted": "Demande d'Ami Acceptée",
+      "message": "Nouveau Message",
+      "groupMessage": "Nouveau message dans {groupName}",
+      "newPost": "Nouvelle publication d'un ami",
+      "newPublicPost": "Nouvelle publication publique",
+      "postReply": "Nouvelle réponse sur la publication"
+    }
   },
   "levels": {
     "beginner": "Débutant",

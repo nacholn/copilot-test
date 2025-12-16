@@ -216,9 +216,14 @@ function HomeInner() {
   );
 }
 
+function HomeLoader() {
+  const { t } = useTranslations();
+  return <Loader fullScreen message={t('common.loading')} />;
+}
+
 export default function Home() {
   return (
-    <Suspense fallback={<Loader fullScreen message="Loading..." />}>
+    <Suspense fallback={<HomeLoader />}>
       <HomeInner />
     </Suspense>
   );

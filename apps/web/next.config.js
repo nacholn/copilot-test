@@ -119,11 +119,7 @@ const nextConfig = {
           ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
           : 'http://localhost:3001/api/:path*',
       },
-      {
-        // Serve static HTML for email-verified to avoid React/Supabase processing
-        source: '/email-verified',
-        destination: '/email-verified.html',
-      },
+
     ];
   },
 };

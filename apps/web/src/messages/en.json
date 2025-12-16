@@ -193,7 +193,22 @@
   "notifications": {
     "title": "Notifications",
     "noNotifications": "No notifications yet",
-    "markAllRead": "Mark all as read"
+    "noNotificationsSubtext": "When someone sends you a friend request or message, you'll see it here.",
+    "markAllRead": "Mark all as read",
+    "timeAgo": {
+      "minutesAgo": "{count}m ago",
+      "hoursAgo": "{count}h ago",
+      "daysAgo": "{count}d ago"
+    },
+    "types": {
+      "friendRequest": "New Friend Request",
+      "friendRequestAccepted": "Friend Request Accepted",
+      "message": "New Message",
+      "groupMessage": "New message in {groupName}",
+      "newPost": "New post from friend",
+      "newPublicPost": "New public post",
+      "postReply": "New reply on post"
+    }
   },
   "levels": {
     "beginner": "Beginner",
