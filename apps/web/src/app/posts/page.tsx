@@ -3,8 +3,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from '../../hooks/useTranslations';
-import { PublicPostCard } from '../../components/PublicPostCard';
-import { Loader } from '../../components/Loader';
+import { PublicPostCard } from '../../components/cards/PublicPostCard';
+import { Loader } from '../../components/ui/Loader';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from './posts.module.css';
 

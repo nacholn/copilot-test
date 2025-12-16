@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ProfileImage } from '@cyclists/config';
-import { useTranslations } from '../hooks/useTranslations';
-import { Loader } from './Loader';
+import { useTranslations } from '../../hooks/useTranslations';
+import { Loader } from '../ui/Loader';
 import styles from './profile-image-gallery.module.css';
 
 interface ProfileImageGalleryProps {

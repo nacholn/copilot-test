@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '../contexts/AuthContext';
-import { useWebSocket } from '../contexts/WebSocketContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { useWebSocket } from '../../contexts/WebSocketContext';
 import { useRouter } from 'next/navigation';
-import { useTranslations } from '../hooks/useTranslations';
-import { LanguageSelector } from './LanguageSelector';
-import { AuthModal } from './AuthModal';
+import { useTranslations } from '../../hooks/useTranslations';
+import { LanguageSelector } from '../selectors/LanguageSelector';
+import { AuthModal } from '../auth/AuthModal';
 import Swal from 'sweetalert2';
 import styles from './header.module.css';
 

@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
-import { AuthGuard } from '../../../components/AuthGuard';
-import { Loader } from '../../../components/Loader';
+import { AuthGuard } from '../../../components/auth/AuthGuard';
+import { Loader } from '../../../components/ui/Loader';
 import Swal from 'sweetalert2';
 import styles from './create.module.css';
 

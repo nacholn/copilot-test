@@ -4,9 +4,9 @@ import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslations } from '../hooks/useTranslations';
-import { PublicPostCard } from '../components/PublicPostCard';
-import { PublicGroupCard } from '../components/PublicGroupCard';
-import { Loader } from '../components/Loader';
+import { PublicPostCard } from '../components/cards/PublicPostCard';
+import { PublicGroupCard } from '../components/cards/PublicGroupCard';
+import { Loader } from '../components/ui/Loader';
 import type { PostWithDetails, GroupWithMemberCount } from '@cyclists/config';
 import styles from './page.module.css';
 

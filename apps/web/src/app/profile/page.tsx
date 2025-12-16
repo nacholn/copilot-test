@@ -7,11 +7,11 @@ import commonStyles from '../../styles/common.module.css';
 import { API_URL, type Profile } from '@cyclists/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
-import { AuthGuard } from '../../components/AuthGuard';
-import { ProfileForm } from '../../components/ProfileForm';
-import { Avatar } from '../../components/Avatar';
-import { Loader } from '../../components/Loader';
-import { ProfileImageGallery } from '../../components/ProfileImageGallery';
+import { AuthGuard } from '../../components/auth/AuthGuard';
+import { ProfileForm } from '../../components/profile/ProfileForm';
+import { Avatar } from '../../components/profile/Avatar';
+import { Loader } from '../../components/ui/Loader';
+import { ProfileImageGallery } from '../../components/profile/ProfileImageGallery';
 
 export default function Profile() {
   const { user, signOut } = useAuth();

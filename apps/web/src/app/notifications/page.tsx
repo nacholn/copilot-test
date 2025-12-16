@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWebSocket } from '../../contexts/WebSocketContext';
-import { AuthGuard } from '../../components/AuthGuard';
-import { Avatar } from '../../components/Avatar';
+import { AuthGuard } from '../../components/auth/AuthGuard';
+import { Avatar } from '../../components/profile/Avatar';
 import styles from './notifications.module.css';
 
 export default function Notifications() {
