@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
@@ -200,7 +201,7 @@ export default function CreatePost() {
                 <div className={styles.imagePreviews}>
                   {imagePreviews.map((preview, index) => (
                     <div key={index} className={styles.imagePreview}>
-                      <img src={preview} alt={`Preview ${index + 1}`} />
+                      <Image src={preview} alt={`Preview ${index + 1}`} fill style={{ objectFit: 'cover' }} sizes="200px" />
                       <button
                         type="button"
                         onClick={() => removeImage(index)}

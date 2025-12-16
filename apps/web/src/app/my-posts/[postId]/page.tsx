@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
@@ -32,15 +33,7 @@ export default function PostDetail() {
   const [sendingReply, setSendingReply] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
 
-  useEffect(() => {
-    if (user && postId) {
-      fetchPost();
-      fetchReplies();
-      markAsViewed();
-    }
-  }, [user, postId]);
-
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     try {
       const response = await fetch(`/api/posts/${postId}?userId=${user!.id}`);
       const data = await response.json();
@@ -53,9 +46,9 @@ export default function PostDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [postId, user]);
 
-  const fetchReplies = async () => {
+  const fetchReplies = useCallback(async () => {
     try {
       const response = await fetch(`/api/posts/${postId}/replies`);
       const data = await response.json();
@@ -66,9 +59,9 @@ export default function PostDetail() {
     } catch (error) {
       console.error('Error fetching replies:', error);
     }
-  };
+  }, [postId]);
 
-  const markAsViewed = async () => {
+  const markAsViewed = useCallback(async () => {
     try {
       await fetch(`/api/posts/${postId}/view`, {
         method: 'POST',
@@ -80,7 +73,15 @@ export default function PostDetail() {
     } catch (error) {
       console.error('Error marking post as viewed:', error);
     }
-  };
+  }, [postId, user]);
+
+  useEffect(() => {
+    if (user && postId) {
+      fetchPost();
+      fetchReplies();
+      markAsViewed();
+    }
+  }, [user, postId, fetchPost, fetchReplies, markAsViewed]);
 
   const handleSendReply = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -183,9 +184,12 @@ export default function PostDetail() {
             {post.images && post.images.length > 0 && (
               <div className={styles.imagesSection}>
                 <div className={styles.mainImage}>
-                  <img
+                  <Image
                     src={post.images[selectedImage]?.imageUrl}
                     alt={`${post.title} - Image ${selectedImage + 1}`}
+                    fill
+                    style={{ objectFit: 'contain' }}
+                    sizes="(max-width: 768px) 100vw, 800px"
                   />
                 </div>
                 {post.images.length > 1 && (
@@ -198,7 +202,7 @@ export default function PostDetail() {
                           index === selectedImage ? styles.thumbnailActive : ''
                         }`}
                       >
-                        <img src={image.imageUrl} alt={`Thumbnail ${index + 1}`} />
+                        <Image src={image.imageUrl} alt={`Thumbnail ${index + 1}`} fill style={{ objectFit: 'cover' }} sizes="100px" />
                       </button>
                     ))}
                   </div>

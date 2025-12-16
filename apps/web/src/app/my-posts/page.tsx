@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
@@ -17,13 +18,7 @@ export default function Posts() {
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      fetchPosts();
-    }
-  }, [user, showAll]);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     if (!user) return;
 
     setLoading(true);
@@ -39,7 +34,13 @@ export default function Posts() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, showAll]);
+
+  useEffect(() => {
+    if (user) {
+      fetchPosts();
+    }
+  }, [user, showAll, fetchPosts]);
 
   const toggleFilter = () => {
     setShowAll(!showAll);
@@ -84,7 +85,7 @@ export default function Posts() {
                 >
                   {post.images.length > 0 && (
                     <div className={styles.postImage}>
-                      <img src={post.images[0].imageUrl} alt={post.title} />
+                      <Image src={post.images[0].imageUrl} alt={post.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" />
                       {post.images.length > 1 && (
                         <div className={styles.imageCount}>
                           +{post.images.length - 1} {post.images.length === 2 ? t('posts.image') : t('posts.images')}

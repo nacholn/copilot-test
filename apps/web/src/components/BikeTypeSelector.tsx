@@ -60,10 +60,9 @@ export function BikeTypeSelector({ value, onChange, required, className }: BikeT
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
-        aria-label="Select bike type"
+        aria-label={`Select bike type${required ? ' (required)' : ''}`}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-required={required}
       >
         <div className={styles.selected}>
           <span className={styles.icon}>{currentBikeType.icon}</span>

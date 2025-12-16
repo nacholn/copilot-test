@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { generatePostStructuredData } from '../../../utils/structuredData';
 import type { PostWithDetails } from '@cyclists/config';
@@ -105,10 +106,13 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
           <div className={styles.meta}>
             <div className={styles.author}>
               {post.authorAvatar && (
-                <img
+                <Image
                   src={post.authorAvatar}
                   alt={post.authorName}
+                  width={40}
+                  height={40}
                   className={styles.authorAvatar}
+                  style={{ objectFit: 'cover' }}
                 />
               )}
               <span className={styles.authorName}>{post.authorName}</span>
@@ -126,12 +130,15 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
         {post.images && post.images.length > 0 && (
           <div className={styles.images}>
             {post.images.map((image) => (
-              <img
-                key={image.id}
-                src={image.imageUrl}
-                alt={post.title}
-                className={styles.image}
-              />
+              <div key={image.id} className={styles.image}>
+                <Image
+                  src={image.imageUrl}
+                  alt={post.title}
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  sizes="(max-width: 768px) 100vw, 800px"
+                />
+              </div>
             ))}
           </div>
         )}

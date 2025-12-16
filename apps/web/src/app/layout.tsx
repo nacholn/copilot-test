@@ -3,20 +3,35 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import { WebSocketProvider } from '../contexts/WebSocketContext';
 import { Header } from '../components/Header';
+import { PWAUpdatePrompt } from '../components/PWAUpdatePrompt';
+import { WebPushNotificationPermission } from '../components/WebPushNotificationPermission';
+import { PWAInstallPrompt } from '../components/PWAInstallPrompt';
+import { defaultViewport } from '../config/viewport';
 
 export const metadata = {
   title: 'Cyclists Social Network',
-  description: 'Connect with cyclists around the world',
+  description: 'Connect with cyclists around the world. Share routes, find cycling partners, and join the community.',
   manifest: '/manifest.json',
-  themeColor: '#FE3C72',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Cyclists',
+  },
 };
+
+export const viewport = defaultViewport;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <meta name="theme-color" content="#FE3C72" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Cyclists" />
       </head>
       <body>
         <LanguageProvider>
@@ -24,6 +39,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <WebSocketProvider>
               <Header />
               {children}
+              <PWAUpdatePrompt />
+              <PWAInstallPrompt />
+              <WebPushNotificationPermission />
             </WebSocketProvider>
           </AuthProvider>
         </LanguageProvider>

@@ -29,7 +29,14 @@ cyclists-social-network/
 
 ### Web App (apps/web)
 
-- **Progressive Web App**: Offline-capable with service worker
+- **Progressive Web App**: Full PWA with offline support, installable, and service worker
+- **PWA Features**: 
+  - Version update notifications with modal
+  - Push notifications for messages
+  - Smart notification permission requests
+  - Install prompts for better user experience
+  - Advanced caching strategies (CacheFirst, NetworkFirst, StaleWhileRevalidate)
+  - Offline fallback page
 - **Authentication UI**: Login, register, password recovery flows
 - **Profile Management**: View and edit user profiles with image upload
 - **Drag-Drop Image Upload**: Intuitive profile picture management

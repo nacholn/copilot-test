@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { generateGroupStructuredData } from '../../../utils/structuredData';
 import type { GroupWithMemberCount, GroupImage } from '@cyclists/config';
@@ -99,7 +100,7 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
           <header className={styles.header}>
             {group.mainImage && (
             <div className={styles.coverImage}>
-              <img src={group.mainImage} alt={group.name} />
+              <Image src={group.mainImage} alt={group.name} fill style={{ objectFit: 'cover' }} sizes="100vw" />
             </div>
           )}
           <div className={styles.headerContent}>
@@ -128,12 +129,15 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
             <h2>Photos</h2>
             <div className={styles.images}>
               {group.images.map((image) => (
-                <img
-                  key={image.id}
-                  src={image.imageUrl}
-                  alt={group.name}
-                  className={styles.image}
-                />
+                <div key={image.id} className={styles.image}>
+                  <Image
+                    src={image.imageUrl}
+                    alt={group.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
               ))}
             </div>
           </div>

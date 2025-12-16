@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWebSocket } from '../../contexts/WebSocketContext';
@@ -16,7 +16,16 @@ import type {
 } from '@cyclists/config';
 import styles from './chat.module.css';
 
-export default function Chat() {
+// Chat page uses white theme color for better readability
+export const viewport = {
+  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
+function ChatInner() {
   const { user } = useAuth();
   const { onNewMessage, offNewMessage, sendTypingIndicator, onlineUsers } = useWebSocket();
   const { t } = useTranslations();
@@ -29,19 +38,106 @@ export default function Chat() {
   const [groupConversations, setGroupConversations] = useState<GroupConversation[]>([]);
   const [selectedFriendId, setSelectedFriendId] = useState<string | null>(friendIdFromUrl);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(groupIdFromUrl);
-  const [messages, setMessages] = useState<Message[] | GroupMessageWithSender[]>([]);
+  const [messages, setMessages] = useState<(Message | GroupMessageWithSender)[]>([]);
   const [messageIds, setMessageIds] = useState<Set<string>>(new Set());
   const [messageText, setMessageText] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
 
+  // Define all callbacks before using them in useEffect
+  const fetchConversations = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/conversations?userId=${user?.id}`);
+      const data = await response.json();
+
+      if (data.success) {
+        setConversations(data.data.conversations || []);
+        setGroupConversations(data.data.groupConversations || []);
+      }
+    } catch (error) {
+      console.error('Error fetching conversations:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id]);
+
+  const fetchMessages = useCallback(
+    async (friendId: string) => {
+      try {
+        const response = await fetch(
+          `/api/messages?userId=${user?.id}&friendId=${friendId}&limit=50`
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          // Reverse to show oldest first
+          const reversedMessages = data.data.reverse();
+          setMessages(reversedMessages);
+          // Build message ID set for fast lookup
+          setMessageIds(new Set(reversedMessages.map((m: Message) => m.id)));
+        }
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    },
+    [user?.id]
+  );
+
+  const markMessagesAsRead = useCallback(
+    async (friendId: string) => {
+      try {
+        await fetch(`/api/messages?userId=${user?.id}&friendId=${friendId}`, {
+          method: 'PATCH',
+        });
+        // Refresh conversations to update unread counts
+        fetchConversations();
+      } catch (error) {
+        console.error('Error marking messages as read:', error);
+      }
+    },
+    [user?.id, fetchConversations]
+  );
+
+  const fetchGroupMessages = useCallback(async (groupId: string) => {
+    try {
+      const response = await fetch(`/api/groups/${groupId}/messages?limit=50`);
+      const data = await response.json();
+
+      if (data.success) {
+        // Reverse to show oldest first
+        const reversedMessages = data.data.reverse();
+        setMessages(reversedMessages);
+        // Build message ID set for fast lookup
+        setMessageIds(new Set(reversedMessages.map((m: GroupMessageWithSender) => m.id)));
+      }
+    } catch (error) {
+      console.error('Error fetching group messages:', error);
+    }
+  }, []);
+
+  const markGroupMessagesAsRead = useCallback(
+    async (groupId: string) => {
+      try {
+        await fetch(`/api/groups/${groupId}/messages?userId=${user?.id}`, {
+          method: 'PATCH',
+        });
+        // Refresh conversations to update unread counts
+        fetchConversations();
+      } catch (error) {
+        console.error('Error marking group messages as read:', error);
+      }
+    },
+    [user?.id, fetchConversations]
+  );
+
   // Fetch conversations on mount
   useEffect(() => {
     if (user) {
       fetchConversations();
     }
-  }, [user]);
+  }, [user, fetchConversations]);
 
   // Fetch messages when friend or group is selected
   useEffect(() => {
@@ -52,7 +148,15 @@ export default function Chat() {
       fetchGroupMessages(selectedGroupId);
       markGroupMessagesAsRead(selectedGroupId);
     }
-  }, [user, selectedFriendId, selectedGroupId]);
+  }, [
+    user,
+    selectedFriendId,
+    selectedGroupId,
+    fetchMessages,
+    markMessagesAsRead,
+    fetchGroupMessages,
+    markGroupMessagesAsRead,
+  ]);
 
   // Handler for selecting a friend conversation
   const handleSelectFriend = (friendId: string) => {
@@ -107,84 +211,15 @@ export default function Chat() {
     return () => {
       offNewMessage(handleNewMessage);
     };
-  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage]);
-
-  const fetchConversations = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/conversations?userId=${user?.id}`);
-      const data = await response.json();
-
-      if (data.success) {
-        setConversations(data.data.conversations || []);
-        setGroupConversations(data.data.groupConversations || []);
-      }
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchMessages = async (friendId: string) => {
-    try {
-      const response = await fetch(
-        `/api/messages?userId=${user?.id}&friendId=${friendId}&limit=50`
-      );
-      const data = await response.json();
-
-      if (data.success) {
-        // Reverse to show oldest first
-        const reversedMessages = data.data.reverse();
-        setMessages(reversedMessages);
-        // Build message ID set for fast lookup
-        setMessageIds(new Set(reversedMessages.map((m: Message) => m.id)));
-      }
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
-
-  const markMessagesAsRead = async (friendId: string) => {
-    try {
-      await fetch(`/api/messages?userId=${user?.id}&friendId=${friendId}`, {
-        method: 'PATCH',
-      });
-      // Refresh conversations to update unread counts
-      fetchConversations();
-    } catch (error) {
-      console.error('Error marking messages as read:', error);
-    }
-  };
-
-  const fetchGroupMessages = async (groupId: string) => {
-    try {
-      const response = await fetch(`/api/groups/${groupId}/messages?limit=50`);
-      const data = await response.json();
-
-      if (data.success) {
-        // Reverse to show oldest first
-        const reversedMessages = data.data.reverse();
-        setMessages(reversedMessages);
-        // Build message ID set for fast lookup
-        setMessageIds(new Set(reversedMessages.map((m: GroupMessageWithSender) => m.id)));
-      }
-    } catch (error) {
-      console.error('Error fetching group messages:', error);
-    }
-  };
-
-  const markGroupMessagesAsRead = async (groupId: string) => {
-    try {
-      await fetch(`/api/groups/${groupId}/messages?userId=${user?.id}`, {
-        method: 'PATCH',
-      });
-      // Refresh conversations to update unread counts
-      fetchConversations();
-    } catch (error) {
-      console.error('Error marking group messages as read:', error);
-    }
-  };
+  }, [
+    user,
+    selectedFriendId,
+    messageIds,
+    onNewMessage,
+    offNewMessage,
+    fetchConversations,
+    markMessagesAsRead,
+  ]);
 
   const handleMessageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessageText(e.target.value);
@@ -490,5 +525,13 @@ export default function Chat() {
         </div>
       </div>
     </AuthGuard>
+  );
+}
+
+export default function Chat() {
+  return (
+    <Suspense fallback={<Loader fullScreen message="Loading chat..." />}>
+      <ChatInner />
+    </Suspense>
   );
 }

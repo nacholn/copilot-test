@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { GroupWithMemberCount } from '@cyclists/config';
 import styles from './PublicGroupCard.module.css';
 
@@ -16,7 +17,7 @@ export function PublicGroupCard({ group }: PublicGroupCardProps) {
     <Link href={groupUrl} className={styles.card}>
       {group.mainImage && (
         <div className={styles.imageContainer}>
-          <img src={group.mainImage} alt={group.name} className={styles.image} />
+          <Image src={group.mainImage} alt={group.name} fill className={styles.image} style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 400px" />
         </div>
       )}
       <div className={styles.content}>

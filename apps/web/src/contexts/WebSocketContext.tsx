@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from './AuthContext';
-import type { Notification, Message } from '@cyclists/config';
+import type { Notification } from '@cyclists/config';
 
 interface WebSocketContextType {
   socket: Socket | null;
@@ -74,13 +74,23 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       console.log('[WebSocket] New notification received:', notification);
       setNotifications((prev) => [notification, ...prev]);
       setUnreadNotificationCount((prev) => prev + 1);
-      
+
       // Show browser notification if permission granted
       if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification(notification.title, {
+        const browserNotification = new Notification(notification.title, {
           body: notification.message,
           icon: '/icon-192x192.png',
+          badge: '/icon-192x192.png',
+          tag: notification.type || 'notification',
+          requireInteraction: false,
         });
+
+        // When notification is clicked, navigate to notifications page
+        browserNotification.onclick = () => {
+          window.focus();
+          window.location.href = notification.actionUrl || '/notifications';
+          browserNotification.close();
+        };
       }
     });
 
@@ -89,6 +99,29 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       console.log('[WebSocket] New message received:', message);
       // Call all registered callbacks - Set.forEach is more efficient
       messageCallbacks.forEach((callback) => callback(message));
+
+      // Show browser notification for new messages if permission granted
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const senderName = message.senderName || message.sender?.name || 'Someone';
+        const messagePreview = message.content?.substring(0, 50) || 'New message';
+
+        const browserNotification = new Notification(`New message from ${senderName}`, {
+          body: messagePreview + (message.content?.length > 50 ? '...' : ''),
+          icon: '/icon-192x192.png',
+          badge: '/icon-192x192.png',
+          tag: 'new-message',
+          requireInteraction: false,
+        });
+
+        // When notification is clicked, navigate to chat or notifications
+        browserNotification.onclick = () => {
+          window.focus();
+          // Try to navigate to the specific chat, fallback to notifications
+          const chatUrl = message.senderId ? `/chat?userId=${message.senderId}` : '/notifications';
+          window.location.href = chatUrl;
+          browserNotification.close();
+        };
+      }
     });
 
     // Handle user status changes
@@ -119,6 +152,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       clearInterval(heartbeatInterval);
       newSocket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   // Fetch initial notifications
@@ -126,6 +160,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     if (user) {
       fetchNotifications();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const fetchNotifications = async () => {
@@ -193,9 +228,7 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (response.ok) {
-        setNotifications((prev) =>
-          prev.map((n) => ({ ...n, isRead: true, readAt: new Date() }))
-        );
+        setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true, readAt: new Date() })));
         setUnreadNotificationCount(0);
       }
     } catch (error) {
@@ -203,13 +236,19 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user]);
 
-  const onNewMessage = useCallback((callback: (message: any) => void) => {
-    messageCallbacks.add(callback);
-  }, [messageCallbacks]);
+  const onNewMessage = useCallback(
+    (callback: (message: any) => void) => {
+      messageCallbacks.add(callback);
+    },
+    [messageCallbacks]
+  );
 
-  const offNewMessage = useCallback((callback: (message: any) => void) => {
-    messageCallbacks.delete(callback);
-  }, [messageCallbacks]);
+  const offNewMessage = useCallback(
+    (callback: (message: any) => void) => {
+      messageCallbacks.delete(callback);
+    },
+    [messageCallbacks]
+  );
 
   const sendTypingIndicator = useCallback(
     (receiverId: string, isTyping: boolean) => {

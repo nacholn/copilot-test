@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/AuthGuard';
@@ -51,10 +52,10 @@ export default function Groups() {
         const data = await response.json();
 
         if (data.success && data.data.groupConversations) {
-          const groupIds = new Set(
-            data.data.groupConversations.map((gc: any) => gc.groupId)
-          );
-          setUserGroupIds(groupIds);
+          const groupIds: string[] = data.data.groupConversations
+            .map((gc: any) => String(gc.groupId))
+            .filter((id: string) => id.length > 0);
+          setUserGroupIds(new Set<string>(groupIds));
         }
       } catch (error) {
         console.error('Error fetching user groups:', error);
@@ -80,7 +81,10 @@ export default function Groups() {
     }
 
     // Filter by city
-    if (cityFilter && (!group.city || !group.city.toLowerCase().includes(cityFilter.toLowerCase()))) {
+    if (
+      cityFilter &&
+      (!group.city || !group.city.toLowerCase().includes(cityFilter.toLowerCase()))
+    ) {
       return false;
     }
 
@@ -93,113 +97,120 @@ export default function Groups() {
   });
 
   return (
-    <AuthGuard>
-      <main className={styles.main}>
-        <div className={styles.container}>
-          <h1 className={styles.title}>{t('groups.title')}</h1>
+    <Suspense fallback={<Loader fullScreen message="Loading groups..." />}>
+      <AuthGuard>
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <h1 className={styles.title}>{t('groups.title')}</h1>
 
-          <div className={styles.filters}>
-            <input
-              type="text"
-              placeholder={t('groups.searchGroups')}
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className={styles.searchInput}
-            />
-
-            <div className={styles.filterRow}>
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className={styles.select}
-              >
-                <option value="">{t('groups.allGroups')}</option>
-                <option value="location">{t('groups.location')}</option>
-                <option value="general">{t('groups.general')}</option>
-              </select>
-
+            <div className={styles.filters}>
               <input
                 type="text"
-                placeholder={t('groups.filterByCity')}
-                value={cityFilter}
-                onChange={(e) => setCityFilter(e.target.value)}
-                className={styles.cityInput}
+                placeholder={t('groups.searchGroups')}
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className={styles.searchInput}
               />
 
-              <button
-                className={`${styles.toggleButton} ${showMyGroups ? styles.active : ''}`}
-                onClick={() => setShowMyGroups(!showMyGroups)}
-              >
-                {t('groups.myGroups')}
-              </button>
+              <div className={styles.filterRow}>
+                <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  className={styles.select}
+                >
+                  <option value="">{t('groups.allGroups')}</option>
+                  <option value="location">{t('groups.location')}</option>
+                  <option value="general">{t('groups.general')}</option>
+                </select>
 
-              <button
-                onClick={() => {
-                  setSearchQuery('');
-                  setTypeFilter('');
-                  setCityFilter('');
-                  setShowMyGroups(true);
-                }}
-                className={styles.clearButton}
-              >
-                {t('common.cancel')}
-              </button>
-            </div>
-          </div>
+                <input
+                  type="text"
+                  placeholder={t('groups.filterByCity')}
+                  value={cityFilter}
+                  onChange={(e) => setCityFilter(e.target.value)}
+                  className={styles.cityInput}
+                />
 
-          {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
-              <Loader size="large" message={t('common.loading')} />
+                <button
+                  className={`${styles.toggleButton} ${showMyGroups ? styles.active : ''}`}
+                  onClick={() => setShowMyGroups(!showMyGroups)}
+                >
+                  {t('groups.myGroups')}
+                </button>
+
+                <button
+                  onClick={() => {
+                    setSearchQuery('');
+                    setTypeFilter('');
+                    setCityFilter('');
+                    setShowMyGroups(true);
+                  }}
+                  className={styles.clearButton}
+                >
+                  {t('common.cancel')}
+                </button>
+              </div>
             </div>
-          ) : filteredGroups.length === 0 ? (
-            <p className={styles.noResults}>{t('groups.noGroups')}</p>
-          ) : (
-            <div className={styles.groupList}>
-              {filteredGroups.map((group) => (
-                <Link key={group.id} href={`/my-groups/${group.id}`} className={styles.groupCard}>
-                  <div className={styles.groupImage}>
-                    {group.mainImage ? (
-                      <img src={group.mainImage} alt={group.name} />
-                    ) : (
-                      <div className={styles.groupImagePlaceholder}>👥</div>
-                    )}
-                  </div>
-                  <div className={styles.groupInfo}>
-                    <div className={styles.groupHeader}>
-                      <h3>{group.name}</h3>
-                      {userGroupIds.has(group.id) && (
-                        <span className={styles.memberBadge}>✓ {t('groups.joined')}</span>
+
+            {loading ? (
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
+                <Loader size="large" message={t('common.loading')} />
+              </div>
+            ) : filteredGroups.length === 0 ? (
+              <p className={styles.noResults}>{t('groups.noGroups')}</p>
+            ) : (
+              <div className={styles.groupList}>
+                {filteredGroups.map((group) => (
+                  <Link key={group.id} href={`/my-groups/${group.id}`} className={styles.groupCard}>
+                    <div className={styles.groupImage}>
+                      {group.mainImage ? (
+                        <Image
+                          src={group.mainImage}
+                          alt={group.name}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                          sizes="(max-width: 768px) 100vw, 300px"
+                        />
+                      ) : (
+                        <div className={styles.groupImagePlaceholder}>👥</div>
                       )}
                     </div>
-                    {group.description && (
-                      <p className={styles.groupDescription}>
-                        {group.description.length > 100
-                          ? group.description.substring(0, 100) + '...'
-                          : group.description}
-                      </p>
-                    )}
-                    <div className={styles.groupDetails}>
-                      <span className={styles.badge}>{t(`groups.${group.type}`)}</span>
-                      {group.city && (
-                        <span className={styles.location}>📍 {group.city}</span>
+                    <div className={styles.groupInfo}>
+                      <div className={styles.groupHeader}>
+                        <h3>{group.name}</h3>
+                        {userGroupIds.has(group.id) && (
+                          <span className={styles.memberBadge}>✓ {t('groups.joined')}</span>
+                        )}
+                      </div>
+                      {group.description && (
+                        <p className={styles.groupDescription}>
+                          {group.description.length > 100
+                            ? group.description.substring(0, 100) + '...'
+                            : group.description}
+                        </p>
                       )}
-                      <span className={styles.memberCount}>
-                        {group.memberCount} {group.memberCount === 1 ? t('groups.member') : t('groups.members')}
-                      </span>
+                      <div className={styles.groupDetails}>
+                        <span className={styles.badge}>{t(`groups.${group.type}`)}</span>
+                        {group.city && <span className={styles.location}>📍 {group.city}</span>}
+                        <span className={styles.memberCount}>
+                          {group.memberCount}{' '}
+                          {group.memberCount === 1 ? t('groups.member') : t('groups.members')}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+                  </Link>
+                ))}
+              </div>
+            )}
 
-          <div className={styles.actions}>
-            <Link href="/" className={styles.backButton}>
-              {t('common.back')}
-            </Link>
+            <div className={styles.actions}>
+              <Link href="/" className={styles.backButton}>
+                {t('common.back')}
+              </Link>
+            </div>
           </div>
-        </div>
-      </main>
-    </AuthGuard>
+        </main>
+      </AuthGuard>
+    </Suspense>
   );
 }
