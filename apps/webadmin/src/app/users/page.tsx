@@ -5,6 +5,8 @@ import type { Profile } from '@cyclists/config';
 import styles from '../../styles/common.module.css';
 import { UserList } from '../../components/UserList';
 import { EditUserModal } from '../../components/EditUserModal';
+import { PushTokensModal } from '../../components/PushTokensModal';
+import { SendNotificationModal } from '../../components/SendNotificationModal';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<Profile[]>([]);
@@ -12,6 +14,8 @@ export default function UsersPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingUser, setEditingUser] = useState<Profile | null>(null);
+  const [viewingPushTokensUser, setViewingPushTokensUser] = useState<Profile | null>(null);
+  const [sendingNotificationUser, setSendingNotificationUser] = useState<Profile | null>(null);
 
   const fetchUsers = async () => {
     try {
@@ -136,7 +140,13 @@ export default function UsersPage() {
         {loading ? (
           <div className={styles.loading}>Loading users...</div>
         ) : (
-          <UserList users={users} onEdit={setEditingUser} onDelete={handleDeleteUser} />
+          <UserList
+            users={users}
+            onEdit={setEditingUser}
+            onDelete={handleDeleteUser}
+            onViewPushTokens={setViewingPushTokensUser}
+            onSendPush={setSendingNotificationUser}
+          />
         )}
       </div>
 
@@ -145,6 +155,21 @@ export default function UsersPage() {
           user={editingUser}
           onClose={() => setEditingUser(null)}
           onSave={handleEditUser}
+        />
+      )}
+
+      {viewingPushTokensUser && (
+        <PushTokensModal
+          user={viewingPushTokensUser}
+          onClose={() => setViewingPushTokensUser(null)}
+        />
+      )}
+
+      {sendingNotificationUser && (
+        <SendNotificationModal
+          user={sendingNotificationUser}
+          onClose={() => setSendingNotificationUser(null)}
+          onSuccess={() => fetchUsers()}
         />
       )}
     </>
