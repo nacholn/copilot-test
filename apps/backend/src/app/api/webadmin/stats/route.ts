@@ -13,7 +13,9 @@ export async function GET(request: NextRequest) {
     const totalUsers = parseInt(usersResult.rows[0].count);
 
     // Get admin users count
-    const adminsResult = await query('SELECT COUNT(*) as count FROM profiles WHERE is_admin = true');
+    const adminsResult = await query(
+      'SELECT COUNT(*) as count FROM profiles WHERE is_admin = true'
+    );
     const totalAdmins = parseInt(adminsResult.rows[0].count);
 
     // Get total groups count

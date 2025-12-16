@@ -235,7 +235,7 @@ function UsersInner() {
           {activeTab === 'users' && (
             <>
               {/* Filter Toggle Button for Mobile */}
-              <button 
+              <button
                 className={styles.filterToggle}
                 onClick={() => setShowFilters(!showFilters)}
                 aria-label={showFilters ? 'Hide filters' : 'Show filters'}
@@ -363,7 +363,7 @@ function UsersInner() {
           {activeTab === 'groups' && (
             <>
               {/* Filter Toggle Button for Mobile */}
-              <button 
+              <button
                 className={styles.filterToggle}
                 onClick={() => setShowFilters(!showFilters)}
                 aria-label={showFilters ? 'Hide filters' : 'Show filters'}

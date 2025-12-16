@@ -8,10 +8,7 @@ import type { ApiResponse, PostReplyWithAuthor, CreatePostReplyInput } from '@cy
 export const dynamic = 'force-dynamic';
 
 // GET replies for a post
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { postId: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { postId: string } }) {
   try {
     const postId = params.postId;
 
@@ -69,10 +66,7 @@ export async function GET(
 }
 
 // POST create a new reply
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { postId: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { postId: string } }) {
   try {
     const postId = params.postId;
     const body: CreatePostReplyInput = await request.json();
@@ -109,10 +103,9 @@ export async function POST(
     const post = postResult.rows[0];
 
     // Get replier's name
-    const replierResult = await query(
-      'SELECT name FROM profiles WHERE user_id = $1',
-      [body.userId]
-    );
+    const replierResult = await query('SELECT name FROM profiles WHERE user_id = $1', [
+      body.userId,
+    ]);
 
     if (replierResult.rows.length === 0) {
       return NextResponse.json<ApiResponse>(

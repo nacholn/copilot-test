@@ -20,6 +20,7 @@ Slugs are automatically generated from the title/name and include a unique ident
 ### 2. Enhanced Home Page
 
 The home page now displays:
+
 - Latest 6 public posts in a card grid
 - Top 6 popular groups (by member count) in a card grid
 - Direct links to view all posts and groups
@@ -29,6 +30,7 @@ The home page now displays:
 **URL Pattern**: `/p/[slug]`
 
 **Features**:
+
 - Full post content display
 - Author information with avatar
 - Image gallery (if post has images)
@@ -38,6 +40,7 @@ The home page now displays:
 - Login prompt for unauthenticated users
 
 **SEO Optimization**:
+
 ```html
 <title>{Post Title} | Cyclists Social Network</title>
 <meta name="description" content="{meta_description or content excerpt}" />
@@ -53,6 +56,7 @@ The home page now displays:
 **URL Pattern**: `/g/[slug]`
 
 **Features**:
+
 - Group cover image
 - Group name, description, and metadata
 - Member count display
@@ -63,6 +67,7 @@ The home page now displays:
 - Login prompt for unauthenticated users
 
 **SEO Optimization**:
+
 ```html
 <title>{Group Name} | Cyclists Social Network</title>
 <meta name="description" content="{meta_description or description}" />
@@ -104,11 +109,13 @@ CREATE INDEX idx_groups_slug ON groups(slug);
 ### Public Posts API
 
 #### Get Latest Public Posts
+
 ```
 GET /api/posts/public?limit=10&offset=0
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -131,6 +138,7 @@ GET /api/posts/public?limit=10&offset=0
 ```
 
 #### Get Post by Slug
+
 ```
 GET /api/posts/slug/{slug}
 ```
@@ -138,16 +146,19 @@ GET /api/posts/slug/{slug}
 ### Public Groups API
 
 #### Get Public Groups
+
 ```
 GET /api/groups/public?limit=10&offset=0&orderBy=created_at
 ```
 
 **Query Parameters**:
+
 - `limit`: Number of results (default: 10)
 - `offset`: Pagination offset (default: 0)
 - `orderBy`: Sort order - `created_at` or `member_count` (default: `created_at`)
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -170,6 +181,7 @@ GET /api/groups/public?limit=10&offset=0&orderBy=created_at
 ```
 
 #### Get Group by Slug
+
 ```
 GET /api/groups/slug/{slug}
 ```
@@ -184,6 +196,7 @@ npm run migrate:up
 ```
 
 This will:
+
 1. Add slug, meta_description, and keywords fields to posts and groups
 2. Generate slugs for existing posts and groups
 3. Create indexes for fast slug lookups
@@ -234,28 +247,33 @@ The API will automatically generate a slug like: `mountain-bikers-madrid-e5f6g7h
 ## SEO Best Practices Implemented
 
 ### 1. URL Structure
+
 - Clean, readable URLs with slugs
 - Short unique identifier appended to prevent conflicts
 - No special characters or spaces
 
 ### 2. Meta Tags
+
 - Descriptive title tags with site name
 - Meta descriptions (150-160 characters recommended)
 - Keywords for content classification
 
 ### 3. Open Graph (Facebook, LinkedIn)
+
 - `og:title` - Page title
 - `og:description` - Page description
 - `og:image` - Featured image
 - `og:type` - Content type (article for posts, website for groups)
 
 ### 4. Twitter Cards
+
 - `twitter:card` - Summary with large image
 - `twitter:title` - Page title
 - `twitter:description` - Page description
 - `twitter:image` - Featured image
 
 ### 5. Content Structure
+
 - Proper heading hierarchy (H1 for title)
 - Semantic HTML5 elements (article, header, etc.)
 - Alt text for images
@@ -264,7 +282,9 @@ The API will automatically generate a slug like: `mountain-bikers-madrid-e5f6g7h
 ## Components
 
 ### PublicPostCard
+
 Displays a post preview card with:
+
 - Featured image
 - Title and excerpt
 - Author information
@@ -272,7 +292,9 @@ Displays a post preview card with:
 - Link to full post
 
 ### PublicGroupCard
+
 Displays a group preview card with:
+
 - Cover image
 - Group name and description excerpt
 - Type indicator (location/general)
@@ -283,6 +305,7 @@ Displays a group preview card with:
 ## Accessibility
 
 All public pages include:
+
 - Semantic HTML structure
 - Proper heading hierarchy
 - Alt text for images
@@ -292,6 +315,7 @@ All public pages include:
 ## Mobile Responsiveness
 
 All pages are fully responsive:
+
 - Mobile-first design approach
 - Responsive grid layouts
 - Touch-friendly buttons and links
@@ -300,6 +324,7 @@ All pages are fully responsive:
 ## Future Enhancements
 
 Potential improvements:
+
 1. **Sitemap Generation**: Auto-generate XML sitemap for search engines
 2. **Canonical URLs**: Add canonical tags for duplicate content prevention
 3. **Schema.org Markup**: Add structured data for rich snippets
@@ -329,16 +354,21 @@ Potential improvements:
 ## Troubleshooting
 
 ### Slug Conflicts
+
 If you encounter slug conflicts, the system will return an error. Slugs are unique and automatically generated with a short UUID suffix to prevent conflicts.
 
 ### Missing Meta Tags
+
 If meta tags are not appearing, ensure:
+
 1. The post/group has metaDescription and keywords set
 2. The page is not cached
 3. You're viewing the page source (not inspecting elements)
 
 ### Images Not Loading
+
 Ensure:
+
 1. Cloudinary credentials are properly configured
 2. Image URLs are accessible
 3. CORS is properly configured for image domains
@@ -346,6 +376,7 @@ Ensure:
 ## Support
 
 For issues or questions:
+
 1. Check the main README.md for setup instructions
 2. Review this guide for SEO-specific features
 3. Open a GitHub issue with details about the problem

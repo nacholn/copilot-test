@@ -49,12 +49,14 @@ npm run docker:up
 ### 3. Notification System
 
 Multiple notification types:
+
 - `friend_request`: New friend request received
 - `friend_request_accepted`: Friend request accepted
 - `message`: New message received
 - `system`: System notifications
 
 Features:
+
 - Unread notification counts
 - Mark as read (individual or all)
 - Notification history
@@ -150,6 +152,7 @@ npm run migrate:up
 ```
 
 This creates:
+
 - `friend_requests` table
 - `notifications` table
 - `user_status` table
@@ -174,11 +177,13 @@ npm run dev
 ### Friend Requests
 
 #### Get Friend Requests
+
 ```http
 GET /api/friend-requests?userId={userId}&type={received|sent}&status={pending|accepted|rejected}
 ```
 
 #### Send Friend Request
+
 ```http
 POST /api/friend-requests
 Content-Type: application/json
@@ -190,6 +195,7 @@ Content-Type: application/json
 ```
 
 #### Accept/Reject Friend Request
+
 ```http
 PATCH /api/friend-requests
 Content-Type: application/json
@@ -203,26 +209,31 @@ Content-Type: application/json
 ### Notifications
 
 #### Get Notifications
+
 ```http
 GET /api/notifications?userId={userId}&limit=50&offset=0&unreadOnly=false
 ```
 
 #### Get Unread Count
+
 ```http
 GET /api/notifications?userId={userId}&countOnly=true
 ```
 
 #### Mark as Read
+
 ```http
 PATCH /api/notifications?userId={userId}&notificationId={id}
 ```
 
 #### Mark All as Read
+
 ```http
 PATCH /api/notifications?userId={userId}&markAll=true
 ```
 
 #### Delete Notification
+
 ```http
 DELETE /api/notifications?userId={userId}&notificationId={id}
 ```
@@ -230,16 +241,19 @@ DELETE /api/notifications?userId={userId}&notificationId={id}
 ### User Status
 
 #### Get User Status
+
 ```http
 GET /api/user-status?userId={userId}
 ```
 
 #### Get Multiple Users Status
+
 ```http
 GET /api/user-status?friendIds={id1,id2,id3}
 ```
 
 #### Update Status
+
 ```http
 POST /api/user-status
 Content-Type: application/json
@@ -255,25 +269,29 @@ Content-Type: application/json
 ### Client → Server
 
 #### Register User
+
 ```javascript
 socket.emit('register', userId);
 ```
 
 #### Send Message
+
 ```javascript
 socket.emit('send_message', {
   receiverId: 'uuid',
-  message: 'text'
+  message: 'text',
 });
 ```
 
 #### Typing Indicators
+
 ```javascript
 socket.emit('typing_start', { receiverId: 'uuid' });
 socket.emit('typing_stop', { receiverId: 'uuid' });
 ```
 
 #### Heartbeat
+
 ```javascript
 socket.emit('heartbeat');
 ```
@@ -281,6 +299,7 @@ socket.emit('heartbeat');
 ### Server → Client
 
 #### New Message
+
 ```javascript
 socket.on('new_message', (data) => {
   // data: { senderId, receiverId, message, timestamp }
@@ -288,6 +307,7 @@ socket.on('new_message', (data) => {
 ```
 
 #### New Notification
+
 ```javascript
 socket.on('new_notification', (notification) => {
   // notification: Notification object
@@ -295,6 +315,7 @@ socket.on('new_notification', (notification) => {
 ```
 
 #### User Status Change
+
 ```javascript
 socket.on('user_status_change', (data) => {
   // data: { userId, status: 'online' | 'offline' | 'away' }
@@ -302,6 +323,7 @@ socket.on('user_status_change', (data) => {
 ```
 
 #### Typing Indicators
+
 ```javascript
 socket.on('user_typing', (data) => {
   // data: { userId }
@@ -331,7 +353,7 @@ function MyComponent() {
     markAllNotificationsAsRead,
     onNewMessage,
     offNewMessage,
-    sendTypingIndicator
+    sendTypingIndicator,
   } = useWebSocket();
 
   // Listen for new messages
@@ -444,14 +466,17 @@ CREATE TABLE user_status (
 ## 🎨 UI Pages
 
 ### Notifications Page
+
 - **URL**: `/notifications`
 - **Features**: View all notifications, mark as read, click to navigate
 
 ### Friend Requests Page
+
 - **URL**: `/friend-requests`
 - **Features**: View received/sent requests, accept/reject
 
 ### Chat Page
+
 - **URL**: `/chat`
 - **Features**: Real-time messaging, typing indicators, online status
 

@@ -26,7 +26,7 @@ export function SendNotificationModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!title || !body) {
       setError('Title and message are required');
       return;
@@ -92,8 +92,8 @@ export function SendNotificationModal({
   const recipientText = groupId
     ? `All members of group: ${groupName}`
     : user
-    ? `${user.name} (${user.email})`
-    : 'Unknown recipient';
+      ? `${user.name} (${user.email})`
+      : 'Unknown recipient';
 
   return (
     <div
@@ -119,7 +119,9 @@ export function SendNotificationModal({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ marginBottom: '20px', borderBottom: '1px solid #ddd', paddingBottom: '15px' }}>
+        <div
+          style={{ marginBottom: '20px', borderBottom: '1px solid #ddd', paddingBottom: '15px' }}
+        >
           <h2 style={{ margin: 0, fontSize: '20px' }}>Send Push Notification</h2>
           <p style={{ margin: '5px 0 0 0', color: '#666', fontSize: '14px' }}>
             To: {recipientText}
@@ -239,7 +241,9 @@ export function SendNotificationModal({
                 }}
                 disabled={sending}
               />
-              <small style={{ color: '#666', fontSize: '12px', marginTop: '3px', display: 'block' }}>
+              <small
+                style={{ color: '#666', fontSize: '12px', marginTop: '3px', display: 'block' }}
+              >
                 URL to navigate when notification is clicked
               </small>
             </div>

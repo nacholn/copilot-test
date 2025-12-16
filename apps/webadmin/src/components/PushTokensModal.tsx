@@ -85,7 +85,9 @@ export function PushTokensModal({ user, onClose }: PushTokensModalProps) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ marginBottom: '20px', borderBottom: '1px solid #ddd', paddingBottom: '15px' }}>
+        <div
+          style={{ marginBottom: '20px', borderBottom: '1px solid #ddd', paddingBottom: '15px' }}
+        >
           <h2 style={{ margin: 0, fontSize: '20px' }}>Push Notification Tokens</h2>
           <p style={{ margin: '5px 0 0 0', color: '#666', fontSize: '14px' }}>
             User: {user.name} ({user.email})
@@ -95,7 +97,14 @@ export function PushTokensModal({ user, onClose }: PushTokensModalProps) {
         {loading && <div className={styles.loading}>Loading tokens...</div>}
 
         {error && (
-          <div style={{ padding: '15px', backgroundColor: '#ffebee', color: '#c62828', borderRadius: '4px' }}>
+          <div
+            style={{
+              padding: '15px',
+              backgroundColor: '#ffebee',
+              color: '#c62828',
+              borderRadius: '4px',
+            }}
+          >
             {error}
           </div>
         )}
@@ -115,16 +124,27 @@ export function PushTokensModal({ user, onClose }: PushTokensModalProps) {
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                     <thead>
                       <tr style={{ borderBottom: '2px solid #ddd' }}>
-                        <th style={{ padding: '10px', textAlign: 'left', fontWeight: '600' }}>Endpoint</th>
-                        <th style={{ padding: '10px', textAlign: 'left', fontWeight: '600' }}>Created At</th>
-                        <th style={{ padding: '10px', textAlign: 'left', fontWeight: '600' }}>Updated At</th>
+                        <th style={{ padding: '10px', textAlign: 'left', fontWeight: '600' }}>
+                          Endpoint
+                        </th>
+                        <th style={{ padding: '10px', textAlign: 'left', fontWeight: '600' }}>
+                          Created At
+                        </th>
+                        <th style={{ padding: '10px', textAlign: 'left', fontWeight: '600' }}>
+                          Updated At
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {tokens.map((token, index) => (
                         <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
                           <td
-                            style={{ padding: '10px', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: '11px' }}
+                            style={{
+                              padding: '10px',
+                              wordBreak: 'break-all',
+                              fontFamily: 'monospace',
+                              fontSize: '11px',
+                            }}
                             title={token.endpoint}
                           >
                             {truncateEndpoint(token.endpoint)}

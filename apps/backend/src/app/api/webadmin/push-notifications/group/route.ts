@@ -52,10 +52,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Get all user IDs in the group
-    const membersResult = await query(
-      'SELECT user_id FROM group_members WHERE group_id = $1',
-      [groupId]
-    );
+    const membersResult = await query('SELECT user_id FROM group_members WHERE group_id = $1', [
+      groupId,
+    ]);
 
     if (membersResult.rows.length === 0) {
       return NextResponse.json<ApiResponse>(
@@ -79,10 +78,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json<ApiResponse>(
         {
           success: true,
-          data: { 
+          data: {
             message: 'No push subscriptions found for group members',
             memberCount: userIds.length,
-            subscriptionCount: 0
+            subscriptionCount: 0,
           },
         },
         { status: 200 }
@@ -103,10 +102,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json<ApiResponse>(
       {
         success: true,
-        data: { 
+        data: {
           message: 'Notifications sent successfully',
           memberCount: userIds.length,
-          subscriptionCount: subscriptions.length
+          subscriptionCount: subscriptions.length,
         },
       },
       { status: 200 }

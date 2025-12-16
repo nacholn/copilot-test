@@ -41,15 +41,15 @@ export async function sendWebPushNotification(
 ): Promise<void> {
   try {
     const pushPayload = JSON.stringify(payload);
-    
+
     await webPush.sendNotification(subscription, pushPayload, {
       TTL: 86400, // 24 hours
     });
-    
+
     console.log('Push notification sent successfully');
   } catch (error) {
     console.error('Error sending push notification:', error);
-    
+
     // Handle subscription expiration - check if error has statusCode property
     if (error && typeof error === 'object' && 'statusCode' in error) {
       const statusCode = (error as { statusCode?: number }).statusCode;
@@ -57,16 +57,15 @@ export async function sendWebPushNotification(
         console.log('Subscription expired or not found, removing from database');
         // Remove expired subscription
         try {
-          await query(
-            'DELETE FROM push_subscriptions WHERE endpoint = $1',
-            [subscription.endpoint]
-          );
+          await query('DELETE FROM push_subscriptions WHERE endpoint = $1', [
+            subscription.endpoint,
+          ]);
         } catch (dbError) {
           console.error('Error removing expired subscription:', dbError);
         }
       }
     }
-    
+
     throw error;
   }
 }
@@ -78,12 +77,12 @@ export async function sendWebPushNotificationToMany(
   subscriptions: PushSubscription[],
   payload: PushNotificationPayload
 ): Promise<void> {
-  const promises = subscriptions.map(subscription =>
-    sendWebPushNotification(subscription, payload).catch(err => {
+  const promises = subscriptions.map((subscription) =>
+    sendWebPushNotification(subscription, payload).catch((err) => {
       console.error('Failed to send to subscription:', err);
     })
   );
-  
+
   await Promise.all(promises);
 }
 
@@ -106,7 +105,7 @@ export async function sendWebPushNotificationToUser(
       return;
     }
 
-    const subscriptions: PushSubscription[] = result.rows.map(row => ({
+    const subscriptions: PushSubscription[] = result.rows.map((row) => ({
       endpoint: row.endpoint,
       keys: {
         p256dh: row.p256dh,

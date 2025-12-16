@@ -6,10 +6,7 @@ import type { ApiResponse, PostWithDetails } from '@cyclists/config';
 export const dynamic = 'force-dynamic';
 
 // GET post by slug (public access)
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { slug } = params;
 

@@ -122,7 +122,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 }
 
 // DELETE remove an image from a group
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { id: groupId } = await params;
     const { searchParams } = new URL(request.url);

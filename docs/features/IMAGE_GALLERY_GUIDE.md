@@ -3,6 +3,7 @@
 ## Overview
 
 The profile now supports multiple images with a dedicated gallery view. Users can:
+
 - Upload multiple images to their profile
 - Designate one image as the primary (avatar)
 - View all images in an organized gallery
@@ -12,6 +13,7 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
 ## Features
 
 ### 1. Primary Image (Avatar)
+
 - **What it is**: The main profile picture displayed throughout the app
 - **Display**: Shows prominently at the top of the gallery
 - **Badge**: Labeled with "Primary" badge
@@ -22,6 +24,7 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
   - Friend lists
 
 ### 2. Secondary Images
+
 - **What they are**: Additional profile photos
 - **Display**: Shown in a responsive grid below the primary image
 - **Limit**: Unlimited secondary images
@@ -43,6 +46,7 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
 ### Uploading Images
 
 #### Upload Primary Image (First Image):
+
 ```
 1. In the expanded gallery, look for "Primary Image" section
 2. If no primary image exists, you'll see an upload zone
@@ -52,6 +56,7 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
 ```
 
 #### Upload Secondary Images:
+
 ```
 1. Scroll to "Additional Images" section
 2. Click the "+ Add Image" button in the grid
@@ -62,6 +67,7 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
 ### Managing Images
 
 #### Set Image as Primary:
+
 ```
 1. Hover over any secondary image
 2. Click the star (⭐) button
@@ -70,6 +76,7 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
 ```
 
 #### Delete Image:
+
 ```
 1. Hover over any image (primary or secondary)
 2. Click the trash (🗑️) button
@@ -78,6 +85,7 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
 ```
 
 #### View Full Size:
+
 ```
 1. Click on any secondary image
 2. Full-size modal opens
@@ -87,18 +95,21 @@ The profile now supports multiple images with a dedicated gallery view. Users ca
 ## Gallery Layout
 
 ### Desktop (1024px+):
+
 ```
 Primary Image:       400x400px center-aligned
 Secondary Grid:      4 columns, auto-fit (180px min)
 ```
 
 ### Tablet (769-1023px):
+
 ```
 Primary Image:       400x400px center-aligned
 Secondary Grid:      3-4 columns, auto-fit (140px min)
 ```
 
 ### Mobile (<768px):
+
 ```
 Primary Image:       Full width
 Secondary Grid:      2-3 columns, auto-fit (120px min)
@@ -109,12 +120,14 @@ Secondary Grid:      2-3 columns, auto-fit (120px min)
 ### API Endpoints
 
 **Get all images**:
+
 ```http
 GET /api/profile/images?userId={userId}
 Response: Array of ProfileImage objects
 ```
 
 **Upload image**:
+
 ```http
 POST /api/profile/images
 Content-Type: multipart/form-data
@@ -123,12 +136,14 @@ Response: Uploaded ProfileImage object
 ```
 
 **Delete image**:
+
 ```http
 DELETE /api/profile/images?imageId={id}&userId={userId}
 Response: Success confirmation
 ```
 
 **Set as primary**:
+
 ```http
 PATCH /api/profile/images?imageId={id}&userId={userId}
 Body: { isPrimary: true }
@@ -138,6 +153,7 @@ Response: Updated ProfileImage object
 ### Database Schema
 
 Images are stored in the `profile_images` table:
+
 ```sql
 CREATE TABLE profile_images (
   id UUID PRIMARY KEY,
@@ -177,6 +193,7 @@ ProfileImageGallery (Main Component)
 ## Multilingual Support
 
 The gallery interface supports 3 languages:
+
 - **English (EN)**: Default
 - **Spanish (ES)**: Translated UI
 - **French (FR)**: Translated UI
@@ -184,6 +201,7 @@ The gallery interface supports 3 languages:
 ### Translation Keys
 
 Profile-related translations:
+
 ```json
 {
   "profile.primaryImage": "Primary Image",
@@ -195,6 +213,7 @@ Profile-related translations:
 ```
 
 Common translations:
+
 ```json
 {
   "common.delete": "Delete",
@@ -208,6 +227,7 @@ Common translations:
 ## Best Practices
 
 ### Image Optimization
+
 - Cloudinary automatically optimizes images
 - Original images transformed to:
   - Max dimensions: 1000x1000px
@@ -215,12 +235,14 @@ Common translations:
   - Format: auto (WebP when supported)
 
 ### User Experience
+
 1. **Always have a primary image**: Helps with visual identification
 2. **Add 2-5 secondary images**: Shows personality without overwhelming
 3. **High-quality photos**: Better first impressions
 4. **Relevant images**: Cycling-related photos work best
 
 ### Performance
+
 - Images lazy-load in the gallery
 - Thumbnails generated automatically
 - CDN delivery via Cloudinary
@@ -229,27 +251,35 @@ Common translations:
 ## Troubleshooting
 
 ### Issue: Upload fails
+
 **Solutions**:
+
 - Check file size (must be < 10MB)
 - Verify file format (PNG, JPG, GIF only)
 - Ensure Cloudinary credentials are configured
 - Check internet connection
 
 ### Issue: Image doesn't appear
+
 **Solutions**:
+
 - Refresh the page
 - Check browser console for errors
 - Verify image URL is accessible
 - Ensure database migration ran successfully
 
 ### Issue: Can't delete image
+
 **Solutions**:
+
 - Ensure you're the profile owner
 - Check if you're in editable mode
 - Verify userId matches logged-in user
 
 ### Issue: Translations not showing
+
 **Solutions**:
+
 - Check language selector in header
 - Verify translation files exist
 - Clear browser localStorage
@@ -260,6 +290,7 @@ Common translations:
 ### Adding New Translations
 
 1. Edit translation files:
+
 ```
 apps/web/src/messages/en.json
 apps/web/src/messages/es.json
@@ -267,6 +298,7 @@ apps/web/src/messages/fr.json
 ```
 
 2. Add new keys:
+
 ```json
 {
   "profile": {
@@ -276,6 +308,7 @@ apps/web/src/messages/fr.json
 ```
 
 3. Use in components:
+
 ```typescript
 const { t } = useTranslations();
 <p>{t('profile.newKey')}</p>
@@ -284,11 +317,13 @@ const { t } = useTranslations();
 ### Customizing Gallery
 
 Edit styles in:
+
 ```
 apps/web/src/components/profile-image-gallery.module.css
 ```
 
 Change grid layout:
+
 ```css
 .secondaryGrid {
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -308,6 +343,7 @@ The profile image gallery provides:
 ✅ Secure API with user validation
 
 For more details, see:
+
 - `NEW_FEATURES.md` - Complete API documentation
 - `IMPLEMENTATION_SUMMARY.md` - Technical details
 - `QUICK_START.md` - Setup guide

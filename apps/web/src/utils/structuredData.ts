@@ -34,9 +34,7 @@ export function generatePostStructuredData(post: PostWithDetails) {
 /**
  * Generate JSON-LD structured data for a community group
  */
-export function generateGroupStructuredData(
-  group: GroupWithMemberCount & { images?: any[] }
-) {
+export function generateGroupStructuredData(group: GroupWithMemberCount & { images?: any[] }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',

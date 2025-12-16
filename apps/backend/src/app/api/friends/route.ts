@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     `;
 
     const result = await query(sqlQuery, [userId]);
-    
+
     const friends = result.rows.map((row) => ({
       ...transformProfile(row),
       friendshipId: row.friendship_id,
@@ -86,10 +86,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if both users exist
-    const userCheck = await query(
-      'SELECT user_id FROM profiles WHERE user_id IN ($1, $2)',
-      [body.userId, body.friendId]
-    );
+    const userCheck = await query('SELECT user_id FROM profiles WHERE user_id IN ($1, $2)', [
+      body.userId,
+      body.friendId,
+    ]);
 
     if (userCheck.rows.length !== 2) {
       return NextResponse.json<ApiResponse>(

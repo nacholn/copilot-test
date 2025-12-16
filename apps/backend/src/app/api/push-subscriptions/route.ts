@@ -4,7 +4,7 @@ import { query } from '../../../lib/db';
 /**
  * POST /api/push-subscriptions
  * Subscribe to push notifications
- * 
+ *
  * TODO: Add authentication middleware to verify that the authenticated user
  * matches the userId being subscribed. This prevents users from subscribing
  * push notifications for other users.
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { endpoint, keys } = subscription;
-    
+
     if (!endpoint || !keys?.p256dh || !keys?.auth) {
       return NextResponse.json(
         { success: false, error: 'Invalid subscription format' },
@@ -31,10 +31,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if subscription already exists
-    const existingResult = await query(
-      'SELECT id FROM push_subscriptions WHERE endpoint = $1',
-      [endpoint]
-    );
+    const existingResult = await query('SELECT id FROM push_subscriptions WHERE endpoint = $1', [
+      endpoint,
+    ]);
 
     if (existingResult.rows.length > 0) {
       // Update existing subscription
@@ -70,10 +69,7 @@ export async function DELETE(request: NextRequest) {
     const endpoint = searchParams.get('endpoint');
 
     if (!endpoint) {
-      return NextResponse.json(
-        { success: false, error: 'Missing endpoint' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Missing endpoint' }, { status: 400 });
     }
 
     await query('DELETE FROM push_subscriptions WHERE endpoint = $1', [endpoint]);
@@ -98,10 +94,7 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId');
 
     if (!userId) {
-      return NextResponse.json(
-        { success: false, error: 'Missing userId' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Missing userId' }, { status: 400 });
     }
 
     const result = await query(
@@ -109,7 +102,7 @@ export async function GET(request: NextRequest) {
       [userId]
     );
 
-    const subscriptions = result.rows.map(row => ({
+    const subscriptions = result.rows.map((row) => ({
       endpoint: row.endpoint,
       keys: {
         p256dh: row.p256dh,

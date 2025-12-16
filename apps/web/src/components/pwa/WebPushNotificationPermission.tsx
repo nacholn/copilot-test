@@ -49,7 +49,7 @@ export function WebPushNotificationPermission() {
 
       if (result === 'granted') {
         console.log('Notification permission granted');
-        
+
         // Register for push notifications if service worker is available
         if ('serviceWorker' in navigator && 'PushManager' in window) {
           await subscribeToPushNotifications();

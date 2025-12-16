@@ -104,12 +104,7 @@ export default function Home() {
                 color="#00BCD4"
                 link="/posts"
               />
-              <StatCard
-                title="Messages"
-                value={stats.totalMessages}
-                icon="💬"
-                color="#607D8B"
-              />
+              <StatCard title="Messages" value={stats.totalMessages} icon="💬" color="#607D8B" />
             </div>
 
             <div className={styles.card}>
@@ -187,5 +182,11 @@ function StatCard({
     </div>
   );
 
-  return link ? <Link href={link} style={{ textDecoration: 'none' }}>{content}</Link> : content;
+  return link ? (
+    <Link href={link} style={{ textDecoration: 'none' }}>
+      {content}
+    </Link>
+  ) : (
+    content
+  );
 }

@@ -19,7 +19,7 @@ export default function UserProfile() {
   const params = useParams();
   const router = useRouter();
   const userId = params.userId as string;
-  
+
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFriend, setIsFriend] = useState(false);
@@ -71,7 +71,9 @@ export default function UserProfile() {
 
     try {
       // Check sent requests
-      const sentResponse = await fetch(`/api/friend-requests?userId=${user.id}&type=sent&status=pending`);
+      const sentResponse = await fetch(
+        `/api/friend-requests?userId=${user.id}&type=sent&status=pending`
+      );
       const sentData = await sentResponse.json();
       if (sentData.success) {
         const sentRequest = sentData.data.find((req: any) => req.addresseeId === userId);
@@ -82,7 +84,9 @@ export default function UserProfile() {
       }
 
       // Check received requests
-      const receivedResponse = await fetch(`/api/friend-requests?userId=${user.id}&type=received&status=pending`);
+      const receivedResponse = await fetch(
+        `/api/friend-requests?userId=${user.id}&type=received&status=pending`
+      );
       const receivedData = await receivedResponse.json();
       if (receivedData.success) {
         const receivedRequest = receivedData.data.find((req: any) => req.requesterId === userId);
@@ -125,7 +129,7 @@ export default function UserProfile() {
       if (data.success) {
         setFriendRequestSent(true);
         setFriendRequestId(data.data.id);
-        
+
         Swal.fire({
           title: 'Request Sent!',
           text: 'Friend request sent successfully!',
@@ -187,7 +191,7 @@ export default function UserProfile() {
       if (data.success) {
         setFriendRequestReceived(false);
         setIsFriend(true);
-        
+
         Swal.fire({
           title: 'Accepted!',
           text: 'You are now friends!',
@@ -264,7 +268,7 @@ export default function UserProfile() {
       if (data.success) {
         setIsFriend(false);
         setFriendshipId(null);
-        
+
         Swal.fire({
           title: 'Removed!',
           text: 'Friend has been removed from your list.',
@@ -392,18 +396,11 @@ export default function UserProfile() {
 
             {/* User Images Gallery */}
             <div className={styles.imagesSection}>
-              <button
-                onClick={() => setShowGallery(!showGallery)}
-                className={styles.galleryToggle}
-              >
-                {showGallery ? '− ' : '+ '}{t('profile.images')}
+              <button onClick={() => setShowGallery(!showGallery)} className={styles.galleryToggle}>
+                {showGallery ? '− ' : '+ '}
+                {t('profile.images')}
               </button>
-              {showGallery && (
-                <ProfileImageGallery
-                  userId={userId}
-                  editable={false}
-                />
-              )}
+              {showGallery && <ProfileImageGallery userId={userId} editable={false} />}
             </div>
 
             <div className={styles.actions}>
@@ -424,10 +421,7 @@ export default function UserProfile() {
                   {actionLoading ? 'Accepting...' : 'Accept Friend Request'}
                 </button>
               ) : friendRequestSent ? (
-                <button
-                  className={styles.pendingButton}
-                  disabled
-                >
+                <button className={styles.pendingButton} disabled>
                   Request Pending
                 </button>
               ) : (

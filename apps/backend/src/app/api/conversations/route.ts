@@ -69,16 +69,17 @@ export async function GET(request: NextRequest) {
         [friendId, userId]
       );
 
-      const lastMessage = lastMessageResult.rows.length > 0
-        ? {
-            id: lastMessageResult.rows[0].id,
-            senderId: lastMessageResult.rows[0].sender_id,
-            receiverId: lastMessageResult.rows[0].receiver_id,
-            message: lastMessageResult.rows[0].message,
-            isRead: lastMessageResult.rows[0].is_read,
-            createdAt: new Date(lastMessageResult.rows[0].created_at),
-          }
-        : undefined;
+      const lastMessage =
+        lastMessageResult.rows.length > 0
+          ? {
+              id: lastMessageResult.rows[0].id,
+              senderId: lastMessageResult.rows[0].sender_id,
+              receiverId: lastMessageResult.rows[0].receiver_id,
+              message: lastMessageResult.rows[0].message,
+              isRead: lastMessageResult.rows[0].is_read,
+              createdAt: new Date(lastMessageResult.rows[0].created_at),
+            }
+          : undefined;
 
       conversations.push({
         friendId,
@@ -141,17 +142,18 @@ export async function GET(request: NextRequest) {
         [groupId, userId]
       );
 
-      const lastMessage = lastMessageResult.rows.length > 0
-        ? {
-            id: lastMessageResult.rows[0].id,
-            groupId: lastMessageResult.rows[0].group_id,
-            senderId: lastMessageResult.rows[0].sender_id,
-            message: lastMessageResult.rows[0].message,
-            createdAt: new Date(lastMessageResult.rows[0].created_at),
-            senderName: lastMessageResult.rows[0].sender_name,
-            senderAvatar: lastMessageResult.rows[0].sender_avatar,
-          }
-        : undefined;
+      const lastMessage =
+        lastMessageResult.rows.length > 0
+          ? {
+              id: lastMessageResult.rows[0].id,
+              groupId: lastMessageResult.rows[0].group_id,
+              senderId: lastMessageResult.rows[0].sender_id,
+              message: lastMessageResult.rows[0].message,
+              createdAt: new Date(lastMessageResult.rows[0].created_at),
+              senderName: lastMessageResult.rows[0].sender_name,
+              senderAvatar: lastMessageResult.rows[0].sender_avatar,
+            }
+          : undefined;
 
       groupConversations.push({
         groupId,

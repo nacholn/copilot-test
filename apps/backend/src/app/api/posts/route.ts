@@ -88,16 +88,22 @@ export async function GET(request: NextRequest) {
       updatedAt: new Date(row.updated_at),
       authorName: row.author_name,
       authorAvatar: row.author_avatar,
-      images: row.first_image_url ? [{
-        id: 'preview', // Placeholder ID for list view
-        postId: row.id,
-        imageUrl: row.first_image_url,
-        cloudinaryPublicId: '', // Not needed for list view
-        displayOrder: 0,
-        createdAt: new Date(row.created_at),
-      }] : [],
+      images: row.first_image_url
+        ? [
+            {
+              id: 'preview', // Placeholder ID for list view
+              postId: row.id,
+              imageUrl: row.first_image_url,
+              cloudinaryPublicId: '', // Not needed for list view
+              displayOrder: 0,
+              createdAt: new Date(row.created_at),
+            },
+          ]
+        : [],
       replyCount: parseInt(row.reply_count || '0'),
-      hasNewActivity: row.viewed_at ? parseInt(row.reply_count || '0') > (row.last_reply_count_seen || 0) : true,
+      hasNewActivity: row.viewed_at
+        ? parseInt(row.reply_count || '0') > (row.last_reply_count_seen || 0)
+        : true,
     }));
 
     return NextResponse.json<ApiResponse>(
@@ -162,17 +168,14 @@ export async function POST(request: NextRequest) {
 
     // Generate slug and set publication_date for friends posts
     const slug = generateUniqueSlug(title, post.id);
-    
+
     if (visibility === 'friends') {
       await query(
         `UPDATE posts SET slug = $1, publication_date = CURRENT_TIMESTAMP WHERE id = $2`,
         [slug, post.id]
       );
     } else {
-      await query(
-        `UPDATE posts SET slug = $1 WHERE id = $2`,
-        [slug, post.id]
-      );
+      await query(`UPDATE posts SET slug = $1 WHERE id = $2`, [slug, post.id]);
     }
 
     // Upload images to Cloudinary if provided
@@ -180,10 +183,10 @@ export async function POST(request: NextRequest) {
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
         const buffer = Buffer.from(await image.arrayBuffer());
-        
+
         try {
           const uploadResult = await uploadImage(buffer, 'cyclists/posts');
-          
+
           await query(
             `INSERT INTO post_images (post_id, image_url, cloudinary_public_id, display_order)
              VALUES ($1, $2, $3, $4)`,
@@ -197,10 +200,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get post author name for notifications
-    const authorResult = await query(
-      'SELECT name FROM profiles WHERE user_id = $1',
-      [userId]
-    );
+    const authorResult = await query('SELECT name FROM profiles WHERE user_id = $1', [userId]);
     const authorName = authorResult.rows[0]?.name || 'Someone';
 
     // Update last_post_created_at for interaction score tracking
@@ -216,15 +216,14 @@ export async function POST(request: NextRequest) {
 
     // Send notifications to friends based on post visibility
     // For both public and friends-only posts, notify the creator's friends
-    const friendsResult = await query(
-      'SELECT friend_id FROM friendships WHERE user_id = $1',
-      [userId]
-    );
+    const friendsResult = await query('SELECT friend_id FROM friendships WHERE user_id = $1', [
+      userId,
+    ]);
 
     // Send notification to each friend
     for (const row of friendsResult.rows) {
       const friendId = row.friend_id;
-      
+
       // Create notification
       const notification = await createNotification({
         userId: friendId,

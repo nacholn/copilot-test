@@ -6,10 +6,7 @@ import type { ApiResponse, GroupWithMemberCount, GroupImage } from '@cyclists/co
 export const dynamic = 'force-dynamic';
 
 // GET group by slug (public access)
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
   try {
     const { slug } = params;
 

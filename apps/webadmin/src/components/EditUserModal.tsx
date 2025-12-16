@@ -64,9 +64,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
-              Name
-            </label>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>Name</label>
             <input
               type="text"
               value={formData.name}
@@ -100,9 +98,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
           </div>
 
           <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
-              City
-            </label>
+            <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>City</label>
             <input
               type="text"
               value={formData.city}
@@ -210,12 +206,7 @@ export function EditUserModal({ user, onClose, onSave }: EditUserModalProps) {
           )}
 
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-            <button
-              type="button"
-              onClick={onClose}
-              className={styles.button}
-              disabled={loading}
-            >
+            <button type="button" onClick={onClose} className={styles.button} disabled={loading}>
               Cancel
             </button>
             <button

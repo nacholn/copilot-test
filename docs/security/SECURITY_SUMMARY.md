@@ -10,15 +10,13 @@ This document provides a security analysis of the notification and real-time mes
 
 All API endpoints validate user input before processing:
 
-- **Friend Requests**: 
+- **Friend Requests**:
   - Validates user IDs exist
   - Prevents self-friend requests
   - Checks for duplicate requests
-  
 - **Notifications**:
   - Validates user ownership before modifications
   - Prevents unauthorized access to other users' notifications
-  
 - **Messages**:
   - Validates sender/receiver exist
   - Prevents self-messaging
@@ -30,10 +28,10 @@ All database queries use parameterized statements:
 
 ```typescript
 // Example from friend-requests/route.ts
-const result = await query(
-  'SELECT user_id, name, email FROM profiles WHERE user_id IN ($1, $2)',
-  [body.requesterId, body.addresseeId]
-);
+const result = await query('SELECT user_id, name, email FROM profiles WHERE user_id IN ($1, $2)', [
+  body.requesterId,
+  body.addresseeId,
+]);
 ```
 
 No string concatenation is used for SQL queries.
@@ -55,6 +53,7 @@ No string concatenation is used for SQL queries.
 ### 5. Environment Variables ✅
 
 Sensitive configuration is stored in environment variables:
+
 - `RESEND_API_KEY`: Email service credentials
 - `DATABASE_URL`: Database connection string
 - `NEXT_PUBLIC_SUPABASE_URL`: Public Supabase URL
@@ -63,6 +62,7 @@ Sensitive configuration is stored in environment variables:
 ### 6. CORS Configuration ✅
 
 WebSocket server has proper CORS configuration:
+
 ```javascript
 cors: {
   origin: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
@@ -74,6 +74,7 @@ cors: {
 ### 7. Rate Limiting Considerations
 
 ⚠️ **Recommendation**: Add rate limiting for production deployment:
+
 - Friend request endpoints (prevent spam)
 - Message sending (prevent abuse)
 - Notification queries (prevent DoS)
@@ -94,9 +95,11 @@ Suggested implementation: Use `express-rate-limit` or similar middleware.
 Running `npm audit` revealed the following:
 
 #### Production Dependencies
+
 ✅ **No high-severity vulnerabilities in production dependencies**
 
 #### Development Dependencies
+
 ⚠️ **Low/Moderate severity issues found**:
 
 1. **cookie** (<0.7.0) - Used by Expo mobile dependencies
@@ -122,7 +125,7 @@ Running `npm audit` revealed the following:
 ### Recommendations
 
 1. **Immediate Actions**: None required - no critical vulnerabilities in production code
-2. **Short Term**: 
+2. **Short Term**:
    - Monitor node-forge updates
    - Consider updating Expo dependencies
 3. **Long Term**:
@@ -143,18 +146,21 @@ All code review comments have been addressed:
 ## Best Practices Followed
 
 ### Database
+
 - ✅ Indexes on all foreign keys
 - ✅ Check constraints prevent invalid data
 - ✅ Cascade deletes maintain referential integrity
 - ✅ Unique constraints prevent duplicates
 
 ### API Design
+
 - ✅ Consistent error responses
 - ✅ Proper HTTP status codes
 - ✅ Input validation
 - ✅ Error logging
 
 ### Frontend
+
 - ✅ XSS protection (React escapes by default)
 - ✅ CSRF protection via Supabase tokens
 - ✅ Secure WebSocket connections
@@ -197,6 +203,7 @@ Before deploying to production:
 ## Monitoring Recommendations
 
 Implement monitoring for:
+
 - Failed authentication attempts
 - Unusual message/request volumes
 - WebSocket connection failures

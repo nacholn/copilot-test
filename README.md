@@ -30,7 +30,7 @@ cyclists-social-network/
 ### Web App (apps/web)
 
 - **Progressive Web App**: Full PWA with offline support, installable, and service worker
-- **PWA Features**: 
+- **PWA Features**:
   - Version update notifications with modal
   - Push notifications for messages
   - Smart notification permission requests

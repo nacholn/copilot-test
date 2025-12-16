@@ -7,12 +7,14 @@ A complete news posts system for the Cyclists Social Network, allowing users to 
 ## Features Implemented
 
 ### ✅ Database Schema
+
 - **posts**: Main posts table with title, content, visibility (public/friends)
 - **post_images**: Multiple images per post stored in Cloudinary
 - **post_replies**: Nested comments/replies on posts
 - **post_views**: Smart tracking system to show/hide posts based on activity
 
 ### ✅ Backend API Endpoints
+
 All endpoints follow REST conventions and include proper error handling:
 
 1. **GET /api/posts** - List posts with filters
@@ -60,6 +62,7 @@ All endpoints follow REST conventions and include proper error handling:
 ### ✅ Smart Visibility Logic
 
 Posts are shown in the "unread" feed when:
+
 - User hasn't viewed the post yet
 - User created the post AND there are new replies
 - User replied to the post AND there are new replies from others
@@ -69,6 +72,7 @@ This prevents post fatigue while keeping users engaged with active discussions.
 ### ✅ Notification System
 
 Integrated with existing WebSocket notifications:
+
 - Author notified when someone replies
 - All participants notified of new replies
 - Click notification to go directly to post
@@ -77,11 +81,13 @@ Integrated with existing WebSocket notifications:
 ### ✅ Internationalization
 
 Full translations in three languages:
+
 - **English** (en)
-- **Spanish** (es) 
+- **Spanish** (es)
 - **French** (fr)
 
 Translation keys added for:
+
 - Navigation ("Posts")
 - Post list (filters, badges, empty states)
 - Post creation form (labels, buttons, validation)
@@ -97,6 +103,7 @@ npm run migrate:up
 ```
 
 This will create:
+
 1. `posts` table
 2. `post_images` table
 3. `post_replies` table
@@ -176,6 +183,7 @@ curl -X POST "http://localhost:3001/api/posts/POST_ID/view" \
 ## Code Quality
 
 ### Linting
+
 ```bash
 # Backend
 cd apps/backend && npm run lint  # ✓ Passed
@@ -185,6 +193,7 @@ cd apps/web && npm run lint  # ✓ Passed with minor warnings
 ```
 
 ### Build
+
 ```bash
 # Config package (required first)
 cd packages/config && npm run build
@@ -199,6 +208,7 @@ cd apps/web && npm run build  # ✓ Compiled successfully
 ## Design Patterns Used
 
 1. **Consistent API Response Format**
+
    ```typescript
    { success: boolean, data?: T, error?: string }
    ```
@@ -295,21 +305,25 @@ Potential improvements for future iterations:
 ## Troubleshooting
 
 ### Images not uploading
+
 - Check Cloudinary credentials in env vars
 - Verify file size < 10MB
 - Check file format (PNG, JPG, GIF)
 
 ### Posts not appearing
+
 - Verify user authentication
 - Check friendship status for friends-only posts
 - Ensure migrations are applied
 
 ### Notifications not working
+
 - Check WebSocket connection
 - Verify Socket.IO server is running
 - Check browser console for errors
 
 ### Build failures
+
 - Run `npm install` in root directory
 - Build packages in order: config → backend/web
 - Check for TypeScript errors
@@ -317,6 +331,7 @@ Potential improvements for future iterations:
 ## Files Modified/Created
 
 ### Created Files
+
 - `apps/backend/migrations/1765263807441_create-posts-system.mjs`
 - `apps/backend/migrations/1765263941426_add-post-reply-notification-type.mjs`
 - `apps/backend/src/app/api/posts/route.ts`
@@ -330,6 +345,7 @@ Potential improvements for future iterations:
 - `apps/web/src/app/posts/[postId]/post-detail.module.css`
 
 ### Modified Files
+
 - `packages/config/src/types.ts` - Added post-related types
 - `apps/web/src/components/Header.tsx` - Added Posts link
 - `apps/web/src/messages/en.json` - Added English translations
@@ -340,6 +356,7 @@ Potential improvements for future iterations:
 ## Support
 
 For questions or issues with this feature:
+
 1. Check this documentation first
 2. Review the code comments in the implementation
 3. Check the main project README.md

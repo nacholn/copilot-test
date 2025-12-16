@@ -1,6 +1,7 @@
 # WebAdmin Authentication Flow
 
 ## Overview
+
 This document describes the authentication flow implemented for the webadmin application.
 
 ## Components
@@ -26,6 +27,7 @@ logout(): void
 ```
 
 **Key Features:**
+
 - Validates session exists in localStorage
 - Checks token expiration
 - Auto-clears expired sessions
@@ -43,6 +45,7 @@ Wraps the entire application to protect routes:
 ```
 
 **Functionality:**
+
 - Runs on every page navigation
 - Checks authentication status
 - Redirects to `/login` if not authenticated
@@ -51,6 +54,7 @@ Wraps the entire application to protect routes:
 ### 3. Updated Navigation Component
 
 **Added Features:**
+
 - Logout button when user is authenticated
 - Navigation hidden on login page
 - Displays logout option in nav bar
@@ -59,6 +63,7 @@ Wraps the entire application to protect routes:
 ### 4. Updated Login Page
 
 **Added Features:**
+
 - Checks if already authenticated on mount
 - Redirects to dashboard if logged in
 - Prevents unnecessary login attempts
@@ -66,6 +71,7 @@ Wraps the entire application to protect routes:
 ## Authentication Flow
 
 ### Login Flow
+
 ```
 1. User visits any page
    ↓
@@ -85,6 +91,7 @@ Wraps the entire application to protect routes:
 ```
 
 ### Protected Page Access
+
 ```
 1. User navigates to any page
    ↓
@@ -101,6 +108,7 @@ Wraps the entire application to protect routes:
 ```
 
 ### Logout Flow
+
 ```
 1. User clicks Logout button
    ↓
@@ -132,12 +140,14 @@ The session is stored in localStorage as JSON:
 ## Security Considerations
 
 ### Current Implementation
+
 - Session stored in localStorage
 - Token expiration checked before each request
 - Expired sessions automatically cleared
 - Only admin users can authenticate
 
 ### Recommended Improvements for Production
+
 1. **HttpOnly Cookies**: Move session to httpOnly cookies for better XSS protection
 2. **CSRF Protection**: Implement CSRF tokens for state-changing requests
 3. **Token Refresh**: Implement automatic token refresh before expiration
@@ -166,10 +176,12 @@ The session is stored in localStorage as JSON:
 ## Code Changes Summary
 
 ### New Files
+
 1. `apps/webadmin/src/lib/auth.ts` - Authentication utilities
 2. `apps/webadmin/src/components/AuthProvider.tsx` - Auth wrapper component
 
 ### Modified Files
+
 1. `apps/webadmin/src/app/layout.tsx` - Added AuthProvider
 2. `apps/webadmin/src/app/login/page.tsx` - Added auth check
 3. `apps/webadmin/src/components/Navigation.tsx` - Added logout button
@@ -177,33 +189,35 @@ The session is stored in localStorage as JSON:
 ## Usage Example
 
 ### Checking Authentication in Components
+
 ```typescript
 import { isAuthenticated, getSession } from '@/lib/auth';
 
 function MyComponent() {
   const session = getSession();
-  
+
   if (!isAuthenticated()) {
     return <div>Please log in</div>;
   }
-  
+
   return <div>Welcome, {session?.user?.email}</div>;
 }
 ```
 
 ### Manual Logout
+
 ```typescript
 import { logout } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 
 function MyComponent() {
   const router = useRouter();
-  
+
   const handleLogout = () => {
     logout();
     router.push('/login');
   };
-  
+
   return <button onClick={handleLogout}>Logout</button>;
 }
 ```
@@ -211,6 +225,7 @@ function MyComponent() {
 ## Environment Variables
 
 No additional environment variables required. The authentication uses:
+
 - Existing `NEXT_PUBLIC_SUPABASE_URL`
 - Existing `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - Existing `SUPABASE_SERVICE_ROLE_KEY` (backend only)

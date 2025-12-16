@@ -1,0 +1,134 @@
+.form {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.75rem;
+  color: #333;
+  text-align: center;
+}
+
+.error {
+  background: #fee;
+  color: #c00;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid #fcc;
+}
+
+.success {
+  background: #efe;
+  color: #070;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid #cfc;
+}
+
+.defaultLanguageSelector {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.defaultLanguageSelector label {
+  font-weight: 600;
+  color: #333;
+}
+
+.select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  flex: 1;
+  max-width: 200px;
+}
+
+.languageSection {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border-left: 4px solid #0070f3;
+}
+
+.languageName {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  color: #0070f3;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup:last-child {
+  margin-bottom: 0;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #0070f3;
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  background: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #0051cc;
+}
+
+.submitButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

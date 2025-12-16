@@ -114,7 +114,10 @@ export default function GroupDetail() {
         <div className={styles.header}>
           <div className={styles.headerContent}>
             <h1 className={styles.title}>Group Not Found</h1>
-            <button className={`${styles.button} ${styles.buttonSecondary}`} onClick={() => router.push('/')}>
+            <button
+              className={`${styles.button} ${styles.buttonSecondary}`}
+              onClick={() => router.push('/')}
+            >
               Back to Groups
             </button>
           </div>
@@ -141,7 +144,9 @@ export default function GroupDetail() {
               ← Back
             </button>
             <h1 className={styles.title}>{group.name}</h1>
-            {group.description && <p style={{ marginTop: '8px', color: '#6c757d' }}>{group.description}</p>}
+            {group.description && (
+              <p style={{ marginTop: '8px', color: '#6c757d' }}>{group.description}</p>
+            )}
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
             <button

@@ -66,6 +66,7 @@ Enhanced table component that displays user information with the following featu
 - Provides callbacks for viewing tokens and sending notifications
 
 **Props:**
+
 ```typescript
 interface UserListProps {
   users: Profile[];
@@ -86,6 +87,7 @@ Modal dialog that displays all push subscriptions for a user:
 - Responsive table layout
 
 **Props:**
+
 ```typescript
 interface PushTokensModalProps {
   user: Profile;
@@ -103,10 +105,11 @@ Modal form for composing and sending push notifications:
 - Optional action URL for notification clicks
 
 **Props:**
+
 ```typescript
 interface SendNotificationModalProps {
-  user?: Profile;           // For individual user notifications
-  groupId?: string;          // For group notifications
+  user?: Profile; // For individual user notifications
+  groupId?: string; // For group notifications
   groupName?: string;
   onClose: () => void;
   onSuccess?: () => void;
@@ -120,9 +123,11 @@ interface SendNotificationModalProps {
 Retrieves detailed push subscription information for a user.
 
 **Query Parameters:**
+
 - `userId` (required): The user's ID
 
 **Response:**
+
 ```typescript
 {
   success: true,
@@ -143,9 +148,11 @@ Retrieves detailed push subscription information for a user.
 Retrieves push token counts for multiple users in a single request. This batch endpoint optimizes performance by eliminating N+1 query patterns.
 
 **Query Parameters:**
+
 - `userIds` (required): Comma-separated list of user IDs
 
 **Response:**
+
 ```typescript
 {
   success: true,
@@ -166,6 +173,7 @@ Retrieves push token counts for multiple users in a single request. This batch e
 Sends a push notification to all of a user's devices.
 
 **Request Body:**
+
 ```typescript
 {
   userId: string,
@@ -184,6 +192,7 @@ Sends a push notification to all of a user's devices.
 ```
 
 **Response:**
+
 ```typescript
 {
   success: true,
@@ -198,6 +207,7 @@ Sends a push notification to all of a user's devices.
 Sends a push notification to all members of a group.
 
 **Request Body:**
+
 ```typescript
 {
   groupId: string,
@@ -216,6 +226,7 @@ Sends a push notification to all members of a group.
 ```
 
 **Response:**
+
 ```typescript
 {
   success: true,
@@ -299,12 +310,12 @@ const payload = {
     body: 'Your Message',
     icon: '/icon-192x192.png',
     badge: '/badge-72x72.png',
-    tag: 'custom-tag',  // For grouping/replacing notifications
+    tag: 'custom-tag', // For grouping/replacing notifications
     data: {
       url: '/custom-url',
-      customField: 'customValue'
-    }
-  }
+      customField: 'customValue',
+    },
+  },
 };
 ```
 
@@ -350,6 +361,7 @@ For production use, consider implementing:
 ### New Dependencies
 
 None - uses existing project dependencies:
+
 - `web-push`: Already installed for push notification functionality
 - Next.js API routes for backend
 - React hooks for frontend state management
@@ -399,6 +411,7 @@ None - uses existing project dependencies:
 #### Notifications Not Sending
 
 1. Check VAPID keys are configured in backend `.env`:
+
    ```
    VAPID_PUBLIC_KEY=your_public_key
    VAPID_PRIVATE_KEY=your_private_key
@@ -406,6 +419,7 @@ None - uses existing project dependencies:
    ```
 
 2. Verify user has active push subscriptions in database:
+
    ```sql
    SELECT * FROM push_subscriptions WHERE user_id = 'user-id';
    ```

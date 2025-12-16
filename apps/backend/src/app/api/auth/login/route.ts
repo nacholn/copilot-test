@@ -36,10 +36,9 @@ export async function POST(request: NextRequest) {
 
     // Update last_login_at for interaction score tracking
     try {
-      await query(
-        'UPDATE profiles SET last_login_at = CURRENT_TIMESTAMP WHERE user_id = $1',
-        [data.user.id]
-      );
+      await query('UPDATE profiles SET last_login_at = CURRENT_TIMESTAMP WHERE user_id = $1', [
+        data.user.id,
+      ]);
     } catch (updateError) {
       console.error('Error updating last_login_at:', updateError);
       // Don't fail the login if this update fails

@@ -104,10 +104,7 @@ export default function GroupsPage() {
       </div>
 
       {showCreateModal && (
-        <CreateGroupModal
-          onClose={() => setShowCreateModal(false)}
-          onCreate={handleCreateGroup}
-        />
+        <CreateGroupModal onClose={() => setShowCreateModal(false)} onCreate={handleCreateGroup} />
       )}
     </>
   );

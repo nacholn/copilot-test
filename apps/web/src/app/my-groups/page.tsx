@@ -159,14 +159,11 @@ export default function Groups() {
               <p className={styles.noResults}>{t('groups.noGroups')}</p>
             ) : (
               <div className={styles.groupList}>
-                {filteredGroups.map((group) => (                  <Link key={group.id} href={`/my-groups/${group.id}`} className={styles.groupCard}>
+                {filteredGroups.map((group) => (
+                  <Link key={group.id} href={`/my-groups/${group.id}`} className={styles.groupCard}>
                     <div className={styles.groupImage}>
                       {group.mainImage ? (
-                        <img
-                          src={group.mainImage}
-                          alt={group.name}
-                          className={styles.groupImg}
-                        />
+                        <img src={group.mainImage} alt={group.name} className={styles.groupImg} />
                       ) : (
                         <div className={styles.groupImagePlaceholder}>👥</div>
                       )}

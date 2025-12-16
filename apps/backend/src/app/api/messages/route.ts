@@ -150,10 +150,9 @@ export async function POST(request: NextRequest) {
 
     // Create notification for the receiver
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const messagePreview = body.message.length > 50 
-      ? body.message.substring(0, 50) + '...' 
-      : body.message;
-    
+    const messagePreview =
+      body.message.length > 50 ? body.message.substring(0, 50) + '...' : body.message;
+
     const notification = await createNotification({
       userId: body.receiverId,
       type: 'message',

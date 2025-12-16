@@ -24,6 +24,7 @@ node -e "const webPush = require('web-push'); const vapidKeys = webPush.generate
 ### 2. Configure Environment Variables
 
 **Backend** (`apps/backend/.env`):
+
 ```env
 VAPID_PUBLIC_KEY=your-generated-public-key
 VAPID_PRIVATE_KEY=your-generated-private-key
@@ -31,6 +32,7 @@ VAPID_SUBJECT=mailto:your-email@example.com
 ```
 
 **Frontend** (`apps/web/.env.local`):
+
 ```env
 NEXT_PUBLIC_VAPID_PUBLIC_KEY=your-generated-public-key
 ```
@@ -105,15 +107,18 @@ sendWebPushNotificationToUser('user-id-here', {
 ## Troubleshooting
 
 ### "VAPID keys not configured" warning
+
 - Make sure environment variables are set in both backend and frontend
 - Restart both applications after setting env vars
 
 ### Push subscription not working
+
 - Ensure HTTPS is used (or localhost for development)
 - Check browser console for errors
 - Verify VAPID public key matches in backend and frontend
 
 ### Notifications not appearing
+
 - Check notification permission status in browser settings
 - Ensure user has granted permission
 - Check that subscription is saved in database
@@ -132,6 +137,7 @@ sendWebPushNotificationToUser('user-id-here', {
 The VAPID system is now fully implemented and integrated. Notifications will automatically be sent via web push when created through the `createNotification()` function.
 
 To further enhance:
+
 - Add notification preferences in user settings
 - Implement notification categories
 - Add quiet hours support

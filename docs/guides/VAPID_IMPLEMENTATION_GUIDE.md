@@ -96,21 +96,21 @@ export async function sendPushNotification(
 ): Promise<void> {
   try {
     const pushPayload = JSON.stringify(payload);
-    
+
     await webPush.sendNotification(subscription, pushPayload, {
       TTL: 86400, // 24 hours
     });
-    
+
     console.log('Push notification sent successfully');
   } catch (error: any) {
     console.error('Error sending push notification:', error);
-    
+
     // Handle subscription expiration
     if (error.statusCode === 410 || error.statusCode === 404) {
       console.log('Subscription expired or not found, should remove from database');
       // TODO: Remove subscription from database
     }
-    
+
     throw error;
   }
 }
@@ -122,12 +122,12 @@ export async function sendPushNotificationToMany(
   subscriptions: PushSubscription[],
   payload: PushNotificationPayload
 ): Promise<void> {
-  const promises = subscriptions.map(subscription =>
-    sendPushNotification(subscription, payload).catch(err => {
+  const promises = subscriptions.map((subscription) =>
+    sendPushNotification(subscription, payload).catch((err) => {
       console.error('Failed to send to subscription:', err);
     })
   );
-  
+
   await Promise.all(promises);
 }
 
@@ -149,11 +149,11 @@ Edit the migration file:
 exports.up = (pgm) => {
   pgm.createTable('push_subscriptions', {
     id: { type: 'uuid', primaryKey: true, default: pgm.func('gen_random_uuid()') },
-    user_id: { 
-      type: 'uuid', 
-      notNull: true, 
+    user_id: {
+      type: 'uuid',
+      notNull: true,
       references: 'profiles(user_id)',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     },
     endpoint: { type: 'text', notNull: true, unique: true },
     p256dh: { type: 'text', notNull: true },
@@ -202,7 +202,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { endpoint, keys } = subscription;
-    
+
     if (!endpoint || !keys?.p256dh || !keys?.auth) {
       return NextResponse.json(
         { success: false, error: 'Invalid subscription format' },
@@ -211,10 +211,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if subscription already exists
-    const existingResult = await db.query(
-      'SELECT id FROM push_subscriptions WHERE endpoint = $1',
-      [endpoint]
-    );
+    const existingResult = await db.query('SELECT id FROM push_subscriptions WHERE endpoint = $1', [
+      endpoint,
+    ]);
 
     if (existingResult.rows.length > 0) {
       // Update existing subscription
@@ -250,10 +249,7 @@ export async function DELETE(request: NextRequest) {
     const endpoint = searchParams.get('endpoint');
 
     if (!endpoint) {
-      return NextResponse.json(
-        { success: false, error: 'Missing endpoint' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Missing endpoint' }, { status: 400 });
     }
 
     await db.query('DELETE FROM push_subscriptions WHERE endpoint = $1', [endpoint]);
@@ -278,10 +274,7 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId');
 
     if (!userId) {
-      return NextResponse.json(
-        { success: false, error: 'Missing userId' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Missing userId' }, { status: 400 });
     }
 
     const result = await db.query(
@@ -289,7 +282,7 @@ export async function GET(request: NextRequest) {
       [userId]
     );
 
-    const subscriptions = result.rows.map(row => ({
+    const subscriptions = result.rows.map((row) => ({
       endpoint: row.endpoint,
       keys: {
         p256dh: row.p256dh,
@@ -322,14 +315,14 @@ async function subscribeToPush(userId: string) {
 
   try {
     const registration = await navigator.serviceWorker.ready;
-    
+
     // Check if already subscribed
     let subscription = await registration.pushManager.getSubscription();
-    
+
     if (!subscription) {
       // Get VAPID public key from environment
       const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-      
+
       if (!vapidPublicKey) {
         console.error('VAPID public key not configured');
         return;
@@ -366,10 +359,8 @@ async function subscribeToPush(userId: string) {
 
 // Helper function to convert VAPID key
 function urlBase64ToUint8Array(base64String: string) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
-    .replace(/_/g, '/');
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -383,15 +374,15 @@ function urlBase64ToUint8Array(base64String: string) {
 // Update requestPermission function to call subscribeToPush
 const requestPermission = async () => {
   // ... existing permission request code ...
-  
+
   if (result === 'granted') {
     console.log('Notification permission granted');
-    
+
     // Subscribe to push notifications
     if (user?.id) {
       await subscribeToPush(user.id);
     }
-    
+
     // ... rest of existing code ...
   }
 };
@@ -405,12 +396,15 @@ Update notification sending in backend (e.g., when sending a message):
 // In apps/backend/src/lib/notifications.ts or messaging logic
 import { sendPushNotification } from './push-notifications';
 
-export async function notifyUser(userId: string, notification: {
-  title: string;
-  message: string;
-  type: string;
-  actionUrl?: string;
-}) {
+export async function notifyUser(
+  userId: string,
+  notification: {
+    title: string;
+    message: string;
+    type: string;
+    actionUrl?: string;
+  }
+) {
   // ... existing notification logic ...
 
   // Send push notification
@@ -444,7 +438,7 @@ export async function notifyUser(userId: string, notification: {
           },
         };
 
-        await sendPushNotification(subscription, pushPayload).catch(err => {
+        await sendPushNotification(subscription, pushPayload).catch((err) => {
           console.error('Failed to send push notification:', err);
         });
       }
@@ -462,6 +456,7 @@ The service worker is already set up (in `apps/web/public/sw-custom.js`), but en
 ### Step 10: Test Push Notifications
 
 1. **Start the backend and web app**:
+
    ```bash
    # Terminal 1 - Backend
    cd apps/backend
@@ -483,8 +478,8 @@ The service worker is already set up (in `apps/web/public/sw-custom.js`), but en
 3. **Test with DevTools**:
    ```javascript
    // In browser console, test subscription
-   navigator.serviceWorker.ready.then(reg => {
-     reg.pushManager.getSubscription().then(sub => {
+   navigator.serviceWorker.ready.then((reg) => {
+     reg.pushManager.getSubscription().then((sub) => {
        console.log('Subscription:', sub);
      });
    });

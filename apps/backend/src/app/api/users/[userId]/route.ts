@@ -7,10 +7,7 @@ import type { ApiResponse } from '@cyclists/config';
 export const dynamic = 'force-dynamic';
 
 // GET user profile by user ID
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { userId: string } }) {
   try {
     const { userId } = params;
 

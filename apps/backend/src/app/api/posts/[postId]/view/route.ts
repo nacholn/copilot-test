@@ -6,10 +6,7 @@ import type { ApiResponse } from '@cyclists/config';
 export const dynamic = 'force-dynamic';
 
 // POST mark post as viewed
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { postId: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { postId: string } }) {
   try {
     const postId = params.postId;
     const body = await request.json();
