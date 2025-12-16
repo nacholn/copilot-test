@@ -138,7 +138,30 @@ Retrieves detailed push subscription information for a user.
 
 **Implementation:** `apps/backend/src/app/api/webadmin/push-subscriptions/route.ts`
 
-#### 2. Send Push to User (`POST /api/webadmin/push-notifications/user`)
+#### 2. Get Push Token Counts (Batch) (`GET /api/webadmin/push-token-counts`)
+
+Retrieves push token counts for multiple users in a single request. This batch endpoint optimizes performance by eliminating N+1 query patterns.
+
+**Query Parameters:**
+- `userIds` (required): Comma-separated list of user IDs
+
+**Response:**
+```typescript
+{
+  success: true,
+  data: {
+    "user-id-1": 2,
+    "user-id-2": 0,
+    "user-id-3": 1
+  }
+}
+```
+
+**Implementation:** `apps/backend/src/app/api/webadmin/push-token-counts/route.ts`
+
+**Performance:** Uses a single database query with `GROUP BY` to fetch counts for all users efficiently.
+
+#### 3. Send Push to User (`POST /api/webadmin/push-notifications/user`)
 
 Sends a push notification to all of a user's devices.
 
@@ -170,7 +193,7 @@ Sends a push notification to all of a user's devices.
 
 **Implementation:** `apps/backend/src/app/api/webadmin/push-notifications/user/route.ts`
 
-#### 3. Send Push to Group (`POST /api/webadmin/push-notifications/group`)
+#### 4. Send Push to Group (`POST /api/webadmin/push-notifications/group`)
 
 Sends a push notification to all members of a group.
 
@@ -341,16 +364,20 @@ None - uses existing project dependencies:
 
 ### Frontend Optimizations
 
-- Push token counts are fetched once on component mount
-- Uses `Promise.all` for parallel API requests
+- Push token counts are fetched using batch endpoint (single request)
+- Eliminates N+1 query pattern that would occur with individual requests
+- Efficient handling of large user lists
 - Displays loading states during data fetching
 
 ### Backend Optimizations
 
+- **Batch endpoint** for push token counts eliminates N+1 queries
+- Single database query with `GROUP BY` for optimal performance
 - Uses parameterized queries to prevent SQL injection
 - Parallel push notification sending with `Promise.all`
 - Automatic cleanup of expired subscriptions
 - Database indexes on `user_id` and `endpoint` columns
+- Efficient handling of large user lists (scales linearly, not quadratically)
 
 ## Future Enhancements
 
