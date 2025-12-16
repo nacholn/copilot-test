@@ -26,6 +26,7 @@ cyclists-social-network/
 - **Supabase Integration**: User authentication with Supabase
 - **PostgreSQL Database**: Profile storage with rich schema
 - **Next.js API Routes**: RESTful API endpoints
+- **Multilingual Posts**: JSONB-based posts with support for English, Spanish, and French
 
 ### Web App (apps/web)
 
@@ -53,7 +54,7 @@ cyclists-social-network/
 
 ### Shared Packages
 
-- **@cyclists/config**: TypeScript types, Supabase client factory
+- **@cyclists/config**: TypeScript types, Supabase client factory, i18n utilities
 - **@cyclists/ui**: Cross-platform UI components (Button, Input, Avatar)
 
 ## 📋 Prerequisites
@@ -76,6 +77,23 @@ Comprehensive documentation is available in the `/docs` directory:
 - **[Reports](./docs/reports/)** - Implementation and completion reports
 
 👉 **[View Full Documentation Index](./docs/README.md)**
+
+## ✨ Feature Highlights
+
+### Multilingual Posts (NEW!)
+
+Create and view posts in multiple languages with our new multilingual posts feature:
+
+- **Language Support**: English, Spanish, and French
+- **JSONB Storage**: Efficient PostgreSQL JSONB columns for flexible content
+- **Smart Switching**: Interactive language switcher on each post
+- **i18n Utilities**: Reusable localization functions with fallback support
+- **Complete API**: Full CRUD operations with language filtering
+- **Type-Safe**: Full TypeScript support across backend and frontend
+
+📖 **[Multilingual Posts Guide](./docs/features/MULTILINGUAL_POSTS_GUIDE.md)** | 📋 **[Implementation Summary](./MULTILINGUAL_POSTS_IMPLEMENTATION.md)**
+
+Try it out: Navigate to `/multilingual-posts` in the web app!
 
 ## 🛠️ Quick Setup
 
