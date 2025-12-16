@@ -164,12 +164,12 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
           )}
           <div className={styles.actions}>
             <button onClick={handleJoin} className={styles.joinButton}>
-              {user ? 'Join this group' : 'Login to join'}
+              {user ? t('groups.joinThisGroup') : t('groups.loginToJoin')}
             </button>
           </div>
           {!user && (
             <div className={styles.loginPrompt}>
-              <p>Join the community and connect with fellow cyclists!</p>
+              <p>{t('groups.joinCommunity')}</p>
               <div className={styles.loginActions}>
                 <Link href={`/login?redirect=/g/${params.slug}`} className={styles.loginButton}>
                   Sign In

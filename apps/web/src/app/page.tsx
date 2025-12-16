@@ -174,7 +174,7 @@ function HomeInner() {
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Latest Posts</h2>
             <Link href="/posts" className={styles.seeAllLink}>
-              See all →
+              {t('home.seeAll')} →
             </Link>
           </div>
           <div className={styles.postsGrid}>
@@ -191,7 +191,7 @@ function HomeInner() {
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Popular Groups</h2>
             <Link href="/groups" className={styles.seeAllLink}>
-              See all →
+              {t('home.seeAll')} →
             </Link>
           </div>
           <div className={styles.groupsGrid}>

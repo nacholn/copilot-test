@@ -57,7 +57,8 @@
     "eBikingDesc": "Diversión en bicicleta con asistencia eléctrica",
     "ctaTitle": "¿Listo para Rodar?",
     "ctaDescription": "Crea tu perfil y comienza a conectar con ciclistas hoy",
-    "getStartedFree": "Comenzar Gratis"
+    "getStartedFree": "Comenzar Gratis",
+    "seeAll": "Ver todas"
   },
   "login": {
     "title": "Bienvenido de Nuevo",
@@ -332,6 +333,9 @@
     "general": "General",
     "city": "Ciudad",
     "joinGroup": "Unirse al Grupo",
+    "joinThisGroup": "Unirse a este grupo",
+    "loginToJoin": "Inicia sesión para unirte",
+    "joinCommunity": "¡Únete a la comunidad y conecta con otros ciclistas!",
     "leaveGroup": "Salir del Grupo",
     "members": "Miembros",
     "member": "miembro",

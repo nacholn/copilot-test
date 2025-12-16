@@ -57,7 +57,8 @@
     "eBikingDesc": "Plaisir du cyclisme assisté électriquement",
     "ctaTitle": "Prêt à Rouler ?",
     "ctaDescription": "Créez votre profil et commencez à vous connecter avec des cyclistes aujourd'hui",
-    "getStartedFree": "Commencer Gratuitement"
+    "getStartedFree": "Commencer Gratuitement",
+    "seeAll": "Voir tout"
   },
   "login": {
     "title": "Bon Retour",
@@ -328,6 +329,9 @@
     "general": "Général",
     "city": "Ville",
     "joinGroup": "Rejoindre le Groupe",
+    "joinThisGroup": "Rejoindre ce groupe",
+    "loginToJoin": "Connectez-vous pour rejoindre",
+    "joinCommunity": "Rejoignez la communauté et connectez-vous avec d'autres cyclistes !",
     "leaveGroup": "Quitter le Groupe",
     "members": "Membres",
     "member": "membre",

@@ -57,7 +57,8 @@
     "eBikingDesc": "Electric-assisted cycling fun",
     "ctaTitle": "Ready to Ride?",
     "ctaDescription": "Create your profile and start connecting with cyclists today",
-    "getStartedFree": "Get Started Free"
+    "getStartedFree": "Get Started Free",
+    "seeAll": "See all"
   },
   "login": {
     "title": "Welcome Back",
@@ -332,6 +333,9 @@
     "general": "General",
     "city": "City",
     "joinGroup": "Join Group",
+    "joinThisGroup": "Join this group",
+    "loginToJoin": "Login to join",
+    "joinCommunity": "Join the community and connect with fellow cyclists!",
     "leaveGroup": "Leave Group",
     "members": "Members",
     "member": "member",
