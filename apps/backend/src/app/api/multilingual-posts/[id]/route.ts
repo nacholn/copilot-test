@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         prof.name as author_name,
         prof.avatar as author_avatar
       FROM multilingual_posts mp
-      JOIN profiles prof ON mp.author_id = prof.id
+      JOIN profiles prof ON mp.author_id = prof.user_id
       WHERE mp.id = $1`,
       [id]
     );

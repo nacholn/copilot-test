@@ -18,7 +18,7 @@ export const up = (pgm) => {
     author_id: {
       type: 'uuid',
       notNull: true,
-      references: 'profiles(id)',
+      references: 'profiles(user_id)',
       onDelete: 'CASCADE',
       comment: 'The author who created the post',
     },

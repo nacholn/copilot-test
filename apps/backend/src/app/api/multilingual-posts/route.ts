@@ -42,8 +42,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Get author_id from authentication session
-    // For now, get from header or use a default
+    // TODO: SECURITY - Get author_id from authenticated session
+    // This temporary implementation is NOT production-ready
+    // Should integrate with existing Supabase auth middleware
     const authorId = request.headers.get('x-user-id') || 'temp-user-id';
 
     // Insert post into database
@@ -98,7 +99,7 @@ export async function GET(request: NextRequest) {
         prof.name as author_name,
         prof.avatar as author_avatar
       FROM multilingual_posts mp
-      JOIN profiles prof ON mp.author_id = prof.id
+      JOIN profiles prof ON mp.author_id = prof.user_id
     `;
 
     const params: any[] = [];
