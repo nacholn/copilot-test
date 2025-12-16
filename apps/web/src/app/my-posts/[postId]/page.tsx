@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/AuthGuard';
@@ -179,17 +178,13 @@ export default function PostDetail() {
               <EditPostButton post={post} isOwner={post.userId === user?.id} userId={user?.id} />
             </div>
 
-            <h1 className={styles.postTitle}>{post.title}</h1>
-
-            {post.images && post.images.length > 0 && (
+            <h1 className={styles.postTitle}>{post.title}</h1>            {post.images && post.images.length > 0 && (
               <div className={styles.imagesSection}>
                 <div className={styles.mainImage}>
-                  <Image
+                  <img
                     src={post.images[selectedImage]?.imageUrl}
                     alt={`${post.title} - Image ${selectedImage + 1}`}
-                    fill
-                    style={{ objectFit: 'contain' }}
-                    sizes="(max-width: 768px) 100vw, 800px"
+                    className={styles.mainImg}
                   />
                 </div>
                 {post.images.length > 1 && (
@@ -202,7 +197,11 @@ export default function PostDetail() {
                           index === selectedImage ? styles.thumbnailActive : ''
                         }`}
                       >
-                        <Image src={image.imageUrl} alt={`Thumbnail ${index + 1}`} fill style={{ objectFit: 'cover' }} sizes="100px" />
+                        <img
+                          src={image.imageUrl}
+                          alt={`Thumbnail ${index + 1}`}
+                          className={styles.thumbnailImg}
+                        />
                       </button>
                     ))}
                   </div>
