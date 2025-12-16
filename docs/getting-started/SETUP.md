@@ -75,7 +75,7 @@ docker-compose up -d postgres
 # DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
 ```
 
-See [DOCKER.md](DOCKER.md) for more details.
+See [Docker Setup](../deployment/DOCKER.md) for more details.
 
 #### Using Local PostgreSQL
 
