@@ -57,7 +57,10 @@
     "eBikingDesc": "Plaisir du cyclisme assisté électriquement",
     "ctaTitle": "Prêt à Rouler ?",
     "ctaDescription": "Créez votre profil et commencez à vous connecter avec des cyclistes aujourd'hui",
-    "getStartedFree": "Commencer Gratuitement"
+    "getStartedFree": "Commencer Gratuitement",
+    "seeAll": "Voir tout",
+    "latestPosts": "Dernières Publications",
+    "popularGroups": "Groupes Populaires"
   },
   "login": {
     "title": "Bon Retour",
@@ -189,7 +192,23 @@
   "notifications": {
     "title": "Notifications",
     "noNotifications": "Pas encore de notifications",
-    "markAllRead": "Tout marquer comme lu"
+    "noNotificationsSubtext": "Lorsque quelqu'un vous envoie une demande d'ami ou un message, vous le verrez ici.",
+    "markAllRead": "Tout marquer comme lu",
+    "backToHome": "Retour à l'Accueil",
+    "timeAgo": {
+      "minutesAgo": "il y a {count}m",
+      "hoursAgo": "il y a {count}h",
+      "daysAgo": "il y a {count}j"
+    },
+    "types": {
+      "friendRequest": "Nouvelle Demande d'Ami",
+      "friendRequestAccepted": "Demande d'Ami Acceptée",
+      "message": "Nouveau Message",
+      "groupMessage": "Nouveau message dans {groupName}",
+      "newPost": "Nouvelle publication d'un ami",
+      "newPublicPost": "Nouvelle publication publique",
+      "postReply": "Nouvelle réponse sur la publication"
+    }
   },
   "levels": {
     "beginner": "Débutant",
@@ -312,6 +331,10 @@
     "general": "Général",
     "city": "Ville",
     "joinGroup": "Rejoindre le Groupe",
+    "joinThisGroup": "Rejoindre ce groupe",
+    "loginToJoin": "Connectez-vous pour rejoindre",
+    "joinCommunity": "Rejoignez la communauté et connectez-vous avec d'autres cyclistes !",
+    "aboutThisGroup": "À propos de ce groupe",
     "leaveGroup": "Quitter le Groupe",
     "members": "Membres",
     "member": "membre",

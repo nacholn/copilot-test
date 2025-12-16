@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTranslations } from '../../hooks/useTranslations';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ interface AuthGuardProps {
 export function AuthGuard({ children, redirectTo = '/login' }: AuthGuardProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const { t } = useTranslations();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -29,7 +31,7 @@ export function AuthGuard({ children, redirectTo = '/login' }: AuthGuardProps) {
           minHeight: '100vh',
         }}
       >
-        <p>Loading...</p>
+        <p>{t('common.loading')}</p>
       </div>
     );
   }

@@ -57,7 +57,10 @@
     "eBikingDesc": "Electric-assisted cycling fun",
     "ctaTitle": "Ready to Ride?",
     "ctaDescription": "Create your profile and start connecting with cyclists today",
-    "getStartedFree": "Get Started Free"
+    "getStartedFree": "Get Started Free",
+    "seeAll": "See all",
+    "latestPosts": "Latest Posts",
+    "popularGroups": "Popular Groups"
   },
   "login": {
     "title": "Welcome Back",
@@ -193,7 +196,23 @@
   "notifications": {
     "title": "Notifications",
     "noNotifications": "No notifications yet",
-    "markAllRead": "Mark all as read"
+    "noNotificationsSubtext": "When someone sends you a friend request or message, you'll see it here.",
+    "markAllRead": "Mark all as read",
+    "backToHome": "Back to Home",
+    "timeAgo": {
+      "minutesAgo": "{count}m ago",
+      "hoursAgo": "{count}h ago",
+      "daysAgo": "{count}d ago"
+    },
+    "types": {
+      "friendRequest": "New Friend Request",
+      "friendRequestAccepted": "Friend Request Accepted",
+      "message": "New Message",
+      "groupMessage": "New message in {groupName}",
+      "newPost": "New post from friend",
+      "newPublicPost": "New public post",
+      "postReply": "New reply on post"
+    }
   },
   "levels": {
     "beginner": "Beginner",
@@ -316,6 +335,10 @@
     "general": "General",
     "city": "City",
     "joinGroup": "Join Group",
+    "joinThisGroup": "Join this group",
+    "loginToJoin": "Login to join",
+    "joinCommunity": "Join the community and connect with fellow cyclists!",
+    "aboutThisGroup": "About this group",
     "leaveGroup": "Leave Group",
     "members": "Members",
     "member": "member",

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTranslations } from '../../../hooks/useTranslations';
 import { generateGroupStructuredData } from '../../../utils/structuredData';
 import type { GroupWithMemberCount, GroupImage } from '@cyclists/config';
 import styles from './groupDetail.module.css';
@@ -12,6 +13,7 @@ import styles from './groupDetail.module.css';
 export default function PublicGroupDetail({ params }: { params: { slug: string } }) {
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslations();
   const [group, setGroup] = useState<(GroupWithMemberCount & { images?: GroupImage[] }) | null>(
     null
   );
@@ -56,7 +58,7 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
   if (loading) {
     return (
       <main className={styles.main}>
-        <div className={styles.loading}>Loading...</div>
+        <div className={styles.loading}>{t('common.loading')}</div>
       </main>
     );
   }
@@ -141,7 +143,7 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
           </header>
           {group.description && (
             <div className={styles.description}>
-              <h2>About this group</h2>
+              <h2>{t('groups.aboutThisGroup')}</h2>
               <p>{group.description}</p>
             </div>
           )}{' '}
@@ -162,12 +164,12 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
           )}
           <div className={styles.actions}>
             <button onClick={handleJoin} className={styles.joinButton}>
-              {user ? 'Join this group' : 'Login to join'}
+              {user ? t('groups.joinThisGroup') : t('groups.loginToJoin')}
             </button>
           </div>
           {!user && (
             <div className={styles.loginPrompt}>
-              <p>Join the community and connect with fellow cyclists!</p>
+              <p>{t('groups.joinCommunity')}</p>
               <div className={styles.loginActions}>
                 <Link href={`/login?redirect=/g/${params.slug}`} className={styles.loginButton}>
                   Sign In

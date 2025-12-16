@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTranslations } from '../../../hooks/useTranslations';
 import { generatePostStructuredData } from '../../../utils/structuredData';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from './postDetail.module.css';
@@ -12,6 +13,7 @@ import styles from './postDetail.module.css';
 export default function PublicPostDetail({ params }: { params: { slug: string } }) {
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslations();
   const [post, setPost] = useState<PostWithDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
   if (loading) {
     return (
       <main className={styles.main}>
-        <div className={styles.loading}>Loading...</div>
+        <div className={styles.loading}>{t('common.loading')}</div>
       </main>
     );
   }

@@ -57,7 +57,10 @@
     "eBikingDesc": "Diversión en bicicleta con asistencia eléctrica",
     "ctaTitle": "¿Listo para Rodar?",
     "ctaDescription": "Crea tu perfil y comienza a conectar con ciclistas hoy",
-    "getStartedFree": "Comenzar Gratis"
+    "getStartedFree": "Comenzar Gratis",
+    "seeAll": "Ver todas",
+    "latestPosts": "Últimas Publicaciones",
+    "popularGroups": "Grupos Populares"
   },
   "login": {
     "title": "Bienvenido de Nuevo",
@@ -193,7 +196,23 @@
   "notifications": {
     "title": "Notificaciones",
     "noNotifications": "Aún no hay notificaciones",
-    "markAllRead": "Marcar todas como leídas"
+    "noNotificationsSubtext": "Cuando alguien te envíe una solicitud de amistad o mensaje, lo verás aquí.",
+    "markAllRead": "Marcar todas como leídas",
+    "backToHome": "Volver al Inicio",
+    "timeAgo": {
+      "minutesAgo": "hace {count}m",
+      "hoursAgo": "hace {count}h",
+      "daysAgo": "hace {count}d"
+    },
+    "types": {
+      "friendRequest": "Nueva Solicitud de Amistad",
+      "friendRequestAccepted": "Solicitud de Amistad Aceptada",
+      "message": "Nuevo Mensaje",
+      "groupMessage": "Nuevo mensaje en {groupName}",
+      "newPost": "Nueva publicación de amigo",
+      "newPublicPost": "Nueva publicación pública",
+      "postReply": "Nueva respuesta en publicación"
+    }
   },
   "levels": {
     "beginner": "Principiante",
@@ -316,6 +335,10 @@
     "general": "General",
     "city": "Ciudad",
     "joinGroup": "Unirse al Grupo",
+    "joinThisGroup": "Unirse a este grupo",
+    "loginToJoin": "Inicia sesión para unirte",
+    "joinCommunity": "¡Únete a la comunidad y conecta con otros ciclistas!",
+    "aboutThisGroup": "Acerca de este grupo",
     "leaveGroup": "Salir del Grupo",
     "members": "Miembros",
     "member": "miembro",
