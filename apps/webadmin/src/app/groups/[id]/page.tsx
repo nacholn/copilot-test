@@ -6,6 +6,7 @@ import type { Group, GroupMemberWithProfile, Profile } from '@cyclists/config';
 import styles from '../../../styles/common.module.css';
 import { MemberList } from '../../../components/MemberList';
 import { AddMemberModal } from '../../../components/AddMemberModal';
+import { SendNotificationModal } from '../../../components/SendNotificationModal';
 
 export default function GroupDetail() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function GroupDetail() {
   const [members, setMembers] = useState<GroupMemberWithProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showSendNotificationModal, setShowSendNotificationModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchGroupDetails = async () => {
@@ -133,7 +135,7 @@ export default function GroupDetail() {
           <div>
             <button
               className={`${styles.button} ${styles.buttonSmall} ${styles.buttonSecondary}`}
-              onClick={() => router.push('/')}
+              onClick={() => router.push('/groups')}
               style={{ marginBottom: '10px' }}
             >
               ← Back
@@ -141,12 +143,22 @@ export default function GroupDetail() {
             <h1 className={styles.title}>{group.name}</h1>
             {group.description && <p style={{ marginTop: '8px', color: '#6c757d' }}>{group.description}</p>}
           </div>
-          <button
-            className={`${styles.button} ${styles.buttonPrimary}`}
-            onClick={() => setShowAddModal(true)}
-          >
-            Add Member
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
+              className={styles.button}
+              onClick={() => setShowSendNotificationModal(true)}
+              style={{ backgroundColor: '#4caf50', color: 'white' }}
+              title="Send push notification to all members"
+            >
+              📲 Send Push to All Members
+            </button>
+            <button
+              className={`${styles.button} ${styles.buttonPrimary}`}
+              onClick={() => setShowAddModal(true)}
+            >
+              Add Member
+            </button>
+          </div>
         </div>
       </div>
 
@@ -160,6 +172,15 @@ export default function GroupDetail() {
           existingMembers={members}
           onClose={() => setShowAddModal(false)}
           onAdd={handleAddMember}
+        />
+      )}
+
+      {showSendNotificationModal && (
+        <SendNotificationModal
+          groupId={groupId}
+          groupName={group.name}
+          onClose={() => setShowSendNotificationModal(false)}
+          onSuccess={() => fetchGroupDetails()}
         />
       )}
     </>
