@@ -172,7 +172,7 @@ function HomeInner() {
       {!loading && latestPosts.length > 0 && (
         <section className={styles.postsSection}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Latest Posts</h2>
+            <h2 className={styles.sectionTitle}>{t('home.latestPosts')}</h2>
             <Link href="/posts" className={styles.seeAllLink}>
               {t('home.seeAll')} →
             </Link>
@@ -189,7 +189,7 @@ function HomeInner() {
       {!loading && popularGroups.length > 0 && (
         <section className={styles.groupsSection}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Popular Groups</h2>
+            <h2 className={styles.sectionTitle}>{t('home.popularGroups')}</h2>
             <Link href="/groups" className={styles.seeAllLink}>
               {t('home.seeAll')} →
             </Link>

@@ -58,7 +58,9 @@
     "ctaTitle": "Prêt à Rouler ?",
     "ctaDescription": "Créez votre profil et commencez à vous connecter avec des cyclistes aujourd'hui",
     "getStartedFree": "Commencer Gratuitement",
-    "seeAll": "Voir tout"
+    "seeAll": "Voir tout",
+    "latestPosts": "Dernières Publications",
+    "popularGroups": "Groupes Populaires"
   },
   "login": {
     "title": "Bon Retour",
@@ -332,6 +334,7 @@
     "joinThisGroup": "Rejoindre ce groupe",
     "loginToJoin": "Connectez-vous pour rejoindre",
     "joinCommunity": "Rejoignez la communauté et connectez-vous avec d'autres cyclistes !",
+    "aboutThisGroup": "À propos de ce groupe",
     "leaveGroup": "Quitter le Groupe",
     "members": "Membres",
     "member": "membre",

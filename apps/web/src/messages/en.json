@@ -58,7 +58,9 @@
     "ctaTitle": "Ready to Ride?",
     "ctaDescription": "Create your profile and start connecting with cyclists today",
     "getStartedFree": "Get Started Free",
-    "seeAll": "See all"
+    "seeAll": "See all",
+    "latestPosts": "Latest Posts",
+    "popularGroups": "Popular Groups"
   },
   "login": {
     "title": "Welcome Back",
@@ -336,6 +338,7 @@
     "joinThisGroup": "Join this group",
     "loginToJoin": "Login to join",
     "joinCommunity": "Join the community and connect with fellow cyclists!",
+    "aboutThisGroup": "About this group",
     "leaveGroup": "Leave Group",
     "members": "Members",
     "member": "member",

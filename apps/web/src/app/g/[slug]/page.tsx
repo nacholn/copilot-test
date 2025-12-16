@@ -143,7 +143,7 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
           </header>
           {group.description && (
             <div className={styles.description}>
-              <h2>About this group</h2>
+              <h2>{t('groups.aboutThisGroup')}</h2>
               <p>{group.description}</p>
             </div>
           )}{' '}
