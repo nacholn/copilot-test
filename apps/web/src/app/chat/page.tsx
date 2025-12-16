@@ -5,9 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWebSocket } from '../../contexts/WebSocketContext';
 import { useTranslations } from '../../hooks/useTranslations';
-import { AuthGuard } from '../../components/AuthGuard';
-import { Loader } from '../../components/Loader';
-import { Avatar } from '../../components/Avatar';
+import { AuthGuard } from '../../components/auth/AuthGuard';
+import { Loader } from '../../components/ui/Loader';
+import { Avatar } from '../../components/profile/Avatar';
 import type {
   Conversation,
   GroupConversation,

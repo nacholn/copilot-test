@@ -2,10 +2,10 @@ import './globals.css';
 import { AuthProvider } from '../contexts/AuthContext';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import { WebSocketProvider } from '../contexts/WebSocketContext';
-import { Header } from '../components/Header';
-import { PWAUpdatePrompt } from '../components/PWAUpdatePrompt';
-import { WebPushNotificationPermission } from '../components/WebPushNotificationPermission';
-import { PWAInstallPrompt } from '../components/PWAInstallPrompt';
+import { Header } from '../components/ui/Header';
+import { PWAUpdatePrompt } from '../components/pwa/PWAUpdatePrompt';
+import { WebPushNotificationPermission } from '../components/pwa/WebPushNotificationPermission';
+import { PWAInstallPrompt } from '../components/pwa/PWAInstallPrompt';
 import { defaultViewport } from '../config/viewport';
 
 export const metadata = {

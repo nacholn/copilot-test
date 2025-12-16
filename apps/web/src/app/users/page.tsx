@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
-import { AuthGuard } from '../../components/AuthGuard';
-import { Avatar } from '../../components/Avatar';
-import { Loader } from '../../components/Loader';
-import { FilterBikeTypeSelector } from '../../components/FilterBikeTypeSelector';
-import { FilterCyclingLevelSelector } from '../../components/FilterCyclingLevelSelector';
+import { AuthGuard } from '../../components/auth/AuthGuard';
+import { Avatar } from '../../components/profile/Avatar';
+import { Loader } from '../../components/ui/Loader';
+import { FilterBikeTypeSelector } from '../../components/selectors/FilterBikeTypeSelector';
+import { FilterCyclingLevelSelector } from '../../components/selectors/FilterCyclingLevelSelector';
 import type { Profile, GroupWithMemberCount, GroupConversation } from '@cyclists/config';
 import styles from './users.module.css';
 

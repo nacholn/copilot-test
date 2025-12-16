@@ -4,9 +4,9 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
-import { AuthGuard } from '../../components/AuthGuard';
-import { Avatar } from '../../components/Avatar';
-import { Loader } from '../../components/Loader';
+import { AuthGuard } from '../../components/auth/AuthGuard';
+import { Avatar } from '../../components/profile/Avatar';
+import { Loader } from '../../components/ui/Loader';
 import type { PostWithDetails } from '@cyclists/config';
 import styles from './posts.module.css';
 

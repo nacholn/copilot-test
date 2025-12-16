@@ -3,11 +3,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../contexts/AuthContext';
-import { useTranslations } from '../hooks/useTranslations';
-import { LocationPicker } from './LocationPicker';
-import { BikeTypeSelector, type BikeType } from './BikeTypeSelector';
-import { CyclingLevelSelector, type CyclingLevel } from './CyclingLevelSelector';
+import { useAuth } from '../../contexts/AuthContext';
+import { useTranslations } from '../../hooks/useTranslations';
+import { LocationPicker } from '../forms/LocationPicker';
+import { BikeTypeSelector, type BikeType } from '../selectors/BikeTypeSelector';
+import { CyclingLevelSelector, type CyclingLevel } from '../selectors/CyclingLevelSelector';
 import { getSupabaseClient } from '@cyclists/config';
 import styles from './AuthModal.module.css';
 

@@ -6,11 +6,11 @@ import styles from '../../styles/common.module.css';
 import registerStyles from './register.module.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
-import { LocationPicker } from '../../components/LocationPicker';
-import { BikeTypeSelector, type BikeType } from '../../components/BikeTypeSelector';
-import { CyclingLevelSelector, type CyclingLevel } from '../../components/CyclingLevelSelector';
+import { LocationPicker } from '../../components/forms/LocationPicker';
+import { BikeTypeSelector, type BikeType } from '../../components/selectors/BikeTypeSelector';
+import { CyclingLevelSelector, type CyclingLevel } from '../../components/selectors/CyclingLevelSelector';
 import { getSupabaseClient } from '@cyclists/config';
-import { Loader } from '../../components/Loader';
+import { Loader } from '../../components/ui/Loader';
 
 type RegistrationStep = 1 | 2 | 3;
 

@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { type Profile } from '@cyclists/config';
-import { LocationPicker } from './LocationPicker';
-import { ImageUpload } from './ImageUpload';
-import { BikeTypeSelector, type BikeType } from './BikeTypeSelector';
-import { CyclingLevelSelector, type CyclingLevel } from './CyclingLevelSelector';
-import styles from '../styles/common.module.css';
+import { LocationPicker } from '../forms/LocationPicker';
+import { ImageUpload } from '../forms/ImageUpload';
+import { BikeTypeSelector, type BikeType } from '../selectors/BikeTypeSelector';
+import { CyclingLevelSelector, type CyclingLevel } from '../selectors/CyclingLevelSelector';
+import styles from '../../styles/common.module.css';
 
 interface ProfileFormProps {
   initialProfile?: Profile | null;

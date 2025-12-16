@@ -3,8 +3,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useTranslations } from '../../hooks/useTranslations';
-import { PublicGroupCard } from '../../components/PublicGroupCard';
-import { Loader } from '../../components/Loader';
+import { PublicGroupCard } from '../../components/cards/PublicGroupCard';
+import { Loader } from '../../components/ui/Loader';
 import type { GroupWithMemberCount } from '@cyclists/config';
 import styles from './groups.module.css';
 
