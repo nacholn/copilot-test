@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../../styles/common.module.css';
 import registerStyles from './register.module.css';
@@ -10,6 +10,7 @@ import { LocationPicker } from '../../components/LocationPicker';
 import { BikeTypeSelector, type BikeType } from '../../components/BikeTypeSelector';
 import { CyclingLevelSelector, type CyclingLevel } from '../../components/CyclingLevelSelector';
 import { getSupabaseClient } from '@cyclists/config';
+import { Loader } from '../../components/Loader';
 
 type RegistrationStep = 1 | 2 | 3;
 
@@ -603,64 +604,66 @@ export default function Register() {
 
   // Step 3: Summary
   return (
-    <main className={styles.main}>
-      <div className={styles.containerSmall}>
-        {renderStepIndicator()}
-        <h1 className={styles.title}>{t('register.summaryTitle')}</h1>
-        <p className={registerStyles.description}>{t('register.step3Description')}</p>
+    <Suspense fallback={<Loader fullScreen message="Loading registration..." />}>
+      <main className={styles.main}>
+        <div className={styles.containerSmall}>
+          {renderStepIndicator()}
+          <h1 className={styles.title}>{t('register.summaryTitle')}</h1>
+          <p className={registerStyles.description}>{t('register.step3Description')}</p>
 
-        {error && <div className={styles.error}>{error}</div>}
+          {error && <div className={styles.error}>{error}</div>}
 
-        <div className={registerStyles.summaryCard}>
-          <div className={registerStyles.summaryItem}>
-            <strong>{t('register.email')}:</strong>
-            <span>{user?.email || email}</span>
-          </div>
-          <div className={registerStyles.summaryItem}>
-            <strong>{t('register.name')}:</strong>
-            <span>{profileData.name}</span>
-          </div>
-          <div className={registerStyles.summaryItem}>
-            <strong>{t('register.cyclingLevel')}:</strong>
-            <span>{t(`levels.${profileData.level}`)}</span>
-          </div>
-          <div className={registerStyles.summaryItem}>
-            <strong>{t('register.bikeType')}:</strong>
-            <span>{t(`bikeTypes.${profileData.bikeType}`)}</span>
-          </div>
-          {profileData.city && (
+          <div className={registerStyles.summaryCard}>
             <div className={registerStyles.summaryItem}>
-              <strong>{t('register.city')}:</strong>
-              <span>{profileData.city}</span>
+              <strong>{t('register.email')}:</strong>
+              <span>{user?.email || email}</span>
             </div>
-          )}
-          {profileData.dateOfBirth && (
             <div className={registerStyles.summaryItem}>
-              <strong>{t('register.dateOfBirth')}:</strong>
-              <span>{profileData.dateOfBirth}</span>
+              <strong>{t('register.name')}:</strong>
+              <span>{profileData.name}</span>
             </div>
-          )}
-          {profileData.bio && (
             <div className={registerStyles.summaryItem}>
-              <strong>{t('register.bio')}:</strong>
-              <span>{profileData.bio}</span>
+              <strong>{t('register.cyclingLevel')}:</strong>
+              <span>{t(`levels.${profileData.level}`)}</span>
             </div>
-          )}
+            <div className={registerStyles.summaryItem}>
+              <strong>{t('register.bikeType')}:</strong>
+              <span>{t(`bikeTypes.${profileData.bikeType}`)}</span>
+            </div>
+            {profileData.city && (
+              <div className={registerStyles.summaryItem}>
+                <strong>{t('register.city')}:</strong>
+                <span>{profileData.city}</span>
+              </div>
+            )}
+            {profileData.dateOfBirth && (
+              <div className={registerStyles.summaryItem}>
+                <strong>{t('register.dateOfBirth')}:</strong>
+                <span>{profileData.dateOfBirth}</span>
+              </div>
+            )}
+            {profileData.bio && (
+              <div className={registerStyles.summaryItem}>
+                <strong>{t('register.bio')}:</strong>
+                <span>{profileData.bio}</span>
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleFinalizeRegistration}
+            disabled={loading}
+            className={styles.submitButton}
+          >
+            {loading ? t('common.loading') : t('register.completeRegistration')}
+          </button>
+
+          <button type="button" onClick={() => setStep(2)} className={registerStyles.backButton}>
+            {t('common.back')}
+          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={handleFinalizeRegistration}
-          disabled={loading}
-          className={styles.submitButton}
-        >
-          {loading ? t('common.loading') : t('register.completeRegistration')}
-        </button>
-
-        <button type="button" onClick={() => setStep(2)} className={registerStyles.backButton}>
-          {t('common.back')}
-        </button>
-      </div>
-    </main>
+      </main>
+    </Suspense>
   );
 }

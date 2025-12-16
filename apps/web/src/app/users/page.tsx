@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -16,7 +16,7 @@ import styles from './users.module.css';
 
 type TabType = 'users' | 'groups';
 
-export default function Users() {
+function UsersInner() {
   const { user } = useAuth();
   const { t } = useTranslations();
   const [activeTab, setActiveTab] = useState<TabType>('users');
@@ -462,5 +462,13 @@ export default function Users() {
         </div>
       </main>
     </AuthGuard>
+  );
+}
+
+export default function Users() {
+  return (
+    <Suspense fallback={<Loader fullScreen message="Loading users..." />}>
+      <UsersInner />
+    </Suspense>
   );
 }

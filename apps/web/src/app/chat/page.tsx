@@ -16,6 +16,17 @@ import type {
 } from '@cyclists/config';
 import styles from './chat.module.css';
 
+// Next.js 14+ metadata/viewport API migration
+// Remove themeColor/viewport from metadata and export viewport separately
+
+export const viewport = {
+  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 function ChatInner() {
   const { user } = useAuth();
   const { onNewMessage, offNewMessage, sendTypingIndicator, onlineUsers } = useWebSocket();
@@ -54,36 +65,42 @@ function ChatInner() {
     }
   }, [user?.id]);
 
-  const fetchMessages = useCallback(async (friendId: string) => {
-    try {
-      const response = await fetch(
-        `/api/messages?userId=${user?.id}&friendId=${friendId}&limit=50`
-      );
-      const data = await response.json();
+  const fetchMessages = useCallback(
+    async (friendId: string) => {
+      try {
+        const response = await fetch(
+          `/api/messages?userId=${user?.id}&friendId=${friendId}&limit=50`
+        );
+        const data = await response.json();
 
-      if (data.success) {
-        // Reverse to show oldest first
-        const reversedMessages = data.data.reverse();
-        setMessages(reversedMessages);
-        // Build message ID set for fast lookup
-        setMessageIds(new Set(reversedMessages.map((m: Message) => m.id)));
+        if (data.success) {
+          // Reverse to show oldest first
+          const reversedMessages = data.data.reverse();
+          setMessages(reversedMessages);
+          // Build message ID set for fast lookup
+          setMessageIds(new Set(reversedMessages.map((m: Message) => m.id)));
+        }
+      } catch (error) {
+        console.error('Error fetching messages:', error);
       }
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  }, [user?.id]);
+    },
+    [user?.id]
+  );
 
-  const markMessagesAsRead = useCallback(async (friendId: string) => {
-    try {
-      await fetch(`/api/messages?userId=${user?.id}&friendId=${friendId}`, {
-        method: 'PATCH',
-      });
-      // Refresh conversations to update unread counts
-      fetchConversations();
-    } catch (error) {
-      console.error('Error marking messages as read:', error);
-    }
-  }, [user?.id, fetchConversations]);
+  const markMessagesAsRead = useCallback(
+    async (friendId: string) => {
+      try {
+        await fetch(`/api/messages?userId=${user?.id}&friendId=${friendId}`, {
+          method: 'PATCH',
+        });
+        // Refresh conversations to update unread counts
+        fetchConversations();
+      } catch (error) {
+        console.error('Error marking messages as read:', error);
+      }
+    },
+    [user?.id, fetchConversations]
+  );
 
   const fetchGroupMessages = useCallback(async (groupId: string) => {
     try {
@@ -102,17 +119,20 @@ function ChatInner() {
     }
   }, []);
 
-  const markGroupMessagesAsRead = useCallback(async (groupId: string) => {
-    try {
-      await fetch(`/api/groups/${groupId}/messages?userId=${user?.id}`, {
-        method: 'PATCH',
-      });
-      // Refresh conversations to update unread counts
-      fetchConversations();
-    } catch (error) {
-      console.error('Error marking group messages as read:', error);
-    }
-  }, [user?.id, fetchConversations]);
+  const markGroupMessagesAsRead = useCallback(
+    async (groupId: string) => {
+      try {
+        await fetch(`/api/groups/${groupId}/messages?userId=${user?.id}`, {
+          method: 'PATCH',
+        });
+        // Refresh conversations to update unread counts
+        fetchConversations();
+      } catch (error) {
+        console.error('Error marking group messages as read:', error);
+      }
+    },
+    [user?.id, fetchConversations]
+  );
 
   // Fetch conversations on mount
   useEffect(() => {
@@ -130,7 +150,15 @@ function ChatInner() {
       fetchGroupMessages(selectedGroupId);
       markGroupMessagesAsRead(selectedGroupId);
     }
-  }, [user, selectedFriendId, selectedGroupId, fetchMessages, markMessagesAsRead, fetchGroupMessages, markGroupMessagesAsRead]);
+  }, [
+    user,
+    selectedFriendId,
+    selectedGroupId,
+    fetchMessages,
+    markMessagesAsRead,
+    fetchGroupMessages,
+    markGroupMessagesAsRead,
+  ]);
 
   // Handler for selecting a friend conversation
   const handleSelectFriend = (friendId: string) => {
@@ -185,7 +213,15 @@ function ChatInner() {
     return () => {
       offNewMessage(handleNewMessage);
     };
-  }, [user, selectedFriendId, messageIds, onNewMessage, offNewMessage, fetchConversations, markMessagesAsRead]);
+  }, [
+    user,
+    selectedFriendId,
+    messageIds,
+    onNewMessage,
+    offNewMessage,
+    fetchConversations,
+    markMessagesAsRead,
+  ]);
 
   const handleMessageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessageText(e.target.value);
@@ -496,7 +532,7 @@ function ChatInner() {
 
 export default function Chat() {
   return (
-    <Suspense>
+    <Suspense fallback={<Loader fullScreen message="Loading chat..." />}>
       <ChatInner />
     </Suspense>
   );
