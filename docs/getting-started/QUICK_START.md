@@ -153,10 +153,10 @@ npm run migrate:up
 
 ## 📚 More Information
 
-- **Detailed Features**: See [NEW_FEATURES.md](./NEW_FEATURES.md)
-- **Implementation Details**: See [IMPLEMENTATION_SUMMARY.md](./IMPLEMENTATION_SUMMARY.md)
-- **Setup Guide**: See [SETUP.md](./SETUP.md)
-- **Architecture**: See [ARCHITECTURE.md](./ARCHITECTURE.md)
+- **Detailed Features**: See [New Features Guide](../features/NEW_FEATURES.md)
+- **Implementation Details**: See [Implementation Complete](../reports/IMPLEMENTATION_COMPLETE.md)
+- **Setup Guide**: See [Setup Guide](./SETUP.md)
+- **Architecture**: See [Architecture Overview](../architecture/ARCHITECTURE.md)
 
 ## 🎉 That's It!
 

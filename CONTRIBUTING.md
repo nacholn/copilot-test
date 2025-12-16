@@ -105,7 +105,14 @@ cyclists-social-network/
 ├── packages/          # Shared packages
 │   ├── config/       # Types & Supabase
 │   └── ui/          # UI components
-└── docs/            # Documentation
+└── docs/            # Documentation (see docs/README.md)
+    ├── getting-started/  # Setup guides
+    ├── architecture/     # System design
+    ├── features/         # Feature docs
+    ├── guides/          # Implementation guides
+    ├── security/        # Security docs
+    ├── deployment/      # Deployment docs
+    └── reports/         # Completion reports
 ```
 
 ## Working with Workspaces

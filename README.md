@@ -64,7 +64,22 @@ cyclists-social-network/
 - Docker & Docker Compose (optional, for simplified database setup)
 - Supabase account
 
-## 🛠️ Setup
+## 📚 Documentation
+
+Comprehensive documentation is available in the `/docs` directory:
+
+- **[Getting Started](./docs/getting-started/)** - Setup guides and quick start
+- **[Architecture](./docs/architecture/)** - System design and architecture
+- **[Features](./docs/features/)** - Detailed feature documentation
+- **[Implementation Guides](./docs/guides/)** - Step-by-step how-to guides
+- **[Security](./docs/security/)** - Security documentation and best practices
+- **[Reports](./docs/reports/)** - Implementation and completion reports
+
+👉 **[View Full Documentation Index](./docs/README.md)**
+
+## 🛠️ Quick Setup
+
+For detailed setup instructions, see the **[Setup Guide](./docs/getting-started/SETUP.md)** or **[Quick Start](./docs/getting-started/QUICK_START.md)**.
 
 ### 1. Clone the repository
 
@@ -100,7 +115,7 @@ CLOUDINARY_API_SECRET=your-api-secret
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-> **📸 Image Upload Setup**: For profile picture uploads, you'll need a [Cloudinary account](https://cloudinary.com). See [CLOUDINARY_SETUP.md](./CLOUDINARY_SETUP.md) for detailed instructions.
+> **📸 Image Upload Setup**: For profile picture uploads, you'll need a [Cloudinary account](https://cloudinary.com). See [Cloudinary Setup Guide](./docs/guides/CLOUDINARY_SETUP.md) for detailed instructions.
 
 #### Web (.env)
 
@@ -150,7 +165,7 @@ Update your `apps/backend/.env`:
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
 ```
 
-See [DOCKER.md](DOCKER.md) for detailed Docker setup and management.
+See [Docker Setup Guide](./docs/deployment/DOCKER.md) for detailed Docker setup and management.
 
 #### Option B: Using Local PostgreSQL
 
@@ -324,7 +339,7 @@ The `turbo.json` defines:
 - ✅ **Responsive Profile Edit**: Two-column layout on larger screens for better UX
 - ✅ **Fixed Header**: Improved spacing to prevent content overlap
 
-See [NEW_FEATURES.md](./NEW_FEATURES.md) for detailed documentation.
+See [New Features Guide](./docs/features/NEW_FEATURES.md) for detailed documentation.
 
 ## 🌟 Future Enhancements
 
@@ -339,10 +354,12 @@ See [NEW_FEATURES.md](./NEW_FEATURES.md) for detailed documentation.
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+We welcome contributions! Please see our [Contributing Guidelines](./CONTRIBUTING.md) for details on:
+
+- Development workflow
+- Coding standards
+- Testing requirements
+- Pull request process
 
 ## 📄 License
 
