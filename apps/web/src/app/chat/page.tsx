@@ -335,7 +335,9 @@ function ChatInner() {
     <AuthGuard>
       <div className={styles.chatContainer}>
         {/* Conversations List */}
-        <div className={`${styles.conversationsList} ${(selectedFriendId || selectedGroupId) ? styles.hideOnMobile : ''}`}>
+        <div
+          className={`${styles.conversationsList} ${selectedFriendId || selectedGroupId ? styles.hideOnMobile : ''}`}
+        >
           <h2 className={styles.conversationsTitle}>Messages</h2>
           {conversations.length === 0 && groupConversations.length === 0 ? (
             <div className={styles.noConversations}>
@@ -418,13 +420,15 @@ function ChatInner() {
         </div>
 
         {/* Chat Window */}
-        <div className={`${styles.chatWindow} ${(selectedFriendId || selectedGroupId) ? styles.showOnMobile : ''}`}>
+        <div
+          className={`${styles.chatWindow} ${selectedFriendId || selectedGroupId ? styles.showOnMobile : ''}`}
+        >
           {selectedFriendId || selectedGroupId ? (
             <>
               {/* Chat Header */}
               <div className={styles.chatHeader}>
                 {/* Back button for mobile */}
-                <button 
+                <button
                   className={styles.backButton}
                   onClick={() => {
                     setSelectedFriendId(null);

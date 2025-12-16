@@ -32,7 +32,7 @@ export function PWAInstallPrompt() {
       e.preventDefault();
       // Store the event for later use
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      
+
       // Show our custom prompt after a delay
       setTimeout(() => {
         setShowPrompt(true);
@@ -56,7 +56,7 @@ export function PWAInstallPrompt() {
 
     // Wait for the user's response
     const { outcome } = await deferredPrompt.userChoice;
-    
+
     console.log(`User response to install prompt: ${outcome}`);
 
     // Clear the deferred prompt

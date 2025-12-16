@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { 
-  getUserNotifications, 
-  getUnreadNotificationCount, 
+import {
+  getUserNotifications,
+  getUnreadNotificationCount,
   markNotificationAsRead,
   markAllNotificationsAsRead,
-  deleteNotification 
+  deleteNotification,
 } from '@/lib/notifications';
 import type { ApiResponse } from '@cyclists/config';
 

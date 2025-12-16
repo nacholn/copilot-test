@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
 
     // Create a map of userId -> count
     const counts: Record<string, number> = {};
-    
+
     // Initialize all users with 0 count
     userIds.forEach((userId) => {
       counts[userId] = 0;

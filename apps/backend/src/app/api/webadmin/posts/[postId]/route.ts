@@ -320,17 +320,12 @@ export async function DELETE(
     }
 
     // Delete all images from Cloudinary in parallel
-    const publicIds = imagesResult.rows
-      .map((row) => row.cloudinary_public_id)
-      .filter(Boolean);
+    const publicIds = imagesResult.rows.map((row) => row.cloudinary_public_id).filter(Boolean);
 
     if (publicIds.length > 0) {
       const deletePromises = publicIds.map((publicId) =>
         deleteImage(publicId).catch((error) => {
-          console.error(
-            `[WebAdmin] Error deleting image ${publicId} from Cloudinary:`,
-            error
-          );
+          console.error(`[WebAdmin] Error deleting image ${publicId} from Cloudinary:`, error);
           return null;
         })
       );

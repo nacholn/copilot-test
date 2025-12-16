@@ -6,10 +6,7 @@ import type { ApiResponse } from '@cyclists/config';
 export const dynamic = 'force-dynamic';
 
 // GET single post with all images and details
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { postId: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { postId: string } }) {
   try {
     const postId = params.postId;
     const { searchParams } = new URL(request.url);
@@ -117,10 +114,7 @@ export async function GET(
 }
 
 // PATCH update post (title, content, visibility)
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { postId: string } }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: { postId: string } }) {
   try {
     const postId = params.postId;
     const body = await request.json();
@@ -148,10 +142,7 @@ export async function PATCH(
     }
 
     // Verify the post belongs to the user
-    const ownerCheck = await query(
-      'SELECT user_id FROM posts WHERE id = $1',
-      [postId]
-    );
+    const ownerCheck = await query('SELECT user_id FROM posts WHERE id = $1', [postId]);
 
     if (ownerCheck.rows.length === 0) {
       return NextResponse.json<ApiResponse>(

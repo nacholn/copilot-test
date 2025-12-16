@@ -11,7 +11,12 @@ import styles from './notifications.module.css';
 
 export default function Notifications() {
   const { user } = useAuth();
-  const { notifications, unreadNotificationCount, markNotificationAsRead, markAllNotificationsAsRead } = useWebSocket();
+  const {
+    notifications,
+    unreadNotificationCount,
+    markNotificationAsRead,
+    markAllNotificationsAsRead,
+  } = useWebSocket();
   const { t } = useTranslations();
 
   const handleNotificationClick = (notificationId: string, actionUrl?: string) => {
@@ -46,9 +51,15 @@ export default function Notifications() {
       const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
       return t('notifications.timeAgo.minutesAgo').replace('{count}', diffInMinutes.toString());
     } else if (diffInHours < 24) {
-      return t('notifications.timeAgo.hoursAgo').replace('{count}', Math.floor(diffInHours).toString());
+      return t('notifications.timeAgo.hoursAgo').replace(
+        '{count}',
+        Math.floor(diffInHours).toString()
+      );
     } else if (diffInDays < 7) {
-      return t('notifications.timeAgo.daysAgo').replace('{count}', Math.floor(diffInDays).toString());
+      return t('notifications.timeAgo.daysAgo').replace(
+        '{count}',
+        Math.floor(diffInDays).toString()
+      );
     } else {
       return new Date(date).toLocaleDateString();
     }
@@ -93,9 +104,7 @@ export default function Notifications() {
                       {formatDate(notification.createdAt)}
                     </span>
                   </div>
-                  {!notification.isRead && (
-                    <div className={styles.unreadDot}></div>
-                  )}
+                  {!notification.isRead && <div className={styles.unreadDot}></div>}
                 </div>
               ))}
             </div>

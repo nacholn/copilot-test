@@ -30,10 +30,7 @@ export async function GET(request: NextRequest) {
     if (friendIdsParam) {
       // Get status for multiple users
       const friendIds = friendIdsParam.split(',');
-      const result = await query(
-        `SELECT * FROM user_status WHERE user_id = ANY($1)`,
-        [friendIds]
-      );
+      const result = await query(`SELECT * FROM user_status WHERE user_id = ANY($1)`, [friendIds]);
 
       const statuses: UserStatus[] = result.rows.map((row) => ({
         userId: row.user_id,
@@ -51,10 +48,7 @@ export async function GET(request: NextRequest) {
       );
     } else {
       // Get status for single user
-      const result = await query(
-        `SELECT * FROM user_status WHERE user_id = $1`,
-        [userId]
-      );
+      const result = await query(`SELECT * FROM user_status WHERE user_id = $1`, [userId]);
 
       if (result.rows.length === 0) {
         // Return offline if no status record exists

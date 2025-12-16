@@ -54,9 +54,7 @@ export async function GET(
       isAdmin: row.is_admin || false,
       lastLoginAt: row.last_login_at ? new Date(row.last_login_at) : undefined,
       lastMessageSentAt: row.last_message_sent_at ? new Date(row.last_message_sent_at) : undefined,
-      lastPostCreatedAt: row.last_post_created_at
-        ? new Date(row.last_post_created_at)
-        : undefined,
+      lastPostCreatedAt: row.last_post_created_at ? new Date(row.last_post_created_at) : undefined,
       lastFriendAcceptedAt: row.last_friend_accepted_at
         ? new Date(row.last_friend_accepted_at)
         : undefined,
@@ -220,9 +218,7 @@ export async function PATCH(
       isAdmin: row.is_admin || false,
       lastLoginAt: row.last_login_at ? new Date(row.last_login_at) : undefined,
       lastMessageSentAt: row.last_message_sent_at ? new Date(row.last_message_sent_at) : undefined,
-      lastPostCreatedAt: row.last_post_created_at
-        ? new Date(row.last_post_created_at)
-        : undefined,
+      lastPostCreatedAt: row.last_post_created_at ? new Date(row.last_post_created_at) : undefined,
       lastFriendAcceptedAt: row.last_friend_accepted_at
         ? new Date(row.last_friend_accepted_at)
         : undefined,

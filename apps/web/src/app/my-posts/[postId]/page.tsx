@@ -177,8 +177,8 @@ export default function PostDetail() {
               </div>
               <EditPostButton post={post} isOwner={post.userId === user?.id} userId={user?.id} />
             </div>
-
-            <h1 className={styles.postTitle}>{post.title}</h1>            {post.images && post.images.length > 0 && (
+            <h1 className={styles.postTitle}>{post.title}</h1>{' '}
+            {post.images && post.images.length > 0 && (
               <div className={styles.imagesSection}>
                 <div className={styles.mainImage}>
                   <img
@@ -208,7 +208,6 @@ export default function PostDetail() {
                 )}
               </div>
             )}
-
             <div className={styles.postContent}>
               <p>{post.content}</p>
             </div>

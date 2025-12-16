@@ -25,6 +25,7 @@ A calculated score (0-100) based on recency of activities with exponential decay
 - **Friend Acceptance** (10 points max): `10 × e^(-days_since_friend / 30)`
 
 The score automatically decreases over time using exponential decay, with different decay rates for different activities:
+
 - Login: 30-day half-life
 - Messages: 7-day half-life (most weight on recent activity)
 - Posts: 14-day half-life
@@ -33,16 +34,19 @@ The score automatically decreases over time using exponential decay, with differ
 ### 3. Enhanced User Discovery
 
 #### Name Search
+
 - New dedicated search field for searching users by name
 - More precise than the general search field
 
 #### Distance Filter
+
 - Horizontal slider from 1km to 500km or "All distances"
 - Only appears if the current user has location data (latitude/longitude)
 - Uses Haversine formula to calculate distances between users
 - Filters users based on their profile location
 
 #### Automatic Sorting
+
 - Users are now automatically sorted by interaction score (highest first)
 - More active users appear at the top of the discovery list
 - Encourages engagement with active community members
@@ -52,6 +56,7 @@ The score automatically decreases over time using exponential decay, with differ
 ### Migration: `1765500119714_add-user-interaction-fields.mjs`
 
 Added to `profiles` table:
+
 ```sql
 last_login_at              TIMESTAMP WITH TIME ZONE
 last_message_sent_at       TIMESTAMP WITH TIME ZONE
@@ -61,10 +66,12 @@ interaction_score          NUMERIC(10, 2) DEFAULT 0 NOT NULL
 ```
 
 Indexes created:
+
 - `idx_profiles_interaction_score` on `interaction_score`
 - `idx_profiles_last_login_at` on `last_login_at`
 
 Database functions:
+
 - `calculate_interaction_score()`: Calculates score based on activity timestamps
 - `update_interaction_score()`: Trigger function to auto-update score on profile changes
 
@@ -73,6 +80,7 @@ Database functions:
 ### `/api/users` Endpoint (GET)
 
 New query parameters:
+
 - `name`: Search by user name specifically
 - `distance`: Maximum distance in kilometers (requires userLatitude and userLongitude)
 - `userLatitude`: Current user's latitude (for distance calculation)
@@ -117,13 +125,13 @@ export interface Profile {
 ```typescript
 export interface UserSearchParams {
   query?: string;
-  name?: string;                 // NEW
+  name?: string; // NEW
   level?: Profile['level'];
   bikeType?: Profile['bikeType'];
   city?: string;
-  distance?: number;              // NEW: in kilometers
-  userLatitude?: number;          // NEW: for distance calculation
-  userLongitude?: number;         // NEW: for distance calculation
+  distance?: number; // NEW: in kilometers
+  userLatitude?: number; // NEW: for distance calculation
+  userLongitude?: number; // NEW: for distance calculation
 }
 ```
 
@@ -132,6 +140,7 @@ export interface UserSearchParams {
 ### Discovery Page (`/users`)
 
 New UI elements:
+
 1. **Name Search Input**: Dedicated field at the top for searching by name
 2. **Distance Filter Slider**: Appears when user has location data
    - Range: 0 (All) to 500 kilometers
@@ -141,6 +150,7 @@ New UI elements:
 ### Translations
 
 Added to English (`en.json`):
+
 ```json
 "searchByName": "Search by name...",
 "distanceFilter": "Distance",
@@ -149,6 +159,7 @@ Added to English (`en.json`):
 ```
 
 Added to Spanish (`es.json`):
+
 ```json
 "searchByName": "Buscar por nombre...",
 "distanceFilter": "Distancia",
@@ -161,6 +172,7 @@ Added to Spanish (`es.json`):
 ### For Administrators
 
 1. **Run the migration** to add the new database fields:
+
    ```bash
    cd apps/backend
    npm run migrate:up
@@ -176,7 +188,7 @@ Added to Spanish (`es.json`):
 
 2. **Search by Name**: Use the top search field to find specific users by name
 
-3. **Filter by Distance**: 
+3. **Filter by Distance**:
    - Ensure your profile has location data (city with coordinates)
    - Use the distance slider to find users within a specific radius
    - Move slider to position 0 (leftmost) to see all users
@@ -244,6 +256,7 @@ Due to environment limitations, the following manual tests should be performed:
 ## Files Modified
 
 ### Backend
+
 - `apps/backend/migrations/1765500119714_add-user-interaction-fields.mjs` (NEW)
 - `apps/backend/src/app/api/users/route.ts`
 - `apps/backend/src/app/api/auth/login/route.ts`
@@ -253,9 +266,11 @@ Due to environment limitations, the following manual tests should be performed:
 - `apps/backend/src/lib/utils.ts`
 
 ### Shared Types
+
 - `packages/config/src/types.ts`
 
 ### Frontend
+
 - `apps/web/src/app/users/page.tsx`
 - `apps/web/src/app/users/users.module.css`
 - `apps/web/src/messages/en.json`

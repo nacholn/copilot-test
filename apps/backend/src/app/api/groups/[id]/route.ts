@@ -305,11 +305,8 @@ export async function DELETE(
     const galleryPublicIds = imagesResult.rows
       .map((row) => row.cloudinary_public_id)
       .filter(Boolean);
-    
-    const allPublicIds = [
-      mainImagePublicId,
-      ...galleryPublicIds,
-    ].filter(Boolean);
+
+    const allPublicIds = [mainImagePublicId, ...galleryPublicIds].filter(Boolean);
 
     if (allPublicIds.length > 0) {
       const deletePromises = allPublicIds.map((publicId) =>

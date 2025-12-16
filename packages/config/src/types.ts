@@ -427,3 +427,35 @@ export interface GroupConversation {
   unreadCount: number;
   memberCount: number;
 }
+
+// Multilingual Posts types
+export type SupportedLanguage = 'en' | 'es' | 'fr';
+
+export interface MultilingualText {
+  en?: string;
+  es?: string;
+  fr?: string;
+}
+
+export interface MultilingualPost {
+  id: string;
+  author_id: string;
+  title: MultilingualText;
+  content: MultilingualText;
+  default_language: SupportedLanguage;
+  available_languages: SupportedLanguage[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateMultilingualPostInput {
+  title: MultilingualText;
+  content: MultilingualText;
+  default_language?: SupportedLanguage;
+}
+
+export interface UpdateMultilingualPostInput {
+  title?: MultilingualText;
+  content?: MultilingualText;
+  default_language?: SupportedLanguage;
+}

@@ -5,7 +5,9 @@ This document describes the new features added to the Cyclists Social Network ap
 ## 🖼️ Cloudinary Integration for Image Storage
 
 ### Overview
+
 Profile images are now stored using Cloudinary instead of just URLs. This provides:
+
 - Automatic image optimization
 - Multiple image support per profile
 - Image transformations (resize, crop, quality)
@@ -14,6 +16,7 @@ Profile images are now stored using Cloudinary instead of just URLs. This provid
 ### Configuration
 
 #### Backend Environment Variables
+
 Add the following to `apps/backend/.env`:
 
 ```env
@@ -23,6 +26,7 @@ CLOUDINARY_API_SECRET=your-api-secret
 ```
 
 To get these credentials:
+
 1. Sign up at [cloudinary.com](https://cloudinary.com)
 2. Go to Dashboard
 3. Copy Cloud Name, API Key, and API Secret
@@ -44,6 +48,7 @@ CREATE TABLE profile_images (
 ```
 
 Run migrations to create this table:
+
 ```bash
 cd apps/backend
 npm run migrate:up
@@ -52,6 +57,7 @@ npm run migrate:up
 ### API Endpoints
 
 #### Upload Profile Image
+
 ```
 POST /api/profile/images
 Content-Type: multipart/form-data
@@ -63,16 +69,19 @@ Body:
 ```
 
 #### Get Profile Images
+
 ```
 GET /api/profile/images?userId={userId}
 ```
 
 #### Delete Profile Image
+
 ```
 DELETE /api/profile/images?imageId={id}&userId={userId}
 ```
 
 #### Set Image as Primary
+
 ```
 PATCH /api/profile/images?imageId={id}&userId={userId}
 Body: { isPrimary: true }
@@ -96,6 +105,7 @@ const response = await fetch('/api/profile/images', {
 ## 💬 Friend Chat System
 
 ### Overview
+
 Users can now send and receive messages with their friends in real-time.
 
 ### Database Changes
@@ -114,6 +124,7 @@ CREATE TABLE messages (
 ```
 
 Run migrations to create this table:
+
 ```bash
 cd apps/backend
 npm run migrate:up
@@ -130,17 +141,21 @@ npm run migrate:up
 ### API Endpoints
 
 #### Get Conversations
+
 ```
 GET /api/conversations?userId={userId}
 ```
+
 Returns list of friends with last message and unread count.
 
 #### Get Messages
+
 ```
 GET /api/messages?userId={userId}&friendId={friendId}&limit=50&offset=0
 ```
 
 #### Send Message
+
 ```
 POST /api/messages
 Content-Type: application/json
@@ -154,6 +169,7 @@ Body:
 ```
 
 #### Mark Messages as Read
+
 ```
 PATCH /api/messages?userId={userId}&friendId={friendId}
 ```
@@ -165,11 +181,13 @@ Navigate to `/chat` in the web app to access the messaging interface.
 ## ⏳ Loading States
 
 ### Overview
+
 Added professional loading indicators throughout the application for better UX.
 
 ### Loader Component
 
 A reusable `Loader` component has been added with the following features:
+
 - Three sizes: small, medium, large
 - Optional full-screen overlay
 - Optional loading message
@@ -191,6 +209,7 @@ import { Loader } from '@/components/Loader';
 ```
 
 ### Applied To
+
 - Profile page load
 - Users/Discover page load
 - Chat page load
@@ -199,9 +218,11 @@ import { Loader } from '@/components/Loader';
 ## 📱 Responsive Profile Edit
 
 ### Overview
+
 The profile edit form now uses a two-column layout on laptop and larger screens for better space utilization.
 
 ### Features
+
 - **Mobile**: Single column layout
 - **Tablet (769px+)**: Single column layout
 - **Laptop (1024px+)**: Two column grid layout
@@ -224,9 +245,11 @@ The layout automatically adjusts using CSS Grid:
 ## 🎨 Header Overlap Fix
 
 ### Overview
+
 Ensured all pages have proper top padding to prevent content from overlapping with the fixed header.
 
 ### Implementation
+
 - Header is fixed with `z-index: 1000`
 - All main content areas have `padding-top` values:
   - Mobile: 70-90px
@@ -253,6 +276,7 @@ npm install -D @types/multer
 Update your `.env` files:
 
 **Backend (`apps/backend/.env`):**
+
 ```env
 CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
@@ -267,6 +291,7 @@ npm run migrate:up
 ```
 
 This will create:
+
 1. `profile_images` table
 2. `messages` table
 
@@ -280,12 +305,16 @@ npm run dev
 ## 📝 Migration Files
 
 ### Profile Images Migration
+
 File: `apps/backend/migrations/1763508399593_add-profile-images-table.js`
+
 - Creates `profile_images` table
 - Adds indexes for efficient queries
 
 ### Messages Migration
+
 File: `apps/backend/migrations/1763508426680_create-messages-table.js`
+
 - Creates `messages` table
 - Adds indexes for conversations
 - Prevents self-messaging with constraint
@@ -295,6 +324,7 @@ File: `apps/backend/migrations/1763508426680_create-messages-table.js`
 ### Manual Testing Checklist
 
 **Image Upload:**
+
 - [ ] Upload a profile image
 - [ ] Set image as primary
 - [ ] Upload multiple images
@@ -302,6 +332,7 @@ File: `apps/backend/migrations/1763508426680_create-messages-table.js`
 - [ ] View images in profile
 
 **Chat System:**
+
 - [ ] View conversations list
 - [ ] Send a message to a friend
 - [ ] Receive a message
@@ -310,11 +341,13 @@ File: `apps/backend/migrations/1763508426680_create-messages-table.js`
 - [ ] Messages update in real-time
 
 **Loading States:**
+
 - [ ] Profile page shows loader
 - [ ] Users page shows loader
 - [ ] Chat page shows loader
 
 **Responsive Design:**
+
 - [ ] Test on mobile (< 768px)
 - [ ] Test on tablet (769-1023px)
 - [ ] Test on laptop (1024px+)
@@ -323,15 +356,19 @@ File: `apps/backend/migrations/1763508426680_create-messages-table.js`
 ## 🚀 Deployment Notes
 
 ### Environment Variables
+
 Ensure all Cloudinary credentials are set in production environment.
 
 ### Database Migrations
+
 Run migrations on production database:
+
 ```bash
 npm run migrate:up
 ```
 
 ### Build
+
 The backend builds successfully. The web app may show errors during static generation because pages require authentication, but they work correctly in runtime.
 
 ## 📚 Additional Resources

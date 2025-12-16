@@ -27,7 +27,9 @@ export function AddMemberModal({ groupId, existingMembers, onClose, onAdd }: Add
         if (data.success) {
           // Filter out users who are already members
           const existingUserIds = new Set(existingMembers.map((m) => m.userId));
-          const availableUsers = data.data.filter((user: Profile) => !existingUserIds.has(user.userId));
+          const availableUsers = data.data.filter(
+            (user: Profile) => !existingUserIds.has(user.userId)
+          );
           setUsers(availableUsers);
         } else {
           setError(data.error || 'Failed to fetch users');

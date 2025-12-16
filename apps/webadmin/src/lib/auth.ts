@@ -17,13 +17,13 @@ export interface Session {
  */
 export function isAuthenticated(): boolean {
   if (typeof window === 'undefined') return false;
-  
+
   const session = localStorage.getItem('webadmin_session');
   if (!session) return false;
 
   try {
     const sessionData: Session = JSON.parse(session);
-    
+
     // Check if token exists
     if (!sessionData.access_token) return false;
 
@@ -49,7 +49,7 @@ export function isAuthenticated(): boolean {
  */
 export function getSession(): Session | null {
   if (typeof window === 'undefined') return null;
-  
+
   const session = localStorage.getItem('webadmin_session');
   if (!session) return null;
 
@@ -66,6 +66,6 @@ export function getSession(): Session | null {
  */
 export function logout(): void {
   if (typeof window === 'undefined') return;
-  
+
   localStorage.removeItem('webadmin_session');
 }

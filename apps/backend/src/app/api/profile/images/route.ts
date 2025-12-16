@@ -101,10 +101,7 @@ export async function POST(request: NextRequest) {
 
     // If this is marked as primary, unset any existing primary images
     if (isPrimary) {
-      await query(
-        'UPDATE profile_images SET is_primary = false WHERE user_id = $1',
-        [userId]
-      );
+      await query('UPDATE profile_images SET is_primary = false WHERE user_id = $1', [userId]);
     }
 
     // Get the next display order
@@ -124,10 +121,10 @@ export async function POST(request: NextRequest) {
 
     // Update profile avatar if this is primary
     if (isPrimary) {
-      await query(
-        'UPDATE profiles SET avatar = $1 WHERE user_id = $2',
-        [uploadResult.secure_url, userId]
-      );
+      await query('UPDATE profiles SET avatar = $1 WHERE user_id = $2', [
+        uploadResult.secure_url,
+        userId,
+      ]);
     }
 
     const image: ProfileImage = {
@@ -179,10 +176,10 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Get image details
-    const imageResult = await query(
-      'SELECT * FROM profile_images WHERE id = $1 AND user_id = $2',
-      [imageId, userId]
-    );
+    const imageResult = await query('SELECT * FROM profile_images WHERE id = $1 AND user_id = $2', [
+      imageId,
+      userId,
+    ]);
 
     if (imageResult.rows.length === 0) {
       return NextResponse.json<ApiResponse>(
@@ -220,20 +217,14 @@ export async function DELETE(request: NextRequest) {
 
       if (nextImageResult.rows.length > 0) {
         const nextImage = nextImageResult.rows[0];
-        await query(
-          'UPDATE profile_images SET is_primary = true WHERE id = $1',
-          [nextImage.id]
-        );
-        await query(
-          'UPDATE profiles SET avatar = $1 WHERE user_id = $2',
-          [nextImage.image_url, userId]
-        );
+        await query('UPDATE profile_images SET is_primary = true WHERE id = $1', [nextImage.id]);
+        await query('UPDATE profiles SET avatar = $1 WHERE user_id = $2', [
+          nextImage.image_url,
+          userId,
+        ]);
       } else {
         // No more images, clear avatar
-        await query(
-          'UPDATE profiles SET avatar = NULL WHERE user_id = $1',
-          [userId]
-        );
+        await query('UPDATE profiles SET avatar = NULL WHERE user_id = $1', [userId]);
       }
     }
 
@@ -277,10 +268,10 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Verify image belongs to user
-    const imageResult = await query(
-      'SELECT * FROM profile_images WHERE id = $1 AND user_id = $2',
-      [imageId, userId]
-    );
+    const imageResult = await query('SELECT * FROM profile_images WHERE id = $1 AND user_id = $2', [
+      imageId,
+      userId,
+    ]);
 
     if (imageResult.rows.length === 0) {
       return NextResponse.json<ApiResponse>(
@@ -294,29 +285,17 @@ export async function PATCH(request: NextRequest) {
 
     // If setting as primary, unset other primary images
     if (body.isPrimary === true) {
-      await query(
-        'UPDATE profile_images SET is_primary = false WHERE user_id = $1',
-        [userId]
-      );
+      await query('UPDATE profile_images SET is_primary = false WHERE user_id = $1', [userId]);
 
-      await query(
-        'UPDATE profile_images SET is_primary = true WHERE id = $1',
-        [imageId]
-      );
+      await query('UPDATE profile_images SET is_primary = true WHERE id = $1', [imageId]);
 
       // Update profile avatar
       const image = imageResult.rows[0];
-      await query(
-        'UPDATE profiles SET avatar = $1 WHERE user_id = $2',
-        [image.image_url, userId]
-      );
+      await query('UPDATE profiles SET avatar = $1 WHERE user_id = $2', [image.image_url, userId]);
     }
 
     // Get updated image
-    const updatedResult = await query(
-      'SELECT * FROM profile_images WHERE id = $1',
-      [imageId]
-    );
+    const updatedResult = await query('SELECT * FROM profile_images WHERE id = $1', [imageId]);
 
     const image: ProfileImage = {
       id: updatedResult.rows[0].id,

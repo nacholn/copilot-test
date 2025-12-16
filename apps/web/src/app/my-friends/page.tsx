@@ -69,7 +69,7 @@ export default function Friends() {
       if (data.success) {
         // Remove friend from local state
         setFriends(friends.filter((f) => f.friendshipId !== friendshipId));
-        
+
         Swal.fire({
           title: t('friends.removed'),
           text: t('friends.friendRemoved'),

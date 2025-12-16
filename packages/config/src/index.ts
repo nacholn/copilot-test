@@ -1,5 +1,6 @@
 export * from './types';
 export * from './supabase';
+export * from './utils/i18n';
 
 /**
  * Client-friendly API URL helper.

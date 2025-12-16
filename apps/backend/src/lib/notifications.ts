@@ -1,9 +1,9 @@
 import { query } from './db';
-import type { 
-  Notification, 
-  NotificationWithActor, 
+import type {
+  Notification,
+  NotificationWithActor,
   CreateNotificationInput,
-  NotificationType 
+  NotificationType,
 } from '@cyclists/config';
 import { sendWebPushNotificationToUser } from './web-push-notifications';
 
@@ -62,7 +62,7 @@ export async function createNotification(
         type: input.type,
       },
       tag: input.type,
-    }).catch(err => {
+    }).catch((err) => {
       console.error('[Notifications] Failed to send web push:', err);
     });
 
@@ -83,7 +83,7 @@ export async function getUserNotifications(
   unreadOnly: boolean = false
 ): Promise<NotificationWithActor[]> {
   try {
-    const whereClause = unreadOnly 
+    const whereClause = unreadOnly
       ? 'WHERE n.user_id = $1 AND n.is_read = false'
       : 'WHERE n.user_id = $1';
 
@@ -187,10 +187,7 @@ export async function markAllNotificationsAsRead(userId: string): Promise<number
 /**
  * Delete a notification
  */
-export async function deleteNotification(
-  notificationId: string,
-  userId: string
-): Promise<boolean> {
+export async function deleteNotification(notificationId: string, userId: string): Promise<boolean> {
   try {
     const result = await query(
       `DELETE FROM notifications

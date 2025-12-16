@@ -29,7 +29,9 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
 
       try {
         const userIds = users.map((user) => user.userId).join(',');
-        const response = await fetch(`/api/webadmin/push-token-counts?userIds=${encodeURIComponent(userIds)}`);
+        const response = await fetch(
+          `/api/webadmin/push-token-counts?userIds=${encodeURIComponent(userIds)}`
+        );
         const data = await response.json();
 
         if (data.success && data.data) {
@@ -39,7 +41,10 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
           setPushTokenCounts(initializeEmptyCounts());
         }
       } catch (error) {
-        console.error('Error fetching push token counts:', error instanceof Error ? error.message : String(error));
+        console.error(
+          'Error fetching push token counts:',
+          error instanceof Error ? error.message : String(error)
+        );
         setPushTokenCounts(initializeEmptyCounts());
       }
     };
@@ -74,10 +79,18 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
               <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Email</th>
               <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>City</th>
               <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Level</th>
-              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Interaction Score</th>
-              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Last Login</th>
-              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Last Post</th>
-              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Push Tokens</th>
+              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>
+                Interaction Score
+              </th>
+              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>
+                Last Login
+              </th>
+              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>
+                Last Post
+              </th>
+              <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>
+                Push Tokens
+              </th>
               <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Admin</th>
               <th style={{ padding: '10px 8px', textAlign: 'left', fontWeight: '600' }}>Actions</th>
             </tr>

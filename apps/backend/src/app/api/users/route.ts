@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
       const distanceNum = parseFloat(distance);
       const userLat = parseFloat(userLatitude);
       const userLng = parseFloat(userLongitude);
-      
+
       if (!isNaN(distanceNum) && !isNaN(userLat) && !isNaN(userLng) && distanceNum > 0) {
         // Haversine formula for calculating distance
         // LEAST(1, ...) prevents domain errors from floating-point precision issues in acos()
@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
     }
 
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
-    
+
     // Order by interaction score (highest first), then by created_at
     const sqlQuery = `
       SELECT * FROM profiles 
