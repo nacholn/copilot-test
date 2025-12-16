@@ -29,6 +29,7 @@ The `multilingual_posts` table includes:
 - **updated_at**: Timestamp with timezone (auto-updated via trigger)
 
 The schema includes:
+
 - GIN indexes on JSONB columns for performance
 - Constraints ensuring title and content are not empty
 - Automatic updated_at trigger
@@ -77,6 +78,7 @@ POST /api/multilingual-posts
 ```
 
 **Request Body:**
+
 ```json
 {
   "title": {
@@ -94,6 +96,7 @@ POST /api/multilingual-posts
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -117,6 +120,7 @@ GET /api/multilingual-posts?language=es
 ```
 
 Query parameters:
+
 - `language` (optional): Filter posts by available language
 
 ### Get Single Post
@@ -132,6 +136,7 @@ PATCH /api/multilingual-posts/:id
 ```
 
 **Request Body:**
+
 ```json
 {
   "title": {
@@ -156,16 +161,15 @@ DELETE /api/multilingual-posts/:id
 Displays a post with language switcher buttons.
 
 **Usage:**
+
 ```tsx
 import { MultilingualPostCard } from '@/components/posts/MultilingualPostCard';
 
-<MultilingualPostCard 
-  post={post} 
-  userLanguage="en" 
-/>
+<MultilingualPostCard post={post} userLanguage="en" />;
 ```
 
 **Features:**
+
 - Language switcher buttons for each available language
 - Displays title and content in selected language
 - Shows default language metadata
@@ -175,13 +179,15 @@ import { MultilingualPostCard } from '@/components/posts/MultilingualPostCard';
 Form for creating multilingual posts.
 
 **Usage:**
+
 ```tsx
 import { CreateMultilingualPostForm } from '@/components/forms/CreateMultilingualPostForm';
 
-<CreateMultilingualPostForm />
+<CreateMultilingualPostForm />;
 ```
 
 **Features:**
+
 - Input fields for all three supported languages
 - Default language selector
 - Validation (requires at least one common language)
@@ -199,14 +205,14 @@ const response = await fetch('/api/multilingual-posts', {
   body: JSON.stringify({
     title: {
       en: 'My Post',
-      es: 'Mi Publicación'
+      es: 'Mi Publicación',
     },
     content: {
       en: 'Content here...',
-      es: 'Contenido aquí...'
+      es: 'Contenido aquí...',
     },
-    default_language: 'en'
-  })
+    default_language: 'en',
+  }),
 });
 ```
 
@@ -232,17 +238,20 @@ const languages = getAvailableLanguages(post.content);
 ## Database Migration
 
 The migration is located at:
+
 ```
 apps/backend/migrations/1765927896789_create-multilingual-posts-table.mjs
 ```
 
 To apply the migration:
+
 ```bash
 cd apps/backend
 npm run migrate:up
 ```
 
 To rollback:
+
 ```bash
 cd apps/backend
 npm run migrate:down
@@ -264,11 +273,13 @@ Potential improvements for future releases:
 ### Unit Tests
 
 i18n utility tests are located at:
+
 ```
 packages/config/src/utils/__tests__/i18n.test.ts
 ```
 
 Run tests:
+
 ```bash
 cd packages/config
 npm test
