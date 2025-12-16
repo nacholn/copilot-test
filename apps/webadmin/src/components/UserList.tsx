@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
 import type { Profile } from '@cyclists/config';
 import styles from '../styles/common.module.css';
 import { DeleteButton } from './DeleteButton';
-import { useState } from 'react';
 
 interface UserListProps {
   users: Profile[];
@@ -15,7 +15,7 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
   const [pushTokenCounts, setPushTokenCounts] = useState<Record<string, number>>({});
 
   // Fetch push token counts for all users
-  useState(() => {
+  useEffect(() => {
     const fetchPushTokenCounts = async () => {
       const counts: Record<string, number> = {};
       await Promise.all(
@@ -40,7 +40,7 @@ export function UserList({ users, onEdit, onDelete, onViewPushTokens, onSendPush
     if (users.length > 0) {
       fetchPushTokenCounts();
     }
-  });
+  }, [users]);
 
   const formatDate = (date?: Date) => {
     if (!date) return '-';
