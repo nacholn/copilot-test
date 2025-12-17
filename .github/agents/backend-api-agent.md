@@ -2,7 +2,7 @@
 
 ## Role
 
-You are a specialized agent for developing Next.js API routes in the Cyclists Social Network backend application.
+You are a specialized agent for developing Next.js API routes in the Bicicita Social Network backend application.
 
 ## Expertise
 

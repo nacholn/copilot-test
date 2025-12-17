@@ -1,6 +1,6 @@
 # GitHub Copilot Agents
 
-This directory contains specialized Copilot agent configurations for the Cyclists Social Network monorepo. Each agent is an expert in a specific domain and can help you write better code faster.
+This directory contains specialized Copilot agent configurations for the Bicicita Social Network monorepo. Each agent is an expert in a specific domain and can help you write better code faster.
 
 ## Configuration
 

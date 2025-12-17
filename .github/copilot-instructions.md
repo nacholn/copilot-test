@@ -1,4 +1,4 @@
-# GitHub Copilot Instructions for Cyclists Social Network
+# GitHub Copilot Instructions for Bicicita Social Network
 
 This file provides context and guidelines for GitHub Copilot when working with this monorepo.
 

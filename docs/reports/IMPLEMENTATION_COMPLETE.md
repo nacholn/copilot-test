@@ -272,7 +272,7 @@ RESEND_API_KEY=re_xxxxx
 EMAIL_FROM=noreply@bicicita.app
 
 # Database (already configured)
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bicicita_db
 
 # App URLs (already configured)
 NEXT_PUBLIC_APP_URL=http://localhost:3000

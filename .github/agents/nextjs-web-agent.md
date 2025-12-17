@@ -2,7 +2,7 @@
 
 ## Role
 
-You are a specialized agent for developing the Next.js PWA web application for the Cyclists Social Network.
+You are a specialized agent for developing the Next.js PWA web application for the Bicicita Social Network.
 
 ## Expertise
 
@@ -47,7 +47,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Cyclists Social Network',
+  title: 'Bicicita Social Network',
   description: 'Connect with cyclists around the world',
   manifest: '/manifest.json',
   icons: {
@@ -237,7 +237,7 @@ export default async function ProfilePage() {
 ```json
 // public/manifest.json
 {
-  "name": "Cyclists Social Network",
+  "name": "Bicicita Social Network",
   "short_name": "Cyclists",
   "description": "Connect with cyclists around the world",
   "start_url": "/",
@@ -287,7 +287,7 @@ import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Profile | Cyclists Social Network',
+    title: 'Profile | Bicicita Social Network',
     description: 'View and edit your cyclist profile',
     openGraph: {
       title: 'Profile',

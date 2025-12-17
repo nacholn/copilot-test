@@ -561,12 +561,12 @@ npm run android
 ```json
 {
   "expo": {
-    "name": "Cyclists Social Network",
-    "slug": "cyclists-social-network",
+    "name": "Bicicita Social Network",
+    "slug": "bicicita-social-network",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "cyclists",
+    "scheme": "bicicita",
     "plugins": ["expo-router"]
   }
 }
