@@ -46,7 +46,7 @@ Add notification configuration to `apps/mobile/app.json`:
 ```json
 {
   "expo": {
-    "name": "Cyclists Social Network",
+    "name": "Bicicita",
     "slug": "cyclists-social-network",
     "version": "0.1.0",
     "notification": {

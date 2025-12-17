@@ -1,6 +1,6 @@
 # New Features Implementation Guide
 
-This document describes the new features added to the Cyclists Social Network application.
+This document describes the new features added to the Bicicita application.
 
 ## 🖼️ Cloudinary Integration for Image Storage
 

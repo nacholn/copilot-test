@@ -9,14 +9,14 @@ import { PWAInstallPrompt } from '../components/pwa/PWAInstallPrompt';
 import { defaultViewport } from '../config/viewport';
 
 export const metadata = {
-  title: 'Cyclists Social Network',
+  title: 'Bicicita',
   description:
     'Connect with cyclists around the world. Share routes, find cycling partners, and join the community.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Cyclists',
+    title: 'Bicicita',
   },
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#007bff" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Cyclists" />
+        <meta name="apple-mobile-web-app-title" content="Bicicita" />
       </head>
       <body>
         <LanguageProvider>

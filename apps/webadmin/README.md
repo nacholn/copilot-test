@@ -1,6 +1,6 @@
 # WebAdmin Dashboard
 
-Admin dashboard for managing groups in the Cyclists Social Network.
+Admin dashboard for managing groups in Bicicita.
 
 ## Features
 

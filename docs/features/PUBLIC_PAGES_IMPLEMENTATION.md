@@ -102,7 +102,7 @@ Visit `http://localhost:3000/` to see:
 ### Meta Tags
 Every public page includes:
 ```html
-<title>Post/Group Title | Cyclists Social Network</title>
+<title>Post/Group Title | Bicicita</title>
 <meta name="description" content="..." />
 <meta name="keywords" content="..." />
 ```

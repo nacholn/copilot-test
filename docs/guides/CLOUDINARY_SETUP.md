@@ -1,6 +1,6 @@
 # Cloudinary Setup Guide
 
-This guide will help you set up Cloudinary image uploads for the Cyclists Social Network.
+This guide will help you set up Cloudinary image uploads for the Bicicita.
 
 ## 🚀 Quick Setup
 

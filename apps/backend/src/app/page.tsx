@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <main style={{ padding: '2rem', fontFamily: 'system-ui' }}>
-      <h1>Cyclists Social Network - Backend API</h1>
+      <h1>Bicicita - Backend API</h1>
       <p>API server running on port 3001</p>
       <h2>Available Endpoints:</h2>
       <ul>

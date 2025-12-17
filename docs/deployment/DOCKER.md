@@ -1,6 +1,6 @@
 # Docker Setup Guide
 
-This guide explains how to use Docker for local development with the Cyclists Social Network monorepo.
+This guide explains how to use Docker for local development with the Bicicita monorepo.
 
 ## Overview
 

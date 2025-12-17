@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the implementation of a user interaction scoring system and enhanced discovery features for the Cyclists Social Network application. The system tracks user activity and uses it to rank users in the discovery interface, showing more active users first.
+This document describes the implementation of a user interaction scoring system and enhanced discovery features for the Bicicita application. The system tracks user activity and uses it to rank users in the discovery interface, showing more active users first.
 
 ## Features Implemented
 

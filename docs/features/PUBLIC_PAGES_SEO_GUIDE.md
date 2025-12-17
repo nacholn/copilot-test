@@ -1,6 +1,6 @@
 # Public Pages and SEO Implementation Guide
 
-This guide documents the new public pages feature with SEO optimization for posts and groups in the Cyclists Social Network application.
+This guide documents the new public pages feature with SEO optimization for posts and groups in the Bicicita application.
 
 ## Overview
 
@@ -39,7 +39,7 @@ The home page now displays:
 
 **SEO Optimization**:
 ```html
-<title>{Post Title} | Cyclists Social Network</title>
+<title>{Post Title} | Bicicita</title>
 <meta name="description" content="{meta_description or content excerpt}" />
 <meta name="keywords" content="{keywords}" />
 <meta property="og:title" content="{Post Title}" />
@@ -64,7 +64,7 @@ The home page now displays:
 
 **SEO Optimization**:
 ```html
-<title>{Group Name} | Cyclists Social Network</title>
+<title>{Group Name} | Bicicita</title>
 <meta name="description" content="{meta_description or description}" />
 <meta name="keywords" content="{keywords}" />
 <meta property="og:title" content="{Group Name}" />

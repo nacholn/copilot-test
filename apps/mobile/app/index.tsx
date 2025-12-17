@@ -10,7 +10,7 @@ export default function Home() {
       <StatusBar style="light" />
       <View style={styles.content}>
         <Text style={styles.emoji}>🚴</Text>
-        <Text style={styles.title}>Cyclists Social Network</Text>
+        <Text style={styles.title}>Bicicita</Text>
         <Text style={styles.description}>
           Connect with fellow cyclists, share routes, and build your cycling community
         </Text>

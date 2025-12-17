@@ -1,6 +1,6 @@
 # 📚 Documentation
 
-Welcome to the Cyclists Social Network documentation! This directory contains comprehensive guides, architecture documentation, feature descriptions, and implementation reports.
+Welcome to the Bicicita documentation! This directory contains comprehensive guides, architecture documentation, feature descriptions, and implementation reports.
 
 ## 📖 Table of Contents
 

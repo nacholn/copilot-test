@@ -110,12 +110,12 @@ export function getFriendRequestEmailTemplate(
       <body>
         <div class="container">
           <div class="header">
-            <h1>🚴 Cyclists Social Network</h1>
+            <h1>🚴 Bicicita</h1>
           </div>
           <div class="content">
             <h2>New Friend Request</h2>
             <p>Hi ${recipientName},</p>
-            <p><strong>${requesterName}</strong> wants to connect with you on Cyclists Social Network!</p>
+            <p><strong>${requesterName}</strong> wants to connect with you on Bicicita!</p>
             <p>Accept this friend request to start chatting and sharing your cycling adventures together.</p>
             <div style="text-align: center;">
               <a href="${acceptUrl}" class="button">View Friend Request</a>
@@ -123,7 +123,7 @@ export function getFriendRequestEmailTemplate(
           </div>
           <div class="footer">
             <p>If you didn't expect this email, you can safely ignore it.</p>
-            <p>&copy; ${new Date().getFullYear()} Cyclists Social Network. All rights reserved.</p>
+            <p>&copy; ${new Date().getFullYear()} Bicicita. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -196,19 +196,19 @@ export function getFriendRequestAcceptedEmailTemplate(
       <body>
         <div class="container">
           <div class="header">
-            <h1>🚴 Cyclists Social Network</h1>
+            <h1>🚴 Bicicita</h1>
           </div>
           <div class="content">
             <h2>Friend Request Accepted! 🎉</h2>
             <p>Hi ${recipientName},</p>
             <p><strong>${accepterName}</strong> has accepted your friend request!</p>
-            <p>You're now friends on Cyclists Social Network. Start chatting and plan your next ride together!</p>
+            <p>You're now friends on Bicicita. Start chatting and plan your next ride together!</p>
             <div style="text-align: center;">
               <a href="${profileUrl}" class="button">Visit Profile</a>
             </div>
           </div>
           <div class="footer">
-            <p>&copy; ${new Date().getFullYear()} Cyclists Social Network. All rights reserved.</p>
+            <p>&copy; ${new Date().getFullYear()} Bicicita. All rights reserved.</p>
           </div>
         </div>
       </body>

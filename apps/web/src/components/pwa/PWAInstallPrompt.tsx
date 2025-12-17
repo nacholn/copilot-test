@@ -82,7 +82,7 @@ export function PWAInstallPrompt() {
         </button>
         <div className={styles.icon}>📱</div>
         <div className={styles.text}>
-          <h3 className={styles.title}>Install Cyclists App</h3>
+          <h3 className={styles.title}>Install Bicicita App</h3>
           <p className={styles.message}>
             Install our app for a better experience with offline support and quick access!
           </p>

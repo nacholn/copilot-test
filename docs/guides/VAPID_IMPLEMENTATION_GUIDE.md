@@ -1,6 +1,6 @@
 # VAPID Implementation Guide for Push Notifications
 
-This guide provides complete steps to implement VAPID (Voluntary Application Server Identification for Web Push) for server-side push notifications in the Cyclists Social Network application.
+This guide provides complete steps to implement VAPID (Voluntary Application Server Identification for Web Push) for server-side push notifications in the Bicicita application.
 
 ## What is VAPID?
 

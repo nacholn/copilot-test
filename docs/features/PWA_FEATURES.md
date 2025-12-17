@@ -1,6 +1,6 @@
 # PWA Features Implementation Guide
 
-This document describes the Progressive Web App (PWA) features implemented in the Cyclists Social Network web application.
+This document describes the Progressive Web App (PWA) features implemented in the Bicicita web application.
 
 ## Features Implemented
 
@@ -254,7 +254,7 @@ Potential improvements for future versions:
 
 ## Conclusion
 
-The Cyclists Social Network is now a full-featured Progressive Web App with:
+The Bicicita is now a full-featured Progressive Web App with:
 
 - ✅ Installable on desktop and mobile
 - ✅ Offline support with graceful fallbacks

@@ -157,7 +157,7 @@ import { LanguageSelector } from './LanguageSelector';
 
 ### **Status: PRODUCTION READY** 🎉
 
-The LanguageSelector component with flag emojis is now fully functional and optimized for cross-platform deployment. The flag icons display correctly as colorful, recognizable country flags that significantly improve the user experience for international users of the Cyclists Social Network.
+The LanguageSelector component with flag emojis is now fully functional and optimized for cross-platform deployment. The flag icons display correctly as colorful, recognizable country flags that significantly improve the user experience for international users of the Bicicita.
 
 ---
 

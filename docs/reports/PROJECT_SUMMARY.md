@@ -1,8 +1,8 @@
-# Project Summary: Cyclists Social Network Monorepo
+# Project Summary: Bicicita Monorepo
 
 ## Overview
 
-A complete Turborepo monorepo implementation for a cyclists social network featuring:
+A complete Turborepo monorepo implementation for a cyclist social network featuring:
 
 - **3 Applications**: Backend API, Web PWA, Mobile App
 - **2 Shared Packages**: Config (types & Supabase), UI (components)

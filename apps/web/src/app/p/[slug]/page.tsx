@@ -80,7 +80,7 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
   return (
     <>
       <Head>
-        <title>{post.title} | Cyclists Social Network</title>
+        <title>{post.title} | Bicicita</title>
         <meta name="description" content={post.metaDescription || post.content.substring(0, 160)} />
         {post.keywords && <meta name="keywords" content={post.keywords} />}
         <meta property="og:title" content={post.title} />

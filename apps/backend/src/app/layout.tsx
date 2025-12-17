@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Cyclists Social Network - Backend',
-  description: 'Backend API for Cyclists Social Network',
+  title: 'Bicicita - Backend',
+  description: 'Backend API for Bicicita',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

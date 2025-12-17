@@ -82,13 +82,13 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
   return (
     <>
       <Head>
-        <title>{group.name} | Cyclists Social Network</title>
+        <title>{group.name} | Bicicita</title>
         <meta
           name="description"
           content={
             group.metaDescription ||
             group.description ||
-            `Join ${group.name} on Cyclists Social Network`
+            `Join ${group.name} on Bicicita`
           }
         />
         {group.keywords && <meta name="keywords" content={group.keywords} />}
@@ -98,7 +98,7 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
           content={
             group.metaDescription ||
             group.description ||
-            `Join ${group.name} on Cyclists Social Network`
+            `Join ${group.name} on Bicicita`
           }
         />
         <meta property="og:type" content="website" />
@@ -110,7 +110,7 @@ export default function PublicGroupDetail({ params }: { params: { slug: string }
           content={
             group.metaDescription ||
             group.description ||
-            `Join ${group.name} on Cyclists Social Network`
+            `Join ${group.name} on Bicicita`
           }
         />
         {group.mainImage && <meta name="twitter:image" content={group.mainImage} />}
