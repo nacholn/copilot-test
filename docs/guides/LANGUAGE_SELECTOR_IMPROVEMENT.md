@@ -171,7 +171,7 @@ import { LanguageSelector } from '@/components/LanguageSelector';
 
 ```tsx
 <header className="navigation">
-  <div className="logo">Cyclists Social Network</div>
+  <div className="logo">Bicicita</div>
   <nav className="menu">
     {/* ...menu items... */}
     <LanguageSelector />
@@ -327,4 +327,4 @@ import { LanguageSelector } from '@/components/LanguageSelector';
 
 **Status**: ✅ **COMPLETE AND PRODUCTION READY**
 
-The language selector is now a polished, professional component that significantly improves the user experience for international users of the Cyclists Social Network.
+The language selector is now a polished, professional component that significantly improves the user experience for international users of the Bicicita.

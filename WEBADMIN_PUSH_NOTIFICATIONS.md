@@ -356,7 +356,7 @@ None - uses existing project dependencies:
 
 ### Existing Dependencies Used
 
-- `@cyclists/config`: Shared types
+- `@bicicita/config`: Shared types
 - `web-push`: Push notification library
 - PostgreSQL: Database for storing subscriptions
 

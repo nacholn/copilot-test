@@ -14,7 +14,7 @@ Migrations are versioned database schema changes that can be applied (up) or rol
 Ensure the `DATABASE_URL` environment variable is set in your `.env` file:
 
 ```bash
-DATABASE_URL=******localhost:5432/cyclists_db
+DATABASE_URL=******localhost:5432/bicicita_db
 ```
 
 ### Apply All Pending Migrations

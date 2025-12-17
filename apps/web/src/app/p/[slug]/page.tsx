@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { generatePostStructuredData } from '../../../utils/structuredData';
-import type { PostWithDetails } from '@cyclists/config';
+import type { PostWithDetails } from '@bicicita/config';
 import styles from './postDetail.module.css';
 
 export default function PublicPostDetail({ params }: { params: { slug: string } }) {
@@ -80,7 +80,7 @@ export default function PublicPostDetail({ params }: { params: { slug: string } 
   return (
     <>
       <Head>
-        <title>{post.title} | Cyclists Social Network</title>
+        <title>{post.title} | Bicicita</title>
         <meta name="description" content={post.metaDescription || post.content.substring(0, 160)} />
         {post.keywords && <meta name="keywords" content={post.keywords} />}
         <meta property="og:title" content={post.title} />

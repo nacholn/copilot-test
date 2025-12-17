@@ -1,4 +1,4 @@
-import type { Notification } from '@cyclists/config';
+import type { Notification } from '@bicicita/config';
 
 /**
  * Get the global Socket.IO instance

@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './profile.module.css';
 import commonStyles from '../../styles/common.module.css';
-import { API_URL, type Profile } from '@cyclists/config';
+import { API_URL, type Profile } from '@bicicita/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/auth/AuthGuard';

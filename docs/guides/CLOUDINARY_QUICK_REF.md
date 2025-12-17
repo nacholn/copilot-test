@@ -9,7 +9,7 @@ import { ImageUpload } from '@/components/ImageUpload';
 
 <ImageUpload
   currentImage={profileData.avatar}
-  folder="cyclists/profiles"
+  folder="bicicita/profiles"
   onImageChange={(imageUrl) => setProfileData({ ...profileData, avatar: imageUrl })}
   size="medium" // "small" | "medium" | "large"
   className="custom-class" // optional
@@ -85,7 +85,7 @@ images: {
 ## 📁 File Organization
 
 ```
-cyclists/
+bicicita/
 ├── profiles/     # User profile images
 ├── uploads/      # General uploads
 └── test/         # Test images (auto-cleanup)

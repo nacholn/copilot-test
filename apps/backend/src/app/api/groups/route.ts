@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { generateUniqueSlug } from '@/lib/slug';
-import type { ApiResponse, Group, GroupWithMemberCount, CreateGroupInput } from '@cyclists/config';
+import type { ApiResponse, Group, GroupWithMemberCount, CreateGroupInput } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

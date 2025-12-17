@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cyclists/config'],
+  transpilePackages: ['@bicicita/config'],
   async headers() {
     return [
       {

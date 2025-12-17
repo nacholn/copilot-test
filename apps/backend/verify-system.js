@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Complete system verification for Cyclists Social Network
+ * Complete system verification for Bicicita Social Network
  * Tests all major components including Cloudinary integration
  */
 
@@ -88,7 +88,7 @@ async function runSystemTests() {
         filename: 'test.png',
         contentType: 'image/png',
       });
-      form.append('folder', 'cyclists/test');
+      form.append('folder', 'bicicita/test');
 
       const uploadResponse = await axios.post('http://localhost:3001/api/upload', form, {
         headers: { ...form.getHeaders() },
@@ -154,7 +154,7 @@ async function runSystemTests() {
   console.log(`\n🎯 Overall Score: ${passed}/${total} components working`);
 
   if (passed === total) {
-    console.log('\n🎉 All systems operational! Your Cyclists Social Network is ready to use.');
+    console.log('\n🎉 All systems operational! Your Bicicita is ready to use.');
     console.log('\n💡 Next steps:');
     console.log('   • Open http://localhost:3000 (or 3002) to access the web app');
     console.log('   • Register a new account or login');

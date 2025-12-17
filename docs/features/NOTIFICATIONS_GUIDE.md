@@ -1,6 +1,6 @@
 # Notifications & Real-time Messaging Guide
 
-This guide covers the comprehensive notification and real-time messaging system implemented in the Cyclists Social Network.
+This guide covers the comprehensive notification and real-time messaging system implemented in the Bicicita.
 
 ## 📋 Table of Contents
 
@@ -15,7 +15,7 @@ This guide covers the comprehensive notification and real-time messaging system 
 
 ## 🎯 Overview
 
-The Cyclists Social Network now includes a complete real-time notification and messaging system with:
+The Bicicita now includes a complete real-time notification and messaging system with:
 
 - **Friend Requests**: Send, receive, accept, and reject friend requests
 - **Email Notifications**: Automated emails for friend requests
@@ -136,7 +136,7 @@ Add to `apps/backend/.env`:
 ```env
 # Email Configuration (Resend)
 RESEND_API_KEY=your-resend-api-key
-EMAIL_FROM=noreply@cyclists.app
+EMAIL_FROM=noreply@bicicita.app
 
 # App Configuration
 NEXT_PUBLIC_APP_URL=http://localhost:3000

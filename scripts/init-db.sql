@@ -1,4 +1,4 @@
--- Database initialization script for Cyclists Social Network
+-- Database initialization script for Bicicita Social Network
 -- Run this script to create the necessary database schema
 
 -- Create profiles table

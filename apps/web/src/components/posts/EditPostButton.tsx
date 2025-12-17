@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Post, PostVisibility } from '@cyclists/config';
+import type { Post, PostVisibility } from '@bicicita/config';
 import Swal from 'sweetalert2';
 import styles from './EditPostButton.module.css';
 

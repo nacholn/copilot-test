@@ -6,26 +6,28 @@ While both web PWA and Expo mobile apps can receive push notifications, they use
 
 ## Key Differences
 
-| Aspect | Web PWA (VAPID) | Expo Mobile |
-|--------|----------------|-------------|
-| **Service** | Browser Push Service (Chrome, Firefox, etc.) | Expo Push Notification Service (EPNS) |
-| **Authentication** | VAPID keys (public/private) | Expo Access Token |
-| **Subscription** | `pushManager.subscribe()` | `Notifications.getExpoPushTokenAsync()` |
-| **Token Format** | PushSubscription object with endpoint | Expo Push Token (e.g., `ExponentPushToken[xxx]`) |
-| **Push Server** | Your backend directly to browser push service | Your backend → Expo servers → Device |
-| **Library** | `web-push` (Node.js) | `expo-notifications` + Expo API |
-| **Permissions** | Browser Notification API | Native iOS/Android permissions |
-| **Works Offline** | Yes (with service worker) | Yes (native push) |
-| **Background** | Service worker handles | Native system handles |
+| Aspect             | Web PWA (VAPID)                               | Expo Mobile                                      |
+| ------------------ | --------------------------------------------- | ------------------------------------------------ |
+| **Service**        | Browser Push Service (Chrome, Firefox, etc.)  | Expo Push Notification Service (EPNS)            |
+| **Authentication** | VAPID keys (public/private)                   | Expo Access Token                                |
+| **Subscription**   | `pushManager.subscribe()`                     | `Notifications.getExpoPushTokenAsync()`          |
+| **Token Format**   | PushSubscription object with endpoint         | Expo Push Token (e.g., `ExponentPushToken[xxx]`) |
+| **Push Server**    | Your backend directly to browser push service | Your backend → Expo servers → Device             |
+| **Library**        | `web-push` (Node.js)                          | `expo-notifications` + Expo API                  |
+| **Permissions**    | Browser Notification API                      | Native iOS/Android permissions                   |
+| **Works Offline**  | Yes (with service worker)                     | Yes (native push)                                |
+| **Background**     | Service worker handles                        | Native system handles                            |
 
 ## Architecture Comparison
 
 ### Web PWA Push Flow
+
 ```
 Your Backend (VAPID) → Browser Push Service → Service Worker → User
 ```
 
 ### Expo Push Flow
+
 ```
 Your Backend (Expo Token) → Expo Push Service → APNs/FCM → User
 ```
@@ -46,8 +48,8 @@ Add notification configuration to `apps/mobile/app.json`:
 ```json
 {
   "expo": {
-    "name": "Cyclists Social Network",
-    "slug": "cyclists-social-network",
+    "name": "Bicicita",
+    "slug": "bicicita",
     "version": "0.1.0",
     "notification": {
       "icon": "./assets/notification-icon.png",
@@ -56,7 +58,7 @@ Add notification configuration to `apps/mobile/app.json`:
       "androidCollapsedTitle": "#{unread_notifications} new notifications"
     },
     "android": {
-      "package": "com.cyclists.socialnetwork",
+      "package": "com.bicicita",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FE3C72"
@@ -64,7 +66,7 @@ Add notification configuration to `apps/mobile/app.json`:
       "googleServicesFile": "./google-services.json"
     },
     "ios": {
-      "bundleIdentifier": "com.cyclists.socialnetwork",
+      "bundleIdentifier": "com.bicicita",
       "supportsTablet": true
     }
   }
@@ -97,19 +99,19 @@ export function useNotifications() {
   const responseListener = useRef<Notifications.Subscription>();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => {
+    registerForPushNotificationsAsync().then((token) => {
       if (token) {
         setExpoPushToken(token);
       }
     });
 
     // Listen for notifications received while app is open
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
       setNotification(notification);
     });
 
     // Listen for user interaction with notification
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
       const data = response.notification.request.content.data;
       // Navigate based on notification data
       if (data.url) {
@@ -149,21 +151,23 @@ async function registerForPushNotificationsAsync() {
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-    
+
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
-    
+
     if (finalStatus !== 'granted') {
       alert('Failed to get push token for push notification!');
       return;
     }
-    
-    token = (await Notifications.getExpoPushTokenAsync({
-      projectId: 'your-expo-project-id', // Get from app.json or expo.dev
-    })).data;
-    
+
+    token = (
+      await Notifications.getExpoPushTokenAsync({
+        projectId: 'your-expo-project-id', // Get from app.json or expo.dev
+      })
+    ).data;
+
     console.log('Expo Push Token:', token);
   } else {
     alert('Must use physical device for Push Notifications');
@@ -224,10 +228,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error saving Expo push token:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to save token' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Failed to save token' }, { status: 500 });
   }
 }
 ```
@@ -240,11 +241,11 @@ Create migration:
 exports.up = (pgm) => {
   pgm.createTable('expo_push_tokens', {
     id: { type: 'uuid', primaryKey: true, default: pgm.func('gen_random_uuid()') },
-    user_id: { 
-      type: 'uuid', 
-      notNull: true, 
+    user_id: {
+      type: 'uuid',
+      notNull: true,
       references: 'profiles(user_id)',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     },
     expo_push_token: { type: 'text', notNull: true, unique: true },
     device_id: { type: 'text' },
@@ -295,7 +296,7 @@ export async function sendExpoPushNotification(message: ExpoPushMessage) {
     });
 
     const data = await response.json();
-    
+
     if (!response.ok) {
       console.error('Expo push notification error:', data);
       throw new Error('Failed to send Expo push notification');
@@ -329,7 +330,7 @@ export async function sendExpoPushNotificationToUser(
       return;
     }
 
-    const tokens = result.rows.map(row => row.expo_push_token);
+    const tokens = result.rows.map((row) => row.expo_push_token);
 
     // Send to all user's devices
     await sendExpoPushNotification({
@@ -355,12 +356,15 @@ Update your messaging logic to send both web and Expo push notifications:
 import { sendPushNotification } from './push-notifications'; // Web VAPID
 import { sendExpoPushNotificationToUser } from './expo-push-notifications'; // Expo
 
-export async function notifyUser(userId: string, notification: {
-  title: string;
-  message: string;
-  type: string;
-  actionUrl?: string;
-}) {
+export async function notifyUser(
+  userId: string,
+  notification: {
+    title: string;
+    message: string;
+    type: string;
+    actionUrl?: string;
+  }
+) {
   // Send WebSocket notification (real-time)
   // ... existing WebSocket code ...
 
@@ -372,14 +376,17 @@ export async function notifyUser(userId: string, notification: {
     );
 
     for (const sub of webSubscriptions.rows) {
-      await sendPushNotification({
-        endpoint: sub.endpoint,
-        keys: { p256dh: sub.p256dh, auth: sub.auth }
-      }, {
-        title: notification.title,
-        body: notification.message,
-        data: { url: notification.actionUrl },
-      }).catch(err => console.error('Web push failed:', err));
+      await sendPushNotification(
+        {
+          endpoint: sub.endpoint,
+          keys: { p256dh: sub.p256dh, auth: sub.auth },
+        },
+        {
+          title: notification.title,
+          body: notification.message,
+          data: { url: notification.actionUrl },
+        }
+      ).catch((err) => console.error('Web push failed:', err));
     }
   } catch (error) {
     console.error('Error sending web push:', error);
@@ -437,33 +444,40 @@ export default function RootLayout() {
 ## Important Differences to Remember
 
 ### 1. **No VAPID Keys Needed for Expo**
-   - Expo manages push infrastructure
-   - No need for public/private key pairs
-   - Just use Expo push tokens
+
+- Expo manages push infrastructure
+- No need for public/private key pairs
+- Just use Expo push tokens
 
 ### 2. **Different Token Formats**
-   - Web: Full subscription object with endpoint, p256dh, auth
-   - Expo: Simple string like `ExponentPushToken[xxxxxx]`
+
+- Web: Full subscription object with endpoint, p256dh, auth
+- Expo: Simple string like `ExponentPushToken[xxxxxx]`
 
 ### 3. **Different APIs**
-   - Web: `navigator.serviceWorker.pushManager`
-   - Expo: `Notifications.getExpoPushTokenAsync()`
+
+- Web: `navigator.serviceWorker.pushManager`
+- Expo: `Notifications.getExpoPushTokenAsync()`
 
 ### 4. **Different Backend Sending**
-   - Web: Send directly to browser push service with VAPID
-   - Expo: Send to Expo servers, they forward to APNs/FCM
+
+- Web: Send directly to browser push service with VAPID
+- Expo: Send to Expo servers, they forward to APNs/FCM
 
 ### 5. **Permission Handling**
-   - Web: Browser notification permission API
-   - Expo: Native iOS/Android permission dialogs
+
+- Web: Browser notification permission API
+- Expo: Native iOS/Android permission dialogs
 
 ### 6. **Background Behavior**
-   - Web: Service worker handles push events
-   - Expo: Native system handles push notifications
+
+- Web: Service worker handles push events
+- Expo: Native system handles push notifications
 
 ### 7. **Testing**
-   - Web: Works in browser (Chrome DevTools)
-   - Expo: Requires physical device or Expo Go app
+
+- Web: Works in browser (Chrome DevTools)
+- Expo: Requires physical device or Expo Go app
 
 ## Expo Push Notification Tool
 
@@ -477,12 +491,14 @@ Enter your Expo push token and send a test notification!
 ### Short Answer: It Depends on Your Build Type
 
 **Using Expo Go or Development Builds:**
+
 - ✅ **No Firebase configuration needed**
 - ✅ **No Apple Developer account needed**
 - Expo handles everything automatically
 - Perfect for development and testing
 
 **Using EAS Build (Production Standalone Apps):**
+
 - **iOS:** ✅ Requires Apple Developer account ($99/year)
 - **Android:** ⚠️ Firebase/FCM optional (Expo handles it, but you can configure for advanced features)
 
@@ -491,22 +507,24 @@ Enter your Expo push token and send a test notification!
 #### For iOS Production Apps
 
 **Requirements:**
+
 1. **Apple Developer Account** ($99/year)
    - Required to build and distribute iOS apps
    - Required for APNs (Apple Push Notification service)
-   
 2. **APNs Certificate/Key**
    - Expo automatically handles APNs setup with EAS Build
    - You don't need to manually create certificates
    - EAS Build manages the provisioning profiles and push certificates
 
 **Steps:**
+
 1. Sign up for Apple Developer Program: https://developer.apple.com/programs/
 2. Run `eas build --platform ios`
 3. EAS will guide you through the setup
 4. Expo automatically configures APNs for you
 
 **You DON'T need to:**
+
 - Manually create push certificates
 - Download .p8 files
 - Configure APNs manually
@@ -515,14 +533,15 @@ Enter your Expo push token and send a test notification!
 #### For Android Production Apps
 
 **Requirements:**
+
 1. **No Google Play Developer account required** for push notifications
    - Only needed for Play Store distribution ($25 one-time fee)
-   
 2. **No Firebase/FCM configuration required** by default
    - Expo uses its own FCM credentials automatically
    - Push notifications work out of the box with EAS Build
 
 **Optional Firebase Configuration:**
+
 - If you want to use your own FCM project (for analytics, custom features, etc.)
 - Add `google-services.json` to your project
 - Configure in `app.json`:
@@ -536,6 +555,7 @@ Enter your Expo push token and send a test notification!
 ```
 
 **Steps for basic setup:**
+
 1. Run `eas build --platform android`
 2. Push notifications work automatically
 3. No Firebase setup needed unless you want custom configuration
@@ -543,6 +563,7 @@ Enter your Expo push token and send a test notification!
 ### Expo Go vs Standalone Apps
 
 #### Development with Expo Go
+
 ```
 ✅ Push notifications work immediately
 ✅ No Apple Developer account needed
@@ -551,18 +572,21 @@ Enter your Expo push token and send a test notification!
 ```
 
 **How it works:**
+
 - Expo Go has built-in push notification credentials
 - You get an Expo Push Token
 - Send notifications via Expo's push service
 - Perfect for development
 
 #### Production Standalone Apps (EAS Build)
+
 ```
 iOS: Requires Apple Developer account ($99/year)
 Android: No additional accounts needed (Play Store is optional)
 ```
 
 **How it works:**
+
 - Your own app bundle
 - Expo still manages push infrastructure
 - More control and customization
@@ -571,12 +595,14 @@ Android: No additional accounts needed (Play Store is optional)
 ## Production Considerations
 
 ### For Web PWA:
+
 - Need VAPID keys
 - Works in browsers (Chrome, Firefox, Edge, Safari 16.4+)
 - Service worker required
 - HTTPS required
 
 ### For Expo Mobile:
+
 - Need Expo project ID
 - For production: Build standalone app with EAS Build
 - **iOS:** Apple Developer account required ($99/year), APNs managed by Expo
@@ -585,23 +611,24 @@ Android: No additional accounts needed (Play Store is optional)
 
 ## Configuration Comparison Table
 
-| Configuration | Expo Go (Dev) | EAS Build iOS | EAS Build Android | Web PWA |
-|--------------|---------------|---------------|-------------------|---------|
-| Apple Developer | ❌ Not needed | ✅ Required ($99/year) | ❌ Not needed | ❌ Not needed |
-| Firebase/FCM Setup | ❌ Not needed | ❌ Not needed | ❌ Not needed (optional) | ❌ Not needed |
-| VAPID Keys | ❌ Not needed | ❌ Not needed | ❌ Not needed | ✅ Required |
-| APNs Certificate | ❌ Auto-handled | ✅ Auto by EAS | ❌ Not applicable | ❌ Not needed |
-| Google Play Account | ❌ Not needed | ❌ Not needed | ❌ Not needed* | ❌ Not needed |
-| Push Service | Expo Push | Expo Push | Expo Push | Browser Push |
-| Setup Complexity | ⭐ Very Easy | ⭐⭐ Easy | ⭐ Very Easy | ⭐⭐⭐ Moderate |
+| Configuration       | Expo Go (Dev)   | EAS Build iOS          | EAS Build Android        | Web PWA         |
+| ------------------- | --------------- | ---------------------- | ------------------------ | --------------- |
+| Apple Developer     | ❌ Not needed   | ✅ Required ($99/year) | ❌ Not needed            | ❌ Not needed   |
+| Firebase/FCM Setup  | ❌ Not needed   | ❌ Not needed          | ❌ Not needed (optional) | ❌ Not needed   |
+| VAPID Keys          | ❌ Not needed   | ❌ Not needed          | ❌ Not needed            | ✅ Required     |
+| APNs Certificate    | ❌ Auto-handled | ✅ Auto by EAS         | ❌ Not applicable        | ❌ Not needed   |
+| Google Play Account | ❌ Not needed   | ❌ Not needed          | ❌ Not needed\*          | ❌ Not needed   |
+| Push Service        | Expo Push       | Expo Push              | Expo Push                | Browser Push    |
+| Setup Complexity    | ⭐ Very Easy    | ⭐⭐ Easy              | ⭐ Very Easy             | ⭐⭐⭐ Moderate |
 
-*Only needed for Play Store distribution, not for push notifications
+\*Only needed for Play Store distribution, not for push notifications
 
 ## Frequently Asked Questions
 
 ### Do I need Firebase for Android push notifications?
 
 **No.** Expo manages FCM credentials automatically. You only need Firebase if:
+
 - You want to use Firebase Analytics
 - You need Firebase Realtime Database or Firestore
 - You want custom FCM configuration
@@ -609,6 +636,7 @@ Android: No additional accounts needed (Play Store is optional)
 ### Do I need an Apple Developer account for testing?
 
 **No.** Use Expo Go for testing. You only need an Apple Developer account when:
+
 - Building a standalone app with EAS Build
 - Submitting to the App Store
 - Testing on devices without Expo Go
@@ -616,6 +644,7 @@ Android: No additional accounts needed (Play Store is optional)
 ### Can I use my own Firebase project?
 
 **Yes.** You can optionally configure your own Firebase project:
+
 1. Create a Firebase project
 2. Download `google-services.json`
 3. Add to your Expo project
@@ -645,18 +674,21 @@ But this is **not required** for push notifications to work.
 - **Expo Mobile**: Use Expo Push Notification Service with `expo-notifications`
 
 **Configuration Requirements:**
+
 - **Development (Expo Go):** Nothing needed - works immediately! 🎉
 - **iOS Production:** Apple Developer account ($99/year), APNs managed by Expo
 - **Android Production:** No Firebase/FCM setup needed, managed by Expo
 - **Web PWA:** VAPID keys (free, self-managed)
 
 **Best practice for your app:**
+
 - Implement **both** systems
 - Store both types of tokens in separate database tables
 - When sending notifications, send to both web subscribers (VAPID) and mobile users (Expo)
 - This ensures all users receive notifications regardless of platform
 
 The good news is that:
+
 - Expo handles most complexity automatically
 - No Firebase configuration needed for basic push notifications
 - Backend notification logic can be unified - just call both push services!

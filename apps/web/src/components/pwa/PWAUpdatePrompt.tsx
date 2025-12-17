@@ -76,7 +76,7 @@ export function PWAUpdatePrompt() {
         <div className={styles.icon}>🔄</div>
         <h2 className={styles.title}>New Version Available!</h2>
         <p className={styles.message}>
-          A new version of Cyclists Social Network is available. 
+          A new version of Bicicita is available. 
           Update now to get the latest features and improvements.
         </p>
         <div className={styles.buttons}>

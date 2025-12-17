@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Button, Avatar } from '@cyclists/ui';
-import type { Profile } from '@cyclists/config';
+import { Button, Avatar } from '@bicicita/ui';
+import type { Profile } from '@bicicita/config';
 
 export default function Profile() {
   const router = useRouter();

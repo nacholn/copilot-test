@@ -7,7 +7,7 @@ import { useTranslations } from '../hooks/useTranslations';
 import { PublicPostCard } from '../components/cards/PublicPostCard';
 import { PublicGroupCard } from '../components/cards/PublicGroupCard';
 import { Loader } from '../components/ui/Loader';
-import type { PostWithDetails, GroupWithMemberCount } from '@cyclists/config';
+import type { PostWithDetails, GroupWithMemberCount } from '@bicicita/config';
 import styles from './page.module.css';
 
 function HomeInner() {
@@ -73,7 +73,7 @@ function HomeInner() {
             {user ? (
               <>
                 <Link href="/users" className={styles.heroPrimaryButton}>
-                  {t('home.discoverCyclists')}
+                  {t('home.discoverBicicita')}
                 </Link>
                 <Link href="/profile" className={styles.heroSecondaryButton}>
                   {t('home.myProfile')}
@@ -127,7 +127,7 @@ function HomeInner() {
           <div className={styles.stats}>
             <div className={styles.statCard}>
               <div className={styles.statNumber}>10K+</div>
-              <div className={styles.statLabel}>{t('home.activeCyclists')}</div>
+              <div className={styles.statLabel}>{t('home.activeCyclist')}</div>
             </div>
             <div className={styles.statCard}>
               <div className={styles.statNumber}>50K+</div>

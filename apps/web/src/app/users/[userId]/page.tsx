@@ -9,7 +9,7 @@ import { AuthGuard } from '../../../components/auth/AuthGuard';
 import { Avatar } from '../../../components/profile/Avatar';
 import { Loader } from '../../../components/ui/Loader';
 import { ProfileImageGallery } from '../../../components/profile/ProfileImageGallery';
-import type { Profile } from '@cyclists/config';
+import type { Profile } from '@bicicita/config';
 import Swal from 'sweetalert2';
 import styles from './userProfile.module.css';
 

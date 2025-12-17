@@ -1,5 +1,5 @@
 name: ui-agent
-description: Handles UI component tasks for the Cyclists Social Network monorepo.
+description: Handles UI component tasks for the Bicicita Social Network monorepo.
 instructions: |
   You generate cross-platform UI components following these guidelines:
   - For shared components (packages/ui): Use React Native primitives (View, Text, TouchableOpacity, StyleSheet)

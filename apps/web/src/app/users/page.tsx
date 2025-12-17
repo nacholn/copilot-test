@@ -10,7 +10,7 @@ import { Avatar } from '../../components/profile/Avatar';
 import { Loader } from '../../components/ui/Loader';
 import { FilterBikeTypeSelector } from '../../components/selectors/FilterBikeTypeSelector';
 import { FilterCyclingLevelSelector } from '../../components/selectors/FilterCyclingLevelSelector';
-import type { Profile, GroupWithMemberCount, GroupConversation } from '@cyclists/config';
+import type { Profile, GroupWithMemberCount, GroupConversation } from '@bicicita/config';
 import styles from './users.module.css';
 
 type TabType = 'users' | 'groups';

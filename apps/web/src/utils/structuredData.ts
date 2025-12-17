@@ -1,4 +1,4 @@
-import type { PostWithDetails, GroupWithMemberCount } from '@cyclists/config';
+import type { PostWithDetails, GroupWithMemberCount } from '@bicicita/config';
 
 /**
  * Generate JSON-LD structured data for a blog post
@@ -54,7 +54,7 @@ export function generateGroupStructuredData(
     }),
     memberOf: {
       '@type': 'Organization',
-      name: 'Cyclists Social Network',
+      name: 'Bicicita',
     },
     // Note: Using aggregateRating as a proxy for community size
     // Schema.org doesn't have a standard "numberOfMembers" property

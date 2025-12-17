@@ -1,6 +1,6 @@
 # VAPID Implementation Guide for Push Notifications
 
-This guide provides complete steps to implement VAPID (Voluntary Application Server Identification for Web Push) for server-side push notifications in the Cyclists Social Network application.
+This guide provides complete steps to implement VAPID (Voluntary Application Server Identification for Web Push) for server-side push notifications in the Bicicita application.
 
 ## What is VAPID?
 
@@ -62,7 +62,7 @@ import webPush from 'web-push';
 
 // Configure web-push with VAPID details
 webPush.setVapidDetails(
-  process.env.VAPID_SUBJECT || 'mailto:admin@cyclists.com',
+  process.env.VAPID_SUBJECT || 'mailto:admin@bicicita.com',
   process.env.VAPID_PUBLIC_KEY || '',
   process.env.VAPID_PRIVATE_KEY || ''
 );

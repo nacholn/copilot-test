@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Cyclists Social Network",
-    "slug": "cyclists-social-network",
+    "name": "Bicicita Social Network",
+    "slug": "bicicita",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,19 +16,19 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.cyclists.socialnetwork"
+      "bundleIdentifier": "com.bicicita.socialnetwork"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#667eea"
       },
-      "package": "com.cyclists.socialnetwork"
+      "package": "com.bicicita.socialnetwork"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "cyclists",
+    "scheme": "bicicita",
     "plugins": [
       "expo-router"
     ]

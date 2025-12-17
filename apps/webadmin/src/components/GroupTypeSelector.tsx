@@ -1,4 +1,4 @@
-import type { GroupType } from '@cyclists/config';
+import type { GroupType } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 
 interface GroupTypeSelectorProps {

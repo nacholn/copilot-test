@@ -1,6 +1,6 @@
 # WebAdmin Dashboard
 
-Admin dashboard for managing groups in the Cyclists Social Network.
+Admin dashboard for managing groups in Bicicita.
 
 ## Features
 
@@ -90,7 +90,7 @@ The dashboard will be available at `http://localhost:3002`
 - **Language**: TypeScript
 - **Styling**: CSS Modules
 - **API Communication**: Fetch API
-- **Shared Types**: @cyclists/config package
+- **Shared Types**: @bicicita/config package
 
 ## Project Structure
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Button, Input } from '@cyclists/ui';
+import { Button, Input } from '@bicicita/ui';
 
 export default function Login() {
   const router = useRouter();

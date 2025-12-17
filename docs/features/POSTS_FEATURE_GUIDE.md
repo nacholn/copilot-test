@@ -2,7 +2,7 @@
 
 ## Overview
 
-A complete news posts system for the Cyclists Social Network, allowing users to share cycling news with text and images, reply to posts, and receive notifications.
+A complete news posts system for the Bicicita, allowing users to share cycling news with text and images, reply to posts, and receive notifications.
 
 ## Features Implemented
 

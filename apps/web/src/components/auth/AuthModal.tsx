@@ -8,7 +8,7 @@ import { useTranslations } from '../../hooks/useTranslations';
 import { LocationPicker } from '../forms/LocationPicker';
 import { BikeTypeSelector, type BikeType } from '../selectors/BikeTypeSelector';
 import { CyclingLevelSelector, type CyclingLevel } from '../selectors/CyclingLevelSelector';
-import { getSupabaseClient } from '@cyclists/config';
+import { getSupabaseClient } from '@bicicita/config';
 import styles from './AuthModal.module.css';
 
 type RegistrationStep = 1 | 2 | 3;

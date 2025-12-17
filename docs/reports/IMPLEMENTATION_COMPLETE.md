@@ -2,7 +2,7 @@
 
 ## Overview
 
-All requested features have been successfully implemented, tested, and documented. The Cyclists Social Network now has a comprehensive, production-ready notification and real-time messaging system.
+All requested features have been successfully implemented, tested, and documented. The Bicicita now has a comprehensive, production-ready notification and real-time messaging system.
 
 ## ✅ Completed Features
 
@@ -194,7 +194,7 @@ npm run migrate:up
 ```bash
 # In apps/backend/.env
 RESEND_API_KEY=your-key-here
-EMAIL_FROM=noreply@cyclists.app
+EMAIL_FROM=noreply@bicicita.app
 ```
 
 4. **Start Development:**
@@ -269,10 +269,10 @@ npm run dev
 ```env
 # Email Service
 RESEND_API_KEY=re_xxxxx
-EMAIL_FROM=noreply@cyclists.app
+EMAIL_FROM=noreply@bicicita.app
 
 # Database (already configured)
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bicicita_db
 
 # App URLs (already configured)
 NEXT_PUBLIC_APP_URL=http://localhost:3000

@@ -4,7 +4,7 @@ import { uploadImage } from '@/lib/cloudinary';
 import { createNotification } from '@/lib/notifications';
 import { emitNotification } from '@/lib/websocket';
 import { generateUniqueSlug } from '@/lib/slug';
-import type { ApiResponse, CreatePostInput, PostWithDetails } from '@cyclists/config';
+import type { ApiResponse, CreatePostInput, PostWithDetails } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';
@@ -182,7 +182,7 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(await image.arrayBuffer());
         
         try {
-          const uploadResult = await uploadImage(buffer, 'cyclists/posts');
+          const uploadResult = await uploadImage(buffer, 'bicicita/posts');
           
           await query(
             `INSERT INTO post_images (post_id, image_url, cloudinary_public_id, display_order)

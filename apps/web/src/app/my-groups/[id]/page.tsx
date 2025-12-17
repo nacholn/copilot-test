@@ -8,7 +8,7 @@ import { useTranslations } from '../../../hooks/useTranslations';
 import { AuthGuard } from '../../../components/auth/AuthGuard';
 import { Avatar } from '../../../components/profile/Avatar';
 import { Loader } from '../../../components/ui/Loader';
-import type { Group, GroupMemberWithProfile } from '@cyclists/config';
+import type { Group, GroupMemberWithProfile } from '@bicicita/config';
 import Swal from 'sweetalert2';
 import styles from './groupDetail.module.css';
 

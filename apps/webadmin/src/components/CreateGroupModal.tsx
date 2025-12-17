@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { GroupType, CreateGroupInput } from '@cyclists/config';
+import type { GroupType, CreateGroupInput } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 import { GroupTypeSelector } from './GroupTypeSelector';
 import { LocationPicker } from './LocationPicker';
@@ -123,7 +123,7 @@ export function CreateGroupModal({ onClose, onCreate }: CreateGroupModalProps) {
             <label className={styles.label}>Main Image</label>
             <ImageUpload
               currentImage={mainImage}
-              folder="cyclists/groups"
+              folder="bicicita/groups"
               onImageChange={handleImageChange}
               size="medium"
             />

@@ -1,4 +1,4 @@
-# Contributing to Cyclists Social Network
+# Contributing to Bicicita Social Network
 
 Thank you for your interest in contributing! This guide will help you get started.
 
@@ -97,7 +97,7 @@ docs: update setup instructions
 ## Project Structure
 
 ```
-cyclists-social-network/
+bicicita/
 ├── apps/              # Applications
 │   ├── backend/       # API server
 │   ├── web/          # Web app

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { transformProfile, transformFriendship } from '@/lib/utils';
-import type { ApiResponse, AddFriendInput } from '@cyclists/config';
+import type { ApiResponse, AddFriendInput } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

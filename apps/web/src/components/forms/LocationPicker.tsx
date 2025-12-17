@@ -74,7 +74,7 @@ export function LocationPicker({ value, latitude, longitude, onChange }: Locatio
           `featuretype=city`,
         {
           headers: {
-            'User-Agent': 'CyclistsSocialNetwork/1.0',
+            'User-Agent': 'Bicicita/1.0',
           },
         }
       );
@@ -143,7 +143,7 @@ export function LocationPicker({ value, latitude, longitude, onChange }: Locatio
               `addressdetails=1`,
             {
               headers: {
-                'User-Agent': 'CyclistsSocialNetwork/1.0',
+                'User-Agent': 'Bicicita/1.0',
               },
             }
           );

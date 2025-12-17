@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { uploadImage, deleteImage } from '@/lib/cloudinary';
-import type { ApiResponse, ProfileImage } from '@cyclists/config';
+import type { ApiResponse, ProfileImage } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Upload to Cloudinary
-    const uploadResult = await uploadImage(buffer, 'cyclists/profiles');
+    const uploadResult = await uploadImage(buffer, 'bicicita/profiles');
 
     // If this is marked as primary, unset any existing primary images
     if (isPrimary) {

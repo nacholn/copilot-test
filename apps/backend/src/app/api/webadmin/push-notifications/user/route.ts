@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendWebPushNotificationToUser } from '@/lib/web-push-notifications';
-import type { ApiResponse } from '@cyclists/config';
+import type { ApiResponse } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

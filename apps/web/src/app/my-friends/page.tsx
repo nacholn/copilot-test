@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/auth/AuthGuard';
 import { Avatar } from '../../components/profile/Avatar';
-import type { FriendProfile } from '@cyclists/config';
+import type { FriendProfile } from '@bicicita/config';
 import Swal from 'sweetalert2';
 import styles from './friends.module.css';
 

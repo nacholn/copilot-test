@@ -7,18 +7,21 @@ This implementation adds public-facing pages for posts and groups with comprehen
 ## 🎯 What Was Delivered
 
 ### 1. Friendly URLs (Slugs)
+
 - ✅ Posts now have SEO-friendly URLs: `/p/{slug}` (e.g., `/p/my-cycling-adventure-a1b2c3d4`)
 - ✅ Groups now have SEO-friendly URLs: `/g/{slug}` (e.g., `/g/mountain-bikers-madrid-e5f6g7h8`)
 - ✅ Slugs are automatically generated from titles/names with unique identifiers
 - ✅ Database fields added: `slug`, `meta_description`, `keywords`
 
 ### 2. Enhanced Home Page
+
 - ✅ Displays latest 6 public posts in a card grid
 - ✅ Displays top 6 popular groups (by member count) in a card grid
 - ✅ Beautiful, responsive design with card components
 - ✅ Direct links to view individual posts and groups
 
 ### 3. Public Post Detail Pages (`/p/[slug]`)
+
 - ✅ Full post content display with images
 - ✅ Author information with avatar
 - ✅ Reply count display
@@ -28,6 +31,7 @@ This implementation adds public-facing pages for posts and groups with comprehen
 - ✅ JSON-LD structured data for search engines
 
 ### 4. Public Group Detail Pages (`/g/[slug]`)
+
 - ✅ Group cover image and description
 - ✅ Member count and group type display
 - ✅ Photo gallery for additional images
@@ -37,6 +41,7 @@ This implementation adds public-facing pages for posts and groups with comprehen
 - ✅ JSON-LD structured data for search engines
 
 ### 5. SEO Optimization
+
 - ✅ Meta descriptions for better search results
 - ✅ Keywords for content classification
 - ✅ Open Graph tags (Facebook, LinkedIn sharing)
@@ -48,6 +53,7 @@ This implementation adds public-facing pages for posts and groups with comprehen
 - ✅ **SEO fields only editable from webadmin** (not exposed in regular post creation)
 
 ### 6. WebAdmin Post Management
+
 - ✅ Dedicated posts management page at `/posts`
 - ✅ Edit SEO fields (meta description, keywords) for any post
 - ✅ Set publication date for public posts
@@ -55,6 +61,7 @@ This implementation adds public-facing pages for posts and groups with comprehen
 - ✅ Navigation between Groups and Posts management
 
 ### 7. Publication Date Feature
+
 - ✅ Optional `publication_date` field added to posts
 - ✅ For "friends" posts: auto-set to current date on creation
 - ✅ For "public" posts: must be set manually from webadmin
@@ -62,12 +69,14 @@ This implementation adds public-facing pages for posts and groups with comprehen
 ## 🚀 Getting Started
 
 ### 1. Run Migrations
+
 ```bash
 cd apps/backend
 npm run migrate:up
 ```
 
 This will:
+
 - Add slug, meta_description, and keywords fields to posts and groups tables
 - Add publication_date field to posts table
 - Generate slugs for existing posts and groups
@@ -75,6 +84,7 @@ This will:
 - Create indexes for fast slug lookups
 
 ### 2. Start the Application
+
 ```bash
 # From root directory
 npm run dev
@@ -83,16 +93,20 @@ npm run dev
 ### 3. Test the Features
 
 #### Home Page
+
 Visit `http://localhost:3000/` to see:
+
 - Latest public posts section
 - Popular groups section
 
 #### Public Post
+
 1. Create a public post (or use existing)
 2. Visit `http://localhost:3000/p/{slug}`
 3. Click "Reply" - should redirect to login if not authenticated
 
 #### Public Group
+
 1. Create a group (or use existing)
 2. Visit `http://localhost:3000/g/{slug}`
 3. Click "Join" - should redirect to login if not authenticated
@@ -100,14 +114,17 @@ Visit `http://localhost:3000/` to see:
 ## 🔍 SEO Features Explained
 
 ### Meta Tags
+
 Every public page includes:
+
 ```html
-<title>Post/Group Title | Cyclists Social Network</title>
+<title>Post/Group Title | Bicicita</title>
 <meta name="description" content="..." />
 <meta name="keywords" content="..." />
 ```
 
 ### Open Graph (Social Sharing)
+
 ```html
 <meta property="og:title" content="..." />
 <meta property="og:description" content="..." />
@@ -116,6 +133,7 @@ Every public page includes:
 ```
 
 ### Twitter Cards
+
 ```html
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="..." />
@@ -124,13 +142,16 @@ Every public page includes:
 ```
 
 ### Structured Data (JSON-LD)
+
 Search engines can understand your content better:
+
 - Posts use `BlogPosting` schema
 - Groups use `Organization` schema
 
 ## 📝 Usage Examples
 
 ### Creating a Post (Regular Users)
+
 ```javascript
 const formData = new FormData();
 formData.append('userId', userId);
@@ -144,6 +165,7 @@ formData.append('visibility', 'public'); // or 'friends'
 ```
 
 ### Managing Post SEO (WebAdmin Only)
+
 ```javascript
 // Update SEO fields and publication date from webadmin
 await fetch(`${apiUrl}/api/webadmin/posts/${postId}`, {
@@ -158,11 +180,12 @@ await fetch(`${apiUrl}/api/webadmin/posts/${postId}`, {
 ```
 
 ### Creating a Group with SEO
+
 ```javascript
 await fetch(`${apiUrl}/api/groups`, {
   method: 'POST',
   body: JSON.stringify({
-    name: 'Madrid Cyclists',
+    name: 'Madrid Bicicita',
     description: 'Cycling community in Madrid',
     type: 'location',
     city: 'Madrid',
@@ -171,12 +194,13 @@ await fetch(`${apiUrl}/api/groups`, {
   }),
 });
 
-// Slug will be auto-generated: madrid-cyclists-e5f6g7h8
+// Slug will be auto-generated: madrid-bicicita-e5f6g7h8
 ```
 
 ## 🔒 Security
 
 All implemented features include:
+
 - ✅ Input validation
 - ✅ SQL injection prevention (parameterized queries)
 - ✅ Proper authentication checks
@@ -186,6 +210,7 @@ All implemented features include:
 ## 📱 Mobile Support
 
 All pages are fully responsive:
+
 - Mobile-first design
 - Touch-friendly buttons
 - Optimized images
@@ -211,6 +236,7 @@ All pages are fully responsive:
 **Added December 2024**
 
 #### Public Posts Page (`/public-posts`)
+
 - ✅ Displays all public posts in a paginated list
 - ✅ "Load More" button for fetching additional posts (12 per page)
 - ✅ No authentication required
@@ -220,6 +246,7 @@ All pages are fully responsive:
 - ✅ Each post shows title, excerpt, author, images, and reply count
 
 #### Public Groups Page (`/public-groups`)
+
 - ✅ Displays all groups in a paginated list
 - ✅ "Load More" button for fetching additional groups (12 per page)
 - ✅ Filter options: "Most Popular" (by member count) and "Most Recent" (by date)
@@ -229,6 +256,7 @@ All pages are fully responsive:
 - ✅ Empty state with call-to-action
 
 #### Updated Home Page Links
+
 - ✅ "See all" link for posts now points to `/public-posts` (instead of `/posts`)
 - ✅ "See all" link for groups now points to `/public-groups` (instead of `/groups`)
 - ✅ This allows visitors to browse all content before logging in
@@ -238,6 +266,7 @@ All pages are fully responsive:
 ## 🎉 Success!
 
 All requirements from the issue have been implemented:
+
 - ✅ Friendly URLs for posts and groups
 - ✅ Public presentation of latest posts and popular groups
 - ✅ Public detail pages with full information

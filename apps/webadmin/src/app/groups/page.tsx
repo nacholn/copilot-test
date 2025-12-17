@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { GroupWithMemberCount } from '@cyclists/config';
+import type { GroupWithMemberCount } from '@bicicita/config';
 import styles from '../../styles/common.module.css';
 import { GroupList } from '../../components/GroupList';
 import { CreateGroupModal } from '../../components/CreateGroupModal';

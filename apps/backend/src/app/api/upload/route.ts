@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadImage, deleteImage } from '@/lib/cloudinary';
-import type { ApiResponse } from '@cyclists/config';
+import type { ApiResponse } from '@bicicita/config';
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Upload to Cloudinary
-    const result = await uploadImage(buffer, folder || 'cyclists/uploads');
+    const result = await uploadImage(buffer, folder || 'bicicita/uploads');
 
     return NextResponse.json<ApiResponse>(
       {

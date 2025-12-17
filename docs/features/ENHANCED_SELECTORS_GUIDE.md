@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 
-This document provides a comprehensive guide to the enhanced selector components implemented for the Cyclists Social Network. These components replace native HTML select elements with custom, visually appealing dropdowns that include icons and improved user experience.
+This document provides a comprehensive guide to the enhanced selector components implemented for the Bicicita. These components replace native HTML select elements with custom, visually appealing dropdowns that include icons and improved user experience.
 
 ## ✅ Completed Components
 
@@ -464,7 +464,7 @@ interface CustomSelectorProps<T> {
 - **TypeScript Integration**: Complete type safety
 - **Easy Maintenance**: Clear code structure for future updates
 
-**The enhanced selector components significantly improve the user interface of the Cyclists Social Network, providing a modern, accessible, and intuitive experience for all users.**
+**The enhanced selector components significantly improve the user interface of the Bicicita, providing a modern, accessible, and intuitive experience for all users.**
 
 ---
 

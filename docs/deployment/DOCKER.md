@@ -1,6 +1,6 @@
 # Docker Setup Guide
 
-This guide explains how to use Docker for local development with the Cyclists Social Network monorepo.
+This guide explains how to use Docker for local development with the Bicicita monorepo.
 
 ## Overview
 
@@ -26,7 +26,7 @@ This starts PostgreSQL in the background. The database will be accessible at:
 
 - **Host**: localhost
 - **Port**: 5432
-- **Database**: cyclists_db
+- **Database**: bicicita_db
 - **User**: postgres
 - **Password**: postgres
 
@@ -35,7 +35,7 @@ This starts PostgreSQL in the background. The database will be accessible at:
 Update your `apps/backend/.env` file with the Docker database URL:
 
 ```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bicicita_db
 ```
 
 ### 3. Run Database Migrations
@@ -109,10 +109,10 @@ docker-compose restart postgres
 
 **Connection Details:**
 
-- URL: `postgresql://postgres:postgres@localhost:5432/cyclists_db`
+- URL: `postgresql://postgres:postgres@localhost:5432/bicicita_db`
 - Host: `localhost`
 - Port: `5432`
-- Database: `cyclists_db`
+- Database: `bicicita_db`
 - Username: `postgres`
 - Password: `postgres`
 
@@ -129,7 +129,7 @@ Web-based PostgreSQL management tool.
 **Access:**
 
 - URL: http://localhost:5050
-- Email: admin@cyclists.local
+- Email: admin@bicicita.local
 - Password: admin
 
 **To Enable:**
@@ -143,10 +143,10 @@ docker-compose --profile tools up -d pgadmin
 1. Open http://localhost:5050
 2. Login with the credentials above
 3. Add New Server:
-   - **General > Name**: Cyclists DB
+   - **General > Name**: Bicicita DB
    - **Connection > Host**: postgres
    - **Connection > Port**: 5432
-   - **Connection > Database**: cyclists_db
+   - **Connection > Database**: bicicita_db
    - **Connection > Username**: postgres
    - **Connection > Password**: postgres
 
@@ -157,25 +157,25 @@ docker-compose --profile tools up -d pgadmin
 Using psql from your local machine:
 
 ```bash
-psql postgresql://postgres:postgres@localhost:5432/cyclists_db
+psql postgresql://postgres:postgres@localhost:5432/bicicita_db
 ```
 
 Using Docker exec:
 
 ```bash
-docker-compose exec postgres psql -U postgres -d cyclists_db
+docker-compose exec postgres psql -U postgres -d bicicita_db
 ```
 
 ### Backup Database
 
 ```bash
-docker-compose exec postgres pg_dump -U postgres cyclists_db > backup.sql
+docker-compose exec postgres pg_dump -U postgres bicicita_db > backup.sql
 ```
 
 ### Restore Database
 
 ```bash
-docker-compose exec -T postgres psql -U postgres -d cyclists_db < backup.sql
+docker-compose exec -T postgres psql -U postgres -d bicicita_db < backup.sql
 ```
 
 ### Reset Database
@@ -213,7 +213,7 @@ Then reference them in docker-compose.yml:
 environment:
   POSTGRES_USER: ${POSTGRES_USER:-postgres}
   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-  POSTGRES_DB: ${POSTGRES_DB:-cyclists_db}
+  POSTGRES_DB: ${POSTGRES_DB:-bicicita_db}
 ports:
   - '${POSTGRES_PORT:-5432}:5432'
 ```
@@ -247,7 +247,7 @@ ports:
   - "5433:5432"  # Use port 5433 instead
 
 # Update DATABASE_URL accordingly
-DATABASE_URL=postgresql://postgres:postgres@localhost:5433/cyclists_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/bicicita_db
 ```
 
 ### Database Connection Refused
@@ -311,7 +311,7 @@ services:
     image: postgres:15-alpine
     env:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: cyclists_db
+      POSTGRES_DB: bicicita_db
     options: >-
       --health-cmd pg_isready
       --health-interval 10s
@@ -328,7 +328,7 @@ If you prefer not to use Docker, you can install PostgreSQL locally:
 ```bash
 brew install postgresql@15
 brew services start postgresql@15
-createdb cyclists_db
+createdb bicicita_db
 ```
 
 **Ubuntu/Debian:**
@@ -337,7 +337,7 @@ createdb cyclists_db
 sudo apt update
 sudo apt install postgresql-15
 sudo systemctl start postgresql
-sudo -u postgres createdb cyclists_db
+sudo -u postgres createdb bicicita_db
 ```
 
 **Windows:**

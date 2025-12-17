@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { GroupMemberWithProfile, Profile } from '@cyclists/config';
+import type { GroupMemberWithProfile, Profile } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 
 interface AddMemberModalProps {

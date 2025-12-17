@@ -1,4 +1,4 @@
-# GitHub Copilot Instructions for Cyclists Social Network
+# GitHub Copilot Instructions for Bicicita Social Network
 
 This file provides context and guidelines for GitHub Copilot when working with this monorepo.
 
@@ -25,12 +25,12 @@ This file provides context and guidelines for GitHub Copilot when working with t
 
 ## Project Overview
 
-This is a Turborepo monorepo for a social network application for cyclists, featuring:
+This is a Turborepo monorepo for a social network application for bicicita, featuring:
 
 - **Backend API**: Next.js API routes on port 3001
 - **Web PWA**: Next.js Progressive Web App on port 3000
 - **Mobile App**: Expo React Native application with expo-router
-- **Shared Packages**: `@cyclists/config` (types & Supabase) and `@cyclists/ui` (components)
+- **Shared Packages**: `@bicicita/config` (types & Supabase) and `@bicicita/ui` (components)
 
 ## Technology Stack
 
@@ -99,7 +99,7 @@ npm install <package> --workspace=apps/backend
 npm install <package> -D
 
 # Link local packages (already configured)
-# Use: "@cyclists/config": "*" in package.json
+# Use: "@bicicita/config": "*" in package.json
 ```
 
 ## Coding Guidelines
@@ -124,7 +124,7 @@ npm install <package> -D
 
 ```typescript
 // ✅ Good: Explicit types, shared interface
-import { User } from '@cyclists/config';
+import { User } from '@bicicita/config';
 
 async function getUserProfile(userId: string): Promise<User | null> {
   // ...

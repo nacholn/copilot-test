@@ -2,7 +2,7 @@
 
 ## Role
 
-You are a specialized agent for developing the Next.js PWA web application for the Cyclists Social Network.
+You are a specialized agent for developing the Next.js PWA web application for the Bicicita Social Network.
 
 ## Expertise
 
@@ -47,8 +47,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Cyclists Social Network',
-  description: 'Connect with cyclists around the world',
+  title: 'Bicicita Social Network',
+  description: 'Connect with bicicita around the world',
   manifest: '/manifest.json',
   icons: {
     icon: '/icon.png',
@@ -76,7 +76,7 @@ export default function RootLayout({
 ```typescript
 // app/page-name/page.tsx
 import styles from './page-name.module.css';
-import { Button } from '@cyclists/ui';
+import { Button } from '@bicicita/ui';
 
 export default function PageName() {
   return (
@@ -126,7 +126,7 @@ For interactive components, use 'use client':
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Input } from '@cyclists/ui';
+import { Button, Input } from '@bicicita/ui';
 import styles from './page.module.css';
 
 export default function LoginPage() {
@@ -237,9 +237,9 @@ export default async function ProfilePage() {
 ```json
 // public/manifest.json
 {
-  "name": "Cyclists Social Network",
-  "short_name": "Cyclists",
-  "description": "Connect with cyclists around the world",
+  "name": "Bicicita Social Network",
+  "short_name": "Bicicita",
+  "description": "Connect with bicicita around the world",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -272,7 +272,7 @@ const withPWA = require('next-pwa')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cyclists/config', '@cyclists/ui'],
+  transpilePackages: ['@bicicita/config', '@bicicita/ui'],
 };
 
 module.exports = withPWA(nextConfig);
@@ -287,7 +287,7 @@ import type { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Profile | Cyclists Social Network',
+    title: 'Profile | Bicicita Social Network',
     description: 'View and edit your cyclist profile',
     openGraph: {
       title: 'Profile',

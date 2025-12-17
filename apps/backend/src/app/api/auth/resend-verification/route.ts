@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSupabaseClient } from '@cyclists/config';
+import { getSupabaseClient } from '@bicicita/config';
 
 export async function POST(request: Request) {
   try {
