@@ -1,6 +1,6 @@
 # 🚴 Bicicita Social Network - Turborepo Monorepo
 
-A full-stack social network for cyclists built with Turborepo, featuring Next.js backend API, Next.js PWA frontend, and Expo React Native mobile app.
+A full-stack social network for bicicita built with Turborepo, featuring Next.js backend API, Next.js PWA frontend, and Expo React Native mobile app.
 
 ## 📦 Project Structure
 
@@ -30,7 +30,7 @@ bicicita/
 ### Web App (apps/web)
 
 - **Progressive Web App**: Full PWA with offline support, installable, and service worker
-- **PWA Features**: 
+- **PWA Features**:
   - Version update notifications with modal
   - Push notifications for messages
   - Smart notification permission requests

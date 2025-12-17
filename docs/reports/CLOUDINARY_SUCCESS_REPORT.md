@@ -37,7 +37,7 @@ The Cloudinary image upload functionality has been successfully implemented and 
 
 **Test Image Upload**:
 
-- ✅ Successfully uploaded: `https://res.cloudinary.com/dnvxgsolk/image/upload/v1765153468/cyclists/test/lq8uitttgsyngesgnemk.png`
+- ✅ Successfully uploaded: `https://res.cloudinary.com/dnvxgsolk/image/upload/v1765153468/bicicita/test/lq8uitttgsyngesgnemk.png`
 - ✅ Successfully deleted: Image removed from Cloudinary
 - ✅ API response time: < 2 seconds
 - ✅ Image optimization: Automatic format conversion and quality optimization
@@ -128,7 +128,7 @@ Backend API: http://localhost:3001
 
 1. Log into your Cloudinary dashboard
 2. Check the Media Library
-3. Look for images in the `cyclists/profiles/` folder
+3. Look for images in the `bicicita/profiles/` folder
 
 ## 📊 Technical Specifications
 

@@ -66,7 +66,7 @@ import { ImageUpload } from '@/components/ImageUpload';
 
 <ImageUpload
   currentImage={profileData.avatar}
-  folder="cyclists/profiles"
+  folder="bicicita/profiles"
   onImageChange={(imageUrl) => setProfileData({ ...profileData, avatar: imageUrl })}
   size="medium"
 />;
@@ -122,9 +122,9 @@ import { ImageUpload } from '@/components/ImageUpload';
 
 ### Folder Structure:
 
-- `cyclists/profiles/` - User profile images
-- `cyclists/uploads/` - General uploads
-- `cyclists/test/` - Test images (cleaned up automatically)
+- `bicicita/profiles/` - User profile images
+- `bicicita/uploads/` - General uploads
+- `bicicita/test/` - Test images (cleaned up automatically)
 
 ## 🎯 Next Steps
 

@@ -94,7 +94,7 @@ export function Header() {
       <div className={styles.container}>
         <Link href="/" className={styles.logo} onClick={closeMenu}>
           <span className={styles.logoIcon}>🚴</span>
-          <span className={styles.logoText}>Cyclists</span>
+          <span className={styles.logoText}>Bicicita</span>
         </Link>{' '}
         {/* Language Selector */}
         <div className={styles.languageWrapper}>
@@ -114,43 +114,43 @@ export function Header() {
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           {user ? (
             <>
-              <Link 
-                href="/users" 
+              <Link
+                href="/users"
                 className={`${styles.navLink} ${isActive('/users') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
                 {t('navigation.discover')}
               </Link>
-              <Link 
-                href="/my-groups" 
+              <Link
+                href="/my-groups"
                 className={`${styles.navLink} ${isActive('/my-groups') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
                 {t('navigation.myGroups')}
               </Link>
-              <Link 
-                href="/my-posts" 
+              <Link
+                href="/my-posts"
                 className={`${styles.navLink} ${isActive('/my-posts') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
                 {t('navigation.myPosts')}
               </Link>
-              <Link 
-                href="/posts" 
+              <Link
+                href="/posts"
                 className={`${styles.navLink} ${isActive('/posts') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
                 {t('navigation.publicPosts')}
               </Link>
-              <Link 
-                href="/my-friends" 
+              <Link
+                href="/my-friends"
                 className={`${styles.navLink} ${isActive('/my-friends') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
                 {t('navigation.friends')}
               </Link>
-              <Link 
-                href="/chat" 
+              <Link
+                href="/chat"
                 className={`${styles.navLink} ${isActive('/chat') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
@@ -166,8 +166,8 @@ export function Header() {
                   <span className={styles.notificationBadge}>{unreadNotificationCount}</span>
                 )}
               </Link>
-              <Link 
-                href="/profile" 
+              <Link
+                href="/profile"
                 className={`${styles.navLink} ${isActive('/profile') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
@@ -179,15 +179,15 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link 
-                href="/groups" 
+              <Link
+                href="/groups"
                 className={`${styles.navLink} ${isActive('/groups') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >
                 {t('navigation.publicGroups')}
               </Link>
-              <Link 
-                href="/posts" 
+              <Link
+                href="/posts"
                 className={`${styles.navLink} ${isActive('/posts') ? styles.navLinkActive : ''}`}
                 onClick={closeMenu}
               >

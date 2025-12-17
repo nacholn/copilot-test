@@ -1,7 +1,7 @@
 {
   "name": "Bicicita Social Network",
   "short_name": "Bicicita",
-  "description": "A social network for cyclists to connect, share routes, and find riding partners",
+  "description": "A social network for bicicita to connect, share routes, and find riding partners",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

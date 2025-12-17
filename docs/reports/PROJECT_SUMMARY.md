@@ -144,7 +144,7 @@ profiles {
 ## Project Structure
 
 ```
-cyclists-social-network/
+bicicita/
 ├── apps/
 │   ├── backend/              # Next.js API (port 3001)
 │   │   ├── src/

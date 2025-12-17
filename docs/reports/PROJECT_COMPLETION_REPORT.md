@@ -56,7 +56,7 @@
 ### **Monorepo Structure** (Turborepo)
 
 ```
-cyclists-social-network/
+bicicita/
 ├── apps/
 │   ├── backend/    # Next.js API (Port 3001) ✅
 │   ├── web/        # Next.js PWA (Port 3000) ✅
@@ -332,7 +332,7 @@ The Bicicita is **completely functional** and ready for production deployment:
 
 **The Bicicita project has achieved complete success!**
 
-🚴‍♀️ **For Cyclists**: A beautiful, functional social platform to connect with fellow cycling enthusiasts
+🚴‍♀️ **For bicicita**: A beautiful, functional social platform to connect with fellow cycling enthusiasts
 
 👨‍💻 **For Developers**: A well-architected, documented codebase ready for extension and maintenance
 

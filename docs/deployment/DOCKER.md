@@ -143,7 +143,7 @@ docker-compose --profile tools up -d pgadmin
 1. Open http://localhost:5050
 2. Login with the credentials above
 3. Add New Server:
-   - **General > Name**: Cyclists DB
+   - **General > Name**: Bicicita DB
    - **Connection > Host**: postgres
    - **Connection > Port**: 5432
    - **Connection > Database**: bicicita_db

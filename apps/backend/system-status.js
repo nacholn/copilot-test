@@ -2,7 +2,7 @@
  * Simple system status check
  */
 
-console.log('🚴 Cyclists Social Network - System Status Check\n');
+console.log('🚴 Bicicita - System Status Check\n');
 
 // Check environment variables
 require('dotenv').config();

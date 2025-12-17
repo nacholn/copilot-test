@@ -70,7 +70,7 @@ If successful, you'll see:
 ### Profile Pictures
 
 - Users can upload profile images in the registration and profile edit forms
-- Images are automatically optimized and stored in the `cyclists/profiles` folder
+- Images are automatically optimized and stored in the `bicicita/profiles` folder
 - Old images are automatically cleaned up when users upload new ones
 
 ### File Requirements

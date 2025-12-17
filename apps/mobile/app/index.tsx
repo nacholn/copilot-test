@@ -12,7 +12,7 @@ export default function Home() {
         <Text style={styles.emoji}>🚴</Text>
         <Text style={styles.title}>Bicicita</Text>
         <Text style={styles.description}>
-          Connect with fellow cyclists, share routes, and build your cycling community
+          Connect with fellow bicicita, share routes, and build your cycling community
         </Text>
 
         <View style={styles.buttons}>
@@ -37,7 +37,7 @@ export default function Home() {
           <View style={styles.feature}>
             <Text style={styles.featureEmoji}>👥</Text>
             <Text style={styles.featureTitle}>Connect</Text>
-            <Text style={styles.featureText}>Meet cyclists with similar interests</Text>
+            <Text style={styles.featureText}>Meet bicicita with similar interests</Text>
           </View>
           <View style={styles.feature}>
             <Text style={styles.featureEmoji}>📊</Text>

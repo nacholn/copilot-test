@@ -25,7 +25,7 @@ This file provides context and guidelines for GitHub Copilot when working with t
 
 ## Project Overview
 
-This is a Turborepo monorepo for a social network application for cyclists, featuring:
+This is a Turborepo monorepo for a social network application for bicicita, featuring:
 
 - **Backend API**: Next.js API routes on port 3001
 - **Web PWA**: Next.js Progressive Web App on port 3000

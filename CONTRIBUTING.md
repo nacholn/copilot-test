@@ -97,7 +97,7 @@ docs: update setup instructions
 ## Project Structure
 
 ```
-cyclists-social-network/
+bicicita/
 ├── apps/              # Applications
 │   ├── backend/       # API server
 │   ├── web/          # Web app

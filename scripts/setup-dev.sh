@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🚴 Cyclists Social Network - Development Setup"
+echo "🚴 Bicicita - Development Setup"
 echo "=============================================="
 echo ""
 
@@ -79,7 +79,7 @@ echo ""
 echo "3. Setup PostgreSQL:"
 echo "   Option A - Using Docker (recommended):"
 echo "     docker-compose up -d postgres"
-echo "     # Set DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db"
+echo "     # Set DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bicicita_db"
 echo ""
 echo "   Option B - Using local PostgreSQL:"
 echo "     # Ensure PostgreSQL is running"

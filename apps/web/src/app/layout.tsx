@@ -11,7 +11,7 @@ import { defaultViewport } from '../config/viewport';
 export const metadata = {
   title: 'Bicicita',
   description:
-    'Connect with cyclists around the world. Share routes, find cycling partners, and join the community.',
+    'Connect with bicicita around the world. Share routes, find cycling partners, and join the community.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,

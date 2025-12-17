@@ -48,7 +48,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Bicicita Social Network',
-  description: 'Connect with cyclists around the world',
+  description: 'Connect with bicicita around the world',
   manifest: '/manifest.json',
   icons: {
     icon: '/icon.png',
@@ -238,8 +238,8 @@ export default async function ProfilePage() {
 // public/manifest.json
 {
   "name": "Bicicita Social Network",
-  "short_name": "Cyclists",
-  "description": "Connect with cyclists around the world",
+  "short_name": "Bicicita",
+  "description": "Connect with bicicita around the world",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
