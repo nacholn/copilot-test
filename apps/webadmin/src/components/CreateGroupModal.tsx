@@ -123,7 +123,7 @@ export function CreateGroupModal({ onClose, onCreate }: CreateGroupModalProps) {
             <label className={styles.label}>Main Image</label>
             <ImageUpload
               currentImage={mainImage}
-              folder="cyclists/groups"
+              folder="bicicita/groups"
               onImageChange={handleImageChange}
               size="medium"
             />

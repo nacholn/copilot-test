@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Upload to Cloudinary
-    const uploadResult = await uploadImage(buffer, 'cyclists/profiles');
+    const uploadResult = await uploadImage(buffer, 'bicicita/profiles');
 
     // If this is marked as primary, unset any existing primary images
     if (isPrimary) {

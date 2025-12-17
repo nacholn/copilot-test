@@ -13,7 +13,7 @@ interface ImageUploadProps {
 
 export function ImageUpload({
   currentImage,
-  folder = 'cyclists/uploads',
+  folder = 'bicicita/uploads',
   onImageChange,
   className,
   size = 'medium',

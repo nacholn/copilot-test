@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Upload to Cloudinary
-    const result = await uploadImage(buffer, folder || 'cyclists/uploads');
+    const result = await uploadImage(buffer, folder || 'bicicita/uploads');
 
     return NextResponse.json<ApiResponse>(
       {

@@ -26,7 +26,7 @@ async function testUploadAPI() {
       filename: 'test-image.png',
       contentType: 'image/png',
     });
-    form.append('folder', 'cyclists/test');
+    form.append('folder', 'bicicita/test');
     console.log('📤 Testing upload to http://localhost:3001/api/upload...');
 
     const response = await axios.post('http://localhost:3001/api/upload', form, {

@@ -41,7 +41,7 @@ async function testCloudinaryIntegration() {
 
   try {
     console.log('\n📤 Testing image upload...');
-    const uploadResult = await uploadImage(testImageBuffer, 'cyclists/test');
+    const uploadResult = await uploadImage(testImageBuffer, 'bicicita/test');
     console.log('✅ Upload successful!');
     console.log(`   URL: ${uploadResult.secure_url}`);
     console.log(`   Public ID: ${uploadResult.public_id}`);

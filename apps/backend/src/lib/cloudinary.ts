@@ -15,7 +15,7 @@ cloudinary.config({
  */
 export async function uploadImage(
   buffer: Buffer,
-  folder: string = 'cyclists/profiles'
+  folder: string = 'bicicita/profiles'
 ): Promise<{ secure_url: string; public_id: string }> {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(

@@ -88,7 +88,7 @@ async function runSystemTests() {
         filename: 'test.png',
         contentType: 'image/png',
       });
-      form.append('folder', 'cyclists/test');
+      form.append('folder', 'bicicita/test');
 
       const uploadResponse = await axios.post('http://localhost:3001/api/upload', form, {
         headers: { ...form.getHeaders() },

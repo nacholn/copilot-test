@@ -179,7 +179,7 @@ export function ProfileForm({ initialProfile, onSave }: ProfileFormProps) {
         <label>Profile Image</label>
         <ImageUpload
           currentImage={formData.avatar}
-          folder="cyclists/profiles"
+          folder="bicicita/profiles"
           onImageChange={(imageUrl) => setFormData({ ...formData, avatar: imageUrl || '' })}
           size="medium"
         />
