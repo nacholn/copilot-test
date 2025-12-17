@@ -562,7 +562,7 @@ npm run android
 {
   "expo": {
     "name": "Bicicita Social Network",
-    "slug": "bicicita-social-network",
+    "slug": "bicicita",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Bicicita Social Network",
-    "slug": "bicicita-social-network",
+    "slug": "bicicita",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

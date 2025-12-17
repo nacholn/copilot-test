@@ -5,7 +5,7 @@ A full-stack social network for cyclists built with Turborepo, featuring Next.js
 ## 📦 Project Structure
 
 ```
-bicicita-social-network/
+bicicita/
 ├── apps/
 │   ├── backend/        # Next.js API server (port 3001)
 │   ├── web/           # Next.js PWA with service worker
