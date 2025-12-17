@@ -4,11 +4,11 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: cyclists-postgres
+    container_name: bicicita-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: cyclists_db
+      POSTGRES_DB: bicicita_db
     ports:
       - "5432:5432"
     volumes:
@@ -19,12 +19,12 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - cyclists-network
+      - bicicita-network
 
   # pgAdmin (optional - for database management UI)
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: cyclists-pgadmin
+    container_name: bicicita-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: nacholn@gmail.com
       PGADMIN_DEFAULT_PASSWORD: admin
@@ -34,7 +34,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - cyclists-network
+      - bicicita-network
     # profiles:
     #   - tools
 
@@ -43,5 +43,5 @@ volumes:
     driver: local
 
 networks:
-  cyclists-network:
+  bicicita-network:
     driver: bridge

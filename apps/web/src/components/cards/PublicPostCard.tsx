@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import type { PostWithDetails } from '@cyclists/config';
+import type { PostWithDetails } from '@bicicita/config';
 import styles from './PublicPostCard.module.css';
 
 interface PublicPostCardProps {

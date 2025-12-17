@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import type { GroupWithMemberCount } from '@cyclists/config';
+import type { GroupWithMemberCount } from '@bicicita/config';
 import styles from './PublicGroupCard.module.css';
 
 interface PublicGroupCardProps {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
-import type { ApiResponse, Conversation, GroupConversation } from '@cyclists/config';
+import type { ApiResponse, Conversation, GroupConversation } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

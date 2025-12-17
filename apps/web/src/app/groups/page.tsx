@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useTranslations } from '../../hooks/useTranslations';
 import { PublicGroupCard } from '../../components/cards/PublicGroupCard';
 import { Loader } from '../../components/ui/Loader';
-import type { GroupWithMemberCount } from '@cyclists/config';
+import type { GroupWithMemberCount } from '@bicicita/config';
 import styles from './groups.module.css';
 
 const GROUPS_PER_PAGE = 12;

@@ -76,7 +76,7 @@ export default function RootLayout({
 ```typescript
 // app/page-name/page.tsx
 import styles from './page-name.module.css';
-import { Button } from '@cyclists/ui';
+import { Button } from '@bicicita/ui';
 
 export default function PageName() {
   return (
@@ -126,7 +126,7 @@ For interactive components, use 'use client':
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Input } from '@cyclists/ui';
+import { Button, Input } from '@bicicita/ui';
 import styles from './page.module.css';
 
 export default function LoginPage() {
@@ -272,7 +272,7 @@ const withPWA = require('next-pwa')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@cyclists/config', '@cyclists/ui'],
+  transpilePackages: ['@bicicita/config', '@bicicita/ui'],
 };
 
 module.exports = withPWA(nextConfig);

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSupabaseClient } from '@cyclists/config';
-import type { RecoverPasswordInput, ApiResponse } from '@cyclists/config';
+import { createSupabaseClient } from '@bicicita/config';
+import type { RecoverPasswordInput, ApiResponse } from '@bicicita/config';
 
 export async function POST(request: NextRequest) {
   try {

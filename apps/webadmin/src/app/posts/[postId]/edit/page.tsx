@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import type { PostWithDetails, PostImage } from '@cyclists/config';
+import type { PostWithDetails, PostImage } from '@bicicita/config';
 import styles from '../../../../styles/common.module.css';
 
 interface PostUpdateInput {

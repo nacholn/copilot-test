@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Profile } from '@cyclists/config';
+import type { Profile } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 
 interface EditUserModalProps {

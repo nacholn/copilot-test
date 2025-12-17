@@ -24,7 +24,7 @@
                     │                           │
                     ▼                           ▼
             ┌──────────────┐          ┌──────────────┐
-            │  @cyclists/  │          │  @cyclists/  │
+            │  @bicicita/  │          │  @bicicita/  │
             │    config    │          │      ui      │
             │              │          │              │
             │ • Types      │          │ • Button     │

@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { generateGroupStructuredData } from '../../../utils/structuredData';
-import type { GroupWithMemberCount, GroupImage } from '@cyclists/config';
+import type { GroupWithMemberCount, GroupImage } from '@bicicita/config';
 import styles from './groupDetail.module.css';
 
 export default function PublicGroupDetail({ params }: { params: { slug: string } }) {

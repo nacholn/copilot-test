@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { PostWithDetails } from '@cyclists/config';
+import type { PostWithDetails } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 
 interface PostUpdateInput {

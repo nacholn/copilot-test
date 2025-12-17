@@ -25,7 +25,7 @@ When creating or modifying API routes:
 
 - Use Next.js API route handlers in `apps/backend/src/app/api/`
 - Follow the pattern: `route.ts` with exported `GET`, `POST`, `PATCH`, `DELETE` functions
-- Use TypeScript types from `@cyclists/config`
+- Use TypeScript types from `@bicicita/config`
 - Validate all inputs before processing
 - Return consistent response format: `{ success: boolean, data?: T, error?: string }`
 
@@ -38,7 +38,7 @@ When creating or modifying API routes:
 
 ### 3. Authentication
 
-- Use Supabase for authentication via `@cyclists/config`
+- Use Supabase for authentication via `@bicicita/config`
 - Verify user tokens on protected routes
 - Create dual records (Supabase + PostgreSQL) during registration
 
@@ -49,7 +49,7 @@ When creating or modifying API routes:
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
-import type { ApiResponse } from '@cyclists/config';
+import type { ApiResponse } from '@bicicita/config';
 
 export async function POST(request: NextRequest) {
   try {
@@ -104,7 +104,7 @@ const result = await query(`SELECT * FROM profiles WHERE user_id = '${userId}'`)
 ## Guidelines
 
 1. **Security First**: Always validate inputs and use parameterized queries
-2. **Type Safety**: Use TypeScript types from `@cyclists/config`
+2. **Type Safety**: Use TypeScript types from `@bicicita/config`
 3. **Error Handling**: Wrap in try-catch, log errors, return user-friendly messages
 4. **Testing**: Consider edge cases and error scenarios
 5. **Documentation**: Add JSDoc comments for complex logic

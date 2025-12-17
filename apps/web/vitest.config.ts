@@ -11,8 +11,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@cyclists/config': path.resolve(__dirname, '../../packages/config/src'),
-      '@cyclists/ui': path.resolve(__dirname, '../../packages/ui/src'),
+      '@bicicita/config': path.resolve(__dirname, '../../packages/config/src'),
+      '@bicicita/ui': path.resolve(__dirname, '../../packages/ui/src'),
     },
   },
 });

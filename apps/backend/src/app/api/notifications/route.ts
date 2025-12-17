@@ -6,7 +6,7 @@ import {
   markAllNotificationsAsRead,
   deleteNotification 
 } from '@/lib/notifications';
-import type { ApiResponse } from '@cyclists/config';
+import type { ApiResponse } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

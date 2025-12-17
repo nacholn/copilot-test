@@ -62,7 +62,7 @@ import webPush from 'web-push';
 
 // Configure web-push with VAPID details
 webPush.setVapidDetails(
-  process.env.VAPID_SUBJECT || 'mailto:admin@cyclists.com',
+  process.env.VAPID_SUBJECT || 'mailto:admin@bicicita.com',
   process.env.VAPID_PUBLIC_KEY || '',
   process.env.VAPID_PRIVATE_KEY || ''
 );

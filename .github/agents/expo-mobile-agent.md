@@ -84,7 +84,7 @@ router.back();
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Button, Input } from '@cyclists/ui';
+import { Button, Input } from '@bicicita/ui';
 import { StatusBar } from 'expo-status-bar';
 
 export default function ScreenName() {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Button, Input } from '@cyclists/ui';
+import { Button, Input } from '@bicicita/ui';
 
 export default function Login() {
   const router = useRouter();
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
 ```typescript
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { Button, Input } from '@cyclists/ui';
+import { Button, Input } from '@bicicita/ui';
 
 interface FormData {
   email: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import type { GroupWithMemberCount } from '@cyclists/config';
+import type { GroupWithMemberCount } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 import { DeleteButton } from './DeleteButton';
 

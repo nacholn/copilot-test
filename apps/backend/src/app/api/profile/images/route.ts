@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { uploadImage, deleteImage } from '@/lib/cloudinary';
-import type { ApiResponse, ProfileImage } from '@cyclists/config';
+import type { ApiResponse, ProfileImage } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

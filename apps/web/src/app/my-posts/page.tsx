@@ -7,7 +7,7 @@ import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/auth/AuthGuard';
 import { Avatar } from '../../components/profile/Avatar';
 import { Loader } from '../../components/ui/Loader';
-import type { PostWithDetails } from '@cyclists/config';
+import type { PostWithDetails } from '@bicicita/config';
 import styles from './posts.module.css';
 
 export default function Posts() {

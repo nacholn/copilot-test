@@ -12,7 +12,7 @@ import type {
   SendFriendRequestInput,
   UpdateFriendRequestInput,
   FriendRequestWithProfile,
-} from '@cyclists/config';
+} from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

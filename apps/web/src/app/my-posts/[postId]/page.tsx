@@ -9,7 +9,7 @@ import { AuthGuard } from '../../../components/auth/AuthGuard';
 import { Avatar } from '../../../components/profile/Avatar';
 import { Loader } from '../../../components/ui/Loader';
 import { EditPostButton } from '../../../components/posts/EditPostButton';
-import type { Post, PostImage, PostReplyWithAuthor } from '@cyclists/config';
+import type { Post, PostImage, PostReplyWithAuthor } from '@bicicita/config';
 import Swal from 'sweetalert2';
 import styles from './post-detail.module.css';
 

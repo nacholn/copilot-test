@@ -4,7 +4,7 @@ import { uploadImage } from '@/lib/cloudinary';
 import { createNotification } from '@/lib/notifications';
 import { emitNotification } from '@/lib/websocket';
 import { generateUniqueSlug } from '@/lib/slug';
-import type { ApiResponse, CreatePostInput, PostWithDetails } from '@cyclists/config';
+import type { ApiResponse, CreatePostInput, PostWithDetails } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

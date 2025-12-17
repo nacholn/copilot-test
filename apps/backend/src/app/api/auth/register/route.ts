@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSupabaseClient } from '@cyclists/config';
+import { createSupabaseClient } from '@bicicita/config';
 import { query } from '@/lib/db';
 import { transformProfile } from '@/lib/utils';
-import type { RegisterInput, ApiResponse } from '@cyclists/config';
+import type { RegisterInput, ApiResponse } from '@bicicita/config';
 
 export async function POST(request: NextRequest) {
   try {

@@ -4,7 +4,7 @@ import type {
   NotificationWithActor, 
   CreateNotificationInput,
   NotificationType 
-} from '@cyclists/config';
+} from '@bicicita/config';
 import { sendWebPushNotificationToUser } from './web-push-notifications';
 
 /**

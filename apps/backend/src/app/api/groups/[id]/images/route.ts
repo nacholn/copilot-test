@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
-import type { ApiResponse, GroupImage } from '@cyclists/config';
+import type { ApiResponse, GroupImage } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

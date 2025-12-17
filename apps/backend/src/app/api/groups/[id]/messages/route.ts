@@ -7,7 +7,7 @@ import type {
   GroupMessage,
   GroupMessageWithSender,
   SendGroupMessageInput,
-} from '@cyclists/config';
+} from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

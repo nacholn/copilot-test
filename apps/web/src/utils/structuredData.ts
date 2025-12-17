@@ -1,4 +1,4 @@
-import type { PostWithDetails, GroupWithMemberCount } from '@cyclists/config';
+import type { PostWithDetails, GroupWithMemberCount } from '@bicicita/config';
 
 /**
  * Generate JSON-LD structured data for a blog post

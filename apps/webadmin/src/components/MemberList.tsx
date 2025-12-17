@@ -1,4 +1,4 @@
-import type { GroupMemberWithProfile } from '@cyclists/config';
+import type { GroupMemberWithProfile } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 
 interface MemberListProps {

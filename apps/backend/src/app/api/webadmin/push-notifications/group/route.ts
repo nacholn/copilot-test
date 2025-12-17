@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { sendWebPushNotificationToMany } from '@/lib/web-push-notifications';
-import type { ApiResponse } from '@cyclists/config';
+import type { ApiResponse } from '@bicicita/config';
 import type { PushSubscription } from '@/lib/web-push-notifications';
 
 // Mark route as dynamic

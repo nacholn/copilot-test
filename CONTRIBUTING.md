@@ -1,4 +1,4 @@
-# Contributing to Cyclists Social Network
+# Contributing to Bicicita Social Network
 
 Thank you for your interest in contributing! This guide will help you get started.
 

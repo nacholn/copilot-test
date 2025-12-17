@@ -24,7 +24,7 @@ CLOUDINARY_API_SECRET=your-api-secret
 # Also include existing config:
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bicicita_db
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
@@ -124,7 +124,7 @@ GET /api/conversations?userId={userId}
 
 ## 🐛 Troubleshooting
 
-### "Cannot find module '@cyclists/config'"
+### "Cannot find module '@bicicita/config'"
 ```bash
 cd packages/config
 npm run build

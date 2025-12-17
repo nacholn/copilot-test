@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadImage, deleteImage } from '@/lib/cloudinary';
-import type { ApiResponse } from '@cyclists/config';
+import type { ApiResponse } from '@bicicita/config';
 
 export async function POST(request: NextRequest) {
   try {

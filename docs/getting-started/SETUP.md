@@ -72,7 +72,7 @@ Edit `apps/mobile/.env` with the same Supabase credentials.
 docker-compose up -d postgres
 
 # Update apps/backend/.env with:
-# DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+# DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bicicita_db
 ```
 
 See [Docker Setup](../deployment/DOCKER.md) for more details.

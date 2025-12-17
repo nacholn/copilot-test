@@ -7,7 +7,7 @@ import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/auth/AuthGuard';
 import { Avatar } from '../../components/profile/Avatar';
 import { Loader } from '../../components/ui/Loader';
-import type { GroupWithMemberCount } from '@cyclists/config';
+import type { GroupWithMemberCount } from '@bicicita/config';
 import styles from './groups.module.css';
 
 export default function Groups() {

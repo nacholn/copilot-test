@@ -136,7 +136,7 @@ Add to `apps/backend/.env`:
 ```env
 # Email Configuration (Resend)
 RESEND_API_KEY=your-resend-api-key
-EMAIL_FROM=noreply@cyclists.app
+EMAIL_FROM=noreply@bicicita.app
 
 # App Configuration
 NEXT_PUBLIC_APP_URL=http://localhost:3000

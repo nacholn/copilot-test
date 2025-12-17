@@ -17,8 +17,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@cyclists/config": "*",
-    "@cyclists/ui": "*",
+    "@bicicita/config": "*",
+    "@bicicita/ui": "*",
     "@react-native-picker/picker": "^2.6.0",
     "expo": "~50.0.0",
     "expo-router": "~3.4.0",

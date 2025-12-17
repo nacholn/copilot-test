@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslations } from '../../../hooks/useTranslations';
 import { generatePostStructuredData } from '../../../utils/structuredData';
-import type { PostWithDetails } from '@cyclists/config';
+import type { PostWithDetails } from '@bicicita/config';
 import styles from './postDetail.module.css';
 
 export default function PublicPostDetail({ params }: { params: { slug: string } }) {

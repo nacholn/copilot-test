@@ -7,7 +7,7 @@ import { useTranslations } from '../hooks/useTranslations';
 import { PublicPostCard } from '../components/cards/PublicPostCard';
 import { PublicGroupCard } from '../components/cards/PublicGroupCard';
 import { Loader } from '../components/ui/Loader';
-import type { PostWithDetails, GroupWithMemberCount } from '@cyclists/config';
+import type { PostWithDetails, GroupWithMemberCount } from '@bicicita/config';
 import styles from './page.module.css';
 
 function HomeInner() {

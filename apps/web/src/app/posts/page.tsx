@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useTranslations } from '../../hooks/useTranslations';
 import { PublicPostCard } from '../../components/cards/PublicPostCard';
 import { Loader } from '../../components/ui/Loader';
-import type { PostWithDetails } from '@cyclists/config';
+import type { PostWithDetails } from '@bicicita/config';
 import styles from './posts.module.css';
 
 const POSTS_PER_PAGE = 12;

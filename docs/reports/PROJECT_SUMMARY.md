@@ -137,7 +137,7 @@ profiles {
 - File-based routing with expo-router
 - Native UI components
 - Cross-platform (iOS/Android/Web)
-- Shared components from @cyclists/ui
+- Shared components from @bicicita/ui
 - Form validation
 - Alert dialogs for feedback
 

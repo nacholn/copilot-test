@@ -1,11 +1,11 @@
-# 🚴 Cyclists Social Network - Turborepo Monorepo
+# 🚴 Bicicita Social Network - Turborepo Monorepo
 
 A full-stack social network for cyclists built with Turborepo, featuring Next.js backend API, Next.js PWA frontend, and Expo React Native mobile app.
 
 ## 📦 Project Structure
 
 ```
-cyclists-social-network/
+bicicita-social-network/
 ├── apps/
 │   ├── backend/        # Next.js API server (port 3001)
 │   ├── web/           # Next.js PWA with service worker
@@ -49,12 +49,12 @@ cyclists-social-network/
 - **Expo Router**: File-based routing system
 - **Authentication Flows**: Native mobile auth experience
 - **Profile Screens**: Native mobile profile management
-- **Shared Components**: Uses @cyclists/ui package
+- **Shared Components**: Uses @bicicita/ui package
 
 ### Shared Packages
 
-- **@cyclists/config**: TypeScript types, Supabase client factory
-- **@cyclists/ui**: Cross-platform UI components (Button, Input, Avatar)
+- **@bicicita/config**: TypeScript types, Supabase client factory
+- **@bicicita/ui**: Cross-platform UI components (Button, Input, Avatar)
 
 ## 📋 Prerequisites
 
@@ -157,12 +157,12 @@ Start PostgreSQL using Docker Compose:
 docker-compose up -d postgres
 ```
 
-The database will be available at `postgresql://postgres:postgres@localhost:5432/cyclists_db`
+The database will be available at `postgresql://postgres:postgres@localhost:5432/bicicita_db`
 
 Update your `apps/backend/.env`:
 
 ```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bicicita_db
 ```
 
 See [Docker Setup Guide](./docs/deployment/DOCKER.md) for detailed Docker setup and management.
@@ -315,9 +315,9 @@ npm run format      # Format code with Prettier
 
 The monorepo uses npm workspaces for package linking:
 
-- `@cyclists/config` provides shared types and Supabase client
-- `@cyclists/ui` provides cross-platform components
-- Apps import packages using workspace protocol (`"@cyclists/config": "*"`)
+- `@bicicita/config` provides shared types and Supabase client
+- `@bicicita/ui` provides cross-platform components
+- Apps import packages using workspace protocol (`"@bicicita/config": "*"`)
 
 ## 🔧 Turborepo Configuration
 

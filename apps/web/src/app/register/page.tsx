@@ -9,7 +9,7 @@ import { useTranslations } from '../../hooks/useTranslations';
 import { LocationPicker } from '../../components/forms/LocationPicker';
 import { BikeTypeSelector, type BikeType } from '../../components/selectors/BikeTypeSelector';
 import { CyclingLevelSelector, type CyclingLevel } from '../../components/selectors/CyclingLevelSelector';
-import { getSupabaseClient } from '@cyclists/config';
+import { getSupabaseClient } from '@bicicita/config';
 import { Loader } from '../../components/ui/Loader';
 
 type RegistrationStep = 1 | 2 | 3;

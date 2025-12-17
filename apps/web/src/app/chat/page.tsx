@@ -13,7 +13,7 @@ import type {
   GroupConversation,
   Message,
   GroupMessageWithSender,
-} from '@cyclists/config';
+} from '@bicicita/config';
 import styles from './chat.module.css';
 
 // Chat page uses white theme color for better readability

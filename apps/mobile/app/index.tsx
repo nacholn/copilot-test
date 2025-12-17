@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
-import { Button } from '@cyclists/ui';
+import { Button } from '@bicicita/ui';
 import { StatusBar } from 'expo-status-bar';
 
 export default function Home() {

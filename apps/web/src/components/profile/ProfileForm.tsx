@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
-import { type Profile } from '@cyclists/config';
+import { type Profile } from '@bicicita/config';
 import { LocationPicker } from '../forms/LocationPicker';
 import { ImageUpload } from '../forms/ImageUpload';
 import { BikeTypeSelector, type BikeType } from '../selectors/BikeTypeSelector';

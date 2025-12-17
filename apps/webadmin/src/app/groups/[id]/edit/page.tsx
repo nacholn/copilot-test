@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import type { Group, GroupType } from '@cyclists/config';
+import type { Group, GroupType } from '@bicicita/config';
 import styles from '../../../../styles/common.module.css';
 import { LocationPicker } from '../../../../components/LocationPicker';
 import { GroupTypeSelector } from '../../../../components/GroupTypeSelector';

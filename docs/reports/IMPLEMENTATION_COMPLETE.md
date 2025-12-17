@@ -194,7 +194,7 @@ npm run migrate:up
 ```bash
 # In apps/backend/.env
 RESEND_API_KEY=your-key-here
-EMAIL_FROM=noreply@cyclists.app
+EMAIL_FROM=noreply@bicicita.app
 ```
 
 4. **Start Development:**
@@ -269,7 +269,7 @@ npm run dev
 ```env
 # Email Service
 RESEND_API_KEY=re_xxxxx
-EMAIL_FROM=noreply@cyclists.app
+EMAIL_FROM=noreply@bicicita.app
 
 # Database (already configured)
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cyclists_db

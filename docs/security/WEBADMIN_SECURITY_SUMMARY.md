@@ -38,7 +38,7 @@ if (!body.name || body.name.trim().length === 0) {
 **Status**: ✅ Enforced
 
 - All API handlers use TypeScript with strict mode
-- Request bodies are typed using shared types from `@cyclists/config`
+- Request bodies are typed using shared types from `@bicicita/config`
 - Response types are enforced with `ApiResponse<T>` generic type
 - No use of `any` types in the codebase
 

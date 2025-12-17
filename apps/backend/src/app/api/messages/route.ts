@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { createNotification } from '@/lib/notifications';
 import { emitNotification, emitMessage } from '@/lib/websocket';
-import type { ApiResponse, Message, SendMessageInput } from '@cyclists/config';
+import type { ApiResponse, Message, SendMessageInput } from '@bicicita/config';
 
 // Mark route as dynamic
 export const dynamic = 'force-dynamic';

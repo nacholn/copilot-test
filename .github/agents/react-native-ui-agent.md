@@ -399,7 +399,7 @@ When creating a new component:
 **In Web (Next.js):**
 
 ```typescript
-import { Button } from '@cyclists/ui';
+import { Button } from '@bicicita/ui';
 
 export default function Page() {
   return <Button title="Click me" onPress={() => alert('Clicked')} />;
@@ -409,7 +409,7 @@ export default function Page() {
 **In Mobile (Expo):**
 
 ```typescript
-import { Button } from '@cyclists/ui';
+import { Button } from '@bicicita/ui';
 
 export default function Screen() {
   return <Button title="Click me" onPress={() => console.log('Clicked')} />;

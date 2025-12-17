@@ -4,7 +4,7 @@ import { query } from './db';
 // Configure web-push with VAPID details
 const vapidPublicKey = process.env.VAPID_PUBLIC_KEY || '';
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || '';
-const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:admin@cyclists.com';
+const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:admin@bicicita.com';
 
 if (vapidPublicKey && vapidPrivateKey) {
   webPush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);

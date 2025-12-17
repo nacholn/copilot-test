@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { GroupType, CreateGroupInput } from '@cyclists/config';
+import type { GroupType, CreateGroupInput } from '@bicicita/config';
 import styles from '../styles/common.module.css';
 import { GroupTypeSelector } from './GroupTypeSelector';
 import { LocationPicker } from './LocationPicker';

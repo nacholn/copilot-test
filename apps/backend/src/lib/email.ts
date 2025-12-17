@@ -16,7 +16,7 @@ interface SendEmailParams {
 export async function sendEmail({ to, subject, html, from }: SendEmailParams): Promise<boolean> {
   try {
     // Use default sender if not provided
-    const sender = from || process.env.EMAIL_FROM || 'noreply@cyclists.app';
+    const sender = from || process.env.EMAIL_FROM || 'noreply@bicicita.app';
 
     // Skip sending email if in test/development without proper configuration
     if (!process.env.RESEND_API_KEY) {

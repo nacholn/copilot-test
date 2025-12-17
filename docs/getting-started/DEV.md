@@ -307,7 +307,7 @@ cd apps/web && npm run build && npm start
 
 ## Common Issues
 
-**"Cannot find module '@cyclists/config'"**
+**"Cannot find module '@bicicita/config'"**
 
 - Run `npm run build --workspace=packages/config`
 - Restart your dev server

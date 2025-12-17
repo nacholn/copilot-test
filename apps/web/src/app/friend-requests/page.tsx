@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTranslations } from '../../hooks/useTranslations';
 import { AuthGuard } from '../../components/auth/AuthGuard';
 import { Avatar } from '../../components/profile/Avatar';
-import type { FriendRequestWithProfile } from '@cyclists/config';
+import type { FriendRequestWithProfile } from '@bicicita/config';
 import Swal from 'sweetalert2';
 import styles from './friend-requests.module.css';
 

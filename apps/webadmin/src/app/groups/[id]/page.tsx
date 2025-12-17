@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import type { Group, GroupMemberWithProfile, Profile } from '@cyclists/config';
+import type { Group, GroupMemberWithProfile, Profile } from '@bicicita/config';
 import styles from '../../../styles/common.module.css';
 import { MemberList } from '../../../components/MemberList';
 import { AddMemberModal } from '../../../components/AddMemberModal';
