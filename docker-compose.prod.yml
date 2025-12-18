@@ -1,0 +1,194 @@
+services:
+  # Traefik Reverse Proxy - Handles routing and SSL certificates
+  traefik:
+    image: traefik:v2.10
+    container_name: cyclists-traefik
+    restart: unless-stopped
+    command:
+      # Docker provider
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      
+      # Entrypoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      
+      # HTTP to HTTPS redirect
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      
+      # Let's Encrypt configuration
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=${LETSENCRYPT_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      
+      # Dashboard
+      - "--api.dashboard=true"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "traefik-certificates:/letsencrypt"
+    labels:
+      # Enable Traefik for itself (dashboard)
+      - "traefik.enable=true"
+      
+      # Dashboard router
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
+      - "traefik.http.routers.traefik-dashboard.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      - "traefik.http.routers.traefik-dashboard.middlewares=dashboard-auth"
+      
+      # Basic auth middleware for dashboard
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=${TRAEFIK_AUTH}"
+    networks:
+      - cyclists-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: cyclists-postgres-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cyclists-network
+
+  # Backend API Service
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: cyclists-backend-prod
+    restart: unless-stopped
+    environment:
+      # Database
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      
+      # Supabase
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      
+      # Cloudinary
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      
+      # Resend
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      
+      # VAPID keys for push notifications
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
+      VAPID_SUBJECT: ${VAPID_SUBJECT}
+      
+      # App URL
+      NEXT_PUBLIC_APP_URL: https://${DOMAIN}
+      
+      # Node environment
+      NODE_ENV: production
+      PORT: 3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      
+      # HTTP router
+      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN}`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.backend.service=backend"
+      - "traefik.http.services.backend.loadbalancer.server.port=3001"
+    networks:
+      - cyclists-network
+
+  # Web PWA Service
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: cyclists-web-prod
+    restart: unless-stopped
+    environment:
+      # API URL
+      NEXT_PUBLIC_API_URL: https://api.${DOMAIN}
+      
+      # Supabase
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      
+      # VAPID public key for push notifications
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
+      
+      # Node environment
+      NODE_ENV: production
+      PORT: 3000
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      
+      # HTTP router for main domain
+      - "traefik.http.routers.web.rule=Host(`${DOMAIN}`) || Host(`www.${DOMAIN}`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.web.service=web"
+      - "traefik.http.services.web.loadbalancer.server.port=3000"
+      
+      # Redirect www to non-www
+      - "traefik.http.middlewares.web-redirect.redirectregex.regex=^https://www\\.(.+)"
+      - "traefik.http.middlewares.web-redirect.redirectregex.replacement=https://$${1}"
+      - "traefik.http.middlewares.web-redirect.redirectregex.permanent=true"
+      - "traefik.http.routers.web.middlewares=web-redirect"
+    networks:
+      - cyclists-network
+
+  # WebAdmin Service
+  webadmin:
+    build:
+      context: .
+      dockerfile: apps/webadmin/Dockerfile
+    container_name: cyclists-webadmin-prod
+    restart: unless-stopped
+    environment:
+      # API URL
+      NEXT_PUBLIC_API_URL: https://api.${DOMAIN}
+      
+      # Node environment
+      NODE_ENV: production
+      PORT: 3002
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      
+      # HTTP router
+      - "traefik.http.routers.webadmin.rule=Host(`admin.${DOMAIN}`)"
+      - "traefik.http.routers.webadmin.entrypoints=websecure"
+      - "traefik.http.routers.webadmin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.webadmin.service=webadmin"
+      - "traefik.http.services.webadmin.loadbalancer.server.port=3002"
+    networks:
+      - cyclists-network
+
+volumes:
+  postgres_data:
+    driver: local
+  traefik-certificates:
+    driver: local
+
+networks:
+  cyclists-network:
+    driver: bridge
